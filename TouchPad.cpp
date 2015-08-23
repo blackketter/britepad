@@ -47,7 +47,6 @@ void TouchPad::begin() {
 }
 
 void TouchPad::update() {
-
   // save the last state for future reference
   copyTPState(&last, &curr);
 
@@ -109,9 +108,8 @@ bool TouchPad::touched(int pad) {
     for (int i = 0; i < PAD_COUNT; i++) {
       if (touched(i))
         return true;
-      else
-        return false;
     }
+    return false;
   }
 
   return curr.touched[pad];
@@ -123,9 +121,8 @@ bool TouchPad::changed(int pad) {
     for (int i = 0; i < PAD_COUNT; i++) {
       if (changed(i))
         return true;
-      else
-        return false;
     }
+    return false;
   }
 
   return curr.touched[pad] != last.touched[pad];
@@ -135,11 +132,10 @@ bool TouchPad::changed(int pad) {
 bool TouchPad::down(int pad) {
   if (pad == ANY_PAD) {
     for (int i = 0; i < PAD_COUNT; i++) {
-      if (down(pad))
+      if (down(i))
         return true;
-      else
-        return false;
     }
+    return false;
   }
 
   return changed(pad) && touched(pad);
@@ -150,9 +146,8 @@ bool TouchPad::up(int pad) {
     for (int i = 0; i < PAD_COUNT; i++) {
       if (up(pad))
         return true;
-      else
-        return false;
     }
+    return false;
   }
 
   return changed(pad) && !touched(pad);

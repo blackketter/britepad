@@ -1,15 +1,19 @@
-#ifndef BubblesApp
-#define BubblesApp
+#ifndef _BubblesApp_
+#define _BubblesApp_
 
 #include "BPApp.h"
+#include "Britepad.h"
 
-class BubblesApp : BPApp {
-  BubblesApp(void) : BPApp() {};
-  void init(void);
-  void end(void);
-  void run(void);
-  bool isScreensaver(void) { return true; };
-  cosnt char* name(void) { return "Bubbles"; };
-}
+class BubblesApp : public BPApp {
+  public:
+    BubblesApp(void) : BPApp() {};
+    void end(void);
+    void run(void);
+    bool isScreensaver(void) { return true; };
+    const char* name(void) { return "Bubbles"; };
+  private:
+    int currentColor = screen.red;
+
+};
 
 #endif

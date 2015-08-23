@@ -1,9 +1,6 @@
 #include "Britepad.h"
 #include "BubblesApp.h"
-
-void BubblesApp::init(void) {
-
-}
+#include "Debug.h"
 
 void BubblesApp::end(void) {
 

@@ -1,11 +1,14 @@
 /* britepad */
 
+// these have to be here to satisfy the Arduino build system
 #include <ILI9341_t3.h>
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <SPI.h>       // this is needed for display
 #include <Wire.h>      // this is needed for FT6206
 #include <Adafruit_FT6206.h>
 #include <usb_keyboard.h>
+
+#include "Britepad.h"
 
 #define DEBUG_ON 1
 #include "Debug.h"
@@ -19,6 +22,7 @@
 #include "BubblesApp.h"
 #include "MouseApp.h"
 #include "LauncherApp.h"
+#include "SplashApp.h"
 
 #define SCREENSAVER_DELAY (5000)
 
@@ -31,22 +35,8 @@ TouchPad pad = TouchPad(screen.width(), screen.height());
 
 BPApp* mouseApp;
 BPApp* screensaverApp;
-BPApp* launcherApp;
-
-void drawLogo(void) {
-  int weight = 20;
-  int radius = 30;
-  int ascender = radius*2;
-  int midheight = screen.height() / 2;
-  int midwidth = screen.width() / 2;
-  screen.fillScreen(screen.black);
-  screen.fillCircle(midwidth-radius, midheight, radius, screen.red);
-  screen.fillCircle(midwidth-radius, midheight, radius-weight, screen.black);
-  screen.fillCircle(midwidth+radius, midheight, radius, screen.red);
-  screen.fillCircle(midwidth+radius, midheight, radius-weight, screen.black);
-  screen.fillRect(midwidth-2*radius, midheight-2*radius, weight, ascender, screen.red);
-  screen.fillRect(midwidth, midheight, weight, ascender, screen.red);
-}
+LauncherApp* launcherApp;
+BPApp* splashApp;
 
 BPApp* currApp;
 
@@ -82,14 +72,19 @@ void setup(void) {
   pad.begin();
   DEBUG_LN("Capacitive touchscreen started");
 
-  drawLogo();
-
 // TODO : move this to MouseApp initializer
   Mouse.begin();
 
+  launcherApp = new LauncherApp;
   screensaverApp = new BubblesApp;
   mouseApp = new MouseApp;
-  launcherApp = new LauncherApp;
+  splashApp = new SplashApp;
+
+  launcherApp->setButton(0, screensaverApp);
+  launcherApp->setButton(1, mouseApp);
+  launcherApp->setButton(2, splashApp);
+
+  setApp(splashApp);
 }
 
 void loop() {
@@ -103,6 +98,7 @@ void loop() {
     if (screensaver_started) {
       screen.fillScreen(screen.black);
       screensaver_started = 0;
+      setApp(mouseApp);
     }
   } else {
     if (pad.time() - pad.lastUpTime(ANY_PAD) > SCREENSAVER_DELAY) {
@@ -120,13 +116,19 @@ void loop() {
       setApp(mouseApp);
     }
   } else if (pad.down(ANY_PAD)) {
-    setApp(mouseApp);
+//    setApp(mouseApp);
   } else if (screensaver_started) {
     setApp(screensaverApp);
   }
 
   if (currApp) {
-    currApp->run();
+    BPApp* newApp = currApp->run();
+    if (newApp == DEFAULT_APP) {
+      newApp = mouseApp;
+    }
+    if (newApp) {
+      setApp(newApp);
+    }
   } else {
     DEBUG_LN("currApp nil!");
   }

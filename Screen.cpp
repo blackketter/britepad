@@ -17,6 +17,10 @@ void Screen::drawText(const char* text, int x, int y) {
     }
 }
 
+int Screen::measureText(const char* text) {
+  return (strlen(text) * 6 * textsize);
+}
+
 void Screen::drawTextF(const char* format, ...) {
   char foo[80];
 

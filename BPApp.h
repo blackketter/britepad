@@ -4,12 +4,14 @@
 #include "Britepad.h"
 #include "Debug.h"
 
+#define DEFAULT_APP ((BPApp*)1)
+
 class BPApp {
   public:
     BPApp() {};
     virtual void begin(void) { screen.fillScreen(screen.black); };
     virtual void end(void) {};
-    virtual void run(void) {};
+    virtual BPApp* run(void) {return nil;};
     virtual const char* name(void) { return 0; };
     virtual bool isScreensaver(void) { return false; };
 };

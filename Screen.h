@@ -3,6 +3,8 @@
 
 #include <ILI9341_t3.h>
 
+typedef uint16_t color_t;
+
 class Screen : public ILI9341_t3 {
   public:
 
@@ -11,6 +13,8 @@ class Screen : public ILI9341_t3 {
     const int green = ILI9341_GREEN;
     const int blue = ILI9341_BLUE;
     const int white = ILI9341_WHITE;
+    const int yellow = ILI9341_YELLOW;
+    const int bluegreen = 0x0410;
 
     Screen(uint8_t _CS, uint8_t _DC, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
       ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO) {
@@ -18,6 +22,8 @@ class Screen : public ILI9341_t3 {
 
     void drawText(const char* text, int x = -1, int y = -1);
     void drawTextF(const char* format, ...);
+    int measureText(const char* text);
+
 };
 
 #endif

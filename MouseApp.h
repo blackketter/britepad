@@ -6,7 +6,7 @@
 class MouseApp : public BPApp {
   public:
     MouseApp(void) : BPApp() {};
-    void run(void);
+    BPApp* run(void);
     bool isScreensaver(void) { return false; };
     const char* name(void) { return "Mouse"; };
   private:

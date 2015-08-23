@@ -12,14 +12,14 @@
 #define MOUSE_MAX_MOVE (100)
 
 // a tap is less than this many millis
-#define MOUSE_TAP_DUR (100)
+#define MOUSE_TAP_DUR (150)
 #define MOUSE_TAP_UP_DUR (200)
 #define MOUSE_DRAG_DUR (300)
 #define MOUSE_RELEASE_DRAG_DUR (1000)
 
 #define SCROLL_EDGE_MARGIN (10)
 
-void MouseApp::run(void) {
+BPApp* MouseApp::run(void) {
   static int scroll_mode = 0;
 
   // right panel
@@ -201,8 +201,10 @@ void MouseApp::run(void) {
 
     // screen tap released
     if (pad.up(SCREEN_PAD)) {
-       if ((pad.time() - pad.lastDownTime(SCREEN_PAD) < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < 20 && (abs(pad.lastDownY() - pad.y()) < 20)) ) {
-
+      DEBUG_LN("Screen Pad Up");
+      long downtime = pad.time() - pad.lastDownTime(SCREEN_PAD);
+      DEBUG_PARAM_LN("Downtime:", downtime);
+      if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < 20 && (abs(pad.lastDownY() - pad.y()) < 20)) ) {
         if (pad.x() > (screen.width() - SCROLL_EDGE_MARGIN)) {
           DEBUG_PARAM_LN("pad.x()",pad.x());
           screen.fillScreen(backgroundColor);
@@ -246,5 +248,6 @@ void MouseApp::run(void) {
       }
     }
   }
+  return nil;  // never exit
 }
 

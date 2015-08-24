@@ -58,13 +58,11 @@ BPApp* MouseApp::run(void) {
   if (pad.down(BOTTOM_PAD)) {
     if (!Mouse.isPressed()) {
       Mouse.press();
-      screen.fillScreen(screen.red);
     }
   }
   if (pad.up(BOTTOM_PAD)) {
     if (Mouse.isPressed()) {
       Mouse.release();
-      screen.fillScreen(screen.black);
     }
   }
 
@@ -96,18 +94,17 @@ BPApp* MouseApp::run(void) {
     }
   }
 
-  const int feedbackWidth = 4;
   // show feedback on touch panels
   if (pad.changed(RIGHT_PAD)) {
-    screen.fillRect(screen.width()-feedbackWidth,0,feedbackWidth,screen.height()-1, pad.touched(RIGHT_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(screen.width(),screen.height()/2,screen.height()/4, pad.touched(RIGHT_PAD) ? screen.red : backgroundColor);
   }
 
   if (pad.changed(LEFT_PAD)) {
-    screen.fillRect(0,0,feedbackWidth, screen.height()-1, pad.touched(LEFT_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(1,screen.height()/2,screen.height()/4, pad.touched(LEFT_PAD) ? screen.red : backgroundColor);
   }
 
   if (pad.changed(BOTTOM_PAD)) {
-    screen.fillRect(0,screen.height()-feedbackWidth,screen.width()-1,feedbackWidth, pad.touched(BOTTOM_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(screen.width()/2,screen.height(),screen.height()/4, pad.touched(BOTTOM_PAD) ? screen.red : backgroundColor);
   }
 
 

@@ -7,7 +7,6 @@
 class BubblesApp : public BPApp {
   public:
     BubblesApp(void) : BPApp() {};
-    void end(void);
     BPApp* run(void);
     bool isScreensaver(void) { return true; };
     const char* name(void) { return "Bubbles"; };

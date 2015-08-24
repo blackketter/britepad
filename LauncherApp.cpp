@@ -32,7 +32,7 @@ void LauncherApp::drawButton(int i, bool highlighted) {
   const char* name = apps[i]->name();
   screen.setTextSize(1);
   screen.setTextColor(screen.yellow);
-  screen.setCursor( x - screen.measureText(name) / 2, y - 4);
+  screen.setCursor( x - screen.measureTextH(name) / 2, y - screen.measureTextV(name)/2);
   screen.drawText(name);
 //  screen.fillCircle(random(screen.width()), random(screen.height()), random(40), screen.red);
 
@@ -49,10 +49,6 @@ int LauncherApp::buttonHit(int x, int y) {
   } else {
     return -1;
   }
-}
-
-void LauncherApp::end(void) {
-
 }
 
 void LauncherApp::setButton(int i, BPApp* b)
@@ -94,6 +90,8 @@ BPApp* LauncherApp::run(void) {
 
       if (highlightedButton != noButton) {
         exit = apps[b];
+      } else {
+        exit = DEFAULT_APP;
       }
       highlightedButton = noButton;
     }

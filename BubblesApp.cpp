@@ -2,10 +2,6 @@
 #include "BubblesApp.h"
 #include "Debug.h"
 
-void BubblesApp::end(void) {
-
-}
-
 BPApp* BubblesApp::run(void) {
   screen.fillCircle(random(screen.width()), random(screen.height()), random(40), currentColor++);
 

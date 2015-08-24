@@ -25,6 +25,7 @@
 #include "SplashApp.h"
 #include "PassApp.h"
 #include "ICPassApp.h"
+#include "KeyApp.h"
 
 #define SCREENSAVER_DELAY (5000)
 
@@ -87,6 +88,7 @@ void setup(void) {
   launcherApp->setButton(2, splashApp);
   launcherApp->setButton(11, new PassApp);
   launcherApp->setButton(10, new ICPassApp);
+  launcherApp->setButton(4, new KeyApp("My\nFull\nName", "Dean\nBlackketter"));
 
   setApp(splashApp);
 }
@@ -129,7 +131,10 @@ void loop() {
     BPApp* newApp = currApp->run();
     if (newApp == DEFAULT_APP) {
       newApp = mouseApp;
+    } else if (newApp == BACK_APP) {
+      newApp = launcherApp;
     }
+
     if (newApp) {
       setApp(newApp);
     }

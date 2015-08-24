@@ -18,7 +18,6 @@ class LauncherApp : public BPApp {
   public:
     LauncherApp(void);
     void begin(void);
-    void end(void);
     BPApp* run(void);
     void setButton(int i, BPApp* b);
     int totalButtons(void) { return hbuttons * vbuttons; };

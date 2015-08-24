@@ -20,10 +20,13 @@ class Screen : public ILI9341_t3 {
       ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO) {
     };
 
-    void drawText(const char* text, int x = -1, int y = -1);
+    void drawText(const char* text);
     void drawTextF(const char* format, ...);
-    int measureText(const char* text);
+    int measureTextH(const char* text);
+    int measureTextV(const char* text);
+    void setJustify(int j) {};
 
+protected:
 };
 
 #endif

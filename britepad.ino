@@ -23,6 +23,8 @@
 #include "MouseApp.h"
 #include "LauncherApp.h"
 #include "SplashApp.h"
+#include "PassApp.h"
+#include "ICPassApp.h"
 
 #define SCREENSAVER_DELAY (5000)
 
@@ -83,6 +85,8 @@ void setup(void) {
   launcherApp->setButton(0, screensaverApp);
   launcherApp->setButton(1, mouseApp);
   launcherApp->setButton(2, splashApp);
+  launcherApp->setButton(11, new PassApp);
+  launcherApp->setButton(10, new ICPassApp);
 
   setApp(splashApp);
 }

@@ -43,13 +43,12 @@ void LauncherApp::drawButton(int i, bool highlighted) {
 int LauncherApp::buttonHit(int x, int y) {
   int h = x / (screen.width() / hbuttons);
   int v = y / (screen.height() / vbuttons);
-  int i = v*vbuttons+h;
+  int i = v*hbuttons+h;
   if (getButton(i)) {
     return i;
   } else {
     return -1;
   }
-
 }
 
 void LauncherApp::end(void) {
@@ -92,8 +91,6 @@ BPApp* LauncherApp::run(void) {
     if (pad.up(SCREEN_PAD)) {
       drawButton(highlightedButton, false);
       DEBUG_PARAM_LN("released on button", highlightedButton);
-      // do the button action
-//      launchApp(apps[highlightedButton]);
 
       if (highlightedButton != noButton) {
         exit = apps[b];

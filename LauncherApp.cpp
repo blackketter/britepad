@@ -10,6 +10,11 @@ LauncherApp::LauncherApp(void) {
 
 void LauncherApp::begin(void) {
 
+  // this should wake up the host, which is great for entering passwords
+  // but might have some ugly side effects
+  Keyboard.press(KEY_LEFT_SHIFT);
+  Keyboard.release(KEY_LEFT_SHIFT);
+
   screen.fillScreen(screen.black);
 
   for (int i = 0; i < totalButtons(); i++) {
@@ -47,7 +52,7 @@ int LauncherApp::buttonHit(int x, int y) {
   if (getButton(i)) {
     return i;
   } else {
-    return -1;
+    return noButton;
   }
 }
 

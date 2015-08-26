@@ -7,6 +7,8 @@
 #include <Wire.h>      // this is needed for FT6206
 #include <Adafruit_FT6206.h>
 #include <usb_keyboard.h>
+#include <FastLED.h>
+#include <Time.h>
 
 #include "Britepad.h"
 
@@ -26,6 +28,7 @@
 #include "PassApp.h"
 #include "ICPassApp.h"
 #include "KeyApp.h"
+#include "SetClockApp.h"
 
 #define SCREENSAVER_DELAY (5000)
 
@@ -63,6 +66,10 @@ void setApp(BPApp* newApp) {
 void setup(void) {
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(1000);
+
+  // set clock to a recent time
+  setTime(4,20,0,1, 1, 2015);
+
   DEBUG_INIT();
 
   DEBUG_LN(F("britepad starting"));
@@ -89,7 +96,7 @@ void setup(void) {
   launcherApp->setButton(11, new PassApp);
   launcherApp->setButton(10, new ICPassApp);
   launcherApp->setButton(4, new KeyApp("My\nFull\nName", "Dean\nBlackketter"));
-
+  launcherApp->setButton(8, new SetClockApp);
   setApp(splashApp);
 }
 

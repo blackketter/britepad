@@ -3,6 +3,7 @@
 
 void PassApp::begin(void) {
   screen.fillScreen(screen.black);
+
   Keyboard.print(pass());
 
   const int radius = 10;

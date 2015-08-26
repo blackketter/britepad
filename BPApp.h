@@ -6,6 +6,7 @@
 
 #define DEFAULT_APP ((BPApp*)1)
 #define BACK_APP ((BPApp*)2)
+#define DONT_EXIT_APP ((BPApp*)nil)
 
 class BPApp {
   public:

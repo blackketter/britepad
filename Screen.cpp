@@ -27,7 +27,7 @@ int Screen::measureTextH(const char* text) {
         maxH = currH;
       currH = 0;
     } else {
-      currH += 6;
+      currH += 6 * textsize;
     }
   }
 

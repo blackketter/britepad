@@ -29,6 +29,8 @@
 #include "ICPassApp.h"
 #include "KeyApp.h"
 #include "SetClockApp.h"
+#include "ClockApp.h"
+#include "DotsDisplayApp.h"
 
 #define SCREENSAVER_DELAY (5000)
 
@@ -50,6 +52,7 @@ void setApp(BPApp* newApp) {
   if (newApp == 0) {
     DEBUG_LN("Set currApp to NIL!");
   }
+
   if (newApp == currApp) {
     return;
   }
@@ -97,6 +100,8 @@ void setup(void) {
   launcherApp->setButton(10, new ICPassApp);
   launcherApp->setButton(4, new KeyApp("My\nFull\nName", "Dean\nBlackketter"));
   launcherApp->setButton(8, new SetClockApp);
+  launcherApp->setButton(7, new ClockApp);
+  launcherApp->setButton(6, new DotsDisplayApp);
   setApp(splashApp);
 }
 
@@ -109,14 +114,12 @@ void loop() {
   if (pad.touched(ANY_PAD)) {
     // touching resets screensaver
     if (screensaver_started) {
-      screen.fillScreen(screen.black);
       screensaver_started = 0;
       setApp(mouseApp);
     }
   } else {
     if (pad.time() - pad.lastUpTime(ANY_PAD) > SCREENSAVER_DELAY) {
      if (screensaver_started == 0) {
-        screen.fillScreen(screen.black);
         screensaver_started = pad.time();
       }
     }
@@ -130,7 +133,7 @@ void loop() {
     }
   } else if (pad.down(ANY_PAD)) {
 //    setApp(mouseApp);
-  } else if (screensaver_started) {
+  } else if (screensaver_started && !currApp->isScreensaver() ) {
     setApp(screensaverApp);
   }
 

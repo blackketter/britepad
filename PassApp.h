@@ -13,8 +13,8 @@ class PassApp : public BPApp {
     PassApp(void) : BPApp() {};
     void begin(void);
     BPApp* run(void);
-    bool isScreensaver(void) { return true; };
     const char* name(void) { return "Pass"; };
+    color_t buttonColor(void) { return screen.red; };
 };
 
 #endif

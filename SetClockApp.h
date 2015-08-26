@@ -11,7 +11,7 @@ class SetClockApp : public BPApp {
     static const int nobutton = -1;
 
     void drawClock(void);
-    void drawButton(int i, uint16_t color);
+    void drawButton(int i, color_t color);
     int hitButton(int x, int y);
     void drawButtons(void);
     time_t lastTime = 0;
@@ -23,7 +23,6 @@ class SetClockApp : public BPApp {
     SetClockApp(void);
     void begin(void);
     BPApp* run(void);
-    bool isScreensaver(void) { return false; };
     const char* name(void) { return "Set Clock"; };
 };
 #endif

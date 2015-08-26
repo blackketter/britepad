@@ -7,6 +7,8 @@
 class ICPassApp : public PassApp {
   private:
     const char* pass(void) { return "Bu77cracks!\n"; };
+
+  public:
     const char* name(void) { return "iCloud"; };
 };
 

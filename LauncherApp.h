@@ -22,7 +22,6 @@ class LauncherApp : public BPApp {
     void setButton(int i, BPApp* b);
     int totalButtons(void) { return hbuttons * vbuttons; };
     BPApp* getButton(int i);
-    bool isScreensaver(void) { return false; };
     const char* name(void) { return "Launcher"; };
 };
 #endif

@@ -7,7 +7,6 @@ class MouseApp : public BPApp {
   public:
     MouseApp(void) : BPApp() {};
     BPApp* run(void);
-    bool isScreensaver(void) { return false; };
     const char* name(void) { return "Mouse"; };
   private:
     int currentColor = screen.red;

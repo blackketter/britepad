@@ -14,7 +14,6 @@ class KeyApp : public BPApp {
     KeyApp(const char* name, const char* keys) { nameStr = name; keyStr = keys;};
     void begin(void);
     BPApp* run(void);
-    bool isScreensaver(void) { return true; };
     const char* name(void) { return nameStr; };
 };
 

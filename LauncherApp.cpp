@@ -33,7 +33,7 @@ void LauncherApp::drawButton(int i, bool highlighted) {
   int x = size/2 + size*(i%hbuttons);
   int y =  size/2 + size*(i/hbuttons);
 
-  screen.fillCircle( x, y, radius, highlighted ? screen.green : screen.blue);
+  screen.fillCircle( x, y, radius, highlighted ? screen.green : apps[i]->buttonColor());
   const char* name = apps[i]->name();
   screen.setTextSize(1);
   screen.setTextColor(screen.yellow);

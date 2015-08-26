@@ -49,7 +49,7 @@ int SetClockApp::hitButton(int x, int y) {
   return nobutton;
 }
 
-void SetClockApp::drawButton(int i, uint16_t color) {
+void SetClockApp::drawButton(int i, color_t color) {
   int r = buttonradius;
 
   screen.fillCircle(buttonx[i],buttony[i],r, color);

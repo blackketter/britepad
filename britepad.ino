@@ -93,15 +93,30 @@ void setup(void) {
   mouseApp = new MouseApp;
   splashApp = new SplashApp;
 
-  launcherApp->setButton(0, screensaverApp);
-  launcherApp->setButton(1, mouseApp);
-  launcherApp->setButton(2, splashApp);
-  launcherApp->setButton(11, new PassApp);
-  launcherApp->setButton(10, new ICPassApp);
-  launcherApp->setButton(4, new KeyApp("My\nFull\nName", "Dean\nBlackketter"));
-  launcherApp->setButton(8, new SetClockApp);
-  launcherApp->setButton(7, new ClockApp);
-  launcherApp->setButton(6, new DotsDisplayApp);
+// left screen
+  launcherApp->setButton(0, 0,  screensaverApp);
+  launcherApp->setButton(0, 1,  mouseApp);
+  launcherApp->setButton(0, 2,  splashApp);
+  launcherApp->setButton(0, 8,  new SetClockApp);
+  launcherApp->setButton(0, 7,  new ClockApp);
+
+// middle screen
+  launcherApp->setButton(1, 0,  new KeyApp("Vol+", KEY_MEDIA_VOLUME_INC));
+  launcherApp->setButton(1, 4,  new KeyApp("Vol-", KEY_MEDIA_VOLUME_DEC));
+  launcherApp->setButton(1, 7,  new KeyApp("Mute", KEY_MEDIA_MUTE));
+
+  launcherApp->setButton(1, 1,  new KeyApp("<<", KEY_MEDIA_PREV_TRACK));
+  launcherApp->setButton(1, 2,  new KeyApp("||", KEY_MEDIA_PLAY_PAUSE));
+  launcherApp->setButton(1, 3,  new KeyApp(">>", KEY_MEDIA_NEXT_TRACK));
+
+  launcherApp->setButton(1, 8,  new KeyApp("Eject", KEY_MEDIA_EJECT));
+
+  launcherApp->setButton(1, 9,  new KeyApp("My\nFull\nName", "Dean\nBlackketter"));
+  launcherApp->setButton(1, 10, new ICPassApp);
+  launcherApp->setButton(1, 11, new PassApp);
+
+// right screen
+  launcherApp->setButton(2, 6,  new DotsDisplayApp);
   setApp(splashApp);
 }
 

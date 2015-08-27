@@ -3,7 +3,34 @@
 #include "KeyApp.h"
 
 void KeyApp::begin(void) {
-  Keyboard.print(keyStr);
+
+  switch (specialKey) {
+    case 0:
+      Keyboard.print(keyStr);
+      break;
+    case KEY_MEDIA_VOLUME_INC:
+    case KEY_MEDIA_VOLUME_DEC:
+    case KEY_MEDIA_PREV_TRACK:
+    case KEY_MEDIA_NEXT_TRACK:
+    case KEY_MEDIA_PLAY_PAUSE:
+    case KEY_MEDIA_MUTE:
+      Keyboard.set_media(specialKey);
+      Keyboard.send_now();
+      Keyboard.set_media(0);
+      Keyboard.send_now();
+      break;
+    case KEY_MEDIA_EJECT:
+      Keyboard.set_media(KEY_MEDIA_EJECT);
+      Keyboard.send_now();
+      delay(300);  // Mac OS-X will not recognize a very short eject press
+      Keyboard.set_media(0);
+      Keyboard.send_now();
+      break;
+    default:
+      Keyboard.write(specialKey);
+      break;
+    }
+
   screen.fillScreen(screen.black);
   screen.setTextSize(3);
   screen.setTextColor(screen.yellow);
@@ -14,6 +41,7 @@ void KeyApp::begin(void) {
   screen.drawText(nameStr);
   delay(200);
 }
+
 
 BPApp* KeyApp::run(void) {
   return BACK_APP;

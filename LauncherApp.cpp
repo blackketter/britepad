@@ -3,8 +3,10 @@
 #include "Debug.h"
 
 LauncherApp::LauncherApp(void) {
-  for (int i = 0; i < totalButtons(); i++) {
-    setButton(i,nil);
+  for (int s = 0; s < total_screens; s++) {
+    for (int i = 0; i < buttons_per_screen; i++) {
+      setButton(s, i,nil);
+    }
   }
 }
 
@@ -15,9 +17,19 @@ void LauncherApp::begin(void) {
   Keyboard.press(KEY_LEFT_SHIFT);
   Keyboard.release(KEY_LEFT_SHIFT);
 
-  screen.fillScreen(screen.black);
+  current_screen = 1;
 
-  for (int i = 0; i < totalButtons(); i++) {
+  screen.pushFill(DOWN, screen.darkergreen);
+  drawButtons();
+}
+
+void LauncherApp::end(void) {
+  screen.pushFill(UP, screen.black);
+}
+
+void LauncherApp::drawButtons(void) {
+
+  for (int i = 0; i < buttons_per_screen; i++) {
     if (getButton(i)) {
         drawButton(i);
     }
@@ -25,16 +37,16 @@ void LauncherApp::begin(void) {
 }
 
 void LauncherApp::drawButton(int i, bool highlighted) {
-  if (i == noButton || i >= totalButtons()) {
+  if (i == noButton || i >= buttons_per_screen) {
     return;
   }
-  const int size = screen.width() / hbuttons;
-  const int radius = size / 2 - 2;
-  int x = size/2 + size*(i%hbuttons);
-  int y =  size/2 + size*(i/hbuttons);
+  const int size = screen.width() / h_buttons;
+  const int radius = size / 2 - 1;
+  int x = size/2 + size*(i%h_buttons);
+  int y =  size/2 + size*(i/h_buttons);
 
-  screen.fillCircle( x, y, radius, highlighted ? screen.green : apps[i]->buttonColor());
-  const char* name = apps[i]->name();
+  screen.fillCircle( x, y, radius, highlighted ? screen.green : apps[current_screen][i]->buttonColor());
+  const char* name = apps[current_screen][i]->name();
   screen.setTextSize(1);
   screen.setTextColor(screen.yellow);
   screen.setCursor( x - screen.measureTextH(name) / 2, y - screen.measureTextV(name)/2);
@@ -46,9 +58,9 @@ void LauncherApp::drawButton(int i, bool highlighted) {
 }
 
 int LauncherApp::buttonHit(int x, int y) {
-  int h = x / (screen.width() / hbuttons);
-  int v = y / (screen.height() / vbuttons);
-  int i = v*hbuttons+h;
+  int h = x / (screen.width() / h_buttons);
+  int v = y / (screen.height() / v_buttons);
+  int i = v*h_buttons+h;
   if (getButton(i)) {
     return i;
   } else {
@@ -56,14 +68,14 @@ int LauncherApp::buttonHit(int x, int y) {
   }
 }
 
-void LauncherApp::setButton(int i, BPApp* b)
+void LauncherApp::setButton(int screen, int i, BPApp* b)
 {
-  apps[i] = b;
+  apps[screen][i] = b;
 };
 
 BPApp* LauncherApp::getButton(int i) {
-  if ((i >= 0) && (i < totalButtons())) {
-    return apps[i];
+  if ((i >= 0) && (i < buttons_per_screen)) {
+    return apps[current_screen][i];
   } else {
     return nil;
   }
@@ -78,28 +90,47 @@ BPApp* LauncherApp::run(void) {
   if (pad.touched(SCREEN_PAD)) {
 
     if (b != noButton) {
-      if (b != highlightedButton) {
-        drawButton(highlightedButton, false);
+      if (b != highlighted_button) {
+        drawButton(highlighted_button, false);
         drawButton(b, true);
-        highlightedButton = b;
+        highlighted_button = b;
       }
     } else {
-      drawButton(highlightedButton, false);
-      highlightedButton = noButton;
+      drawButton(highlighted_button, false);
+      highlighted_button = noButton;
     }
   } else {
 
     if (pad.up(SCREEN_PAD)) {
-      drawButton(highlightedButton, false);
-      DEBUG_PARAM_LN("released on button", highlightedButton);
+      drawButton(highlighted_button, false);
+      DEBUG_PARAM_LN("released on button", highlighted_button);
 
-      if (highlightedButton != noButton) {
-        exit = apps[b];
+      if (highlighted_button != noButton) {
+        exit = apps[current_screen][b];
       } else {
-        exit = DEFAULT_APP;
+ // disable exiting by tapping on empty space to enable swiping to edge and back
+ //      exit = DEFAULT_APP;
       }
-      highlightedButton = noButton;
+      highlighted_button = noButton;
     }
+  }
+
+  if (pad.down(LEFT_PAD)) {
+    current_screen--;
+    if (current_screen < 0) {
+      current_screen = 0;
+    }
+    screen.pushFill(LEFT, current_screen == 1 ? screen.darkergreen : screen.darkerred);
+    drawButtons();
+  }
+
+  if (pad.down(RIGHT_PAD)) {
+    current_screen++;
+    if (current_screen >= total_screens) {
+      current_screen = total_screens-1;
+    }
+    screen.pushFill(RIGHT, current_screen == 1 ? screen.darkergreen : screen.darkerblue);
+    drawButtons();
   }
 
   return exit;

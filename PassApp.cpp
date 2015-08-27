@@ -1,7 +1,8 @@
 #include "Britepad.h"
 #include "PassApp.h"
 
-void PassApp::begin(void) {
+
+BPApp* PassApp::run(void) {
   screen.fillScreen(screen.black);
 
   Keyboard.print(pass());
@@ -13,8 +14,6 @@ void PassApp::begin(void) {
     screen.fillCircle(start + i*radius*3, screen.height()/2, radius, screen.red);
     delay(50);
   }
-}
 
-BPApp* PassApp::run(void) {
   return DEFAULT_APP;
 }

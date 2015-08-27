@@ -22,6 +22,7 @@ class LauncherApp : public BPApp {
     int buttonHit(int x, int y);
     void drawButton(int i, bool highlighted = false);
     void drawButtons(void);
+    color_t screenColor(void);
 
   public:
     LauncherApp(void);

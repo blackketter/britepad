@@ -11,10 +11,10 @@ class PassApp : public BPApp {
 
   public:
     PassApp(void) : BPApp() {};
-    void begin(void);
     BPApp* run(void);
     const char* name(void) { return "Pass"; };
     color_t buttonColor(void) { return screen.red; };
+    bool isPopup(void) { return true; };
 };
 
 #endif

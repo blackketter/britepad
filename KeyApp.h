@@ -15,9 +15,11 @@ class KeyApp : public BPApp {
     KeyApp(const char* name, const char* keys) { nameStr = name; keyStr = keys;};
     KeyApp(const char* name, uint8_t key) { nameStr = name; specialKey = key; }
 
-    void begin(void);
     BPApp* run(void);
     const char* name(void) { return nameStr; };
+    bool isPopup(void) { return true; };
+    bool isInvisible(void);
+
 };
 
 #endif

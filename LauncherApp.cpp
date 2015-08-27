@@ -19,7 +19,7 @@ void LauncherApp::begin(void) {
 
   current_screen = 1;
 
-  screen.pushFill(DOWN, screen.darkergreen);
+  screen.pushFill(DOWN, screenColor());
   drawButtons();
 }
 
@@ -106,7 +106,17 @@ BPApp* LauncherApp::run(void) {
       DEBUG_PARAM_LN("released on button", highlighted_button);
 
       if (highlighted_button != noButton) {
-        exit = apps[current_screen][b];
+        BPApp* launched = apps[current_screen][b];
+        if (launched->isPopup()) {
+          launched->run();
+          if (!launched->isInvisible()) {
+            screen.fillScreen(screenColor());
+            drawButtons();
+          }
+        } else {
+          exit = launched;
+        }
+
       } else {
  // disable exiting by tapping on empty space to enable swiping to edge and back
  //      exit = DEFAULT_APP;
@@ -120,7 +130,7 @@ BPApp* LauncherApp::run(void) {
     if (current_screen < 0) {
       current_screen = 0;
     }
-    screen.pushFill(LEFT, current_screen == 1 ? screen.darkergreen : screen.darkerred);
+    screen.pushFill(LEFT, screenColor());
     drawButtons();
   }
 
@@ -129,10 +139,20 @@ BPApp* LauncherApp::run(void) {
     if (current_screen >= total_screens) {
       current_screen = total_screens-1;
     }
-    screen.pushFill(RIGHT, current_screen == 1 ? screen.darkergreen : screen.darkerblue);
+    screen.pushFill(RIGHT, screenColor());
     drawButtons();
   }
 
   return exit;
 }
 
+color_t LauncherApp::screenColor(void) {
+  switch (current_screen) {
+    case 0:
+      return screen.darkerred;
+    case 1:
+      return screen.darkergreen;
+    case 2:
+      return screen.darkerblue;
+  }
+}

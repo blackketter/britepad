@@ -1,10 +1,10 @@
 #ifndef _SETCLOCKAPP_
 #define _SETCLOCKAPP_
 
-#include "BPApp.h"
+#include "BritepadApp.h"
 #include "Britepad.h"
 
-class SetClockApp : public BPApp {
+class SetClockApp : public BritepadApp {
   private:
     static const int buttoncount = 8;
     static const int buttonradius = 24;
@@ -22,7 +22,7 @@ class SetClockApp : public BPApp {
   public:
     SetClockApp(void);
     void begin(void);
-    BPApp* run(void);
+    BritepadApp* run(void);
     const char* name(void) { return "Set Clock"; };
 };
 #endif

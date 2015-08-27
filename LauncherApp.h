@@ -1,10 +1,10 @@
 #ifndef _LAUNCHERAPP_
 #define _LAUNCHERAPP_
 
-#include "BPApp.h"
 #include "Britepad.h"
+#include "BritepadApp.h"
 
-class LauncherApp : public BPApp {
+class LauncherApp : public BritepadApp {
   private:
     const static int noButton = -1;
 
@@ -13,7 +13,7 @@ class LauncherApp : public BPApp {
     const static int total_screens = 3;
     const static int buttons_per_screen = h_buttons * v_buttons;
 
-    BPApp* apps[total_screens][buttons_per_screen];
+    BritepadApp* apps[total_screens][buttons_per_screen];
 
     int current_screen = 1;
 
@@ -28,9 +28,9 @@ class LauncherApp : public BPApp {
     LauncherApp(void);
     void begin(void);
     void end(void);
-    BPApp* run(void);
-    void setButton(int screen, int i, BPApp* b);
-    BPApp* getButton(int i);
+    BritepadApp* run(void);
+    void setButton(int screen, int i, BritepadApp* b);
+    BritepadApp* getButton(int i);
     const char* name(void) { return "Launcher"; };
 };
 #endif

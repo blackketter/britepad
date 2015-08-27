@@ -1,13 +1,13 @@
 #ifndef _BubblesApp_
 #define _BubblesApp_
 
-#include "BPApp.h"
+#include "BritepadApp.h"
 #include "Britepad.h"
 
-class BubblesApp : public BPApp {
+class BubblesApp : public BritepadApp {
   public:
-    BubblesApp(void) : BPApp() {};
-    BPApp* run(void);
+    BubblesApp(void) : BritepadApp() {};
+    BritepadApp* run(void);
     bool isScreensaver(void) { return true; };
     const char* name(void) { return "Bubbles"; };
   private:

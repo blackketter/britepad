@@ -1,12 +1,12 @@
 #ifndef _MOUSEAPP_
 #define _MOUSEAPP_
 
-#include "BPApp.h"
+#include "BritepadApp.h"
 
-class MouseApp : public BPApp {
+class MouseApp : public BritepadApp {
   public:
-    MouseApp(void) : BPApp() {};
-    BPApp* run(void);
+    MouseApp(void) : BritepadApp() {};
+    BritepadApp* run(void);
     const char* name(void) { return "Mouse"; };
   private:
     int currentColor = screen.red;

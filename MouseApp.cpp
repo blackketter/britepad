@@ -19,7 +19,7 @@
 
 #define SCROLL_EDGE_MARGIN (10)
 
-BPApp* MouseApp::run(void) {
+BritepadApp* MouseApp::run(void) {
   static int scroll_mode = 0;
 
   // right panel

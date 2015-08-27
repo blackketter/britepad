@@ -1,7 +1,7 @@
 #ifndef _ICPassApp_
 #define _ICPassApp_
 
-#include "BPApp.h"
+#include "BritepadApp.h"
 #include "Britepad.h"
 
 class ICPassApp : public PassApp {

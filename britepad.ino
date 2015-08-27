@@ -20,7 +20,7 @@
 #include "TouchPad.h"
 
 // apps are included here
-#include "BPApp.h"
+#include "BritepadApp.h"
 #include "BubblesApp.h"
 #include "MouseApp.h"
 #include "LauncherApp.h"
@@ -32,7 +32,7 @@
 #include "ClockApp.h"
 #include "DotsDisplayApp.h"
 
-#define SCREENSAVER_DELAY (5000)
+#define SCREENSAVER_DELAY (10000)
 
 #define TFT_CS 10
 #define TFT_DC 9
@@ -41,14 +41,14 @@
 Screen screen = Screen(TFT_CS, TFT_DC);
 TouchPad pad = TouchPad(screen.width(), screen.height());
 
-BPApp* mouseApp;
-BPApp* screensaverApp;
+BritepadApp* mouseApp;
+BritepadApp* screensaverApp;
 LauncherApp* launcherApp;
-BPApp* splashApp;
+BritepadApp* splashApp;
 
-BPApp* currApp;
+BritepadApp* currApp;
 
-void setApp(BPApp* newApp) {
+void setApp(BritepadApp* newApp) {
   if (newApp == 0) {
     DEBUG_LN("Set currApp to NIL!");
   }
@@ -101,15 +101,15 @@ void setup(void) {
   launcherApp->setButton(0, 7,  new ClockApp);
 
 // middle screen
-  launcherApp->setButton(1, 0,  new KeyApp("Vol+", KEY_MEDIA_VOLUME_INC));
-  launcherApp->setButton(1, 4,  new KeyApp("Vol-", KEY_MEDIA_VOLUME_DEC));
-  launcherApp->setButton(1, 7,  new KeyApp("Mute", KEY_MEDIA_MUTE));
+  launcherApp->setButton(1, 0,  new KeyApp("Vol+", KEY_MEDIA_VOLUME_INC, screen.bluegreen));
+  launcherApp->setButton(1, 4,  new KeyApp("Vol-", KEY_MEDIA_VOLUME_DEC, screen.bluegreen));
+  launcherApp->setButton(1, 8,  new KeyApp("Mute", KEY_MEDIA_MUTE, screen.bluegreen));
 
-  launcherApp->setButton(1, 1,  new KeyApp("<<", KEY_MEDIA_PREV_TRACK));
-  launcherApp->setButton(1, 2,  new KeyApp("||", KEY_MEDIA_PLAY_PAUSE));
-  launcherApp->setButton(1, 3,  new KeyApp(">>", KEY_MEDIA_NEXT_TRACK));
+  launcherApp->setButton(1, 1,  new KeyApp("<<", KEY_MEDIA_PREV_TRACK, screen.orange));
+  launcherApp->setButton(1, 2,  new KeyApp("||", KEY_MEDIA_PLAY_PAUSE, screen.orange));
+  launcherApp->setButton(1, 3,  new KeyApp(">>", KEY_MEDIA_NEXT_TRACK, screen.orange));
 
-  launcherApp->setButton(1, 8,  new KeyApp("Eject", KEY_MEDIA_EJECT));
+  launcherApp->setButton(1, 7,  new KeyApp("Eject", KEY_MEDIA_EJECT));
 
   launcherApp->setButton(1, 9,  new KeyApp("My\nFull\nName", "Dean\nBlackketter"));
   launcherApp->setButton(1, 10, new ICPassApp);
@@ -153,7 +153,7 @@ void loop() {
   }
 
   if (currApp) {
-    BPApp* newApp = currApp->run();
+    BritepadApp* newApp = currApp->run();
     if (newApp == DEFAULT_APP) {
       newApp = mouseApp;
     } else if (newApp == BACK_APP) {

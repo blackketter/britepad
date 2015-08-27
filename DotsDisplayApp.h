@@ -1,10 +1,10 @@
 #ifndef _DotsDisplayApp_
 #define _DotsDisplayApp_
 
-#include "BPApp.h"
+#include "BritepadApp.h"
 #include "Britepad.h"
 
-class DotsDisplayApp : public BPApp {
+class DotsDisplayApp : public BritepadApp {
   private:
     int pixels_wide = 0;
     int pixels_high = 0;
@@ -16,16 +16,16 @@ class DotsDisplayApp : public BPApp {
     void writeDot(int x, int y, color_t c);
 
   public:
-    DotsDisplayApp(void) : BPApp() { };
+    DotsDisplayApp(void) : BritepadApp() { };
 
     void begin(int width, int height) {
       pixels_wide = width;
       pixels_high = height;
-      pixels = (color_t*)BPAPP_SCRATCH_PAD;
+      pixels = (color_t*)BritepadApp_SCRATCH_PAD;
     };
 
     void end(void) {};// pixels = nil; };
-    BPApp* run(void);
+    BritepadApp* run(void);
     bool isScreensaver(void) { return true; };
     const char* name(void) { return "Dots"; };
   private:

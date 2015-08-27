@@ -19,7 +19,7 @@ void SplashApp::begin(void) {
   drawLogo();
 }
 
-BPApp* SplashApp::run(void) {
+BritepadApp* SplashApp::run(void) {
   // exit if any pad is touched
   if (pad.touched(ANY_PAD)) {
     return DEFAULT_APP;

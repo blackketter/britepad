@@ -1,3 +1,0 @@
-#include "BPApp.h"
-
-uint8_t BPAPP_SCRATCH_PAD[BPAPP_SCRATCH_PAD_SIZE];

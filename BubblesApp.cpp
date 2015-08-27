@@ -5,7 +5,7 @@
 #include "BubblesApp.h"
 #include "Debug.h"
 
-BPApp* BubblesApp::run(void) {
+BritepadApp* BubblesApp::run(void) {
   int x = random(screen.width());
   int y = random(screen.height());
   long r = random(40);

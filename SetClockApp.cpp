@@ -74,7 +74,7 @@ void SetClockApp::begin(void) {
   drawButtons();
 }
 
-BPApp* SetClockApp::run(void) {
+BritepadApp* SetClockApp::run(void) {
 
   drawClock();
 

@@ -32,7 +32,7 @@ void DotsDisplayApp::writeDot(int x, int y, color_t c) {
   pixels[x*pixels_wide+y] = c;
 }
 
-BPApp* DotsDisplayApp::run(void) {
+BritepadApp* DotsDisplayApp::run(void) {
   if (!pixels) {
     begin(16,12);
   }

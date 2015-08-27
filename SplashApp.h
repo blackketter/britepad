@@ -1,14 +1,14 @@
 #ifndef _SplashApp_
 #define _SplashApp_
 
-#include "BPApp.h"
+#include "BritepadApp.h"
 #include "Britepad.h"
 
-class SplashApp : public BPApp {
+class SplashApp : public BritepadApp {
   public:
-    SplashApp(void) : BPApp() {};
+    SplashApp(void) : BritepadApp() {};
     void begin(void);
-    BPApp* run(void);
+    BritepadApp* run(void);
     bool isScreensaver(void) { return true; };
     const char* name(void) { return "Splash"; };
 };

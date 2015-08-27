@@ -48,7 +48,7 @@ void LauncherApp::drawButton(int i, bool highlighted) {
   screen.fillCircle( x, y, radius, highlighted ? screen.green : apps[current_screen][i]->buttonColor());
   const char* name = apps[current_screen][i]->name();
   screen.setTextSize(1);
-  screen.setTextColor(screen.yellow);
+  screen.setTextColor(screen.black);
   screen.setCursor( x - screen.measureTextH(name) / 2, y - screen.measureTextV(name)/2);
   screen.drawText(name);
 //  screen.fillCircle(random(screen.width()), random(screen.height()), random(40), screen.red);
@@ -68,12 +68,12 @@ int LauncherApp::buttonHit(int x, int y) {
   }
 }
 
-void LauncherApp::setButton(int screen, int i, BPApp* b)
+void LauncherApp::setButton(int screen, int i, BritepadApp* b)
 {
   apps[screen][i] = b;
 };
 
-BPApp* LauncherApp::getButton(int i) {
+BritepadApp* LauncherApp::getButton(int i) {
   if ((i >= 0) && (i < buttons_per_screen)) {
     return apps[current_screen][i];
   } else {
@@ -81,9 +81,9 @@ BPApp* LauncherApp::getButton(int i) {
   }
 };
 
-BPApp* LauncherApp::run(void) {
+BritepadApp* LauncherApp::run(void) {
 
-  BPApp* exit = nil;  // by default, don't exit
+  BritepadApp* exit = nil;  // by default, don't exit
 
   int b = buttonHit(pad.x(),pad.y());
 
@@ -106,7 +106,7 @@ BPApp* LauncherApp::run(void) {
       DEBUG_PARAM_LN("released on button", highlighted_button);
 
       if (highlighted_button != noButton) {
-        BPApp* launched = apps[current_screen][b];
+        BritepadApp* launched = apps[current_screen][b];
         if (launched->isPopup()) {
           launched->run();
           if (!launched->isInvisible()) {
@@ -154,5 +154,7 @@ color_t LauncherApp::screenColor(void) {
       return screen.darkergreen;
     case 2:
       return screen.darkerblue;
+    default:
+      return 0;
   }
 }

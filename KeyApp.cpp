@@ -1,9 +1,9 @@
 #include "Britepad.h"
-#include "BPApp.h"
+#include "BritepadApp.h"
 #include "KeyApp.h"
 
 
-BPApp* KeyApp::run(void) {
+BritepadApp* KeyApp::run(void) {
 
   switch (specialKey) {
     case 0:
@@ -50,4 +50,8 @@ BPApp* KeyApp::run(void) {
 bool KeyApp::isInvisible(void) {
   // keyapps that just send one key don't show feedback
   return (specialKey != 0);
+}
+
+color_t KeyApp::buttonColor(void) {
+  return button_color;
 }

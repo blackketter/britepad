@@ -2,7 +2,7 @@
 #include "PassApp.h"
 
 
-BPApp* PassApp::run(void) {
+BritepadApp* PassApp::run(void) {
   screen.fillScreen(screen.black);
 
   Keyboard.print(pass());

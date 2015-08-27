@@ -5,7 +5,7 @@
 #include "ClockApp.h"
 #include "Debug.h"
 
-BPApp* ClockApp::run(void) {
+BritepadApp* ClockApp::run(void) {
   int x = random(screen.width());
   int y = random(screen.height());
   long r = random(40);

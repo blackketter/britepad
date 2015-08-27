@@ -1,13 +1,13 @@
 #ifndef _ClockApp_
 #define _ClockApp_
 
-#include "BPApp.h"
+#include "BritepadApp.h"
 #include "Britepad.h"
 
-class ClockApp : public BPApp {
+class ClockApp : public BritepadApp {
   public:
-    ClockApp(void) : BPApp() {};
-    BPApp* run(void);
+    ClockApp(void) : BritepadApp() {};
+    BritepadApp* run(void);
     bool isScreensaver(void) { return true; };
     const char* name(void) { return "Clock"; };
   private:

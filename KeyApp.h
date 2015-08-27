@@ -1,24 +1,26 @@
 #ifndef _KeyApp_
 #define _KeyApp_
 
-#include "BPApp.h"
+#include "BritepadApp.h"
 #include "Britepad.h"
 
-class KeyApp : public BPApp {
+class KeyApp : public BritepadApp {
 
   private:
     const char* nameStr;
     const char* keyStr;
     long  specialKey = 0;
-
+    color_t button_color = 0;;
   public:
-    KeyApp(const char* name, const char* keys) { nameStr = name; keyStr = keys;};
-    KeyApp(const char* name, uint8_t key) { nameStr = name; specialKey = key; }
+    KeyApp(const char* name, const char* keys, color_t color = screen.blue) { nameStr = name; keyStr = keys; button_color = color; };
+    KeyApp(const char* name, uint8_t key, color_t color = screen.blue ) { nameStr = name; specialKey = key; button_color = color; }
 
-    BPApp* run(void);
+    BritepadApp* run(void);
     const char* name(void) { return nameStr; };
     bool isPopup(void) { return true; };
     bool isInvisible(void);
+
+    color_t buttonColor(void);
 
 };
 

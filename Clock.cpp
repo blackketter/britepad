@@ -6,6 +6,24 @@
 #include "Debug.h"
 
 BritepadApp* ClockApp::run(void) {
+  time_t t = now();
+
+  if (lastTime != t) {
+    char textTime[6];
+
+    screen.setTextSize(10);
+    screen.setTextColor(currentColor++, screen.black);
+    sprintf(textTime, t % 2 ? "%d:%02d" : "%d %02d", hourFormat12(t), minute(t));
+    screen.setCursor(screen.width()/2 - screen.measureTextH(textTime)/2,
+                     screen.height()/2 - screen.measureTextV(textTime)/2);
+    screen.drawText(textTime);
+    lastTime = t;
+  }
+  return nil;
+}
+
+
+/*
   int x = random(screen.width());
   int y = random(screen.height());
   long r = random(40);
@@ -34,7 +52,5 @@ BritepadApp* ClockApp::run(void) {
   if (h == 0) h=12;
   screen.drawTextF("%2d:%02d:%02d", h, m, s);
   currentColor++;
-
-  return nil;
-}
+*/
 

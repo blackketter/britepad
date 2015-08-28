@@ -1,14 +1,14 @@
-#ifndef _BRITEPAD_
-#define _BRITEPAD_
-
-#include "Screen.h"
-#include "TouchPad.h"
+#ifndef _Britepad_
+#define _Britepad_
 
 #ifndef nil
 #define nil (0)
 #endif
 
+#include "Screen.h"
 extern Screen screen;
+
+#include "TouchPad.h"
 extern TouchPad pad;
 
 #endif

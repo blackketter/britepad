@@ -14,7 +14,6 @@ class PassApp : public BritepadApp {
     BritepadApp* run(void);
     const char* name(void) { return "Pass"; };
     color_t buttonColor(void) { return screen.red; };
-    bool isPopup(void) { return true; };
 };
 
 #endif

@@ -15,12 +15,13 @@
 #define DEBUG_ON 1
 #include "Debug.h"
 
-// hardware libraries (screen, touchscreen/pads)
+// britepad hardware libraries (screen, touchscreen/pads)
 #include "Screen.h"
 #include "TouchPad.h"
 
 // apps are included here
 #include "BritepadApp.h"
+#include "ScreensaverApp.h"
 #include "BubblesApp.h"
 #include "MouseApp.h"
 #include "LauncherApp.h"
@@ -31,6 +32,8 @@
 #include "SetClockApp.h"
 #include "ClockApp.h"
 #include "DotsDisplayApp.h"
+#include "TimerApp.h"
+#include "SetTimerApp.h"
 
 #define SCREENSAVER_DELAY (10000)
 
@@ -41,11 +44,11 @@
 Screen screen = Screen(TFT_CS, TFT_DC);
 TouchPad pad = TouchPad(screen.width(), screen.height());
 
-BritepadApp* mouseApp;
-BritepadApp* screensaverApp;
 LauncherApp* launcherApp;
-BritepadApp* splashApp;
 
+MouseApp* mouseApp;
+
+BritepadApp* splashApp;
 BritepadApp* currApp;
 
 void setApp(BritepadApp* newApp) {
@@ -89,18 +92,22 @@ void setup(void) {
   Mouse.begin();
 
   launcherApp = new LauncherApp;
-  screensaverApp = new BubblesApp;
   mouseApp = new MouseApp;
   splashApp = new SplashApp;
+  timerApp = new TimerApp();
 
-// left screen
-  launcherApp->setButton(0, 0,  screensaverApp);
-  launcherApp->setButton(0, 1,  mouseApp);
-  launcherApp->setButton(0, 2,  splashApp);
+  ScreensaverApp* bubblesApp = new BubblesApp;
+
+// left screen contains screensavers and settings
+  launcherApp->setButton(0, 0,  bubblesApp);
+  launcherApp->setButton(0, 1,  splashApp);
+  launcherApp->setButton(0, 2,  new DotsDisplayApp);
+  launcherApp->setButton(0, 3,  new ClockApp);
+  launcherApp->setButton(0, 4,  timerApp);
+
   launcherApp->setButton(0, 8,  new SetClockApp);
-  launcherApp->setButton(0, 7,  new ClockApp);
 
-// middle screen
+// middle screen has quick buttons
   launcherApp->setButton(1, 0,  new KeyApp("Vol+", KEY_MEDIA_VOLUME_INC, screen.bluegreen));
   launcherApp->setButton(1, 4,  new KeyApp("Vol-", KEY_MEDIA_VOLUME_DEC, screen.bluegreen));
   launcherApp->setButton(1, 8,  new KeyApp("Mute", KEY_MEDIA_MUTE, screen.bluegreen));
@@ -115,9 +122,20 @@ void setup(void) {
   launcherApp->setButton(1, 10, new ICPassApp);
   launcherApp->setButton(1, 11, new PassApp);
 
-// right screen
-  launcherApp->setButton(2, 6,  new DotsDisplayApp);
+// right screen has useful apps
+  launcherApp->setButton(2, 0, new SetTimerApp("25 min", 25*60));
+  launcherApp->setButton(2, 1, new SetTimerApp("3 min", 3*60));
+  launcherApp->setButton(2, 2, new SetTimerApp("10 sec", 10));
+  launcherApp->setButton(2, 3, new SetTimerApp("55 min", 55*60));
+
+  launcherApp->setButton(2, 11,  mouseApp);
+
+// show the splash screen
   setApp(splashApp);
+
+
+// set the current screensaver
+  currentScreensaver = bubblesApp;
 }
 
 void loop() {
@@ -148,8 +166,14 @@ void loop() {
     }
   } else if (pad.down(ANY_PAD)) {
 //    setApp(mouseApp);
-  } else if (screensaver_started && !currApp->isScreensaver() ) {
-    setApp(screensaverApp);
+  } else if (screensaver_started) {
+      if (timerApp->timerActive()) {
+        setApp(timerApp);
+      } else {
+        if (!currApp->isScreensaver() ) {
+          setApp(currentScreensaver);
+        }
+      }
   }
 
   if (currApp) {

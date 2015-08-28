@@ -12,6 +12,7 @@ class LauncherApp : public BritepadApp {
     const static int v_buttons = 3;
     const static int total_screens = 3;
     const static int buttons_per_screen = h_buttons * v_buttons;
+    const static int resetScreenTimeout = 10;  // seconds
 
     BritepadApp* apps[total_screens][buttons_per_screen];
 
@@ -23,6 +24,7 @@ class LauncherApp : public BritepadApp {
     void drawButton(int i, bool highlighted = false);
     void drawButtons(void);
     color_t screenColor(void);
+    time_t lastRun = 0;
 
   public:
     LauncherApp(void);

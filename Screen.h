@@ -14,17 +14,19 @@ class Screen : public ILI9341_t3 {
   public:
 
 
-    const color_t red = ILI9341_RED;
     const color_t black = ILI9341_BLACK;
+    const color_t white = ILI9341_WHITE;
+
+    const color_t red = ILI9341_RED;
     const color_t green = ILI9341_GREEN;
     const color_t blue = ILI9341_BLUE;
-    const color_t white = ILI9341_WHITE;
     const color_t yellow = ILI9341_YELLOW;
     const color_t orange = ILI9341_ORANGE;
 
     const color_t darkred =   0x8000; // .5, 0, 0
     const color_t darkgreen = 0x0400; // 0, .5, .0
     const color_t darkblue =  0x0010; // 0, 0, .5
+    const color_t darkyellow =  0x8400; // .5, .5., 0
 
     const color_t darkerred =   0x4000; // .25, 0, 0
     const color_t darkergreen = 0x0200; // 0, .25, .0

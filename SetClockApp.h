@@ -6,7 +6,7 @@
 
 class SetClockApp : public BritepadApp {
   private:
-    static const int buttoncount = 8;
+    static const int buttoncount = 6;
     static const int buttonradius = 24;
     static const int nobutton = -1;
 

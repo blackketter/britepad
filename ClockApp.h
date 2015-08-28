@@ -1,18 +1,16 @@
 #ifndef _ClockApp_
 #define _ClockApp_
 
-#include "BritepadApp.h"
+#include "ScreensaverApp.h"
 #include "Britepad.h"
 
-class ClockApp : public BritepadApp {
+class ClockApp : public ScreensaverApp {
   public:
-    ClockApp(void) : BritepadApp() {};
     BritepadApp* run(void);
-    bool isScreensaver(void) { return true; };
     const char* name(void) { return "Clock"; };
   private:
-    int currentColor = screen.red;
-
+    time_t lastTime;
+    color_t currentColor = screen.red;
 };
 
 #endif

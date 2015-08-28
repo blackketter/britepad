@@ -1,6 +1,9 @@
 #include "Britepad.h"
 #include "LauncherApp.h"
+#include "ScreensaverApp.h"
 #include "Debug.h"
+
+#include <Time.h>
 
 LauncherApp::LauncherApp(void) {
   for (int s = 0; s < total_screens; s++) {
@@ -17,7 +20,10 @@ void LauncherApp::begin(void) {
   Keyboard.press(KEY_LEFT_SHIFT);
   Keyboard.release(KEY_LEFT_SHIFT);
 
-  current_screen = 1;
+  // if we haven't run in a while, reset to the middle screen
+  if (now() - lastRun > resetScreenTimeout) {
+    current_screen = 1;
+  }
 
   screen.pushFill(DOWN, screenColor());
   drawButtons();
@@ -41,7 +47,7 @@ void LauncherApp::drawButton(int i, bool highlighted) {
     return;
   }
   const int size = screen.width() / h_buttons;
-  const int radius = size / 2 - 1;
+  const int radius = size / 2 - 3;
   int x = size/2 + size*(i%h_buttons);
   int y =  size/2 + size*(i/h_buttons);
 
@@ -83,6 +89,8 @@ BritepadApp* LauncherApp::getButton(int i) {
 
 BritepadApp* LauncherApp::run(void) {
 
+  lastRun = now();
+
   BritepadApp* exit = nil;  // by default, don't exit
 
   int b = buttonHit(pad.x(),pad.y());
@@ -114,6 +122,9 @@ BritepadApp* LauncherApp::run(void) {
             drawButtons();
           }
         } else {
+          if (launched->isScreensaver()) {
+            currentScreensaver = launched;
+          }
           exit = launched;
         }
 
@@ -126,23 +137,20 @@ BritepadApp* LauncherApp::run(void) {
   }
 
   if (pad.down(LEFT_PAD)) {
-    current_screen--;
-    if (current_screen < 0) {
-      current_screen = 0;
+    if (current_screen > 0) {
+      current_screen--;
+      screen.pushFill(LEFT, screenColor());
+      drawButtons();
     }
-    screen.pushFill(LEFT, screenColor());
-    drawButtons();
   }
 
   if (pad.down(RIGHT_PAD)) {
-    current_screen++;
-    if (current_screen >= total_screens) {
-      current_screen = total_screens-1;
+    if (current_screen < total_screens - 1) {
+      current_screen++;
+      screen.pushFill(RIGHT, screenColor());
+      drawButtons();
     }
-    screen.pushFill(RIGHT, screenColor());
-    drawButtons();
   }
-
   return exit;
 }
 

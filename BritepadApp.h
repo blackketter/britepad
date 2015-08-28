@@ -4,6 +4,7 @@
 #include "Britepad.h"
 #include "Debug.h"
 
+#define STAY_IN_APP ((BritepadApp*)0)
 #define DEFAULT_APP ((BritepadApp*)1)
 #define BACK_APP ((BritepadApp*)2)
 #define DONT_EXIT_APP ((BritepadApp*)nil)

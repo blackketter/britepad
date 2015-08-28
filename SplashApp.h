@@ -1,12 +1,10 @@
 #ifndef _SplashApp_
 #define _SplashApp_
 
-#include "BritepadApp.h"
-#include "Britepad.h"
+#include "ScreensaverApp.h"
 
-class SplashApp : public BritepadApp {
+class SplashApp : public ScreensaverApp {
   public:
-    SplashApp(void) : BritepadApp() {};
     void begin(void);
     BritepadApp* run(void);
     bool isScreensaver(void) { return true; };

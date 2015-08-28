@@ -2,6 +2,7 @@
 
 #include "Britepad.h"
 #include "SetClockApp.h"
+#include "TimerApp.h"
 #include "Debug.h"
 
 SetClockApp::SetClockApp(void) {
@@ -12,16 +13,15 @@ SetClockApp::SetClockApp(void) {
   int x2 =  x1+spacing;
   int x3 =  x2+spacing*2;
   int x4 =  x3+spacing;
-  buttony[0] = buttony[1] = buttony[2] = buttony[3] = ytop;
-  buttonsym[0] = buttonsym[1] = buttonsym[2] = buttonsym[3] = '+';
+  buttony[0] = buttony[1] = buttony[2] = ytop;
+  buttonsym[0] = buttonsym[1] = buttonsym[2] = '+';
 
-  buttony[4] = buttony[5] = buttony[6] = buttony[7] = ybottom;
-  buttonsym[4] = buttonsym[5] = buttonsym[6] = buttonsym[7] = '-';
+  buttony[3] = buttony[4] = buttony[5] = ybottom;
+  buttonsym[3] = buttonsym[4] = buttonsym[5] ='-';
 
-  buttonx[0] = buttonx[4] = x1;
-  buttonx[1] = buttonx[5] = x2;
-  buttonx[2] = buttonx[6] = x3;
-  buttonx[3] = buttonx[7] = x4;
+  buttonx[0] = buttonx[3] = x2;
+  buttonx[1] = buttonx[4] = x3;
+  buttonx[2] = buttonx[5] = x4;
 
 }
 
@@ -84,27 +84,21 @@ BritepadApp* SetClockApp::run(void) {
     int b = hitButton(x,y);
     switch (b) {
       case (0):
-        adjustTime(10*60*60);
-      break;
-      case (1):
         adjustTime(60*60);
       break;
-      case (2):
+      case (1):
         adjustTime(60*10);
       break;
-      case (3):
+      case (2):
         adjustTime(60);
       break;
-      case (4):
-        adjustTime(-10*60*60);
-      break;
-      case (5):
+      case (3):
         adjustTime(-60*60);
       break;
-      case (6):
+      case (4):
         adjustTime(-60*10);
       break;
-      case (7):
+      case (5):
         adjustTime(-60);
       break;
     }
@@ -112,6 +106,7 @@ BritepadApp* SetClockApp::run(void) {
         // reset the minute
         adjustTime(-now()%60);
     }
+    timerApp->setTime(0);
   }
 
   return DONT_EXIT_APP;

@@ -5,8 +5,9 @@
 
 class MouseApp : public BritepadApp {
   public:
-    MouseApp(void) : BritepadApp() {};
+    MouseApp(void) : BritepadApp() {  Mouse.begin(); };
     BritepadApp* run(void);
+    void end(BritepadApp* nextApp);
     const char* name(void) { return "Mouse"; };
   private:
     int currentColor = screen.red;

@@ -54,29 +54,29 @@ void Screen::drawTextF(const char* format, ...) {
   drawText(foo);
 }
 
-void Screen::pushFill(screen_dir dir, color_t color) {
+void Screen::pushFill(Screen_dir dir, color_t color) {
   const int stepSize = 4;
 
   switch(dir) {
-    case UP:
+    case DIRECTION_UP:
       for (int i = height() - stepSize; i >= 0; i -= stepSize) {
         fillRect(0, i, width(), stepSize, color);
         delay(1);
       }
       break;
-    case DOWN:
+    case DIRECTION_DOWN:
       for (int i = 0; i < height(); i += stepSize) {
         fillRect(0, i, width(), stepSize, color);
         delay(1);
       }
       break;
-    case LEFT:
+    case DIRECTION_LEFT:
       for (int i = 0; i < width(); i += stepSize) {
         fillRect(i, 0, stepSize, height(), color);
         delay(1);
       }
       break;
-    case RIGHT:
+    case DIRECTION_RIGHT:
       for (int i = width() - stepSize; i >= 0; i -= stepSize) {
         fillRect(i, 0, stepSize, height(), color);
         delay(1);

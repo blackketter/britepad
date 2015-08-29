@@ -30,6 +30,7 @@ BritepadApp* ClockApp::run(void) {
 
 
 /*
+// Draws analog clock
   int x = random(screen.width());
   int y = random(screen.height());
   long r = random(40);

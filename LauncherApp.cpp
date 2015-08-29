@@ -25,12 +25,12 @@ void LauncherApp::begin(void) {
     current_screen = 1;
   }
 
-  screen.pushFill(DOWN, screenColor());
+  screen.pushFill(DIRECTION_DOWN, bgColor());
   drawButtons();
 }
 
-void LauncherApp::end(void) {
-  screen.pushFill(UP, screen.black);
+void LauncherApp::end(BritepadApp* nextApp) {
+  screen.pushFill(DIRECTION_UP, nextApp->bgColor());
 }
 
 void LauncherApp::drawButtons(void) {
@@ -118,7 +118,7 @@ BritepadApp* LauncherApp::run(void) {
         if (launched->isPopup()) {
           launched->run();
           if (!launched->isInvisible()) {
-            screen.fillScreen(screenColor());
+            screen.fillScreen(bgColor());
             drawButtons();
           }
         } else {
@@ -139,7 +139,7 @@ BritepadApp* LauncherApp::run(void) {
   if (pad.down(LEFT_PAD)) {
     if (current_screen > 0) {
       current_screen--;
-      screen.pushFill(LEFT, screenColor());
+      screen.pushFill(DIRECTION_LEFT, bgColor());
       drawButtons();
     }
   }
@@ -147,14 +147,14 @@ BritepadApp* LauncherApp::run(void) {
   if (pad.down(RIGHT_PAD)) {
     if (current_screen < total_screens - 1) {
       current_screen++;
-      screen.pushFill(RIGHT, screenColor());
+      screen.pushFill(DIRECTION_RIGHT, bgColor());
       drawButtons();
     }
   }
   return exit;
 }
 
-color_t LauncherApp::screenColor(void) {
+color_t LauncherApp::bgColor(void) {
   switch (current_screen) {
     case 0:
       return screen.darkerred;

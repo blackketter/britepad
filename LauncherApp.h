@@ -23,13 +23,13 @@ class LauncherApp : public BritepadApp {
     int buttonHit(int x, int y);
     void drawButton(int i, bool highlighted = false);
     void drawButtons(void);
-    color_t screenColor(void);
+    color_t bgColor(void);
     time_t lastRun = 0;
 
   public:
     LauncherApp(void);
     void begin(void);
-    void end(void);
+    void end(BritepadApp* newApp);
     BritepadApp* run(void);
     void setButton(int screen, int i, BritepadApp* b);
     BritepadApp* getButton(int i);

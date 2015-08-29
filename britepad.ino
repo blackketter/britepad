@@ -9,6 +9,9 @@
 #include <usb_keyboard.h>
 #include <FastLED.h>
 #include <Time.h>
+#include <Audio.h>
+#include <SD.h>
+#include <SerialFlash.h>
 
 #include "Britepad.h"
 
@@ -43,6 +46,7 @@
 
 Screen screen = Screen(TFT_CS, TFT_DC);
 TouchPad pad = TouchPad(screen.width(), screen.height());
+Sound sound = Sound();
 
 LauncherApp* launcherApp;
 
@@ -61,7 +65,7 @@ void setApp(BritepadApp* newApp) {
   }
 
   if (currApp)
-    currApp->end();
+    currApp->end(newApp);
 
   currApp = newApp;
 
@@ -71,7 +75,7 @@ void setApp(BritepadApp* newApp) {
 
 void setup(void) {
   // delay at startup, not sure why it's needed to get the cpu unstuck
-  delay(1000);
+  delay(500);
 
   // set clock to a recent time
   setTime(4,20,0,1, 1, 2015);
@@ -88,9 +92,6 @@ void setup(void) {
   pad.begin();
   DEBUG_LN("Capacitive touchscreen started");
 
-// TODO : move this to MouseApp initializer
-  Mouse.begin();
-
   launcherApp = new LauncherApp;
   mouseApp = new MouseApp;
   splashApp = new SplashApp;
@@ -103,7 +104,9 @@ void setup(void) {
   launcherApp->setButton(0, 1,  splashApp);
   launcherApp->setButton(0, 2,  new DotsDisplayApp);
   launcherApp->setButton(0, 3,  new ClockApp);
-  launcherApp->setButton(0, 4,  timerApp);
+
+// isn't needed explicitly
+//  launcherApp->setButton(0, 4,  timerApp);
 
   launcherApp->setButton(0, 8,  new SetClockApp);
 
@@ -116,17 +119,20 @@ void setup(void) {
   launcherApp->setButton(1, 2,  new KeyApp("||", KEY_MEDIA_PLAY_PAUSE, screen.orange));
   launcherApp->setButton(1, 3,  new KeyApp(">>", KEY_MEDIA_NEXT_TRACK, screen.orange));
 
-  launcherApp->setButton(1, 7,  new KeyApp("Eject", KEY_MEDIA_EJECT));
+// i never use this
+//  launcherApp->setButton(1, 7,  new KeyApp("Eject", KEY_MEDIA_EJECT));
 
-  launcherApp->setButton(1, 9,  new KeyApp("My\nFull\nName", "Dean\nBlackketter"));
   launcherApp->setButton(1, 10, new ICPassApp);
   launcherApp->setButton(1, 11, new PassApp);
 
 // right screen has useful apps
-  launcherApp->setButton(2, 0, new SetTimerApp("25 min", 25*60));
+  launcherApp->setButton(2, 0, new SetTimerApp("10 sec", 10));
   launcherApp->setButton(2, 1, new SetTimerApp("3 min", 3*60));
-  launcherApp->setButton(2, 2, new SetTimerApp("10 sec", 10));
+  launcherApp->setButton(2, 2, new SetTimerApp("25 min", 25*60));
   launcherApp->setButton(2, 3, new SetTimerApp("55 min", 55*60));
+  launcherApp->setButton(2, 4, new SetTimerApp("10:05", 10*60+5));
+
+  launcherApp->setButton(2, 9,  new KeyApp("My Name", "Dean\nBlackketter"));
 
   launcherApp->setButton(2, 11,  mouseApp);
 

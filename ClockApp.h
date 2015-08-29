@@ -11,6 +11,7 @@ class ClockApp : public ScreensaverApp {
   private:
     time_t lastTime;
     color_t currentColor = screen.red;
+    coord_t lastWidth = 0;
 };
 
 #endif

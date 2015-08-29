@@ -33,7 +33,7 @@ BritepadApp* KeyApp::run(void) {
     }
 
   if (!isInvisible()) {
-    screen.fillScreen(screen.black);
+    screen.fillScreen(bgColor());
     screen.setTextSize(3);
     screen.setTextColor(screen.yellow);
     int x = screen.width()/2 - (screen.measureTextH(nameStr) / 2);

@@ -3,7 +3,7 @@
 
 
 BritepadApp* PassApp::run(void) {
-  screen.fillScreen(screen.black);
+  screen.fillScreen(bgColor());
 
   Keyboard.print(pass());
 

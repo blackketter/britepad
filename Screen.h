@@ -6,8 +6,8 @@
 typedef uint16_t color_t;
 typedef int16_t coord_t;
 
-enum screen_dir {
-  UP, RIGHT, DOWN, LEFT
+enum Screen_dir {
+  DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT
 };
 
 class Screen : public ILI9341_t3 {
@@ -42,9 +42,9 @@ class Screen : public ILI9341_t3 {
     void drawTextF(const char* format, ...);
     int measureTextH(const char* text);
     int measureTextV(const char* text);
-    void setJustify(int j) {};
 
-    void pushFill(screen_dir dir, color_t color);
+    void pushFill(Screen_dir dir, color_t color);
+
 protected:
 };
 

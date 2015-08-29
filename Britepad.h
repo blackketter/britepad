@@ -11,4 +11,7 @@ extern Screen screen;
 #include "TouchPad.h"
 extern TouchPad pad;
 
+#include "Sound.h"
+extern Sound sound;
+
 #endif

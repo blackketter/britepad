@@ -2,7 +2,7 @@
 #include "MouseApp.h"
 #include "Screen.h"
 #include "Debug.h"
-
+#include "Sound.h"
 
 // Size of the color selection boxes and the paintbrush size
 #define PENRADIUS 10
@@ -18,6 +18,11 @@
 #define MOUSE_RELEASE_DRAG_DUR (1000)
 
 #define SCROLL_EDGE_MARGIN (10)
+
+void MouseApp::end(BritepadApp* nextApp) {
+  Mouse.release();
+  Keyboard.releaseAll();
+}
 
 BritepadApp* MouseApp::run(void) {
   static int scroll_mode = 0;
@@ -57,6 +62,7 @@ BritepadApp* MouseApp::run(void) {
   // bottom panel
   if (pad.down(BOTTOM_PAD)) {
     if (!Mouse.isPressed()) {
+      sound.beep();
       Mouse.press();
     }
   }
@@ -217,7 +223,7 @@ BritepadApp* MouseApp::run(void) {
         } else {
           if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
             Mouse.release();
-            screen.fillScreen(screen.black);
+            screen.fillScreen(bgColor());
             DEBUG_LN("mouse release in order to press after touch up");
           }
           Mouse.press();
@@ -234,7 +240,7 @@ BritepadApp* MouseApp::run(void) {
         if (pad.time() - pad.lastDownTime(SCREEN_PAD) < MOUSE_DRAG_DUR || pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_RELEASE_DRAG_DUR) {
           if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
             Mouse.release();
-            screen.fillScreen(screen.black);
+            screen.fillScreen(bgColor());
             screen.fillCircle(pad.x(), pad.y(), PENRADIUS*2, ~currentColor);
             DEBUG_LN("mouse release after timeout");
           }

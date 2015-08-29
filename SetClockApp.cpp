@@ -32,7 +32,7 @@ void SetClockApp::drawClock(void) {
     char textTime[6];
 
     screen.setTextSize(10);
-    screen.setTextColor(screen.white, screen.black);
+    screen.setTextColor(screen.white, bgColor());
     sprintf(textTime,"%2d:%02d", hourFormat12(t), minute(t));
     screen.setCursor(screen.width()/2 - screen.measureTextH(textTime)/2,
                      screen.height()/2 - screen.measureTextV(textTime)/2);
@@ -68,7 +68,7 @@ void SetClockApp::drawButtons() {
 
 void SetClockApp::begin(void) {
 
-  screen.fillScreen(screen.black);
+  screen.fillScreen(bgColor());
 
   drawClock();
   drawButtons();
@@ -109,7 +109,7 @@ BritepadApp* SetClockApp::run(void) {
     timerApp->setTime(0);
   }
 
-  return DONT_EXIT_APP;
+  return STAY_IN_APP;
 }
 
 

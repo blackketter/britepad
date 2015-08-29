@@ -23,7 +23,6 @@ class DotsDisplayApp : public ScreensaverApp {
       pixels = (color_t*)BritepadApp_SCRATCH_PAD;
     };
 
-    void end(void) {};// pixels = nil; };
     BritepadApp* run(void);
     const char* name(void) { return "Dots"; };
   private:

@@ -227,6 +227,7 @@ BritepadApp* MouseApp::run(void) {
             DEBUG_LN("mouse release in order to press after touch up");
           }
           Mouse.press();
+          sound.click();
           DEBUG_LN("mouse press after touch up");
         }
       }
@@ -236,9 +237,13 @@ BritepadApp* MouseApp::run(void) {
         if (Mouse.isPressed()) {
           screen.fillCircle(pad.x(), pad.y(), PENRADIUS*2, currentColor);
         }
-
-        if (pad.time() - pad.lastDownTime(SCREEN_PAD) < MOUSE_DRAG_DUR || pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_RELEASE_DRAG_DUR) {
+        bool releaseDrag = pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_RELEASE_DRAG_DUR;
+        bool noDrag = pad.time() - pad.lastDownTime(SCREEN_PAD) < MOUSE_DRAG_DUR;
+        if (noDrag || releaseDrag) {
           if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
+            if (releaseDrag) {
+              sound.click();
+            }
             Mouse.release();
             screen.fillScreen(bgColor());
             screen.fillCircle(pad.x(), pad.y(), PENRADIUS*2, ~currentColor);

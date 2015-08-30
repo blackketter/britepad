@@ -22,9 +22,16 @@ Sound::Sound(void) {
 }
 
 void Sound::click(void) {
+  waveform1.begin(1.0, 1000, WAVEFORM_SINE);
+  envelope1.delay(0);
+  envelope1.attack(1);
+  envelope1.hold(1);
+  envelope1.decay(2);
+
+  envelope1.sustain(0);  //  just a percussive sound, no sustain
+  envelope1.noteOn();
   DEBUG_LN("click");
-  beep(1,440);
-}
+ }
 
 void Sound::bump(void) {
   DEBUG_LN("bump");

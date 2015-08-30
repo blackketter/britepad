@@ -105,6 +105,7 @@ BritepadApp* SetClockApp::run(void) {
     if (b != nobutton) {
         // reset the minute
         adjustTime(-now()%60);
+        sound.click();
     }
     timerApp->setTime(0);
   }

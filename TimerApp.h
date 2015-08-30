@@ -8,6 +8,7 @@
 class TimerApp : public ScreensaverApp {
   public:
     BritepadApp* run(void);
+    void begin(void) { beeps = 10; }
     const char* name(void) { return "Timer"; };
     void setTime(time_t t) { timer_time = now() + t; timer_dur = t; };
     time_t timerTime(void) { return timer_time; };
@@ -22,6 +23,7 @@ class TimerApp : public ScreensaverApp {
     long last_draw;
     coord_t last_width;
     bool inverse;
+    int beeps = 0;;
 };
 
 extern TimerApp* timerApp;

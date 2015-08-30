@@ -37,6 +37,7 @@
 #include "DotsDisplayApp.h"
 #include "TimerApp.h"
 #include "SetTimerApp.h"
+#include "MuteApp.h"
 
 #define SCREENSAVER_DELAY (10000)
 
@@ -109,6 +110,7 @@ void setup(void) {
 //  launcherApp->setButton(0, 4,  timerApp);
 
   launcherApp->setButton(0, 8,  new SetClockApp);
+  launcherApp->setButton(0, 9,  new MuteApp);
 
 // middle screen has quick buttons
   launcherApp->setButton(1, 0,  new KeyApp("Vol+", KEY_MEDIA_VOLUME_INC, screen.bluegreen));

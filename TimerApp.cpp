@@ -39,6 +39,12 @@ BritepadApp* TimerApp::run(void) {
         swap(fg,bg);
       }
 
+// TODO: put the beeper audio into a background app
+      if (beeps) {
+        beeps--;
+        sound.beep();
+      }
+
       inverse = !inverse;
       screen.fillScreen(bg);
     } else if (last_width != width) {

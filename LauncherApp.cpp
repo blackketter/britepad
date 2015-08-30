@@ -25,11 +25,14 @@ void LauncherApp::begin(void) {
     current_screen = 1;
   }
 
+  sound.beep(1, 220);
+
   screen.pushFill(DIRECTION_DOWN, bgColor());
   drawButtons();
 }
 
 void LauncherApp::end(BritepadApp* nextApp) {
+  sound.beep(1, 220);
   screen.pushFill(DIRECTION_UP, nextApp->bgColor());
 }
 
@@ -120,6 +123,8 @@ BritepadApp* LauncherApp::run(void) {
           if (!launched->isInvisible()) {
             screen.fillScreen(bgColor());
             drawButtons();
+          } else {
+            drawButton(b, false);
           }
         } else {
           if (launched->isScreensaver()) {
@@ -127,6 +132,7 @@ BritepadApp* LauncherApp::run(void) {
           }
           exit = launched;
         }
+        sound.beep(1, 440);
 
       } else {
  // disable exiting by tapping on empty space to enable swiping to edge and back
@@ -139,6 +145,7 @@ BritepadApp* LauncherApp::run(void) {
   if (pad.down(LEFT_PAD)) {
     if (current_screen > 0) {
       current_screen--;
+      sound.beep(1, 220);
       screen.pushFill(DIRECTION_LEFT, bgColor());
       drawButtons();
     }
@@ -147,6 +154,7 @@ BritepadApp* LauncherApp::run(void) {
   if (pad.down(RIGHT_PAD)) {
     if (current_screen < total_screens - 1) {
       current_screen++;
+      sound.beep(1, 220);
       screen.pushFill(DIRECTION_RIGHT, bgColor());
       drawButtons();
     }

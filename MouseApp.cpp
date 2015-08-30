@@ -62,7 +62,7 @@ BritepadApp* MouseApp::run(void) {
   // bottom panel
   if (pad.down(BOTTOM_PAD)) {
     if (!Mouse.isPressed()) {
-      sound.beep();
+      sound.click();
       Mouse.press();
     }
   }

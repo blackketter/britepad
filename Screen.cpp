@@ -54,7 +54,7 @@ void Screen::drawTextF(const char* format, ...) {
   drawText(foo);
 }
 
-void Screen::pushFill(Screen_dir dir, color_t color) {
+void Screen::pushFill(Direction dir, color_t color) {
   const int stepSize = 4;
 
   switch(dir) {

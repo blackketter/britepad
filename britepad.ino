@@ -169,12 +169,9 @@ void loop() {
   if (pad.down(TOP_PAD)) {
     if (currApp != launcherApp) {
       setApp(launcherApp);
-    }  else {
-      setApp(mouseApp);
+      pad.update();  // consume that down event
     }
-  } else if (pad.down(ANY_PAD)) {
-//    setApp(mouseApp);
-  } else if (screensaver_started) {
+  } else if (!pad.down(ANY_PAD) && screensaver_started) {
       if (timerApp->timerActive()) {
         setApp(timerApp);
       } else {

@@ -1,12 +1,22 @@
 #ifndef _SOUND_
 #define _SOUND_
 
+#include "Types.h"
+
 class Sound {
   public:
     Sound(void);
-    void beep(long ms = 20, long freq = 440);
-    bool getMute(void) { return mainGain < 0.0; };
+    void beep(long ms = 20, float freq = 440);  // plays a generic beep tone
+
+    void click(void);                           // plays a click sound
+    void bump(void);                            // plays a bump sound
+    void swipe(Direction d);                    // plays a swipe sound
+
+    void tone(float freq, float volume = 1.0);  // plays a sine tone, set volume to zero to end, may fade in/out to avoid clicks
+    void noise(float volume = 1.0);             // plays some white noise, may fade in/out to avoid clicks, set volume to zero to end
+
     void setMute(bool mute);
+    bool getMute(void) { return mainGain < 0.0; };
     float getVolume(void) { return mainGain; };
     void setVolume(float volume);
 

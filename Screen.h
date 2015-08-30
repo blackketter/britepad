@@ -1,14 +1,13 @@
 #ifndef _SCREEN_
 #define _SCREEN_
 
+// get some shared typedefs, like Direction
+#include "Types.h"
+
 #include <ILI9341_t3.h>
 
 typedef uint16_t color_t;
 typedef int16_t coord_t;
-
-enum Screen_dir {
-  DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT
-};
 
 class Screen : public ILI9341_t3 {
   public:
@@ -43,7 +42,7 @@ class Screen : public ILI9341_t3 {
     int measureTextH(const char* text);
     int measureTextV(const char* text);
 
-    void pushFill(Screen_dir dir, color_t color);
+    void pushFill(Direction dir, color_t color);
 
 protected:
 };

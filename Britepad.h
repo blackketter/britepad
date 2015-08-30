@@ -1,9 +1,7 @@
 #ifndef _Britepad_
 #define _Britepad_
 
-#ifndef nil
-#define nil (0)
-#endif
+#include "Types.h"
 
 #include "Screen.h"
 extern Screen screen;

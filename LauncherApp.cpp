@@ -20,11 +20,6 @@ void LauncherApp::begin(void) {
   Keyboard.press(KEY_LEFT_SHIFT);
   Keyboard.release(KEY_LEFT_SHIFT);
 
-  // if we haven't run in a while, reset to the middle screen
-  if (now() - lastRun > resetScreenTimeout) {
-    current_screen = 1;
-  }
-
   sound.swipe(DIRECTION_DOWN);
   screen.pushFill(DIRECTION_DOWN, bgColor());
   drawButtons();
@@ -47,26 +42,28 @@ void LauncherApp::drawButton(int i, bool highlighted) {
   if (i == noButton || i >= buttons_per_screen) {
     return;
   }
-  const int size = screen.width() / h_buttons;
-  const int radius = size / 2 - 3;
-  int x = size/2 + size*(i%h_buttons);
-  int y =  size/2 + size*(i/h_buttons);
+  // todo: factor out these into function that finds button coordinates
+  const int vsize = height() / v_buttons;
+  const int hsize = width() / h_buttons;
 
-  screen.fillCircle( x, y, radius, highlighted ? screen.green : apps[current_screen][i]->buttonColor());
-  const char* name = apps[current_screen][i]->name();
+  int x = hsize/2 + hsize*(i%h_buttons) + left();
+  int y = vsize/2 + vsize*(i/h_buttons) + top();
+
+  const int radius = min(hsize,vsize) / 2 - 2;
+
+  screen.fillCircle( x, y, radius, highlighted ? screen.mix(apps[currentScreen()][i]->buttonColor(), screen.black) : apps[currentScreen()][i]->buttonColor());
+  const char* name = apps[currentScreen()][i]->name();
   screen.setTextSize(1);
   screen.setTextColor(screen.black);
   screen.setCursor( x - screen.measureTextH(name) / 2, y - screen.measureTextV(name)/2);
   screen.drawText(name);
-//  screen.fillCircle(random(screen.width()), random(screen.height()), random(40), screen.red);
-
-//  screen.setCursor(random(screen.width()), random(screen.height()));
-//  screen.drawTextF("hello %s", "world");
 }
 
 int LauncherApp::buttonHit(int x, int y) {
-  int h = x / (screen.width() / h_buttons);
-  int v = y / (screen.height() / v_buttons);
+
+  int h = (x - left()) / (width() / h_buttons);
+  int v = (y - top()) / (height() / v_buttons);
+
   int i = v*h_buttons+h;
   if (getButton(i)) {
     return i;
@@ -82,7 +79,7 @@ void LauncherApp::setButton(int screen, int i, BritepadApp* b)
 
 BritepadApp* LauncherApp::getButton(int i) {
   if ((i >= 0) && (i < buttons_per_screen)) {
-    return apps[current_screen][i];
+    return apps[currentScreen()][i];
   } else {
     return nil;
   }
@@ -115,7 +112,7 @@ BritepadApp* LauncherApp::run(void) {
       DEBUG_PARAM_LN("released on button", highlighted_button);
 
       if (highlighted_button != noButton) {
-        BritepadApp* launched = apps[current_screen][b];
+        BritepadApp* launched = apps[currentScreen()][b];
         if (launched->isPopup()) {
           launched->run();
           if (!launched->isInvisible()) {
@@ -141,7 +138,7 @@ BritepadApp* LauncherApp::run(void) {
   }
 
   if (pad.down(LEFT_PAD)) {
-    if (current_screen > 0) {
+    if (currentScreen() > 0) {
       current_screen--;
       sound.swipe(DIRECTION_LEFT);
       screen.pushFill(DIRECTION_LEFT, bgColor());
@@ -153,7 +150,7 @@ BritepadApp* LauncherApp::run(void) {
   }
 
   if (pad.down(RIGHT_PAD)) {
-    if (current_screen < total_screens - 1) {
+    if (currentScreen() < total_screens - 1) {
       current_screen++;
       sound.swipe(DIRECTION_RIGHT);
       screen.pushFill(DIRECTION_RIGHT, bgColor());
@@ -172,8 +169,18 @@ BritepadApp* LauncherApp::run(void) {
   return exit;
 }
 
+int LauncherApp::currentScreen(void) {
+  // if we haven't run in a while, reset to the middle screen
+  if (now() - lastRun > resetScreenTimeout) {
+    current_screen = 1;
+  }
+
+  return current_screen;
+}
+
 color_t LauncherApp::bgColor(void) {
-  switch (current_screen) {
+
+  switch (currentScreen()) {
     case 0:
       return screen.darkerred;
     case 1:

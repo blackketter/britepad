@@ -23,6 +23,7 @@ class LauncherApp : public BritepadApp {
     int buttonHit(int x, int y);
     void drawButton(int i, bool highlighted = false);
     void drawButtons(void);
+    int currentScreen(void);
     color_t bgColor(void);
     time_t lastRun = 0;
 

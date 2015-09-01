@@ -2,7 +2,6 @@
 
 // these have to be here to satisfy the Arduino build system
 #include <ILI9341_t3.h>
-#include <Adafruit_GFX.h>    // Core graphics library
 #include <SPI.h>       // this is needed for display
 #include <Wire.h>      // this is needed for FT6206
 #include <Adafruit_FT6206.h>
@@ -38,6 +37,7 @@
 #include "TimerApp.h"
 #include "SetTimerApp.h"
 #include "MuteApp.h"
+#include "ThereminApp.h"
 
 #define SCREENSAVER_DELAY (10000)
 
@@ -50,9 +50,7 @@ TouchPad pad = TouchPad(screen.width(), screen.height());
 Sound sound = Sound();
 
 LauncherApp* launcherApp;
-
-MouseApp* mouseApp;
-
+MouseApp*    mouseApp;
 BritepadApp* splashApp;
 BritepadApp* currApp;
 
@@ -70,8 +68,10 @@ void setApp(BritepadApp* newApp) {
 
   currApp = newApp;
 
-  if (currApp)
+  if (currApp) {
+    currApp->updateStatusBar(true);
     currApp->begin();
+  }
 }
 
 void setup(void) {
@@ -83,20 +83,21 @@ void setup(void) {
 
   DEBUG_INIT();
 
-  DEBUG_LN(F("britepad starting"));
+  DEBUG_LN("britepad starting...");
 
   screen.begin();
-  screen.setRotation(3);  // britepad mark 0 is oriented this way
-
-  DEBUG_LN("drawing inited");
+  screen.setRotation(3);  // Britepad Mark-0 is oriented this way
+  DEBUG_LN("screen started");
 
   pad.begin();
-  DEBUG_LN("Capacitive touchscreen started");
+  DEBUG_LN("touchpad started");
+
+  sound.begin();
 
   launcherApp = new LauncherApp;
   mouseApp = new MouseApp;
   splashApp = new SplashApp;
-  timerApp = new TimerApp();
+  timerApp = new TimerApp;
 
   ScreensaverApp* bubblesApp = new BubblesApp;
 
@@ -133,6 +134,8 @@ void setup(void) {
   launcherApp->setButton(2, 2, new SetTimerApp("25 min", 25*60));
   launcherApp->setButton(2, 3, new SetTimerApp("55 min", 55*60));
   launcherApp->setButton(2, 4, new SetTimerApp("10:05", 10*60+5));
+
+  launcherApp->setButton(2, 8,  new ThereminApp);
 
   launcherApp->setButton(2, 9,  new KeyApp("My Name", "Dean\nBlackketter"));
 

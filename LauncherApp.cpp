@@ -145,7 +145,10 @@ BritepadApp* LauncherApp::run(void) {
       current_screen--;
       sound.swipe(DIRECTION_LEFT);
       screen.pushFill(DIRECTION_LEFT, bgColor());
+      updateStatusBar(true);
       drawButtons();
+    } else {
+      sound.bump();
     }
   }
 
@@ -154,7 +157,10 @@ BritepadApp* LauncherApp::run(void) {
       current_screen++;
       sound.swipe(DIRECTION_RIGHT);
       screen.pushFill(DIRECTION_RIGHT, bgColor());
+      updateStatusBar(true);
       drawButtons();
+    } else {
+      sound.bump();
     }
   }
 

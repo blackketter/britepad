@@ -25,7 +25,6 @@ void MouseApp::end(BritepadApp* nextApp) {
 }
 
 BritepadApp* MouseApp::run(void) {
-  static int scroll_mode = 0;
 
   // right panel
   if (pad.changed(RIGHT_PAD)) {
@@ -121,83 +120,77 @@ BritepadApp* MouseApp::run(void) {
    // Print out the raw coordinates
     DEBUG("[raw:"); DEBUG(pad.x());    DEBUG(","); DEBUG(pad.y());
     DEBUG_END("]");
-#endif
     screen.setCursor(0,0);
     screen.setTextColor(currentColor, 0);
     screen.setTextSize(2);
     screen.drawTextF("%3d, %3d", pad.x(), pad.y());
+#endif
 
     int radius = PENRADIUS;
     if (Mouse.isPressed()) {
       radius *= 2;
     }
 
-    if ((pad.y()+radius) < screen.height()) {
 
-      screen.fillCircle(pad.x(), pad.y(), radius, currentColor);
-      currentColor++;
-    }
+    // send a move message only if we actually move
+    if (pad.deltax() != 0 || pad.deltay() != 0) {
+      // if the right touch is down, then we scroll
+      if (pad.touched(RIGHT_PAD) || pad.x() > (screen.width() - SCROLL_EDGE_MARGIN)) {
+        if (pad.deltay() != 0) {
+          static long lastScroll = pad.time();
+          static int16_t accumScroll = 0;
+          const int16_t scrollFactor = 16;
 
-    // screen tap down
-    if (pad.touched(SCREEN_PAD)) {
+          accumScroll += pad.deltay();
 
-      // send a move message only if we actually move
-      if (pad.deltax() != 0 || pad.deltay() != 0) {
-        // if the right touch is down, then we scroll
-        if (scroll_mode || pad.touched(RIGHT_PAD) || pad.x() > (screen.width() - SCROLL_EDGE_MARGIN)) {
-          if (pad.deltay() != 0) {
-            static long lastScroll = pad.time();
-            static int16_t accumScroll = 0;
-            const int16_t scrollFactor = 16;
-
-            accumScroll += pad.deltay();
-
-            DEBUG_PARAM_LN("deltay", pad.deltay());
-            // limit scroll messages to max 25ms intervals and some movement
-            if (pad.time() - lastScroll > 25 && abs(accumScroll) > scrollFactor) {
-              int8_t mouseScrollUnits = accumScroll/scrollFactor;
-              Mouse.scroll(-mouseScrollUnits); // negative because we use new natural scrolling
-              DEBUG_PARAM_LN("Scroll", mouseScrollUnits);
-              accumScroll -= mouseScrollUnits*scrollFactor;
-              lastScroll = pad.time();
-            }
+          DEBUG_PARAM_LN("deltay", pad.deltay());
+          // limit scroll messages to max 25ms intervals and some movement
+          if (pad.time() - lastScroll > 25 && abs(accumScroll) > scrollFactor) {
+            int8_t mouseScrollUnits = accumScroll/scrollFactor;
+            Mouse.scroll(-mouseScrollUnits); // negative because we use new natural scrolling
+            screen.fillRect(0, pad.y()-radius, screen.width(), radius*2, currentColor++);
+            DEBUG_PARAM_LN("Scroll", mouseScrollUnits);
+            accumScroll -= mouseScrollUnits*scrollFactor;
+            lastScroll = pad.time();
           }
-        } else if (!pad.down(SCREEN_PAD)) {
-
-          // otherwise we move the mouse, if this isn't a down transition
-          // scale up movement
-          int deltax = pad.deltax() * 2;
-          int deltay = pad.deltay() * 2;
-          // accelerate
-          if (abs(deltax) > 20 || abs(deltay) > 20) {
-            deltax *= 4;
-            deltay *= 4;
-          } else if (abs(deltax) > 10 || abs(deltay) > 10) {
-            deltax *= 3;
-            deltay *= 3;
-          } else if (abs(deltax) > 5 || abs(deltay) > 5) {
-            deltax *= 2;
-            deltay *= 2;
-          }
-
-          if (abs(deltax) > MOUSE_MAX_MOVE) {
-            deltax = deltax > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
-          }
-
-          if (abs(deltay) > MOUSE_MAX_MOVE) {
-            deltay = deltay > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
-          }
-
-          Mouse.move(deltax, deltay);
-#if DEBUG_TRACKING
-          // Print out the mouse movements
-          DEBUG("<move:"); DEBUG(deltax);
-          DEBUG(", "); DEBUG(deltay);     DEBUG(">");
-#endif
-          screen.drawLine(screen.width()/2, screen.height()/2, screen.width()/2+deltax, screen.height()/2+deltay, ~currentColor);
         }
+      } else if (!pad.down(SCREEN_PAD)) {
+
+        // otherwise we move the mouse, if this isn't a down transition
+        // scale up movement
+        int deltax = pad.deltax() * 2;
+        int deltay = pad.deltay() * 2;
+        // accelerate
+        if (abs(deltax) > 20 || abs(deltay) > 20) {
+          deltax *= 4;
+          deltay *= 4;
+        } else if (abs(deltax) > 10 || abs(deltay) > 10) {
+          deltax *= 3;
+          deltay *= 3;
+        } else if (abs(deltax) > 5 || abs(deltay) > 5) {
+          deltax *= 2;
+          deltay *= 2;
+        }
+
+        if (abs(deltax) > MOUSE_MAX_MOVE) {
+          deltax = deltax > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
+        }
+
+        if (abs(deltay) > MOUSE_MAX_MOVE) {
+          deltay = deltay > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
+        }
+
+        Mouse.move(deltax, deltay);
+        screen.fillCircle(pad.x(), pad.y(), radius, currentColor++);
+#if DEBUG_TRACKING
+        // Print out the mouse movements
+        DEBUG("<move:"); DEBUG(deltax);
+        DEBUG(", "); DEBUG(deltay);     DEBUG(">");
+#endif
+        screen.drawLine(screen.width()/2, screen.height()/2, screen.width()/2+deltax, screen.height()/2+deltay, ~currentColor);
       }
     }
+
 
   } else {
     // screen not touched
@@ -210,15 +203,14 @@ BritepadApp* MouseApp::run(void) {
       if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < 20 && (abs(pad.lastDownY() - pad.y()) < 20)) ) {
         if (pad.x() > (screen.width() - SCROLL_EDGE_MARGIN)) {
           DEBUG_PARAM_LN("pad.x()",pad.x());
-          screen.fillScreen(backgroundColor);
           if (pad.y() < screen.height()/2) {
             Keyboard.press(KEY_PAGE_UP);
             Keyboard.release(KEY_PAGE_UP);
-            screen.fillRect(0,0,screen.width(), screen.height()/2, currentColor);
+            screen.fillCircle(screen.width(),screen.height()/4,screen.height()/4, currentColor);
           } else {
             Keyboard.press(KEY_PAGE_DOWN);
             Keyboard.release(KEY_PAGE_DOWN);
-            screen.fillRect(0,screen.height()/2, screen.width(), screen.height()/2, currentColor);
+            screen.fillCircle(screen.width(),screen.height()*3/4,screen.height()/4, currentColor);
           }
         } else {
           if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
@@ -234,7 +226,7 @@ BritepadApp* MouseApp::run(void) {
 
     } else {
       if ( !pad.touched(LEFT_PAD) && pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_TAP_UP_DUR) {
-        if (Mouse.isPressed()) {
+        if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
           screen.fillCircle(pad.x(), pad.y(), PENRADIUS*2, currentColor);
         }
         bool releaseDrag = pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_RELEASE_DRAG_DUR;
@@ -249,9 +241,6 @@ BritepadApp* MouseApp::run(void) {
             screen.fillCircle(pad.x(), pad.y(), PENRADIUS*2, ~currentColor);
             DEBUG_LN("mouse release after timeout");
           }
-
-          scroll_mode = 0;
-
         }
       }
     }

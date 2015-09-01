@@ -31,7 +31,11 @@ class Screen : public ILI9341_t3 {
     const color_t darkergreen = 0x0200; // 0, .25, .0
     const color_t darkerblue =  0x0008; // 0, 0, .s5
 
+    const color_t grey = 0x4208; // .25, .25, .25
+
     const color_t bluegreen = 0x0410; // 0,  .5, .5
+
+    const uint8_t fontHeight = 8;
 
     Screen(uint8_t _CS, uint8_t _DC, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
       ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO) {
@@ -43,6 +47,11 @@ class Screen : public ILI9341_t3 {
     int measureTextV(const char* text);
 
     void pushFill(Direction dir, color_t color);
+
+    color_t darken(color_t c);
+    color_t brighten(color_t c);
+    color_t mix(color_t c1, color_t c2);
+    uint8_t luminance(color_t);
 
 protected:
 };

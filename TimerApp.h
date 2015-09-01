@@ -8,7 +8,7 @@
 class TimerApp : public ScreensaverApp {
   public:
     BritepadApp* run(void);
-    void begin(void) { beeps = 10; }
+    void begin(void) { ScreensaverApp::begin(); beeps = 10; }
     const char* name(void) { return "Timer"; };
     void setTime(time_t t) { timer_time = now() + t; timer_dur = t; };
     time_t timerTime(void) { return timer_time; };
@@ -16,13 +16,11 @@ class TimerApp : public ScreensaverApp {
   private:
     const int alarm_dur = (60*5);
 
-    time_t timer_dur;
-    time_t timer_time;
-    time_t last_time;
+    time_t timer_dur = 0;
+    time_t timer_time = 0;
+    time_t last_time = 0;
     color_t current_color = screen.red;
-    long last_draw;
     coord_t last_width;
-    bool inverse;
     int beeps = 0;;
 };
 

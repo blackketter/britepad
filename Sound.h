@@ -5,7 +5,12 @@
 
 class Sound {
   public:
+    const float MIDDLE_C_FREQ = 261.6;
+    const float A440_FREQ = 440.0;
+
     Sound(void);
+    void begin(void);
+
     void beep(long ms = 20, float freq = 440);  // plays a generic beep tone
 
     void click(void);                           // plays a click sound
@@ -22,7 +27,8 @@ class Sound {
 
   private:
     float mainGain = 1.0;  // negative gains are mute
-
+    float lastToneVolume = 0.0;
+    int freeSynth(); // get a free synth
 };
 
 #endif

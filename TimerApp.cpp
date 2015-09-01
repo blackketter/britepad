@@ -14,59 +14,67 @@ BritepadApp* TimerApp::run(void) {
     delta = 0;
   }
 
-  bool redraw = (last_time != t) || (delta == 0 && (millis()-last_draw > 500));
+  bool everysecond = (last_time != t);
+  bool alarmtriggered = delta == 0;
+  bool draw = everysecond;
 
-  if (redraw) {
-
+  if (draw) {
     char textTime[6];
+    long displaytime = alarmtriggered ? timer_dur : delta;
+    bool drawtext = true;
+    bool erasescreen = false;
+    const char* flashingcolonformatstring = t % 2 ? "%d:%02d" : "%d %02d";
 
-    sprintf(textTime, t % 2 ? "%d:%02d" : "%d %02d", delta/60, delta%60);
+    sprintf(textTime, flashingcolonformatstring, displaytime/60, displaytime%60);
 
     screen.setTextSize(10);
     coord_t width = screen.measureTextH(textTime);
 
-    last_draw = millis();
-
-    DEBUG_PARAM_LN("delta", delta);
-
     color_t fg = current_color++;
     color_t bg = bgColor();
 
-    if (delta == 0) {
-      delta = timer_dur;
-
-      if (inverse) {
-        swap(fg,bg);
+    if (alarmtriggered) {
+      if (t % 2) {
+        erasescreen = false;
+        drawtext = true;
+      } else {
+        erasescreen = true;
+        drawtext = false;
       }
-
-// TODO: put the beeper audio into a background app
-      if (beeps) {
-        beeps--;
-        sound.beep();
+    } else {
+      if (last_width != width) {
+        erasescreen = true;
       }
+    }
 
-      inverse = !inverse;
-      screen.fillScreen(bg);
-    } else if (last_width != width) {
+    if (erasescreen) {
       screen.fillScreen(bg);
     }
 
-    screen.setTextColor(fg, bg);
+    if (drawtext) {
+      screen.setTextColor(fg, bg);
 
-    screen.setCursor(screen.width()/2 - width/2,
-                     screen.height()/2 - screen.measureTextV(textTime)/2);
+      screen.setCursor(screen.width()/2 - width/2,
+                       screen.height()/2 - screen.measureTextV(textTime)/2);
 
-    screen.drawText(textTime);
+      screen.drawText(textTime);
+      last_width = width;
+    }
 
     last_time = t;
-    last_width = width;
+
+// TODO: put the beeper audio into a background app
+    if (alarmtriggered && beeps) {
+      beeps--;
+      sound.beep();
+    }
   }
 
   time_t past = now() - timer_time;
 
   // exit if any pad is touched
   if (pad.touched(ANY_PAD)) {
-    return BACK_APP;
+    return DEFAULT_APP;
   } else {
     return past > alarm_dur ? DEFAULT_APP : STAY_IN_APP;
   }

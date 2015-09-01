@@ -38,6 +38,7 @@
 #include "SetTimerApp.h"
 #include "MuteApp.h"
 #include "ThereminApp.h"
+#include "Stopwatch.h"
 
 #define SCREENSAVER_DELAY (10000)
 
@@ -134,6 +135,7 @@ void setup(void) {
   launcherApp->setButton(2, 2, new SetTimerApp("25 min", 25*60));
   launcherApp->setButton(2, 3, new SetTimerApp("55 min", 55*60));
   launcherApp->setButton(2, 4, new SetTimerApp("10:05", 10*60+5));
+  launcherApp->setButton(2, 5, new StopwatchApp);
 
   launcherApp->setButton(2, 8,  new ThereminApp);
 
@@ -163,7 +165,7 @@ void loop() {
     }
   } else {
     if (pad.time() - pad.lastUpTime(ANY_PAD) > SCREENSAVER_DELAY) {
-     if (screensaver_started == 0) {
+     if (screensaver_started == 0 && !currApp->disablesScreensavers()) {
         screensaver_started = pad.time();
       }
     }

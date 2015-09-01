@@ -22,6 +22,7 @@ class BritepadApp {
     virtual color_t buttonColor(void) { return screen.blue; }
 
     virtual bool isScreensaver(void) { return false; };
+    virtual bool disablesScreensavers(void) { return false; }
     virtual bool isPopup(void) { return false; };        // popup apps don't need begin or end, call run() just once
     virtual bool isInvisible(void) { return false; };    // has no UI
 

@@ -6,11 +6,6 @@
 
 class KeyApp : public BritepadApp {
 
-  private:
-    const char* nameStr;
-    const char* keyStr;
-    long  specialKey = 0;
-    color_t button_color = 0;;
   public:
     KeyApp(const char* name, const char* keys, color_t color = screen.blue) { nameStr = name; keyStr = keys; button_color = color; };
     KeyApp(const char* name, uint8_t key, color_t color = screen.blue ) { nameStr = name; specialKey = key; button_color = color; }
@@ -22,6 +17,12 @@ class KeyApp : public BritepadApp {
 
     color_t buttonColor(void);
 
+  protected:
+    const char* nameStr;
+    const char* keyStr;
+    long  specialKey = 0;
+    color_t button_color = 0;;
+    virtual void draw(void);
 };
 
 #endif

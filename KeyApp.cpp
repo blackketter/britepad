@@ -33,15 +33,7 @@ BritepadApp* KeyApp::run(void) {
     }
 
   if (!isInvisible()) {
-    screen.fillScreen(bgColor());
-    screen.setTextSize(3);
-    screen.setTextColor(screen.yellow);
-    int x = screen.width()/2 - (screen.measureTextH(nameStr) / 2);
-    int y =  screen.height()/2 - (screen.measureTextV(nameStr) / 2);
-    screen.setCursor( x, y);
-
-    screen.drawText(nameStr);
-    delay(200);
+    draw();
   }
 
   return DEFAULT_APP;
@@ -54,4 +46,16 @@ bool KeyApp::isInvisible(void) {
 
 color_t KeyApp::buttonColor(void) {
   return button_color;
+}
+
+void KeyApp::draw(void) {
+    screen.fillScreen(bgColor());
+    screen.setTextSize(3);
+    screen.setTextColor(screen.yellow);
+    int x = screen.width()/2 - (screen.measureTextH(nameStr) / 2);
+    int y =  screen.height()/2 - (screen.measureTextV(nameStr) / 2);
+    screen.setCursor( x, y);
+
+    screen.drawText(nameStr);
+    delay(200);
 }

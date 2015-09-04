@@ -3,17 +3,16 @@
 
 #include "BritepadApp.h"
 #include "BritepadShared.h"
+#include "KeyApp.h"
+#include "Screen.h"
 
-class PassApp : public BritepadApp {
-
-  protected:
-    virtual const char* pass(void) { return "ch@db1ldr3n\n"; };
+class PassApp : public KeyApp {
 
   public:
-    PassApp(void) : BritepadApp() {};
-    BritepadApp* run(void);
-    const char* name(void) { return "Pass"; };
+    PassApp(const char* name, const char* keys, color_t color = screen.red) : KeyApp(name, keys, color) {};
+    PassApp(const char* name, uint8_t key, color_t color = screen.red) : KeyApp(name, key, color) {};
     color_t buttonColor(void) { return screen.red; };
+    void draw(void);
 };
 
 #endif

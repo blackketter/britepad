@@ -2,10 +2,9 @@
 #include "PassApp.h"
 
 
-BritepadApp* PassApp::run(void) {
-  screen.fillScreen(bgColor());
+void PassApp::draw(void) {
 
-  Keyboard.print(pass());
+  screen.fillScreen(bgColor());
 
   const int radius = 10;
   const int count = 8;
@@ -15,6 +14,4 @@ BritepadApp* PassApp::run(void) {
     sound.click();
     delay(50);
   }
-
-  return DEFAULT_APP;
 }

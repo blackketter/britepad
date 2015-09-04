@@ -50,7 +50,6 @@ Britepad britepad = Britepad();
 
 LauncherApp* launcherApp;
 MouseApp*    mouseApp;
-BritepadApp* splashApp;
 BritepadApp* currApp;
 
 void setApp(BritepadApp* newApp) {
@@ -95,9 +94,9 @@ void setup(void) {
 
   launcherApp = new LauncherApp;
   mouseApp = new MouseApp;
-  splashApp = new SplashApp;
   timerApp = new TimerApp;
 
+  ScreensaverApp* splashApp = new SplashApp;
   ScreensaverApp* bubblesApp = new BubblesApp;
 
 // left screen contains screensavers and settings
@@ -124,8 +123,8 @@ void setup(void) {
 // i never use this
 //  launcherApp->setButton(1, 7,  new KeyApp("Eject", KEY_MEDIA_EJECT));
 
-  launcherApp->setButton(1, 10, new ICPassApp);
-  launcherApp->setButton(1, 11, new PassApp);
+  launcherApp->setButton(1, 10, new PassApp("Pass", "ch@db1ldr3n") );
+  launcherApp->setButton(1, 11, new PassApp("iCloud", "Bu77cracks!") );
 
 // right screen has useful apps
   launcherApp->setButton(2, 0, new SetTimerApp("10 sec", 10));

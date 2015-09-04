@@ -2,7 +2,7 @@
 #define _PassApp_
 
 #include "BritepadApp.h"
-#include "Britepad.h"
+#include "BritepadShared.h"
 
 class PassApp : public BritepadApp {
 

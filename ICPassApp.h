@@ -2,7 +2,7 @@
 #define _ICPassApp_
 
 #include "BritepadApp.h"
-#include "Britepad.h"
+#include "BritepadShared.h"
 
 class ICPassApp : public PassApp {
   private:

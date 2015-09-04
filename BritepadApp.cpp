@@ -1,6 +1,6 @@
 #include "BritepadApp.h"
 
-uint8_t BritepadApp_SCRATCH_PAD[BritepadApp_SCRATCH_PAD_SIZE];
+uint8_t BritepadAppScratchPad[BritepadAppScratchPadSize];
 
 coord_t BritepadApp::top(void) {
   if (displaysStatusBar() && statusBarTop == 0) {
@@ -48,7 +48,7 @@ void BritepadApp::updateStatusBar(bool redraw) {
     screen.setClipRect(left(), top(), left()+width(), top()+height());
 
   } else {
-    screen.setClipRect(0,0,screen.width(), screen.height());
+    screen.setClipRect();
   }
 };
 

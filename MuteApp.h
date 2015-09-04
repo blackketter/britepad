@@ -2,7 +2,7 @@
 #define _MuteApp_
 
 #include "BritepadApp.h"
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "Sound.h"
 
 class MuteApp : public BritepadApp {

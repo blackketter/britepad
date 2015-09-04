@@ -2,7 +2,7 @@
 #define _ThereminApp_
 
 #include "ScreensaverApp.h"
-#include "Britepad.h"
+#include "BritepadShared.h"
 
 class ThereminApp : public BritepadApp {
   public:

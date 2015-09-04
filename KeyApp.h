@@ -2,7 +2,7 @@
 #define _KeyApp_
 
 #include "BritepadApp.h"
-#include "Britepad.h"
+#include "BritepadShared.h"
 
 class KeyApp : public BritepadApp {
 

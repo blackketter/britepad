@@ -1,4 +1,4 @@
-/* britepad */
+/* britepad sketch*/
 
 // these have to be here to satisfy the Arduino build system
 #include <ILI9341_t3.h>
@@ -12,14 +12,11 @@
 #include <SD.h>
 #include <SerialFlash.h>
 
-#include "Britepad.h"
+#include "BritepadShared.h"
+#include "Timer.h"
 
 #define DEBUG_ON 1
 #include "Debug.h"
-
-// britepad hardware libraries (screen, touchscreen/pads)
-#include "Screen.h"
-#include "TouchPad.h"
 
 // apps are included here
 #include "BritepadApp.h"
@@ -38,7 +35,7 @@
 #include "SetTimerApp.h"
 #include "MuteApp.h"
 #include "ThereminApp.h"
-#include "Stopwatch.h"
+#include "StopwatchApp.h"
 
 #define SCREENSAVER_DELAY (10000)
 
@@ -49,6 +46,7 @@
 Screen screen = Screen(TFT_CS, TFT_DC);
 TouchPad pad = TouchPad(screen.width(), screen.height());
 Sound sound = Sound();
+Britepad britepad = Britepad();
 
 LauncherApp* launcherApp;
 MouseApp*    mouseApp;
@@ -149,6 +147,14 @@ void setup(void) {
 
 // set the current screensaver
   currentScreensaver = bubblesApp;
+
+  DEBUG_PARAM_LN("app count", britepad.appsAdded());
+  int count=0;
+  BritepadApp* anApp = britepad.getApp(count++);
+  while (anApp) {
+    DEBUG_LN(anApp->name());
+    anApp = britepad.getApp(count++);
+  }
 }
 
 void loop() {
@@ -201,4 +207,6 @@ void loop() {
     DEBUG_LN("currApp nil!");
   }
 
+  // make sure the Timers get a chance to call their callbacks
+  Timer::idle();
 }

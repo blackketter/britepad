@@ -1,4 +1,4 @@
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "BritepadApp.h"
 #include "KeyApp.h"
 

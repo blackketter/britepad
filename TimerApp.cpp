@@ -1,28 +1,29 @@
 #include <Time.h>
 #include "FastLED.h"
 
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "TimerApp.h"
 #include "Debug.h"
 
 BritepadApp* TimerApp::run(void) {
   time_t t = now();
 
-  int delta = timer_time - t;
+  int delta = mytimer.remainingSecs();
 
   if (delta <= 0) {
     delta = 0;
   }
 
-  bool everysecond = (last_time != t);
-  bool alarmtriggered = delta == 0;
+  bool everysecond = (last_time_drawn != t);
   bool draw = everysecond;
 
   if (draw) {
     char textTime[6];
-    long displaytime = alarmtriggered ? timer_dur : delta;
+
+    long displaytime = alarm_sounded ? timer_dur : delta;
     bool drawtext = true;
     bool erasescreen = false;
+
     const char* flashingcolonformatstring = t % 2 ? "%d:%02d" : "%d %02d";
 
     sprintf(textTime, flashingcolonformatstring, displaytime/60, displaytime%60);
@@ -33,7 +34,7 @@ BritepadApp* TimerApp::run(void) {
     color_t fg = current_color++;
     color_t bg = bgColor();
 
-    if (alarmtriggered) {
+    if (alarm_sounded) {
       if (t % 2) {
         erasescreen = false;
         drawtext = true;
@@ -61,24 +62,46 @@ BritepadApp* TimerApp::run(void) {
       last_width = width;
     }
 
-    last_time = t;
-
-// TODO: put the beeper audio into a background app
-    if (alarmtriggered && beeps) {
-      beeps--;
-      sound.beep();
-    }
+    last_time_drawn = t;
   }
-
-  time_t past = now() - timer_time;
 
   // exit if any pad is touched
-  if (pad.touched(ANY_PAD)) {
+  if ( pad.touched(ANY_PAD) || !running) {
     return DEFAULT_APP;
   } else {
-    return past > alarm_dur ? DEFAULT_APP : STAY_IN_APP;
+    return STAY_IN_APP;
   }
+}
 
+void alarmcallback(void* data) {
+  ((TimerApp*)data)->alarm();
+}
 
+void cancelVisualNotification(void* data) {
+  ((TimerApp*)data)->cancel();
+}
+
+void TimerApp::setTime(time_t t) {
+  beeps = 9;
+  timer_dur = t;
+  alarm_sounded = 0;
+  running = true;
+  mytimer.setSecs(t, (timerCallback_t)alarmcallback, (void*)this);
+};
+
+void TimerApp::alarm(void) {
+  alarm_sounded = now();
+  if (beeps) {
+    sound.beep();
+    mytimer.setMillis(1000, (timerCallback_t)alarmcallback, (void*)this);
+    beeps--;
+  } else {
+    mytimer.setSecs(5*60, (timerCallback_t)cancelVisualNotification, (void*)this);
+  }
+}
+
+void TimerApp::cancel(void) {
+  running = false;
+  mytimer.cancel();
 }
 

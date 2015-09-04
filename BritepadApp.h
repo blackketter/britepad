@@ -1,7 +1,7 @@
 #ifndef _BritepadApp_
 #define _BritepadApp_
 
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "Debug.h"
 
 #define STAY_IN_APP ((BritepadApp*)0)
@@ -9,12 +9,12 @@
 #define BACK_APP ((BritepadApp*)2)
 
 // todo move this into the base object
-#define BritepadApp_SCRATCH_PAD_SIZE ((long)32768)
-extern uint8_t BritepadApp_SCRATCH_PAD[];
+#define BritepadAppScratchPadSize ((long)32768)
+extern uint8_t BritepadAppScratchPad[];
 
 class BritepadApp {
   public:
-    BritepadApp() {};
+    BritepadApp() {  britepad.addApp(this); };
     virtual void begin(void) { screen.fillScreen(bgColor()); };  // initialize app state and draw first screen
     virtual void end(BritepadApp* nextApp) {}; // called after final run(), lets app clean up and tells it what the next app may be
     virtual BritepadApp* run(void) {return nil;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants above)
@@ -23,6 +23,7 @@ class BritepadApp {
 
     virtual bool isScreensaver(void) { return false; };
     virtual bool disablesScreensavers(void) { return false; }
+    virtual bool wantsToBeScreensaver(void) { return false; }  // return true if you want to be switched to as the screensaver
     virtual bool isPopup(void) { return false; };        // popup apps don't need begin or end, call run() just once
     virtual bool isInvisible(void) { return false; };    // has no UI
 
@@ -37,7 +38,8 @@ class BritepadApp {
     coord_t height(void);
     coord_t width(void);
 
-    void updateStatusBar(bool redraw); // call redraw if you need to invalidate and redraw the entire bar.  May cause flickering.
+    void updateStatusBar(bool redraw); // call when you want the status bar to be updated
+                                       // redraw=true if you need to invalidate and redraw the entire bar.  May cause flickering.
 
   protected:
     coord_t statusBarTop = 0;

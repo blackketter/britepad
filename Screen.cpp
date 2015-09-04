@@ -31,8 +31,11 @@ int Screen::measureTextH(const char* text) {
       currH += 6 * textsize;
     }
   }
-
-  return maxH > currH ? maxH : currH;
+  int h = maxH > currH ? maxH : currH;
+  if (h) {
+    h -= 1 * textsize;  // remove the inter-character space at the end
+  }
+  return h;
 }
 
 int Screen::measureTextV(const char* text) {
@@ -42,7 +45,7 @@ int Screen::measureTextV(const char* text) {
       lines++;
     }
   }
-  return (lines * fontHeight * textsize);
+  return ((lines * fontHeight - 1 ) * textsize);  // remove 1 for the extra inter-line row at the end
 }
 
 void Screen::drawTextF(const char* format, ...) {

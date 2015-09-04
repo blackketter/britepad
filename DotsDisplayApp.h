@@ -2,7 +2,7 @@
 #define _DotsDisplayApp_
 
 #include "ScreensaverApp.h"
-#include "Britepad.h"
+#include "BritepadShared.h"
 
 class DotsDisplayApp : public ScreensaverApp {
   private:
@@ -20,7 +20,7 @@ class DotsDisplayApp : public ScreensaverApp {
     void begin(int width, int height) {
       pixels_wide = width;
       pixels_high = height;
-      pixels = (color_t*)BritepadApp_SCRATCH_PAD;
+      pixels = (color_t*)BritepadAppScratchPad;
     };
 
     BritepadApp* run(void);

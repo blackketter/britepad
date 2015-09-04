@@ -2,26 +2,33 @@
 #define _TimerApp_
 
 #include "ScreensaverApp.h"
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "Time.h"
+#include "Timer.h"
 
 class TimerApp : public ScreensaverApp {
   public:
     BritepadApp* run(void);
     void begin(void) { ScreensaverApp::begin(); beeps = 10; }
     const char* name(void) { return "Timer"; };
-    void setTime(time_t t) { timer_time = now() + t; timer_dur = t; };
-    time_t timerTime(void) { return timer_time; };
-    bool  timerActive(void) { return timer_time > now(); }
+    void setTime(time_t t);
+    time_t timerTime(void) { return timer_dur; };
+    bool timerActive(void) { return running; }
+    bool wantsToBeScreensaver(void) { return running; }
+    void alarm(void);
+    void cancel(void);
+
   private:
     const int alarm_dur = (60*5);
 
-    time_t timer_dur = 0;
-    time_t timer_time = 0;
-    time_t last_time = 0;
+    time_t last_time_drawn = 0;
     color_t current_color = screen.red;
     coord_t last_width;
-    int beeps = 0;;
+    Timer mytimer;
+    int beeps;
+    time_t timer_dur = 0;
+    time_t alarm_sounded = 0;
+    bool running = false;
 };
 
 extern TimerApp* timerApp;

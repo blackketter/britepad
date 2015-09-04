@@ -1,7 +1,7 @@
 #ifndef _LAUNCHERAPP_
 #define _LAUNCHERAPP_
 
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "BritepadApp.h"
 
 class LauncherApp : public BritepadApp {

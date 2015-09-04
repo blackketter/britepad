@@ -1,7 +1,7 @@
 #ifndef _ScreensaverApp_
 #define _ScreensaverApp_
 
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "BritepadApp.h"
 
 extern BritepadApp* currentScreensaver;

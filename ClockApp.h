@@ -2,7 +2,7 @@
 #define _ClockApp_
 
 #include "ScreensaverApp.h"
-#include "Britepad.h"
+#include "BritepadShared.h"
 
 class ClockApp : public ScreensaverApp {
   public:

@@ -2,7 +2,7 @@
 #define _SetTimerApp_
 
 #include "BritepadApp.h"
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "TimerApp.h"
 
 class SetTimerApp : public BritepadApp {

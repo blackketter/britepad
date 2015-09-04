@@ -1,4 +1,4 @@
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "MouseApp.h"
 #include "Screen.h"
 #include "Debug.h"

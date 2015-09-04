@@ -1,4 +1,4 @@
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "ThereminApp.h"
 #include "Debug.h"
 

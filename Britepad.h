@@ -1,15 +1,21 @@
 #ifndef _Britepad_
 #define _Britepad_
 
-#include "Types.h"
+#include "Britepad.h"
 
-#include "Screen.h"
-extern Screen screen;
+class BritepadApp;
 
-#include "TouchPad.h"
-extern TouchPad pad;
+class Britepad {
+  public:
+    Britepad(void);
+    void addApp(BritepadApp* newApp);
+    int appsAdded(void) { return appCount; }
+    BritepadApp* getApp(int appIndex);
 
-#include "Sound.h"
-extern Sound sound;
+  private:
+    int appCount = 0;
+    static const int maxApps = 100;
+    BritepadApp* apps[maxApps];
+};
 
 #endif

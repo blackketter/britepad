@@ -1,4 +1,4 @@
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "LauncherApp.h"
 #include "ScreensaverApp.h"
 #include "Debug.h"

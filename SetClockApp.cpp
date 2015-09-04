@@ -1,6 +1,6 @@
 #include <Time.h>
 
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "SetClockApp.h"
 #include "TimerApp.h"
 #include "Debug.h"

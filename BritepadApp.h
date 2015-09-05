@@ -12,9 +12,11 @@
 #define BritepadAppScratchPadSize ((long)32768)
 extern uint8_t BritepadAppScratchPad[];
 
+class Britepad;
+
 class BritepadApp {
   public:
-    BritepadApp() {  britepad.addApp(this); };
+    BritepadApp();
     virtual void begin(void) { screen.fillScreen(bgColor()); };  // initialize app state and draw first screen
     virtual void end(BritepadApp* nextApp) {}; // called after final run(), lets app clean up and tells it what the next app may be
     virtual BritepadApp* run(void) {return nil;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants above)

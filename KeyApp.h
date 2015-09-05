@@ -8,7 +8,7 @@ class KeyApp : public BritepadApp {
 
   public:
     KeyApp(const char* name, const char* keys, color_t color = screen.blue) { nameStr = name; keyStr = keys; button_color = color; };
-    KeyApp(const char* name, uint8_t key, color_t color = screen.blue ) { nameStr = name; specialKey = key; button_color = color; }
+    KeyApp(const char* name, uint8_t key, color_t color = screen.blue ) { nameStr = name; mediaKey = key; button_color = color; }
 
     BritepadApp* run(void);
     const char* name(void) { return nameStr; };
@@ -20,7 +20,7 @@ class KeyApp : public BritepadApp {
   protected:
     const char* nameStr;
     const char* keyStr;
-    long  specialKey = 0;
+    long  mediaKey = 0;
     color_t button_color = 0;;
     virtual void draw(void);
 };

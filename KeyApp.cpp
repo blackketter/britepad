@@ -2,10 +2,12 @@
 #include "BritepadApp.h"
 #include "KeyApp.h"
 
+#include <usb_keyboard.h>
+
 
 BritepadApp* KeyApp::run(void) {
 
-  switch (specialKey) {
+  switch (mediaKey) {
     case 0:
       Keyboard.print(keyStr);
       break;
@@ -14,8 +16,8 @@ BritepadApp* KeyApp::run(void) {
     case KEY_MEDIA_PREV_TRACK:
     case KEY_MEDIA_NEXT_TRACK:
     case KEY_MEDIA_PLAY_PAUSE:
-    case KEY_MEDIA_MUTE:
-      Keyboard.set_media(specialKey);
+    case KEY_MEDIA_STOP:
+      Keyboard.set_media(mediaKey);
       Keyboard.send_now();
       Keyboard.set_media(0);
       Keyboard.send_now();
@@ -28,7 +30,7 @@ BritepadApp* KeyApp::run(void) {
       Keyboard.send_now();
       break;
     default:
-      Keyboard.write(specialKey);
+      Keyboard.write(mediaKey);
       break;
     }
 
@@ -36,12 +38,15 @@ BritepadApp* KeyApp::run(void) {
     draw();
   }
 
-  return DEFAULT_APP;
+  if (isInvisible())
+    return STAY_IN_APP;
+  else
+    return DEFAULT_APP;
 }
 
 bool KeyApp::isInvisible(void) {
   // keyapps that just send one key don't show feedback
-  return (specialKey != 0);
+  return (mediaKey != 0);
 }
 
 color_t KeyApp::buttonColor(void) {

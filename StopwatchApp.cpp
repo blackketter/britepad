@@ -1,7 +1,7 @@
 #include <Time.h>
 #include "FastLED.h"
 
-#include "Britepad.h"
+#include "BritepadShared.h"
 #include "StopwatchApp.h"
 #include "Debug.h"
 

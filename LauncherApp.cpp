@@ -114,7 +114,7 @@ BritepadApp* LauncherApp::run(void) {
       if (highlighted_button != noButton) {
         BritepadApp* launched = apps[currentScreen()][b];
         if (launched->isPopup()) {
-          launched->run();
+          exit = launched->run();
           if (!launched->isInvisible()) {
             screen.fillScreen(bgColor());
             drawButtons();

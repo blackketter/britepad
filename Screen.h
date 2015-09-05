@@ -6,6 +6,10 @@
 
 #include <ILI9341_t3.h>
 
+#define R8(x) (((x)&0xf800)>>8)
+#define G8(x) (((x)&0x07e0)>>3)
+#define B8(x) (((x)&0x001f)<<3)
+
 typedef uint16_t color_t;
 typedef int16_t coord_t;
 

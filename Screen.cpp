@@ -102,9 +102,9 @@ color_t Screen::darken(color_t c) {
 
 color_t Screen::brighten(color_t c) {
   uint16_t r, g, b;
-  r = ((c & 0xf800) >> 8) + 64;
-  g = ((c & 0x07e0) >> 3) + 64;
-  b = ((c & 0x001f) << 3) + 64;
+  r = R8(c) + 64;
+  g = G8(c) + 64;
+  b = B8(c) + 64;
   r = min(r, 255);
   g = min(g, 255);
   b = min(b, 255);
@@ -115,9 +115,9 @@ color_t Screen::brighten(color_t c) {
 color_t Screen::mix(color_t c1, color_t c2) {
   uint16_t r, g, b;
 
-  r = (((c1 & 0xf800) >> 8) + ((c2 & 0xf800) >> 8))/2;
-  g = (((c1 & 0x07e0) >> 3) + ((c2 & 0x07e0) >> 3))/2;
-  b = (((c1 & 0x001f) << 3) + ((c2 & 0x001f) << 3))/2;
+  r = (R8(c1) + R8(c2))/2;
+  g = (G8(c1) + G8(c2))/2;
+  b = (B8(c1) + B8(c2))/2;
 
   return ((r & 0xf8) << 8) | ((g & 0xfc ) << 3) | (b >> 3);
 };
@@ -125,9 +125,9 @@ color_t Screen::mix(color_t c1, color_t c2) {
 
 uint8_t Screen::luminance(color_t c) {
   uint16_t r, g, b;
-  r = ((c & 0xf800) >> 8);
-  g = ((c & 0x07e0) >> 3);
-  b = (c & 0x001f) << 3;
+  r = R8(c);
+  g = G8(c);
+  b = B8(c);
   return sqrt16(r*r+g*g+b*b);
 };
 

@@ -2,6 +2,10 @@
 
 uint8_t BritepadAppScratchPad[BritepadAppScratchPadSize];
 
+BritepadApp::BritepadApp(void)  {
+  britepad.addApp(this);
+}
+
 coord_t BritepadApp::top(void) {
   if (displaysStatusBar() && statusBarTop == 0) {
     return statusBarHeight;

@@ -35,7 +35,6 @@ BritepadApp* MouseApp::run(void) {
       Keyboard.release(MODIFIERKEY_CTRL);
     }
 
-
     if (pad.touched(RIGHT_PAD)) {
       // right has been pressed
       DEBUG_LN("right panel pressed");
@@ -131,11 +130,24 @@ BritepadApp* MouseApp::run(void) {
       radius *= 2;
     }
 
+    if (scrollMode) {
+      // we are in scroll mode
+      DEBUG_LN("scroll mode scrolling");
+      if (pad.y() < screen.height()/2) {
+        Keyboard.press(KEY_PAGE_UP);
+        Keyboard.release(KEY_PAGE_UP);
+        screen.fillCircle(screen.width(),screen.height()/4,screen.height()/4, currentColor);
+      } else {
+        Keyboard.press(KEY_PAGE_DOWN);
+        Keyboard.release(KEY_PAGE_DOWN);
+        screen.fillCircle(screen.width(),screen.height()*3/4,screen.height()/4, currentColor);
+      }
+    }
 
     // send a move message only if we actually move
     if (pad.deltax() != 0 || pad.deltay() != 0) {
-      // if the right touch is down, then we scroll
-      if (pad.touched(RIGHT_PAD) || pad.x() > (screen.width() - SCROLL_EDGE_MARGIN)) {
+      // if the touch is in the edge, then we scroll
+      if (pad.x() > (screen.width() - SCROLL_EDGE_MARGIN)) {
         if (pad.deltay() != 0) {
           static long lastScroll = pad.time();
           static int16_t accumScroll = 0;
@@ -179,7 +191,6 @@ BritepadApp* MouseApp::run(void) {
         if (abs(deltay) > MOUSE_MAX_MOVE) {
           deltay = deltay > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
         }
-
         Mouse.move(deltax, deltay);
         screen.fillCircle(pad.x(), pad.y(), radius, currentColor++);
 #if DEBUG_TRACKING
@@ -200,7 +211,9 @@ BritepadApp* MouseApp::run(void) {
       DEBUG_LN("Screen Pad Up");
       long downtime = pad.time() - pad.lastDownTime(SCREEN_PAD);
       DEBUG_PARAM_LN("Downtime:", downtime);
+
       if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < 20 && (abs(pad.lastDownY() - pad.y()) < 20)) ) {
+
         if (pad.x() > (screen.width() - SCROLL_EDGE_MARGIN)) {
           DEBUG_PARAM_LN("pad.x()",pad.x());
           if (pad.y() < screen.height()/2) {
@@ -212,6 +225,8 @@ BritepadApp* MouseApp::run(void) {
             Keyboard.release(KEY_PAGE_DOWN);
             screen.fillCircle(screen.width(),screen.height()*3/4,screen.height()/4, currentColor);
           }
+          scrollMode = true;
+          DEBUG_LN("scrollMode on");
         } else {
           if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
             Mouse.release();
@@ -241,10 +256,11 @@ BritepadApp* MouseApp::run(void) {
             screen.fillCircle(pad.x(), pad.y(), PENRADIUS*2, ~currentColor);
             DEBUG_LN("mouse release after timeout");
           }
+          scrollMode = false;
         }
       }
     }
   }
-  return nil;  // never exit
+  return STAY_IN_APP;  // never exit
 }
 

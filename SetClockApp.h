@@ -5,6 +5,13 @@
 #include "BritepadShared.h"
 
 class SetClockApp : public BritepadApp {
+  public:
+    SetClockApp(void);
+    void begin(void);
+    void end(BritepadApp* nextApp);
+    BritepadApp* run(void);
+    const char* name(void) { return "Set Clock"; };
+
   private:
     static const int buttoncount = 6;
     static const int buttonradius = 24;
@@ -19,11 +26,6 @@ class SetClockApp : public BritepadApp {
     int buttony[buttoncount];
     char buttonsym[buttoncount];
 
-  public:
-    SetClockApp(void);
-    void begin(void);
-    BritepadApp* run(void);
-    const char* name(void) { return "Set Clock"; };
 };
 #endif
 

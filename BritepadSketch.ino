@@ -24,14 +24,12 @@
 Screen screen = Screen(TFT_CS, TFT_DC);
 TouchPad pad = TouchPad(screen.width(), screen.height());
 Sound sound = Sound();
+Clock clock = Clock();
 Britepad britepad = Britepad();
 
 void setup(void) {
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(500);
-
-  // set clock to a recent time
-  setTime(4,20,0,1,1,2015);
 
   DEBUG_INIT();
 

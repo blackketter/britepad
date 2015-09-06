@@ -1,8 +1,7 @@
-#include <Time.h>
-
 #include "BritepadShared.h"
 #include "SetClockApp.h"
 #include "TimerApp.h"
+#include "Clock.h"
 #include "Debug.h"
 
 SetClockApp::SetClockApp(void) {
@@ -72,6 +71,11 @@ void SetClockApp::begin(void) {
 
   drawClock();
   drawButtons();
+  clock.beginSetClock();
+}
+
+void SetClockApp::end(BritepadApp* nextApp) {
+  clock.endSetClock();
 }
 
 BritepadApp* SetClockApp::run(void) {
@@ -84,27 +88,27 @@ BritepadApp* SetClockApp::run(void) {
     int b = hitButton(x,y);
     switch (b) {
       case (0):
-        adjustTime(60*60);
+        clock.adjust(60*60);
       break;
       case (1):
-        adjustTime(60*10);
+        clock.adjust(60*10);
       break;
       case (2):
-        adjustTime(60);
+        clock.adjust(60);
       break;
       case (3):
-        adjustTime(-60*60);
+        clock.adjust(-60*60);
       break;
       case (4):
-        adjustTime(-60*10);
+        clock.adjust(-60*10);
       break;
       case (5):
-        adjustTime(-60);
+        clock.adjust(-60);
       break;
     }
     if (b != nobutton) {
         // reset the minute
-        adjustTime(-now()%60);
+        clock.adjust(-now()%60);
         sound.click();
     }
 

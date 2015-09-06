@@ -15,7 +15,5 @@ class ScreensaverApp : public BritepadApp {
     virtual void setEnabled(bool e) { enabled = e; }
 };
 
-
-
 #endif
 

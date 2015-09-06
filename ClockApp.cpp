@@ -6,9 +6,17 @@
 #include "Debug.h"
 
 BritepadApp* ClockApp::run(void) {
-  time_t t = now();
+  millis_t mt = millis();
 
-  if (lastTime != t) {
+  if (mt - lastRedraw > redrawInterval) {
+    redraw();
+    lastRedraw = mt;
+  }
+  return nil;
+}
+
+void ClockApp::redraw(void) {
+    time_t t = now();
     char textTime[6];
 
     screen.setTextSize(10);
@@ -23,21 +31,7 @@ BritepadApp* ClockApp::run(void) {
       lastWidth = w;
     }
     screen.drawText(textTime);
-    lastTime = t;
-
-    // beep chime hourly (i.e. minute = 0) for the first hour() seconds, every second
-    // TODO: move this into background timer that doesn't need clock to be the current app
-    if (minute(t) == 0) {
-      if (second(t) < hourFormat12(t)) {
-        sound.beep();
-      }
-    }
-
-  }
-  return nil;
 }
-
-
 /*
 // Draws analog clock
   int x = random(screen.width());

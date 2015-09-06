@@ -15,4 +15,7 @@ extern Sound sound;
 #include "Britepad.h"
 extern Britepad britepad;
 
+#include "Clock.h"
+extern Clock clock;
+
 #endif

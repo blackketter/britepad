@@ -20,10 +20,5 @@ void SplashApp::begin(void) {
 }
 
 BritepadApp* SplashApp::run(void) {
-  // exit if any pad is touched
-  if (pad.touched(ANY_PAD)) {
-    return BACK_APP;
-  } else {
-    return nil;
-  }
+  return nil;
 }

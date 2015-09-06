@@ -18,7 +18,6 @@
 #include "SetClockApp.h"
 #include "ClockApp.h"
 #include "DotsDisplayApp.h"
-#include "TimerApp.h"
 #include "SetTimerApp.h"
 #include "MuteApp.h"
 #include "ThereminApp.h"
@@ -26,6 +25,48 @@
 
 Britepad::Britepad(void) {
 
+}
+
+ScreensaverApp* Britepad::randomScreensaver(void) {
+  // count the enabled screensavers
+  int count = 0;
+  int index = 0;
+  BritepadApp* nextapp = getApp(index++);
+  while (nextapp) {
+    if (nextapp->isScreensaver() && (((ScreensaverApp*)nextapp)->screensaverIsEnabled())) {
+      DEBUG_LN(nextapp->name());
+      count++;
+    }
+    nextapp = getApp(index++);
+  }
+
+  // pick a random one
+  count = random(count);
+
+  index = 0;
+  nextapp = getApp(index++);
+  while (nextapp) {
+    if (nextapp->isScreensaver() && (((ScreensaverApp*)nextapp)->screensaverIsEnabled())) {
+      if (count == 0) {
+        return (ScreensaverApp*)nextapp;
+      } else {
+        count--;
+      }
+    }
+    nextapp = getApp(index++);
+  }
+  return nil;
+}
+
+BritepadApp* Britepad::wantsToBeScreensaver() {
+  int count = 0;
+  BritepadApp* nextapp = getApp(count++);
+  while (nextapp) {
+    if (nextapp->wantsToBeScreensaver())
+      return nextapp;
+    nextapp = getApp(count++);
+  }
+  return nil;
 }
 
 void Britepad::addApp(BritepadApp* app) {
@@ -40,9 +81,11 @@ BritepadApp* Britepad::getApp(int appIndex) {
   return (appIndex >= appCount) ? nil : apps[appIndex];
 }
 
+
 void Britepad::setApp(BritepadApp* newApp) {
   if (newApp == 0) {
     DEBUG_LN("Set currApp to NIL!");
+    return;
   }
 
   if (newApp == currApp) {
@@ -63,9 +106,10 @@ void Britepad::setApp(BritepadApp* newApp) {
 
 
 void Britepad::begin(void) {
+
+// these are special apps that are shared across the enviroment
   launcherApp = new LauncherApp;
-  mouseApp = new MouseApp;
-  timerApp = new TimerApp;
+  defaultApp = new MouseApp;
 
   ScreensaverApp* splashApp = new SplashApp;
   ScreensaverApp* bubblesApp = new BubblesApp;
@@ -75,10 +119,6 @@ void Britepad::begin(void) {
   launcherApp->setButton(0, 1,  splashApp);
   launcherApp->setButton(0, 2,  new DotsDisplayApp);
   launcherApp->setButton(0, 3,  new ClockApp);
-
-// isn't needed explicitly
-//  launcherApp->setButton(0, 4,  timerApp);
-
   launcherApp->setButton(0, 8,  new SetClockApp);
   launcherApp->setButton(0, 9,  new MuteApp);
 
@@ -109,14 +149,10 @@ void Britepad::begin(void) {
 
   launcherApp->setButton(2, 9,  new KeyApp("My Name", "Dean\nBlackketter"));
 
-  launcherApp->setButton(2, 11,  mouseApp);
-
 // show the splash screen
   setApp(splashApp);
 
-// set the current screensaver
-  currentScreensaver = bubblesApp;
-
+// show the apps that have been loaded
   DEBUG_PARAM_LN("app count", appsAdded());
   int count=0;
   BritepadApp* anApp = getApp(count++);
@@ -124,47 +160,51 @@ void Britepad::begin(void) {
     DEBUG_LN(anApp->name());
     anApp = getApp(count++);
   }
+
 }
 
 void Britepad::idle(void) {
 
-  static long screensaver_started = 0;
-
   pad.update();
 
-  if (pad.touched(ANY_PAD)) {
-    // touching resets screensaver
-    if (screensaver_started) {
-      screensaver_started = 0;
-      setApp(mouseApp);
-    }
-  } else {
-    if (pad.time() - pad.lastUpTime(ANY_PAD) > screensaverDelay) {
-     if (screensaver_started == 0 && !currApp->disablesScreensavers()) {
-        screensaver_started = pad.time();
-      }
-    }
-  }
-
   if (pad.down(TOP_PAD)) {
+    // start launcher
     if (currApp != launcherApp) {
       setApp(launcherApp);
       pad.update();  // consume that down event
     }
-  } else if (!pad.down(ANY_PAD) && screensaver_started) {
-      if (timerApp->timerActive()) {
-        setApp(timerApp);
-      } else {
-        if (!currApp->isScreensaver() ) {
-          setApp(currentScreensaver);
-        }
-      }
+  } else if (pad.touched(ANY_PAD)) {
+    // touching resets screensaver
+    if (currApp->isScreensaver()) {
+      setApp(defaultApp);
+    }
+  } else if ((pad.time() - pad.lastUpTime(ANY_PAD) > screensaverDelay)) {
+    // time to run a screensaver
+
+    // do we have somebody who wants to be screensaver?
+    if (BritepadApp *wanter = wantsToBeScreensaver()) {
+      setApp(wanter);
+
+    // are we not running a screensaver?
+    } else if (!currApp->isScreensaver()){
+      setApp(randomScreensaver());
+      screensaverStartedTime = pad.time();
+
+    // is it time to switch?
+    } else if (pad.time() - screensaverStartedTime > screensaverSwitchInterval) {
+      setApp(randomScreensaver());
+      screensaverStartedTime = pad.time();
+    }
   }
 
+
+  // run the app
   if (currApp) {
+
     BritepadApp* newApp = currApp->run();
+
     if (newApp == DEFAULT_APP) {
-      newApp = mouseApp;
+      newApp = defaultApp;
     } else if (newApp == BACK_APP) {
       newApp = launcherApp;
     }
@@ -172,6 +212,7 @@ void Britepad::idle(void) {
     if (newApp) {
       setApp(newApp);
     }
+
   } else {
     DEBUG_LN("currApp nil!");
   }

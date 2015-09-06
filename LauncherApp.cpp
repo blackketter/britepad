@@ -122,10 +122,20 @@ BritepadApp* LauncherApp::run(void) {
             drawButton(b, false);
           }
         } else {
+          // todo handle screensavers
           if (launched->isScreensaver()) {
-            currentScreensaver = launched;
+            ScreensaverApp* ss = (ScreensaverApp*)launched;
+            // toggle the enabledness of the screensaver, and launch it if we're enabling it
+            ss->setEnabled(!ss->screensaverIsEnabled());
+            if (ss->screensaverIsEnabled()) {
+              exit = launched;
+            } else {
+              drawButton(b, false);
+              exit = BACK_APP;
+            }
+          } else {
+            exit = launched;
           }
-          exit = launched;
         }
         sound.click();
 

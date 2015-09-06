@@ -13,8 +13,11 @@ class TimerApp : public ScreensaverApp {
     const char* name(void) { return "Timer"; };
     void setTime(time_t t);
     time_t timerTime(void) { return timer_dur; };
+
     bool timerActive(void) { return running; }
     bool wantsToBeScreensaver(void) { return running; }
+    bool screensaverIsEnabled(void) { return running; }
+
     void alarm(void);
     void cancel(void);
 
@@ -30,8 +33,6 @@ class TimerApp : public ScreensaverApp {
     time_t alarm_sounded = 0;
     bool running = false;
 };
-
-extern TimerApp* timerApp;
 
 #endif
 

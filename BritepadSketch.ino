@@ -13,7 +13,6 @@
 #include <SerialFlash.h>
 
 #include "BritepadShared.h"
-#include "Timer.h"
 
 #define DEBUG_ON 1
 #include "Debug.h"
@@ -32,7 +31,7 @@ void setup(void) {
   delay(500);
 
   // set clock to a recent time
-  setTime(4,20,0,1, 1, 2015);
+  setTime(4,20,0,1,1,2015);
 
   DEBUG_INIT();
 
@@ -46,6 +45,7 @@ void setup(void) {
   DEBUG_LN("touchpad started");
 
   sound.begin();
+  DEBUG_LN("sound started");
 
   DEBUG_LN("starting app framework");
   britepad.begin();

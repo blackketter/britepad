@@ -11,4 +11,6 @@ enum Direction {
   DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT
 };
 
+typedef unsigned long millis_t;
+
 #endif

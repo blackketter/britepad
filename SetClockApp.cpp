@@ -107,7 +107,8 @@ BritepadApp* SetClockApp::run(void) {
         adjustTime(-now()%60);
         sound.click();
     }
-    timerApp->setTime(0);
+
+    // todo: cancel timers that may be running
   }
 
   return STAY_IN_APP;

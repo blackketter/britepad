@@ -1,6 +1,8 @@
 #ifndef _TOUCHPAD_
 #define _TOUCHPAD_
 
+#include "Types.h"
+
 #define SCREEN_PAD 0
 #define LEFT_PAD 1
 #define RIGHT_PAD 2
@@ -41,7 +43,7 @@ class TouchPad {
     int  lastDownY(void);
     int  x(void) { return curr.x; };
     int  y(void) { return curr.y; };
-    int  time(void) { return curr.time; };
+    millis_t  time(void) { return curr.time; };
     int  deltax(void) { return (curr.x - last.x); };
     int  deltay(void) { return (curr.y - last.y); };
 };

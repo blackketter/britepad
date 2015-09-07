@@ -6,11 +6,11 @@
 #include "Debug.h"
 
 BritepadApp* BubblesApp::run(void) {
-  int x = random(screen.width());
-  int y = random(screen.height());
-  long r = random(40);
+  coord_t x = random(screen.width());
+  coord_t y = random(screen.height());
+  int r = random(40);
   screen.fillCircle(x, y, r, currentColor);
   currentColor++;
 
-  return nil;
+  return STAY_IN_APP;
 }

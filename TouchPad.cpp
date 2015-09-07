@@ -154,9 +154,9 @@ bool TouchPad::up(int pad) {
 
 }
 
-long TouchPad::lastDownTime(int pad) {
+millis_t TouchPad::lastDownTime(int pad) {
   if (pad == ANY_PAD) {
-    long lastest = 0;
+    millis_t lastest = 0;
     for (int i = 0; i < PAD_COUNT; i++) {
       if (lastDownT[i] > lastest) {
         lastest = lastDownT[i];
@@ -168,9 +168,9 @@ long TouchPad::lastDownTime(int pad) {
   }
 }
 
-long TouchPad::lastUpTime(int pad) {
+millis_t TouchPad::lastUpTime(int pad) {
   if (pad == ANY_PAD) {
-    long lastest = 0;
+    millis_t lastest = 0;
     for (int i = 0; i < PAD_COUNT; i++) {
       if (lastUpT[i] > lastest) {
         lastest = lastUpT[i];

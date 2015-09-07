@@ -6,7 +6,7 @@
 #include "Debug.h"
 
 BritepadApp* StopwatchApp::run(void) {
-  long nowMillis = millis();
+  millis_t nowMillis = millis();
 
   if (lastDrawMillis/100 != nowMillis/100) {
     lastDrawMillis = nowMillis;
@@ -34,6 +34,6 @@ BritepadApp* StopwatchApp::run(void) {
     }
 
   }
-  return nil;
+  return STAY_IN_APP;
 }
 

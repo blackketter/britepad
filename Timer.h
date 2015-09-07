@@ -13,7 +13,7 @@ class Timer {
     Timer(void) {};
 
     void setSecs(time_t setTime, timerCallback_t callback = nil, void* callbackData = nil, bool repeat = false);
-    void setMillis(unsigned long millisDur, timerCallback_t callback = nil, void* callbackData = nil, bool repeat = false);
+    void setMillis(millis_t millisDur, timerCallback_t callback = nil, void* callbackData = nil, bool repeat = false);
 
     void setClockTime(time_t clockTimeSet, timerCallback_t callback = nil, void* callbackData = nil);
 

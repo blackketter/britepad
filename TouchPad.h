@@ -12,7 +12,7 @@
 #define ANY_PAD 6
 
 typedef struct TPState {
-    long time;
+    millis_t time;
     int  x;
     int  y;
     bool touched[PAD_COUNT];
@@ -24,8 +24,8 @@ class TouchPad {
     int width;
     TPState curr;
     TPState last;
-    long lastDownT[PAD_COUNT];
-    long lastUpT[PAD_COUNT];
+    millis_t lastDownT[PAD_COUNT];
+    millis_t lastUpT[PAD_COUNT];
     int  lastDownXPos;
     int  lastDownYPos;
 
@@ -37,8 +37,8 @@ class TouchPad {
     bool changed(int pad = 0);  // has the pad touch state changed since the last update?
     bool down(int pad = 0);     // has the pad been touched since the last update?
     bool up(int pad = 0);       // has the pad been released since the last update?
-    long lastDownTime(int pad = 0); // last time the pad was touched down
-    long lastUpTime(int pad = 0);   // last time the pad was released
+    millis_t lastDownTime(int pad = 0); // last time the pad was touched down
+    millis_t lastUpTime(int pad = 0);   // last time the pad was released
     int  lastDownX(void);
     int  lastDownY(void);
     int  x(void) { return curr.x; };

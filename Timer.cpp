@@ -4,7 +4,6 @@
 #include "Debug.h"
 
 // todo - deal with 32bit millis wraparound (every 12 days!)
-// todo - move the whole damn thing to millis() based
 
 Timer* Timer::first = nil;
 
@@ -19,7 +18,7 @@ void Timer::setSecs(time_t secs, timerCallback_t callback, void* callbackData, b
   setMillis(secs*1000, callback, callbackData, repeat);
 }
 
-void Timer::setMillis(unsigned long millisDuration, timerCallback_t callback, void* callbackData, bool repeat) {
+void Timer::setMillis(millis_t millisDuration, timerCallback_t callback, void* callbackData, bool repeat) {
   cancel();
   clockTime = 0;
   insert(callback, callbackData);

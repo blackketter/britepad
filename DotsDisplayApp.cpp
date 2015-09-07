@@ -40,6 +40,6 @@ BritepadApp* DotsDisplayApp::run(void) {
 //  updateDots();
   setDot(random(pixels_wide), random(pixels_high), random(65535));
 
-  return nil;
+  return STAY_IN_APP;
 }
 

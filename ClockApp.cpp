@@ -12,7 +12,7 @@ BritepadApp* ClockApp::run(void) {
     redraw();
     lastRedraw = mt;
   }
-  return nil;
+  return STAY_IN_APP;
 }
 
 void ClockApp::redraw(void) {

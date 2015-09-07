@@ -11,7 +11,7 @@ class Sound {
     Sound(void);
     void begin(void);
 
-    void beep(long ms = 20, float freq = 440);  // plays a generic beep tone
+    void beep(millis_t ms = 20, float freq = 440);  // plays a generic beep tone
 
     void click(void);                           // plays a click sound
     void bump(void);                            // plays a bump sound

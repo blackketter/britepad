@@ -19,6 +19,7 @@ class Clock {
     int chimesRemaining = 0;
     bool set = false;
     bool setting = false;
+    static const millis_t chimeInterval = 500;
 };
 
 #endif

@@ -28,7 +28,7 @@ void Clock::chimerCallback(void) {
   if (chimesRemaining == 0) {
     resetChime();
   } else {
-    chimeTimer.setMillis(1000, (timerCallback_t)chimeCallback, (void*)this);
+    chimeTimer.setMillis(chimeInterval, (timerCallback_t)chimeCallback, (void*)this);
     sound.beep();
     chimesRemaining--;
   }

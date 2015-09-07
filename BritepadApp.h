@@ -4,12 +4,9 @@
 #include "BritepadShared.h"
 #include "Debug.h"
 
-#define STAY_IN_APP ((BritepadApp*)0)
-#define DEFAULT_APP ((BritepadApp*)1)
-#define BACK_APP ((BritepadApp*)2)
 
 // todo move this into the base object
-#define BritepadAppScratchPadSize ((long)32768)
+#define BritepadAppScratchPadSize (32768L)
 extern uint8_t BritepadAppScratchPad[];
 
 class Britepad;
@@ -19,7 +16,8 @@ class BritepadApp {
     BritepadApp();
     virtual void begin(void) { screen.fillScreen(bgColor()); };  // initialize app state and draw first screen
     virtual void end(BritepadApp* nextApp) {}; // called after final run(), lets app clean up and tells it what the next app may be
-    virtual BritepadApp* run(void) {return nil;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants above)
+    virtual BritepadApp* run(void) {return STAY_IN_APP;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants above)
+
     virtual const char* name(void) { return 0; };
     virtual color_t buttonColor(void) { return screen.blue; }
 
@@ -40,8 +38,12 @@ class BritepadApp {
     coord_t height(void);
     coord_t width(void);
 
-    void updateStatusBar(bool redraw); // call when you want the status bar to be updated
+    void updateStatusBar(bool redraw); // called when the status bar is to be updated
                                        // redraw=true if you need to invalidate and redraw the entire bar.  May cause flickering.
+
+    static BritepadApp* STAY_IN_APP;
+    static BritepadApp* DEFAULT_APP;
+    static BritepadApp* BACK_APP;
 
   protected:
     coord_t statusBarTop = 0;

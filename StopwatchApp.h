@@ -12,8 +12,8 @@ class StopwatchApp : public BritepadApp {
     const char* name(void) { return "Stopwatch"; };
     bool disablesScreensavers(void) { return true; }
   private:
-    long startMillis;
-    long lastDrawMillis;
+    millis_t startMillis;
+    millis_t lastDrawMillis;
     color_t currentColor = screen.red;
 };
 

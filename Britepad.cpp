@@ -34,7 +34,6 @@ ScreensaverApp* Britepad::randomScreensaver(void) {
   BritepadApp* nextapp = getApp(index++);
   while (nextapp) {
     if (nextapp->isScreensaver() && (((ScreensaverApp*)nextapp)->screensaverIsEnabled())) {
-      DEBUG_LN(nextapp->name());
       count++;
     }
     nextapp = getApp(index++);
@@ -98,8 +97,9 @@ void Britepad::setApp(BritepadApp* newApp) {
   currApp = newApp;
 
   if (currApp) {
-    currApp->updateStatusBar(true);
+    currApp->updateStatusBar(false);  // update the status bar clipping
     currApp->begin();
+    currApp->updateStatusBar(true);   // draw the status bar
   }
 }
 
@@ -125,7 +125,7 @@ void Britepad::begin(void) {
 // middle screen has quick buttons
   launcherApp->setButton(1, 0,  new KeyApp("Vol+", KEY_MEDIA_VOLUME_INC, screen.bluegreen));
   launcherApp->setButton(1, 4,  new KeyApp("Vol-", KEY_MEDIA_VOLUME_DEC, screen.bluegreen));
-  launcherApp->setButton(1, 8,  new KeyApp("Mute", KEY_MEDIA_MUTE, screen.bluegreen));
+  launcherApp->setButton(1, 8,  new KeyApp("Mute", KEY_MEDIA_MUTE, screen.blue));
 
   launcherApp->setButton(1, 1,  new KeyApp("<<", KEY_MEDIA_PREV_TRACK, screen.orange));
   launcherApp->setButton(1, 2,  new KeyApp("||", KEY_MEDIA_PLAY_PAUSE, screen.orange));
@@ -142,12 +142,13 @@ void Britepad::begin(void) {
   launcherApp->setButton(2, 1, new SetTimerApp("3 min", 3*60));
   launcherApp->setButton(2, 2, new SetTimerApp("25 min", 25*60));
   launcherApp->setButton(2, 3, new SetTimerApp("55 min", 55*60));
-  launcherApp->setButton(2, 4, new SetTimerApp("10:05", 10*60+5));
-  launcherApp->setButton(2, 5, new StopwatchApp);
 
   launcherApp->setButton(2, 8,  new ThereminApp);
 
-  launcherApp->setButton(2, 9,  new KeyApp("My Name", "Dean\nBlackketter"));
+// just for testing
+//  launcherApp->setButton(2, 9,  new KeyApp("My Name", "Dean\nBlackketter"));
+
+  launcherApp->setButton(2, 11, new StopwatchApp);
 
 // show the splash screen
   setApp(splashApp);
@@ -203,9 +204,9 @@ void Britepad::idle(void) {
 
     BritepadApp* newApp = currApp->run();
 
-    if (newApp == DEFAULT_APP) {
+    if (newApp == BritepadApp::DEFAULT_APP) {
       newApp = defaultApp;
-    } else if (newApp == BACK_APP) {
+    } else if (newApp == BritepadApp::BACK_APP) {
       newApp = launcherApp;
     }
 

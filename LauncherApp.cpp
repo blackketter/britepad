@@ -20,6 +20,12 @@ void LauncherApp::begin(void) {
   Keyboard.press(KEY_LEFT_SHIFT);
   Keyboard.release(KEY_LEFT_SHIFT);
 
+  if (pad.touched(LEFT_PAD)) {
+    current_screen = 0;
+  } else if (pad.touched(RIGHT_PAD)) {
+    current_screen = 2;
+  }
+
   sound.swipe(DIRECTION_DOWN);
   screen.pushFill(DIRECTION_DOWN, bgColor());
   drawButtons();

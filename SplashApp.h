@@ -9,6 +9,9 @@ class SplashApp : public ScreensaverApp {
     BritepadApp* run(void);
     const char* name(void) { return "Splash"; };
     bool displaysStatusBar(void) { return false; };
+  private:
+    long drawindex = 0;
+    color_t currColor;
 };
 
 #endif

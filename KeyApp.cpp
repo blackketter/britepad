@@ -25,6 +25,7 @@ BritepadApp* KeyApp::run(void) {
     case KEY_MEDIA_EJECT:
       Keyboard.set_media(KEY_MEDIA_EJECT);
       Keyboard.send_now();
+      // todo use a timer rather than blocking
       delay(300);  // Mac OS-X will not recognize a very short eject press
       Keyboard.set_media(0);
       Keyboard.send_now();
@@ -58,9 +59,11 @@ void KeyApp::draw(void) {
     screen.setTextSize(3);
     screen.setTextColor(screen.yellow);
     int x = screen.width()/2 - (screen.measureTextH(nameStr) / 2);
-    int y =  screen.height()/2 - (screen.measureTextV(nameStr) / 2);
+    int y = screen.height()/2 - (screen.measureTextV(nameStr) / 2);
     screen.setCursor( x, y);
 
     screen.drawText(nameStr);
+
+    // todo use a timer to defer exiting rather than blocking
     delay(200);
 }

@@ -20,7 +20,7 @@ class KeyApp : public BritepadApp {
   protected:
     const char* nameStr;
     const char* keyStr;
-    long  mediaKey = 0;
+    uint8_t  mediaKey = 0;
     color_t button_color = 0;;
     virtual void draw(void);
 };

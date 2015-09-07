@@ -149,7 +149,7 @@ BritepadApp* MouseApp::run(void) {
       // if the touch is in the edge, then we scroll
       if (pad.x() > (screen.width() - SCROLL_EDGE_MARGIN)) {
         if (pad.deltay() != 0) {
-          static long lastScroll = pad.time();
+          static millis_t lastScroll = pad.time();
           static int16_t accumScroll = 0;
           const int16_t scrollFactor = 16;
 
@@ -240,7 +240,7 @@ BritepadApp* MouseApp::run(void) {
       }
 
     } else {
-      if ( !pad.touched(LEFT_PAD) && pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_TAP_UP_DUR) {
+      if (pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_TAP_UP_DUR) {
         if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
           screen.fillCircle(pad.x(), pad.y(), PENRADIUS*2, currentColor);
         }

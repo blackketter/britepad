@@ -99,7 +99,7 @@ void Sound::click(void) {
   }
  }
 
-void Sound::beep(long ms, float freq)
+void Sound::beep(millis_t ms, float freq)
  {
   int beeper = freeSynth();
   if (beeper != NO_SYNTH) {

@@ -11,7 +11,7 @@ BritepadApp* ThereminApp::run(void) {
   } else if (pad.touched(SCREEN_PAD)) {
     sound.tone( ((float)pad.x() / screen.width()) * 2 * sound.MIDDLE_C_FREQ, (float)pad.y() / screen.height());
     // draw some traces here
-    screen.fillCircle(pad.x(), pad.y(), pad.y()/10, (long)65535 * pad.x() / screen.width());
+    screen.fillCircle(pad.x(), pad.y(), pad.y()/10, 65535L * pad.x() / screen.width());
   }
 
 

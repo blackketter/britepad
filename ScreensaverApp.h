@@ -5,14 +5,14 @@
 #include "BritepadApp.h"
 
 class ScreensaverApp : public BritepadApp {
-  private:
-    bool enabled = true;
-
   public:
     virtual bool isScreensaver(void) { return true; };
-    virtual color_t buttonColor(void) { return (enabled ? screen.yellow : screen.darkyellow); };
+    virtual color_t buttonColor(void) { return (screensaverIsEnabled() ? screen.yellow : screen.darkyellow); };
     virtual bool screensaverIsEnabled(void) { return enabled; }
     virtual void setEnabled(bool e) { enabled = e; }
+
+  protected:
+    bool enabled = true;
 };
 
 #endif

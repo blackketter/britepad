@@ -18,7 +18,7 @@ class BritepadApp {
     virtual void end(BritepadApp* nextApp) {}; // called after final run(), lets app clean up and tells it what the next app may be
     virtual BritepadApp* run(void) {return STAY_IN_APP;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants above)
 
-    virtual const char* name(void) { return 0; };
+    virtual const char* name(void) = 0;
     virtual color_t buttonColor(void) { return screen.blue; }
 
     virtual bool isScreensaver(void) { return false; };
@@ -32,18 +32,20 @@ class BritepadApp {
     virtual bool displaysStatusBar(void) { return !isScreensaver(); };  // apps show status bar by default
     virtual color_t statusBarBGColor(void) { return screen.mix(bgColor(), screen.grey); }  // bgcolor of status bar
     virtual color_t statusBarFGColor(void) { return screen.luminance(statusBarBGColor()) > 127 ? screen.black : screen.white; } // color of text, graphics on status bar
+    virtual const char* statusBarTitle(void) { return name(); }
 
     coord_t top(void);
     coord_t left(void);
     coord_t height(void);
     coord_t width(void);
 
-    void updateStatusBar(bool redraw); // called when the status bar is to be updated
-                                       // redraw=true if you need to invalidate and redraw the entire bar.  May cause flickering.
+    void updateStatusBarBounds();
+    void drawStatusBar();
 
     static BritepadApp* STAY_IN_APP;
-    static BritepadApp* DEFAULT_APP;
-    static BritepadApp* BACK_APP;
+    static BritepadApp* DEFAULT_APP; // typically the MouseApp
+    static BritepadApp* BACK_APP;  // return to launcher
+    static BritepadApp* SCREENSAVER_APP; // go to a screensaver
 
   protected:
     coord_t statusBarTop = 0;

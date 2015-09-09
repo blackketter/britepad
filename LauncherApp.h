@@ -4,17 +4,31 @@
 #include "BritepadShared.h"
 #include "BritepadApp.h"
 
+enum ScreenNames {
+  SETTINGS_SCREEN,
+  KEYS_SCREEN,
+  TIMERS_SCREEN,
+  APPS_SCREEN
+};
+
+
 class LauncherApp : public BritepadApp {
   private:
     const static int noButton = -1;
 
     const static int h_buttons = 4;
     const static int v_buttons = 3;
-    const static int total_screens = 3;
+    const static int total_screens = 4;
     const static int buttons_per_screen = h_buttons * v_buttons;
     const static int resetScreenTimeout = 10;  // seconds
 
     BritepadApp* apps[total_screens][buttons_per_screen];
+    const char* screenNames[total_screens] = {
+        "Settings",
+        "Keys",
+        "Timers",
+        "Apps"
+      };
 
     int current_screen = 1;
 
@@ -26,6 +40,7 @@ class LauncherApp : public BritepadApp {
     int currentScreen(void);
     color_t bgColor(void);
     time_t lastRun = 0;
+    BritepadApp* splashApp;
 
   public:
     LauncherApp(void);
@@ -35,6 +50,8 @@ class LauncherApp : public BritepadApp {
     void setButton(int screen, int i, BritepadApp* b);
     BritepadApp* getButton(int i);
     const char* name(void) { return "Launcher"; };
+    const char* statusBarTitle(void);
+    BritepadApp* getSplashApp(void) { return splashApp; }
 };
 #endif
 

@@ -18,24 +18,25 @@ class Britepad {
     void begin(void);
     void idle(void);
 
-    BritepadApp* wantsToBeScreensaver(void);
+    ScreensaverApp* wantsToBeScreensaver(void);
 
     ScreensaverApp* randomScreensaver(void);
 
   private:
     int appCount = 0;
     static const int maxApps = 100;
-    static const millis_t screensaverDelay = 10000;
-    static const millis_t screensaverSwitchInterval = 60000;
+    static const millis_t screensaverDelay = 5000;
+    static const millis_t screensaverSwitchInterval = 10000;
 
-    millis_t screensaverStartedTime;
+    millis_t screensaverStartedTime = 0;
 
     BritepadApp* apps[maxApps];
 
     LauncherApp* launcherApp;
     BritepadApp* defaultApp;
     BritepadApp* currApp;
-    ScreensaverApp* currScreensaver;
+
+    BritepadApp* switchApp;
 };
 
 #endif

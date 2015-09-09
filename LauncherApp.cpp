@@ -5,12 +5,67 @@
 
 #include <Time.h>
 
+
+// apps are included here
+#include "BritepadApp.h"
+#include "BubblesApp.h"
+#include "SplashApp.h"
+#include "PassApp.h"
+#include "KeyApp.h"
+#include "SetClockApp.h"
+#include "ClockApp.h"
+#include "DotsDisplayApp.h"
+#include "SetTimerApp.h"
+#include "MuteApp.h"
+#include "ThereminApp.h"
+#include "StopwatchApp.h"
+
 LauncherApp::LauncherApp(void) {
   for (int s = 0; s < total_screens; s++) {
     for (int i = 0; i < buttons_per_screen; i++) {
       setButton(s, i,nil);
     }
   }
+
+
+  splashApp = new SplashApp;
+
+// left screen contains screensavers and settings
+  setButton(SETTINGS_SCREEN, 0,  new BubblesApp);
+  setButton(SETTINGS_SCREEN, 1,  splashApp);
+  setButton(SETTINGS_SCREEN, 2,  new DotsDisplayApp);
+  setButton(SETTINGS_SCREEN, 3,  new ClockApp);
+  setButton(SETTINGS_SCREEN, 8,  new SetClockApp);
+  setButton(SETTINGS_SCREEN, 9,  new MuteApp);
+
+// middle screen has quick buttons
+  setButton(KEYS_SCREEN, 0,  new KeyApp("Vol+", KEY_MEDIA_VOLUME_INC, screen.bluegreen));
+  setButton(KEYS_SCREEN, 4,  new KeyApp("Vol-", KEY_MEDIA_VOLUME_DEC, screen.bluegreen));
+  setButton(KEYS_SCREEN, 8,  new KeyApp("Mute", KEY_MEDIA_MUTE, screen.blue));
+
+  setButton(KEYS_SCREEN, 1,  new KeyApp("<<", KEY_MEDIA_PREV_TRACK, screen.orange));
+  setButton(KEYS_SCREEN, 2,  new KeyApp("||", KEY_MEDIA_PLAY_PAUSE, screen.orange));
+  setButton(KEYS_SCREEN, 3,  new KeyApp(">>", KEY_MEDIA_NEXT_TRACK, screen.orange));
+
+// just for testing
+//  setButton(KEYS_SCREEN, 9,  new KeyApp("My Name", "Dean\nBlackketter"));
+
+// i never use this
+//  setButton(KEYS_SCREEN, 7,  new KeyApp("Eject", KEY_MEDIA_EJECT));
+
+  setButton(KEYS_SCREEN, 10, new PassApp("iCloud", "Bu77cracks!\n") );
+  setButton(KEYS_SCREEN, 11, new PassApp("Pass", "ch@db1ldr3n\n") );
+
+// right screen has useful apps
+  setButton(TIMERS_SCREEN, 0, new SetTimerApp("10 sec", 10));
+  setButton(TIMERS_SCREEN, 1, new SetTimerApp("3 min", 3*60));
+  setButton(TIMERS_SCREEN, 2, new SetTimerApp("25 min", 25*60));
+  setButton(TIMERS_SCREEN, 3, new SetTimerApp("55 min", 55*60));
+
+
+  setButton(TIMERS_SCREEN, 11, new StopwatchApp);
+
+  setButton(APPS_SCREEN, 8,  new ThereminApp);
 }
 
 void LauncherApp::begin(void) {
@@ -26,7 +81,6 @@ void LauncherApp::begin(void) {
     current_screen = 2;
   }
 
-  sound.swipe(DIRECTION_DOWN);
   screen.pushFill(DIRECTION_DOWN, bgColor());
   drawButtons();
 }
@@ -158,7 +212,7 @@ BritepadApp* LauncherApp::run(void) {
       current_screen--;
       sound.swipe(DIRECTION_LEFT);
       screen.pushFill(DIRECTION_LEFT, bgColor());
-      updateStatusBar(true);
+      drawStatusBar();
       drawButtons();
     } else {
       sound.bump();
@@ -170,16 +224,11 @@ BritepadApp* LauncherApp::run(void) {
       current_screen++;
       sound.swipe(DIRECTION_RIGHT);
       screen.pushFill(DIRECTION_RIGHT, bgColor());
-      updateStatusBar(true);
+      drawStatusBar();
       drawButtons();
     } else {
       sound.bump();
     }
-  }
-
-  if (pad.down(TOP_PAD)) {
-      sound.swipe(DIRECTION_UP);
-      exit = DEFAULT_APP;
   }
 
   return exit;
@@ -188,7 +237,7 @@ BritepadApp* LauncherApp::run(void) {
 int LauncherApp::currentScreen(void) {
   // if we haven't run in a while, reset to the middle screen
   if (now() - lastRun > resetScreenTimeout) {
-    current_screen = 1;
+    current_screen = KEYS_SCREEN;
   }
 
   return current_screen;
@@ -206,4 +255,8 @@ color_t LauncherApp::bgColor(void) {
     default:
       return 0;
   }
+}
+
+const char* LauncherApp::statusBarTitle(void) {
+  return screenNames[currentScreen()];
 }

@@ -19,11 +19,16 @@ void SplashApp::begin(void) {
   drawindex = 0;
   screen.fillScreen(screen.black);
   currColor = screen.red;
+  firstRun = millis();
 //  drawLogo(currColor);
 }
 
 
 BritepadApp* SplashApp::run(void) {
+  if (millis() - firstRun > splashDuration) {
+    return SCREENSAVER_APP;
+  }
+
   int weight = 18;
   int loopradius = screen.height()/10;
   int ascender = loopradius/2*5;

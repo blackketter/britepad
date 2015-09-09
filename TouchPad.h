@@ -29,6 +29,19 @@ class TouchPad {
     int  lastDownXPos;
     int  lastDownYPos;
 
+
+    void initAPDS(void);
+    void updateAPDS(void);
+    millis_t lastAPDSupdate = 0;
+    millis_t APSDupdateInterval = 1000;
+
+    uint16_t ambientLight;
+    uint16_t redLight;
+    uint16_t greenLight;
+    uint16_t blueLight;
+    uint8_t proximity;
+    int gesture;
+
   public:
     TouchPad(int w, int h);
     void begin(void);

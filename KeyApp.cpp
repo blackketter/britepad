@@ -17,6 +17,7 @@ BritepadApp* KeyApp::run(void) {
     case KEY_MEDIA_NEXT_TRACK:
     case KEY_MEDIA_PLAY_PAUSE:
     case KEY_MEDIA_STOP:
+    case KEY_MEDIA_MUTE:
       Keyboard.set_media(mediaKey);
       Keyboard.send_now();
       Keyboard.set_media(0);

@@ -12,6 +12,8 @@ class SplashApp : public ScreensaverApp {
   private:
     long drawindex = 0;
     color_t currColor;
+    millis_t firstRun;
+    static const millis_t splashDuration = 1000*5;
 };
 
 #endif

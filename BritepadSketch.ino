@@ -5,6 +5,7 @@
 #include <SPI.h>       // this is needed for display
 #include <Wire.h>      // this is needed for FT6206
 #include <Adafruit_FT6206.h>
+#include <SparkFun_APDS9960.h>
 #include <usb_keyboard.h>
 #include <FastLED.h>
 #include <Time.h>

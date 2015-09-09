@@ -10,8 +10,9 @@ class ClockApp : public ScreensaverApp {
     BritepadApp* run(void);
     virtual void redraw(void);
     const char* name(void) { return "Clock"; };
-
     void chimerCallback();
+    bool screensaverIsEnabled() { return enabled && clock.hasBeenSet(); }
+
   private:
     millis_t lastRedraw;
     color_t currentColor = screen.red;

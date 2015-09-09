@@ -24,6 +24,7 @@ class BritepadApp {
     virtual bool isScreensaver(void) { return false; };
     virtual bool disablesScreensavers(void) { return false; }
     virtual bool wantsToBeScreensaver(void) { return false; }  // return true if you want to be switched to as the screensaver
+
     virtual bool isPopup(void) { return false; };        // popup apps don't need begin or end, call run() just once
     virtual bool isInvisible(void) { return false; };    // has no UI
 

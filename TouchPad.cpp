@@ -267,6 +267,10 @@ millis_t TouchPad::lastUpTime(int pad) {
   }
 }
 
+millis_t TouchPad::lastTouchedTime(int pad) {
+  return max(lastUpTime(pad), lastDownTime(pad));
+}
+
 int TouchPad::lastDownX(void) {
   return lastDownXPos;
 }

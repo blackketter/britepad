@@ -244,17 +244,7 @@ int LauncherApp::currentScreen(void) {
 }
 
 color_t LauncherApp::bgColor(void) {
-
-  switch (currentScreen()) {
-    case 0:
-      return screen.darkerred;
-    case 1:
-      return screen.darkergreen;
-    case 2:
-      return screen.darkerblue;
-    default:
-      return 0;
-  }
+  return screenColor[currentScreen()];
 }
 
 const char* LauncherApp::statusBarTitle(void) {

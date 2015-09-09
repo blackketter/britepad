@@ -50,8 +50,9 @@ class TouchPad {
     bool changed(int pad = 0);  // has the pad touch state changed since the last update?
     bool down(int pad = 0);     // has the pad been touched since the last update?
     bool up(int pad = 0);       // has the pad been released since the last update?
-    millis_t lastDownTime(int pad = 0); // last time the pad was touched down
+    millis_t lastDownTime(int pad = 0); // last time the pad was down
     millis_t lastUpTime(int pad = 0);   // last time the pad was released
+    millis_t lastTouchedTime(int pad = 0); // last time the pad was touched
     int  lastDownX(void);
     int  lastDownY(void);
     int  x(void) { return curr.x; };

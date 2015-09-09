@@ -22,13 +22,22 @@ class LauncherApp : public BritepadApp {
     const static int buttons_per_screen = h_buttons * v_buttons;
     const static int resetScreenTimeout = 10;  // seconds
 
+
     BritepadApp* apps[total_screens][buttons_per_screen];
+
     const char* screenNames[total_screens] = {
         "Settings",
         "Keys",
         "Timers",
         "Apps"
       };
+
+    const color_t screenColor[total_screens] = {
+        screen.darkerred,
+        screen.darkergreen,
+        screen.darkerblue,
+        screen.darkergrey
+    };
 
     int current_screen = 1;
 

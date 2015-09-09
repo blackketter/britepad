@@ -150,7 +150,7 @@ void Britepad::idle(void) {
     switchApp = randomScreensaver();
   } else if (currApp->isScreensaver() && (pad.time() - screensaverStartedTime) > screensaverSwitchInterval) {
     switchApp = randomScreensaver();
-  } else if (!currApp->isScreensaver() && (pad.time() - pad.lastUpTime(ANY_PAD) > screensaverDelay)) {
+  } else if (!currApp->isScreensaver() && (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay)) {
     switchApp = randomScreensaver();
   }
 

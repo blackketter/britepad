@@ -26,6 +26,8 @@ class Screen : public ILI9341_t3 {
     const color_t yellow = ILI9341_YELLOW;
     const color_t orange = ILI9341_ORANGE;
 
+    const color_t grey = 0x4208; // .25, .25, .25
+
     const color_t darkred =   0x8000; // .5, 0, 0
     const color_t darkgreen = 0x0400; // 0, .5, .0
     const color_t darkblue =  0x0010; // 0, 0, .5
@@ -33,9 +35,8 @@ class Screen : public ILI9341_t3 {
 
     const color_t darkerred =   0x4000; // .25, 0, 0
     const color_t darkergreen = 0x0200; // 0, .25, .0
-    const color_t darkerblue =  0x0008; // 0, 0, .s5
-
-    const color_t grey = 0x4208; // .25, .25, .25
+    const color_t darkerblue =  0x0008; // 0, 0, .25
+    const color_t darkergrey = 0x2104; // 0.125, .125, .125
 
     const color_t bluegreen = 0x0410; // 0,  .5, .5
 

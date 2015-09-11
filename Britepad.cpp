@@ -78,7 +78,7 @@ BritepadApp* Britepad::getApp(int appIndex) {
 void Britepad::setApp(BritepadApp* newApp) {
 
   if (newApp == 0) {
-    DEBUG_LN("Set currApp to NIL!");
+    // just STAY_IN_APP
     return;
   }
 
@@ -109,6 +109,14 @@ void Britepad::setApp(BritepadApp* newApp) {
 }
 
 
+void backlightCallback(void* data) {
+  // if we detect proximity, it's probably casting a shadow and we don't want to update
+  if (pad.getProximity() < 100) {
+    // any ambient light greater than 255 is full brightness, 1 is the minimums
+    uint8_t light = max(1,min( pad.getAmbientLight(), 255));
+    screen.backlight(light);
+  }
+}
 
 void Britepad::begin(void) {
 
@@ -127,6 +135,8 @@ void Britepad::begin(void) {
     DEBUG_LN(anApp->name());
     anApp = getApp(count++);
   }
+
+  backlightTimer.setMillis(ambientUpdateInterval, (timerCallback_t)backlightCallback, (void*)this, true);
 
 }
 
@@ -164,5 +174,4 @@ void Britepad::idle(void) {
 
   // make sure the Timers get a chance to call their callbacks
   Timer::idle();
-
 }

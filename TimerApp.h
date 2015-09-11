@@ -10,6 +10,7 @@ class TimerApp : public ScreensaverApp {
   public:
     BritepadApp* run(void);
     void begin(void) { ScreensaverApp::begin(); beeps = 10; }
+    void end(BritepadApp* nextApp);
     const char* name(void) { return "Timer"; };
     void setTime(time_t t);
     time_t timerTime(void) { return timer_dur; };

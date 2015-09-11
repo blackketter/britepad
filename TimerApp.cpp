@@ -5,6 +5,13 @@
 #include "TimerApp.h"
 #include "Debug.h"
 
+void TimerApp::end(BritepadApp* nextApp) {
+  // don't bother coming back as a screensaver if the alarm has sounded
+  if (alarm_sounded) {
+    running = false;
+  }
+}
+
 BritepadApp* TimerApp::run(void) {
   time_t t = now();
 
@@ -65,12 +72,15 @@ BritepadApp* TimerApp::run(void) {
     last_time_drawn = t;
   }
 
-  // exit if any pad is touched
-  if ( pad.touched(ANY_PAD) || !running) {
-    return DEFAULT_APP;
-  } else {
-    return STAY_IN_APP;
+  if (pad.down(BOTTOM_PAD)) {
+    if (mytimer.isPaused()) {
+      mytimer.resume();
+    } else {
+      mytimer.pause();
+    }
   }
+
+  return STAY_IN_APP;
 }
 
 void alarmcallback(void* data) {

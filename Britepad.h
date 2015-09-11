@@ -2,6 +2,7 @@
 #define _Britepad_
 
 #include "BritepadApp.h"
+#include "Timer.h"
 
 class BritepadApp;
 class LauncherApp;
@@ -27,6 +28,9 @@ class Britepad {
     static const int maxApps = 100;
     static const millis_t screensaverDelay = 5000;
     static const millis_t screensaverSwitchInterval = 10000;
+    static const millis_t ambientUpdateInterval = 100;
+
+    Timer     backlightTimer;
 
     millis_t screensaverStartedTime = 0;
 

@@ -31,6 +31,10 @@ void ClockApp::redraw(void) {
       lastWidth = w;
     }
     screen.drawText(textTime);
+
+    screen.setTextSize(3);
+    screen.setCursor(screen.width()/5*4, screen.height()/4*3);
+    screen.drawText(isAM() ? "am" : "pm");
 }
 /*
 // Draws analog clock

@@ -19,28 +19,6 @@ typedef struct TPState {
 } TPState;
 
 class TouchPad {
-  private:
-    int height;
-    int width;
-    TPState curr;
-    TPState last;
-    millis_t lastDownT[PAD_COUNT];
-    millis_t lastUpT[PAD_COUNT];
-    int  lastDownXPos;
-    int  lastDownYPos;
-
-
-    void initAPDS(void);
-    void updateAPDS(void);
-    millis_t lastAPDSupdate = 0;
-    millis_t APSDupdateInterval = 1000;
-
-    uint16_t ambientLight;
-    uint16_t redLight;
-    uint16_t greenLight;
-    uint16_t blueLight;
-    uint8_t proximity;
-    int gesture;
 
   public:
     TouchPad(int w, int h);
@@ -60,6 +38,31 @@ class TouchPad {
     millis_t  time(void) { return curr.time; };
     int  deltax(void) { return (curr.x - last.x); };
     int  deltay(void) { return (curr.y - last.y); };
+    uint16_t getAmbientLight(void) { return ambientLight;};
+    uint8_t getProximity(void) { return proximity;};
+
+  private:
+    int height;
+    int width;
+    TPState curr;
+    TPState last;
+    millis_t lastDownT[PAD_COUNT];
+    millis_t lastUpT[PAD_COUNT];
+    int  lastDownXPos;
+    int  lastDownYPos;
+
+
+    void initAPDS(void);
+    void updateAPDS(void);
+    millis_t lastAPDSupdate = 0;
+    millis_t APSDupdateInterval = 100;
+
+    uint16_t ambientLight;
+    uint16_t redLight;
+    uint16_t greenLight;
+    uint16_t blueLight;
+    uint8_t proximity;
+    int gesture;
 };
 
 #endif

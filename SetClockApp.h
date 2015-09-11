@@ -13,7 +13,7 @@ class SetClockApp : public BritepadApp {
     const char* name(void) { return "Set Clock"; };
 
   private:
-    static const int buttoncount = 6;
+    static const int buttoncount = 7;
     static const int buttonradius = 24;
     static const int nobutton = -1;
 

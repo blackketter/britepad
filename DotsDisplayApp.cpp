@@ -32,10 +32,13 @@ void DotsDisplayApp::writeDot(int x, int y, color_t c) {
   pixels[x*pixels_wide+y] = c;
 }
 
+void DotsDisplayApp::setUpDots(int width, int height) {
+    pixels_wide = width;
+    pixels_high = height;
+    pixels = (color_t*)BritepadAppScratchPad;
+}
+
 BritepadApp* DotsDisplayApp::run(void) {
-  if (!pixels) {
-    begin(16,12);
-  }
 
 //  updateDots();
   setDot(random(pixels_wide), random(pixels_high), random(65535));

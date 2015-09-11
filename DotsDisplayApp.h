@@ -14,18 +14,12 @@ class DotsDisplayApp : public ScreensaverApp {
     void updateDot(int x, int y);
     void setDot(int x, int y, color_t c);
     void writeDot(int x, int y, color_t c);
+    void setUpDots(int width, int height);
 
   public:
-
-    void begin(int width, int height) {
-      pixels_wide = width;
-      pixels_high = height;
-      pixels = (color_t*)BritepadAppScratchPad;
-    };
-
-    BritepadApp* run(void);
+    void begin(void) { ScreensaverApp::begin(); setUpDots(16,12); };
     const char* name(void) { return "Dots"; };
-  private:
+    BritepadApp* run(void);
 
 };
 

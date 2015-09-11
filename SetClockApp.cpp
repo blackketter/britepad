@@ -12,7 +12,7 @@ SetClockApp::SetClockApp(void) {
   int x2 =  x1+spacing;
   int x3 =  x2+spacing*2;
   int x4 =  x3+spacing;
-  buttony[0] = buttony[1] = buttony[2] = ytop;
+  buttony[0] = buttony[1] = buttony[2] = buttony[6] = ytop;
   buttonsym[0] = buttonsym[1] = buttonsym[2] = '+';
 
   buttony[3] = buttony[4] = buttony[5] = ybottom;
@@ -21,13 +21,14 @@ SetClockApp::SetClockApp(void) {
   buttonx[0] = buttonx[3] = x2;
   buttonx[1] = buttonx[4] = x3;
   buttonx[2] = buttonx[5] = x4;
-
+  buttonx[6] = x1;  //  am/pm
+  buttonsym[6] = 'm';
 }
 
 void SetClockApp::drawClock(void) {
   time_t t = now();
 
-  if (lastTime != t) {
+  if (lastTime/60 != t/60) {
     char textTime[6];
 
     screen.setTextSize(10);
@@ -36,6 +37,7 @@ void SetClockApp::drawClock(void) {
     screen.setCursor(screen.width()/2 - screen.measureTextH(textTime)/2,
                      screen.height()/2 - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
+    drawButton(6, screen.red);
     lastTime = t;
   }
 }
@@ -52,10 +54,19 @@ void SetClockApp::drawButton(int i, color_t color) {
   int r = buttonradius;
 
   screen.fillCircle(buttonx[i],buttony[i],r, color);
-  screen.fillRect(buttonx[i] - r/2, buttony[i] - r/8, r, r/4, screen.white);
 
-  if (buttonsym[i] == '+') {
-    screen.fillRect(buttonx[i] - r/8, buttony[i] - r/2, r/4, r, screen.white);
+  if (buttonsym[i] == 'm') {
+    screen.setTextSize(3);
+    screen.setTextColor(screen.white, color);
+    const char* m = isAM() ? "am" : "pm";
+    screen.setCursor(buttonx[i]-screen.measureTextH(m)/2,buttony[i]-screen.measureTextV(m)*3/4);
+    screen.drawText(m);
+  } else {
+    screen.fillRect(buttonx[i] - r/2, buttony[i] - r/8, r, r/4, screen.white);
+
+    if (buttonsym[i] == '+') {
+      screen.fillRect(buttonx[i] - r/8, buttony[i] - r/2, r/4, r, screen.white);
+    }
   }
 }
 
@@ -66,7 +77,7 @@ void SetClockApp::drawButtons() {
 }
 
 void SetClockApp::begin(void) {
-
+  lastTime = 0;
   screen.fillScreen(bgColor());
 
   drawClock();
@@ -104,6 +115,9 @@ BritepadApp* SetClockApp::run(void) {
       break;
       case (5):
         clock.adjust(-60);
+      break;
+      case (6):
+        clock.adjust(12*60*60);
       break;
     }
     if (b != nobutton) {

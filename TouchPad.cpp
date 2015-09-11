@@ -113,14 +113,13 @@ void TouchPad::update() {
 
 void TouchPad::updateAPDS(void) {
 
-  if (curr.time / 1000 != lastAPDSupdate/1000) {
+  if (curr.time / APSDupdateInterval != lastAPDSupdate / APSDupdateInterval) {
     lastAPDSupdate = curr.time;
 
     //  update the APDS9960
     uint16_t light;
     if (apds.readAmbientLight(light)) {
       ambientLight = light;
-      DEBUG_PARAM_LN("ambientLight", light);
     } else {
       ambientLight = 0;
       DEBUG_LN("error reading ambient light");
@@ -128,7 +127,6 @@ void TouchPad::updateAPDS(void) {
 
     if (apds.readRedLight(light)) {
       redLight = light;
-      DEBUG_PARAM_LN("red light", light);
     } else {
       redLight = 0;
       DEBUG_LN("error reading red light");
@@ -136,14 +134,12 @@ void TouchPad::updateAPDS(void) {
 
     if (apds.readGreenLight(light)) {
       greenLight = light;
-     DEBUG_PARAM_LN("green light", light);
     } else {
       greenLight = 0;
       DEBUG_LN("error reading green light");
     }
 
     if (apds.readBlueLight(light)) {
-      DEBUG_PARAM_LN("blue light", light);
       blueLight = light;
     } else {
       blueLight = 0;
@@ -152,7 +148,6 @@ void TouchPad::updateAPDS(void) {
 
     uint8_t prox;
     if (apds.readProximity(prox)) {
-      DEBUG_PARAM_LN("proximity light", light);
       proximity = prox;
     } else {
       proximity = 0;

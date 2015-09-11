@@ -43,6 +43,6 @@ void Clock::adjust(long adjustment) {
 
 Clock::Clock(void) {
   // set clock to a recent time
-  setTime(4,20,0,1,1,2015);
+  setTime(16,20,0,1,1,2015);
 }
 

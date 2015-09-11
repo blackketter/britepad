@@ -1,7 +1,6 @@
 #ifndef _Clock_
 #define _Clock_
 
-#include <Time.h>
 #include "Timer.h"
 
 class Clock {
@@ -13,6 +12,13 @@ class Clock {
     void adjust(long adjustment);
     bool hasBeenSet() { return set && !setting; }
 
+    millis_t millis();
+    time_t now();
+
+    uint8_t hourFormat12();
+    bool isAM();
+    uint8_t minute();
+
   private:
     void resetChime(void);
     Timer chimeTimer;
@@ -21,5 +27,7 @@ class Clock {
     bool setting = false;
     static const millis_t chimeInterval = 500;
 };
+
+extern Clock clock;
 
 #endif

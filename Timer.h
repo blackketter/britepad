@@ -1,7 +1,6 @@
 #ifndef _Timer_
 #define _Timer_
 
-#include <Time.h>
 #include "Types.h"
 
 // return true if you want to cancel the timer callback

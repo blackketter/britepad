@@ -1,9 +1,7 @@
 #include <Arduino.h>
-#include <Time.h>
 #include "Timer.h"
 #include "Debug.h"
-
-// todo - deal with 32bit millis wraparound (every 12 days!)
+#include "Clock.h"
 
 Timer* Timer::first = nil;
 
@@ -11,7 +9,7 @@ void Timer::setClockTime(time_t clockTimeSet, timerCallback_t callback, void* ca
   cancel();
   insert(callback, callbackData);
   clockTime = clockTimeSet;
-  millisDur = (clockTimeSet-now())*1000;
+  millisDur = (clockTimeSet-clock.now())*1000;
 }
 
 void Timer::setSecs(time_t secs, timerCallback_t callback, void* callbackData, bool repeat) {
@@ -24,7 +22,7 @@ void Timer::setMillis(millis_t millisDuration, timerCallback_t callback, void* c
   insert(callback, callbackData);
   repeatTimer = repeat;
   millisDur = millisDuration;
-  millisTime = millis() + millisDur;
+  millisTime = clock.millis() + millisDur;
 }
 
 long Timer::remainingMillis(void) {
@@ -33,7 +31,7 @@ long Timer::remainingMillis(void) {
     if (isPaused()) {
       return -millisTime;
     } else {
-      return (millisTime - millis());
+      return (millisTime - clock.millis());
     }
   } else if (clockTime) {
     // todo make this more accurate using the difference between millis() and now()
@@ -50,18 +48,18 @@ time_t Timer::remainingSecs(void) {
     if (isPaused()) {
       return -clockTime;
     } else {
-      return (clockTime - now());
+      return (clockTime - clock.now());
     }
   }
   return remainingSecs;
 }
 
 time_t Timer::timeInSecs(void) {
-  return now()+remainingSecs();
+  return clock.now()+remainingSecs();
 }
 
 long Timer::timeInMillis(void) {
-  return millis()+remainingMillis();
+  return clock.millis()+remainingMillis();
 }
 
 time_t Timer::durationSecs(void) {
@@ -84,11 +82,11 @@ bool Timer::passed(void) {
   if (isPaused()) { return false; }
 
   if (millisTime) {
-    if (millis() >= (unsigned long)millisTime) {
+    if (clock.millis() >= (unsigned long)millisTime) {
       return true;
     }
   } else if (clockTime) {
-    if (now() >= clockTime) {
+    if (clock.now() >= clockTime) {
       return true;
     }
   }
@@ -110,9 +108,9 @@ void Timer::pause(void) {
   }
 
   if (millisTime) {
-    millisTime = -(millisTime - millis());
+    millisTime = -(millisTime - clock.millis());
   } else if (clockTime) {
-    clockTime = -(clockTime - now());
+    clockTime = -(clockTime - clock.now());
   }
 }
 
@@ -121,9 +119,9 @@ void Timer::resume(void) {
     return;
   }
   if (millisTime) {
-    millisTime = millis() - millisTime;
+    millisTime = clock.millis() - millisTime;
   } else if (clockTime) {
-    clockTime = now() - clockTime;
+    clockTime = clock.now() - clockTime;
   }
 }
 

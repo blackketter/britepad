@@ -1,9 +1,9 @@
-#include <Time.h>
 #include "FastLED.h"
 
 #include "BritepadShared.h"
 #include "TimerApp.h"
 #include "Debug.h"
+#include "Clock.h"
 
 void TimerApp::end(BritepadApp* nextApp) {
   // don't bother coming back as a screensaver if the alarm has sounded
@@ -13,7 +13,7 @@ void TimerApp::end(BritepadApp* nextApp) {
 }
 
 BritepadApp* TimerApp::run(void) {
-  time_t t = now();
+  time_t t = clock.now();
 
   int delta = mytimer.remainingSecs();
 
@@ -100,7 +100,7 @@ void TimerApp::setTime(time_t t) {
 };
 
 void TimerApp::alarm(void) {
-  alarm_sounded = now();
+  alarm_sounded = clock.now();
   if (beeps) {
     sound.beep();
     mytimer.setMillis(1000, (timerCallback_t)alarmcallback, (void*)this);

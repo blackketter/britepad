@@ -1,4 +1,3 @@
-#include <Time.h>
 #include "FastLED.h"
 
 #include "BritepadShared.h"
@@ -6,7 +5,7 @@
 #include "Debug.h"
 
 BritepadApp* ClockApp::run(void) {
-  millis_t mt = millis();
+  millis_t mt = clock.millis();
 
   if (mt - lastRedraw > redrawInterval) {
     redraw();
@@ -16,12 +15,12 @@ BritepadApp* ClockApp::run(void) {
 }
 
 void ClockApp::redraw(void) {
-    time_t t = now();
+    time_t t = clock.now();
     char textTime[6];
 
     screen.setTextSize(10);
     screen.setTextColor(currentColor++, bgColor());
-    sprintf(textTime, t % 2 ? "%d:%02d" : "%d %02d", hourFormat12(t), minute(t));
+    sprintf(textTime, t % 2 ? "%d:%02d" : "%d %02d", clock.hourFormat12(), clock.minute());
     coord_t w = screen.measureTextH(textTime);
 
     screen.setCursor(screen.width()/2 - w/2,
@@ -34,7 +33,7 @@ void ClockApp::redraw(void) {
 
     screen.setTextSize(3);
     screen.setCursor(screen.width()/5*4, screen.height()/4*3);
-    screen.drawText(isAM() ? "am" : "pm");
+    screen.drawText(clock.isAM() ? "am" : "pm");
 }
 /*
 // Draws analog clock

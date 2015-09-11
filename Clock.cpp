@@ -1,6 +1,10 @@
+#include <Time.h>
 #include "BritepadShared.h"
 #include "Clock.h"
 #include "Sound.h"
+
+// todo - deal with 32bit millis wraparound (every 12 days!)
+
 
 void chimeCallback(void* data) {
   ((Clock*)data)->chimerCallback();
@@ -43,6 +47,25 @@ void Clock::adjust(long adjustment) {
 
 Clock::Clock(void) {
   // set clock to a recent time
-  setTime(16,20,0,1,1,2015);
+  ::setTime(16,20,0,1,1,2015);
 }
 
+millis_t Clock::millis() {
+  return ::millis();
+}
+
+time_t Clock::now() {
+  return ::now();
+}
+
+uint8_t Clock::hourFormat12() {
+  return ::hourFormat12();
+}
+
+uint8_t Clock::minute() {
+  return ::minute();
+}
+
+bool Clock::isAM() {
+  return ::isAM();
+}

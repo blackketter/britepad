@@ -3,9 +3,6 @@
 #include "ScreensaverApp.h"
 #include "Debug.h"
 
-#include <Time.h>
-
-
 // apps are included here
 #include "BritepadApp.h"
 #include "BubblesApp.h"
@@ -147,7 +144,7 @@ BritepadApp* LauncherApp::getButton(int i) {
 
 BritepadApp* LauncherApp::run(void) {
 
-  lastRun = now();
+  lastRun = clock.now();
 
   BritepadApp* exit = nil;  // by default, don't exit
 
@@ -236,7 +233,7 @@ BritepadApp* LauncherApp::run(void) {
 
 int LauncherApp::currentScreen(void) {
   // if we haven't run in a while, reset to the middle screen
-  if (now() - lastRun > resetScreenTimeout) {
+  if (clock.now() - lastRun > resetScreenTimeout) {
     current_screen = KEYS_SCREEN;
   }
 

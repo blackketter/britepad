@@ -1,12 +1,12 @@
-#include <Time.h>
 #include "FastLED.h"
 
 #include "BritepadShared.h"
 #include "StopwatchApp.h"
 #include "Debug.h"
+#include "Clock.h"
 
 BritepadApp* StopwatchApp::run(void) {
-  millis_t nowMillis = millis();
+  millis_t nowMillis = clock.millis();
 
   if (lastDrawMillis/100 != nowMillis/100) {
     lastDrawMillis = nowMillis;

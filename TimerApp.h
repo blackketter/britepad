@@ -3,7 +3,6 @@
 
 #include "ScreensaverApp.h"
 #include "BritepadShared.h"
-#include "Time.h"
 #include "Timer.h"
 
 class TimerApp : public ScreensaverApp {

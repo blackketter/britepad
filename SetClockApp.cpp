@@ -26,14 +26,14 @@ SetClockApp::SetClockApp(void) {
 }
 
 void SetClockApp::drawClock(void) {
-  time_t t = now();
+  time_t t = clock.now();
 
   if (lastTime/60 != t/60) {
     char textTime[6];
 
     screen.setTextSize(10);
     screen.setTextColor(screen.white, bgColor());
-    sprintf(textTime,"%2d:%02d", hourFormat12(t), minute(t));
+    sprintf(textTime,"%2d:%02d", clock.hourFormat12(), clock.minute());
     screen.setCursor(screen.width()/2 - screen.measureTextH(textTime)/2,
                      screen.height()/2 - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
@@ -58,7 +58,7 @@ void SetClockApp::drawButton(int i, color_t color) {
   if (buttonsym[i] == 'm') {
     screen.setTextSize(3);
     screen.setTextColor(screen.white, color);
-    const char* m = isAM() ? "am" : "pm";
+    const char* m = clock.isAM() ? "am" : "pm";
     screen.setCursor(buttonx[i]-screen.measureTextH(m)/2,buttony[i]-screen.measureTextV(m)*3/4);
     screen.drawText(m);
   } else {
@@ -122,7 +122,7 @@ BritepadApp* SetClockApp::run(void) {
     }
     if (b != nobutton) {
         // reset the minute
-        clock.adjust(-now()%60);
+        clock.adjust(-clock.now()%60);
         sound.click();
     }
 

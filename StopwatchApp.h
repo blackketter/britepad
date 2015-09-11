@@ -3,7 +3,6 @@
 
 #include "BritepadApp.h"
 #include "Britepad.h"
-#include "Time.h"
 
 class StopwatchApp : public BritepadApp {
   public:

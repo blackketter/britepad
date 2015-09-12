@@ -13,6 +13,9 @@ class PassApp : public KeyApp {
     PassApp(const char* name, uint8_t mediaKey, color_t color = screen.red) : KeyApp(name, mediaKey, color) {};
     color_t buttonColor(void) { return screen.red; };
     void draw(void);
+
+    appid_t id() { return ID; }
+    static constexpr appid_t ID = "pass";
 };
 
 #endif

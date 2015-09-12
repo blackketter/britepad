@@ -17,6 +17,8 @@
 #include "ThereminApp.h"
 #include "StopwatchApp.h"
 
+LauncherApp theLauncherApp;
+
 LauncherApp::LauncherApp(void) {
   for (int s = 0; s < total_screens; s++) {
     for (int i = 0; i < buttons_per_screen; i++) {
@@ -24,12 +26,9 @@ LauncherApp::LauncherApp(void) {
     }
   }
 
-
-  splashApp = new SplashApp;
-
 // left screen contains screensavers and settings
   setButton(SETTINGS_SCREEN, 0,  new BubblesApp);
-  setButton(SETTINGS_SCREEN, 1,  splashApp);
+  setButton(SETTINGS_SCREEN, 1,  new SplashApp);
   setButton(SETTINGS_SCREEN, 2,  new DotsDisplayApp);
   setButton(SETTINGS_SCREEN, 3,  new ClockApp);
   setButton(SETTINGS_SCREEN, 8,  new SetClockApp);

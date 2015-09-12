@@ -21,6 +21,9 @@ class TimerApp : public ScreensaverApp {
     void alarm(void);
     void cancel(void);
 
+    appid_t id() { return ID; }
+    static constexpr appid_t ID = "timr";
+
   private:
     const int alarm_dur = (60*5);
 

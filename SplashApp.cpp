@@ -1,6 +1,8 @@
 #include "SplashApp.h"
 #include "FastLED.h"
 
+SplashApp theSplashApp;
+
 void drawLogo(color_t c) {
   int weight = 20;
   int radius = 30;

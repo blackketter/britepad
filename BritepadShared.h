@@ -1,6 +1,8 @@
 #ifndef _BritepadShared_
 #define _BritepadShared_
 
+#include "Arduino.h"
+
 #include "Types.h"
 
 #include "Screen.h"
@@ -17,5 +19,7 @@ extern Britepad britepad;
 
 #include "Clock.h"
 extern Clock clock;
+
+#include "Timer.h"
 
 #endif

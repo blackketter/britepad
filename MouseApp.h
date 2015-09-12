@@ -9,6 +9,10 @@ class MouseApp : public BritepadApp {
     BritepadApp* run(void);
     void end(BritepadApp* nextApp);
     const char* name(void) { return "Mouse"; };
+
+    appid_t id() { return ID; }
+    static constexpr appid_t ID = "mous";
+
   private:
     int currentColor = screen.red;
     int backgroundColor = screen.black;

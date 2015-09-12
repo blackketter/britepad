@@ -7,11 +7,6 @@
 
 #include "Debug.h"
 
-#include <Audio.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
-
 #define NO_SYNTH (-1)
 #define SYNTH_COUNT (4)
 

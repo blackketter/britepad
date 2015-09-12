@@ -1,7 +1,7 @@
 #ifndef _Britepad_
 #define _Britepad_
 
-#include "BritepadApp.h"
+#include "BritepadShared.h"
 #include "Timer.h"
 
 class BritepadApp;
@@ -12,10 +12,10 @@ class Britepad {
   public:
     Britepad(void);
     void addApp(BritepadApp* newApp);
-    int appsAdded(void) { return appCount; }
+    int appsAdded(void) { return appCount; };
     BritepadApp* getApp(int appIndex);
+    BritepadApp* getApp(appid_t appID);
 
-    void setApp(BritepadApp* newApp);  // sets the current app
     void begin(void);
     void idle(void);
 
@@ -24,6 +24,8 @@ class Britepad {
     ScreensaverApp* randomScreensaver(void);
 
   private:
+    void setApp(BritepadApp* newApp);  // sets the current app
+
     int appCount = 0;
     static const int maxApps = 100;
     static const millis_t screensaverDelay = 5000;
@@ -36,10 +38,9 @@ class Britepad {
 
     BritepadApp* apps[maxApps];
 
-    LauncherApp* launcherApp;
+
     BritepadApp* defaultApp;
     BritepadApp* currApp;
-
     BritepadApp* switchApp;
 };
 

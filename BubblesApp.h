@@ -7,6 +7,10 @@ class BubblesApp : public ScreensaverApp {
   public:
     BritepadApp* run(void);
     const char* name(void) { return "Bubbles"; };
+
+    appid_t id() { return ID; }
+    static constexpr appid_t ID = "bubb";
+
   private:
     int currentColor = screen.red;
 

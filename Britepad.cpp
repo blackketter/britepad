@@ -7,11 +7,31 @@
 #include "ScreensaverApp.h"
 #include "LauncherApp.h"
 #include "MouseApp.h"
+#include "SplashApp.h"
 
 #include "Debug.h"
 
 Britepad::Britepad(void) {
 
+}
+
+BritepadApp* Britepad::getApp(appid_t appID) {
+  DEBUG_LN("Looking for:");
+  DEBUG_LN(appID);
+
+  int index = 0;
+  BritepadApp* nextapp = getApp(index++);
+  while (nextapp) {
+    DEBUG_PARAM_LN("checking", (unsigned long)nextapp);
+    DEBUG_LN(nextapp->id());
+
+    if (nextapp->isID(appID)) {
+      return nextapp;
+    } else {
+      nextapp = getApp(index++);
+    }
+  }
+  return nil;
 }
 
 ScreensaverApp* Britepad::randomScreensaver(void) {
@@ -89,7 +109,7 @@ void Britepad::setApp(BritepadApp* newApp) {
   if (newApp == BritepadApp::DEFAULT_APP) {
     newApp = defaultApp;
   } else if (newApp == BritepadApp::BACK_APP) {
-    newApp = launcherApp;
+    newApp = getApp(LauncherApp::ID);
   }
 
   if (currApp)
@@ -121,11 +141,10 @@ void backlightCallback(void* data) {
 void Britepad::begin(void) {
 
 // these are special apps that are shared across the enviroment
-  launcherApp = new LauncherApp;
-  defaultApp = new MouseApp;
+  defaultApp = getApp(MouseApp::ID);
 
   // the launcher owns the apps and has created a splash app
-  setApp(launcherApp->getSplashApp());
+  setApp(getApp(SplashApp::ID));
 
 // show the apps that have been loaded
   DEBUG_PARAM_LN("app count", appsAdded());
@@ -146,22 +165,25 @@ void Britepad::idle(void) {
 
   if (pad.down(TOP_PAD)) {
     // start or exit launcher
-    if (currApp == launcherApp) {
+    if (currApp == getApp(LauncherApp::ID)) {
       switchApp = defaultApp;
       sound.swipe(DIRECTION_UP);
     } else {
-      switchApp = launcherApp;
+      switchApp = getApp(LauncherApp::ID);
       sound.swipe(DIRECTION_DOWN);
     }
   } else if (pad.touched(ANY_PAD) && currApp->isScreensaver()) {
     // touching resets screensaver
     switchApp = defaultApp;
-  } else if (switchApp == BritepadApp::SCREENSAVER_APP) {
-    switchApp = randomScreensaver();
-  } else if (currApp->isScreensaver() && (pad.time() - screensaverStartedTime) > screensaverSwitchInterval) {
-    switchApp = randomScreensaver();
-  } else if (!currApp->isScreensaver() && (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay)) {
-    switchApp = randomScreensaver();
+  } else if (!currApp->disablesScreensavers()) {
+    // let's check for screensavers
+    if (switchApp == BritepadApp::SCREENSAVER_APP) {
+      switchApp = randomScreensaver();
+    } else if (currApp->isScreensaver() && (pad.time() - screensaverStartedTime) > screensaverSwitchInterval) {
+      switchApp = randomScreensaver();
+    } else if (!currApp->isScreensaver() && (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay)) {
+      switchApp = randomScreensaver();
+    }
   }
 
   setApp(switchApp);

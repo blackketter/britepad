@@ -11,8 +11,20 @@ enum ScreenNames {
   APPS_SCREEN
 };
 
-
 class LauncherApp : public BritepadApp {
+  public:
+    LauncherApp(void);
+    void begin(void);
+    void end(BritepadApp* newApp);
+    BritepadApp* run(void);
+    void setButton(int screen, int i, BritepadApp* b);
+    BritepadApp* getButton(int i);
+    const char* name(void) { return "Launcher"; };
+    const char* statusBarTitle(void);
+
+    appid_t id() { return ID; }
+    static constexpr appid_t ID = "laun";
+
   private:
     const static int noButton = -1;
 
@@ -21,7 +33,6 @@ class LauncherApp : public BritepadApp {
     const static int total_screens = 4;
     const static int buttons_per_screen = h_buttons * v_buttons;
     const static int resetScreenTimeout = 10;  // seconds
-
 
     BritepadApp* apps[total_screens][buttons_per_screen];
 
@@ -49,18 +60,6 @@ class LauncherApp : public BritepadApp {
     int currentScreen(void);
     color_t bgColor(void);
     time_t lastRun = 0;
-    BritepadApp* splashApp;
-
-  public:
-    LauncherApp(void);
-    void begin(void);
-    void end(BritepadApp* newApp);
-    BritepadApp* run(void);
-    void setButton(int screen, int i, BritepadApp* b);
-    BritepadApp* getButton(int i);
-    const char* name(void) { return "Launcher"; };
-    const char* statusBarTitle(void);
-    BritepadApp* getSplashApp(void) { return splashApp; }
 };
 #endif
 

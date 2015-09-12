@@ -4,27 +4,6 @@
 #include "Clock.h"
 #include "Debug.h"
 
-SetClockApp::SetClockApp(void) {
-  int ytop = screen.height()/5;
-  int ybottom = screen.height() - ytop;
-  int spacing = screen.width()/5;
-  int x1 = screen.width()/2-2*spacing;
-  int x2 =  x1+spacing;
-  int x3 =  x2+spacing*2;
-  int x4 =  x3+spacing;
-  buttony[0] = buttony[1] = buttony[2] = buttony[6] = ytop;
-  buttonsym[0] = buttonsym[1] = buttonsym[2] = '+';
-
-  buttony[3] = buttony[4] = buttony[5] = ybottom;
-  buttonsym[3] = buttonsym[4] = buttonsym[5] ='-';
-
-  buttonx[0] = buttonx[3] = x2;
-  buttonx[1] = buttonx[4] = x3;
-  buttonx[2] = buttonx[5] = x4;
-  buttonx[6] = x1;  //  am/pm
-  buttonsym[6] = 'm';
-}
-
 void SetClockApp::drawClock(void) {
   time_t t = clock.now();
 
@@ -34,8 +13,8 @@ void SetClockApp::drawClock(void) {
     screen.setTextSize(10);
     screen.setTextColor(screen.white, bgColor());
     sprintf(textTime,"%2d:%02d", clock.hourFormat12(), clock.minute());
-    screen.setCursor(screen.width()/2 - screen.measureTextH(textTime)/2,
-                     screen.height()/2 - screen.measureTextV(textTime)/2);
+    screen.setCursor(width()/2 + left() - screen.measureTextH(textTime)/2,
+                     height()/2 + top() - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
     drawButton(6, screen.red);
     lastTime = t;
@@ -51,6 +30,31 @@ int SetClockApp::hitButton(int x, int y) {
 }
 
 void SetClockApp::drawButton(int i, color_t color) {
+  int buttonx[buttoncount];
+  int buttony[buttoncount];
+  char buttonsym[buttoncount];
+
+  int ytop = top() + height()/6;
+  int ybottom = bottom() - height()/6;
+  buttony[0] = buttony[1] = buttony[2] = buttony[6] = ytop;
+  buttony[3] = buttony[4] = buttony[5] = ybottom;
+
+  int xspacing = width()/5;
+  int x1 =  left() + xspacing/2;
+  int x2 =  x1+xspacing;
+  int x3 =  x2+xspacing*2;
+  int x4 =  x3+xspacing;
+
+  buttonx[0] = buttonx[3] = x2;
+  buttonx[1] = buttonx[4] = x3;
+  buttonx[2] = buttonx[5] = x4;
+  buttonx[6] = x1;  //  am/pm
+
+
+  buttonsym[0] = buttonsym[1] = buttonsym[2] = '+';
+  buttonsym[3] = buttonsym[4] = buttonsym[5] ='-';
+  buttonsym[6] = 'm';
+
   int r = buttonradius;
 
   screen.fillCircle(buttonx[i],buttony[i],r, color);

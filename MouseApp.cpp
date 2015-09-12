@@ -19,6 +19,8 @@
 
 #define SCROLL_EDGE_MARGIN (10)
 
+MouseApp theMouseApp;
+
 void MouseApp::end(BritepadApp* nextApp) {
   Mouse.release();
   Keyboard.releaseAll();

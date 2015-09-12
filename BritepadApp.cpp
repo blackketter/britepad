@@ -65,5 +65,7 @@ void BritepadApp::updateStatusBarBounds(void) {
   }
 };
 
-
+bool BritepadApp::isID(appid_t match) {
+  return !strcmp(match, id());
+}
 

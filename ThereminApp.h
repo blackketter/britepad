@@ -10,7 +10,9 @@ class ThereminApp : public BritepadApp {
     const char* name(void) { return "Theremin"; };
     BritepadApp* run(void);
     void end(BritepadApp* nextApp);
-  private:
+
+    appid_t id() { return ID; }
+    static constexpr appid_t ID = "thrm";
 };
 
 #endif

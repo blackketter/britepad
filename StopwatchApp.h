@@ -10,6 +10,10 @@ class StopwatchApp : public BritepadApp {
     void begin(void) { BritepadApp::begin(); startMillis = lastDrawMillis = millis(); }
     const char* name(void) { return "Stopwatch"; };
     bool disablesScreensavers(void) { return true; }
+
+    appid_t id() { return ID; }
+    static constexpr appid_t ID = "stpw";
+
   private:
     millis_t startMillis;
     millis_t lastDrawMillis;

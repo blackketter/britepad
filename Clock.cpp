@@ -2,6 +2,7 @@
 #include "BritepadShared.h"
 #include "Clock.h"
 #include "Sound.h"
+#include "Debug.h"
 
 // todo - deal with 32bit millis wraparound (every 12 days!)
 

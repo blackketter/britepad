@@ -6,11 +6,15 @@
 
 class SetClockApp : public BritepadApp {
   public:
-    SetClockApp(void);
     void begin(void);
     void end(BritepadApp* nextApp);
     BritepadApp* run(void);
     const char* name(void) { return "Set Clock"; };
+
+    bool disablesScreensavers(void) { return true; }
+
+    appid_t id() { return ID; }
+    static constexpr appid_t ID = "sclk";
 
   private:
     static const int buttoncount = 7;
@@ -22,9 +26,6 @@ class SetClockApp : public BritepadApp {
     int hitButton(int x, int y);
     void drawButtons(void);
     time_t lastTime = 0;
-    int buttonx[buttoncount];
-    int buttony[buttoncount];
-    char buttonsym[buttoncount];
 
 };
 #endif

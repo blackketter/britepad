@@ -12,5 +12,6 @@ enum Direction {
 };
 
 typedef unsigned long millis_t;
+typedef const char* appid_t;
 
 #endif

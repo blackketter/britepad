@@ -19,6 +19,10 @@ class BritepadApp {
     virtual BritepadApp* run(void) {return STAY_IN_APP;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants above)
 
     virtual const char* name(void) = 0;
+
+    virtual appid_t id(void) = 0;
+    bool isID(appid_t match);
+
     virtual color_t buttonColor(void) { return screen.blue; }
 
     virtual bool isScreensaver(void) { return false; };
@@ -39,6 +43,8 @@ class BritepadApp {
     coord_t left(void);
     coord_t height(void);
     coord_t width(void);
+    coord_t bottom(void) { return top() + height(); };
+    coord_t right(void) { return left() + width(); };
 
     void updateStatusBarBounds();
     void drawStatusBar();

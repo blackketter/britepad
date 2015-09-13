@@ -14,7 +14,7 @@ class PassApp : public KeyApp {
     color_t buttonColor(void) { return screen.red; };
     void draw(void);
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "pass";
 };
 

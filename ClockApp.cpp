@@ -26,7 +26,7 @@ void ClockApp::redraw(void) {
     screen.setCursor(screen.width()/2 - w/2,
                      screen.height()/2 - screen.measureTextV(textTime)/2);
     if (w != lastWidth) {
-      screen.fillScreen(bgColor());
+      clearScreen();
       lastWidth = w;
     }
     screen.drawText(textTime);

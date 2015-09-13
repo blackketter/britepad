@@ -6,6 +6,26 @@
 
 // todo - deal with 32bit millis wraparound (every 12 days!)
 
+time_t getRTCTime()
+{
+  return Teensy3Clock.get();
+}
+
+Clock::Clock(void) {
+    // todo - if the clock has NEVER been set, then set it to a reasonable time
+
+    setSyncProvider(getRTCTime);
+    if (timeStatus()!= timeSet) {
+//      DEBUG_LN("Unable to sync with the RTC");
+      // set clock to a recent time - not needed with RTC
+      ::setTime(16,20,0,1,1,2015);
+    } else {
+//      DEBUG_LN("RTC has set the system time");
+      set = true;
+    }
+}
+
+
 
 void chimeCallback(void* data) {
   ((Clock*)data)->chimerCallback();
@@ -41,15 +61,11 @@ void Clock::chimerCallback(void) {
 
 void Clock::adjust(long adjustment) {
   adjustTime(adjustment);
+  Teensy3Clock.set(now());
   set = true;
   resetChime();
 }
 
-
-Clock::Clock(void) {
-  // set clock to a recent time
-  ::setTime(16,20,0,1,1,2015);
-}
 
 millis_t Clock::millis() {
   return ::millis();

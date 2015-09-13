@@ -16,6 +16,8 @@
 #include "MuteApp.h"
 #include "ThereminApp.h"
 #include "StopwatchApp.h"
+#include "BreakoutApp.h"
+#include "RebootApp.h"
 
 LauncherApp theLauncherApp;
 
@@ -62,6 +64,8 @@ LauncherApp::LauncherApp(void) {
   setButton(TIMERS_SCREEN, 11, new StopwatchApp);
 
   setButton(APPS_SCREEN, 8,  new ThereminApp);
+  setButton(APPS_SCREEN, 1,  new BreakoutApp);
+  setButton(APPS_SCREEN, 2,  new RebootApp);
 }
 
 void LauncherApp::begin(void) {
@@ -95,7 +99,7 @@ void LauncherApp::drawButtons(void) {
 }
 
 void LauncherApp::drawButton(int i, bool highlighted) {
-  if (i == noButton || i >= buttons_per_screen) {
+  if (i == noButton || i >= buttons_per_screen || apps[currentScreen()][i]->disabled()) {
     return;
   }
   // todo: factor out these into function that finds button coordinates
@@ -172,7 +176,7 @@ BritepadApp* LauncherApp::run(void) {
         if (launched->isPopup()) {
           exit = launched->run();
           if (!launched->isInvisible()) {
-            screen.fillScreen(bgColor());
+            clearScreen();
             drawButtons();
           } else {
             drawButton(b, false);

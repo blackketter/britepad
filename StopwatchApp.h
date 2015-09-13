@@ -11,7 +11,7 @@ class StopwatchApp : public BritepadApp {
     const char* name(void) { return "Stopwatch"; };
     bool disablesScreensavers(void) { return true; }
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "stpw";
 
   private:

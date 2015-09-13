@@ -26,7 +26,7 @@ class MuteApp : public BritepadApp {
 
     color_t buttonColor(void) { return sound.getMute() ? screen.yellow : screen.darkyellow; };
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "mute";
 
 };

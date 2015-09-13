@@ -28,6 +28,7 @@ class BritepadApp {
     virtual bool isScreensaver(void) { return false; };
     virtual bool disablesScreensavers(void) { return false; }
     virtual bool wantsToBeScreensaver(void) { return false; }  // return true if you want to be switched to as the screensaver
+    virtual bool disabled(void) { return false; } // return true if you don't want this to ever run or be visible
 
     virtual bool isPopup(void) { return false; };        // popup apps don't need begin or end, call run() just once
     virtual bool isInvisible(void) { return false; };    // has no UI
@@ -38,6 +39,7 @@ class BritepadApp {
     virtual color_t statusBarBGColor(void) { return screen.mix(bgColor(), screen.grey); }  // bgcolor of status bar
     virtual color_t statusBarFGColor(void) { return screen.luminance(statusBarBGColor()) > 127 ? screen.black : screen.white; } // color of text, graphics on status bar
     virtual const char* statusBarTitle(void) { return name(); }
+    virtual void clearScreen(void) { screen.fillScreen(bgColor()); }
 
     coord_t top(void);
     coord_t left(void);

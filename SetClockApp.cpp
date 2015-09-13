@@ -7,7 +7,7 @@
 void SetClockApp::drawClock(void) {
   time_t t = clock.now();
 
-  if (lastTime/60 != t/60) {
+  if (lastTime != t) {
     char textTime[6];
 
     screen.setTextSize(10);
@@ -22,6 +22,25 @@ void SetClockApp::drawClock(void) {
 }
 
 int SetClockApp::hitButton(int x, int y) {
+  int buttonx[buttoncount];
+  int buttony[buttoncount];
+
+  int ytop = top() + height()/6;
+  int ybottom = bottom() - height()/6;
+  buttony[0] = buttony[1] = buttony[2] = buttony[6] = ytop;
+  buttony[3] = buttony[4] = buttony[5] = ybottom;
+
+  int xspacing = width()/5;
+  int x1 =  left() + xspacing/2;
+  int x2 =  x1+xspacing;
+  int x3 =  x2+xspacing*2;
+  int x4 =  x3+xspacing;
+
+  buttonx[0] = buttonx[3] = x2;
+  buttonx[1] = buttonx[4] = x3;
+  buttonx[2] = buttonx[5] = x4;
+  buttonx[6] = x1;  //  am/pm
+
   for (int i = 0; i < buttoncount; i++) {
     if ((abs(buttonx[i] - x) < buttonradius) && (abs(buttony[i] - y) < buttonradius))
       return i;
@@ -82,7 +101,7 @@ void SetClockApp::drawButtons() {
 
 void SetClockApp::begin(void) {
   lastTime = 0;
-  screen.fillScreen(bgColor());
+  clearScreen();
 
   drawClock();
   drawButtons();
@@ -95,6 +114,7 @@ void SetClockApp::end(BritepadApp* nextApp) {
 
 BritepadApp* SetClockApp::run(void) {
 
+  hasRun = true;
   drawClock();
 
   if (pad.down(SCREEN_PAD)) {

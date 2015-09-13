@@ -8,7 +8,7 @@ class BubblesApp : public ScreensaverApp {
     BritepadApp* run(void);
     const char* name(void) { return "Bubbles"; };
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "bubb";
 
   private:

@@ -9,6 +9,7 @@
 #include "MouseApp.h"
 #include "SplashApp.h"
 
+#define DEBUG_ON 1
 #include "Debug.h"
 
 Britepad::Britepad(void) {
@@ -154,9 +155,9 @@ void Britepad::begin(void) {
     DEBUG_LN(anApp->name());
     anApp = getApp(count++);
   }
-
+  screen.fillScreen(screen.black);
+  screen.backlight(screen.maxbrightness);
   backlightTimer.setMillis(ambientUpdateInterval, (timerCallback_t)backlightCallback, (void*)this, true);
-
 }
 
 void Britepad::idle(void) {

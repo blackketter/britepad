@@ -10,7 +10,7 @@ class DotsDisplayApp : public ScreensaverApp {
     const char* name(void) { return "Dots"; };
     BritepadApp* run(void);
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "dots";
 
   private:

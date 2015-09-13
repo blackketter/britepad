@@ -3,8 +3,6 @@
 #include "Screen.h"
 #include "Debug.h"
 
-#define BACKLIGHT_PIN (21)
-#define BACKLIGHT_FREQUENCY (50000)
 void Screen::backlight(uint8_t brightness) {
   analogWriteFrequency(BACKLIGHT_PIN, BACKLIGHT_FREQUENCY);
   analogWrite(BACKLIGHT_PIN, brightness);

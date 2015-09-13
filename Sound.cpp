@@ -107,7 +107,7 @@ void Sound::beep(millis_t ms, float freq)
     envelopes[beeper]->sustain(0);  //  just a percussive sound, no sustain
     envelopes[beeper]->release(0.0);
     envelopes[beeper]->noteOn();
-    DEBUG_LN("beep");
+//    DEBUG_LN("beep");
   }
 }
 

@@ -10,7 +10,7 @@ class MouseApp : public BritepadApp {
     void end(BritepadApp* nextApp);
     const char* name(void) { return "Mouse"; };
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "mous";
 
   private:

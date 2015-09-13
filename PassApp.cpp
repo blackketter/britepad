@@ -3,7 +3,7 @@
 
 void PassApp::draw(void) {
 
-  screen.fillScreen(bgColor());
+  clearScreen();
 
   const int radius = 10;
   const int count = 8;

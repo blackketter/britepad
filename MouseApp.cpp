@@ -232,7 +232,7 @@ BritepadApp* MouseApp::run(void) {
         } else {
           if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
             Mouse.release();
-            screen.fillScreen(bgColor());
+            clearScreen();
             DEBUG_LN("mouse release in order to press after touch up");
           }
           Mouse.press();
@@ -254,7 +254,7 @@ BritepadApp* MouseApp::run(void) {
               sound.click();
             }
             Mouse.release();
-            screen.fillScreen(bgColor());
+            clearScreen();
             screen.fillCircle(pad.x(), pad.y(), PENRADIUS*2, ~currentColor);
             DEBUG_LN("mouse release after timeout");
           }

@@ -19,7 +19,7 @@ void drawLogo(color_t c) {
 
 void SplashApp::begin(void) {
   drawindex = 0;
-  screen.fillScreen(screen.black);
+  clearScreen();
   currColor = screen.red;
   firstRun = millis();
 //  drawLogo(currColor);

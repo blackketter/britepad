@@ -29,22 +29,24 @@ Clock clock = Clock();
 Britepad britepad = Britepad();
 
 void setup(void) {
+
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(500);
 
   DEBUG_INIT();
 
   DEBUG_LN("britepad starting...");
+  DEBUG_PARAM_LN("Teensy3Clock.get()", year(Teensy3Clock.get()));
 
+  DEBUG_LN("starting screen");
   screen.begin();
   screen.setRotation(3);  // Britepad Mark-0 is oriented this way
-  DEBUG_LN("screen started");
 
+  DEBUG_LN("starting touchpad");
   pad.begin();
-  DEBUG_LN("touchpad started");
 
+  DEBUG_LN("starting sound");
   sound.begin();
-  DEBUG_LN("sound started");
 
   DEBUG_LN("starting app framework");
   britepad.begin();

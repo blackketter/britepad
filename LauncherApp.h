@@ -22,7 +22,7 @@ class LauncherApp : public BritepadApp {
     const char* name(void) { return "Launcher"; };
     const char* statusBarTitle(void);
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "laun";
 
   private:

@@ -13,7 +13,7 @@ class ClockApp : public ScreensaverApp {
     void chimerCallback();
     bool screensaverIsEnabled() { return enabled && clock.hasBeenSet(); }
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "clok";
 
 

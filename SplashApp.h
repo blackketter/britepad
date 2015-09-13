@@ -10,7 +10,7 @@ class SplashApp : public ScreensaverApp {
     const char* name(void) { return "Splash"; };
     bool displaysStatusBar(void) { return false; };
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "spla";
 
   private:

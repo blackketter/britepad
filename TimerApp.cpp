@@ -39,7 +39,6 @@ BritepadApp* TimerApp::run(void) {
     coord_t width = screen.measureTextH(textTime);
 
     color_t fg = current_color++;
-    color_t bg = bgColor();
 
     if (alarm_sounded) {
       if (t % 2) {
@@ -56,11 +55,11 @@ BritepadApp* TimerApp::run(void) {
     }
 
     if (erasescreen) {
-      screen.fillScreen(bg);
+      clearScreen();
     }
 
     if (drawtext) {
-      screen.setTextColor(fg, bg);
+      screen.setTextColor(fg, bgColor());
 
       screen.setCursor(screen.width()/2 - width/2,
                        screen.height()/2 - screen.measureTextV(textTime)/2);

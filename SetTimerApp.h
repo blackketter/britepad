@@ -13,7 +13,7 @@ class SetTimerApp : public BritepadApp {
     BritepadApp* run(void) { timer_app.setTime(timer_duration); return &timer_app; };
     const char* name(void) { return name_str; };
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "stmr";
 
   private:

@@ -56,7 +56,7 @@ color_t KeyApp::buttonColor(void) {
 }
 
 void KeyApp::draw(void) {
-    screen.fillScreen(bgColor());
+  clearScreen();
     screen.setTextSize(3);
     screen.setTextColor(screen.yellow);
     int x = screen.width()/2 - (screen.measureTextH(nameStr) / 2);

@@ -46,6 +46,8 @@ class Screen : public ILI9341_t3 {
 
     Screen(uint8_t _CS, uint8_t _DC, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
       ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO) {
+      pinMode(21, OUTPUT);
+      digitalWrite(21, LOW);   // set the backlight off
     };
 
     void backlight(uint8_t brightness);
@@ -62,7 +64,10 @@ class Screen : public ILI9341_t3 {
     color_t mix(color_t c1, color_t c2);
     uint8_t luminance(color_t);
 
-protected:
+private:
+    static const int BACKLIGHT_PIN = 21;
+    static const long BACKLIGHT_FREQUENCY = 50000;
+
 };
 
 #endif

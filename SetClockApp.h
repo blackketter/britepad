@@ -11,9 +11,10 @@ class SetClockApp : public BritepadApp {
     BritepadApp* run(void);
     const char* name(void) { return "Set Clock"; };
 
-    bool disablesScreensavers(void) { return true; }
+    bool disablesScreensavers(void) { return true; };
+    bool wantsToBeScreensaver(void) { return !hasRun && !clock.hasBeenSet(); };
 
-    appid_t id() { return ID; }
+    appid_t id() { return ID; };
     static constexpr appid_t ID = "sclk";
 
   private:
@@ -26,6 +27,7 @@ class SetClockApp : public BritepadApp {
     int hitButton(int x, int y);
     void drawButtons(void);
     time_t lastTime = 0;
+    bool hasRun = false;
 
 };
 #endif

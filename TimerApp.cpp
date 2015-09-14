@@ -8,7 +8,7 @@
 void TimerApp::end(BritepadApp* nextApp) {
   // don't bother coming back as a screensaver if the alarm has sounded
   if (alarm_sounded) {
-    running = false;
+    cancel();
   }
 }
 
@@ -79,7 +79,7 @@ BritepadApp* TimerApp::run(void) {
     }
   }
 
-  return STAY_IN_APP;
+  return running ? STAY_IN_APP : DEFAULT_APP;
 }
 
 void alarmcallback(void* data) {
@@ -111,6 +111,7 @@ void TimerApp::alarm(void) {
 
 void TimerApp::cancel(void) {
   running = false;
+  beeps = 0;
   mytimer.cancel();
 }
 

@@ -186,8 +186,8 @@ BritepadApp* LauncherApp::run(void) {
           if (launched->isScreensaver()) {
             ScreensaverApp* ss = (ScreensaverApp*)launched;
             // toggle the enabledness of the screensaver, and launch it if we're enabling it
-            ss->setEnabled(!ss->screensaverIsEnabled());
-            if (ss->screensaverIsEnabled()) {
+            ss->setScreensaverEnabled(!ss->getScreensaverEnabled());
+            if (ss->getScreensaverEnabled()) {
               exit = launched;
             } else {
               drawButton(b, false);

@@ -28,6 +28,8 @@ class Timer {
     bool passed(void);         // is the timer in the past
 
     void cancel(void);         // cancel timer including callback
+    bool running(void);        // is the timer running?  (returns true even if paused)
+
     void pause(void);          // pause timer
     void resume(void);         // resume timer
     bool isPaused(void);       // is paused

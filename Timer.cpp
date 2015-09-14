@@ -92,6 +92,10 @@ bool Timer::passed(void) {
   return false;
 }
 
+bool Timer::running(void) {
+  return millisTime || clockTime;
+}
+
 void Timer::cancel(void) {
   millisTime = 0;
   clockTime = 0;

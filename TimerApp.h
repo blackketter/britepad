@@ -14,9 +14,11 @@ class TimerApp : public ScreensaverApp {
     void setTime(time_t t);
     time_t timerTime(void) { return timer_dur; };
 
-    bool timerActive(void) { return running; }
-    bool wantsToBeScreensaver(void) { return running; }
-    bool screensaverIsEnabled(void) { return running; }
+    bool timerActive(void) { return mytimer.running(); }  // are we counting down?
+
+    bool wantsToBeScreensaver(void) { return running; }  // stay being screensaver if counting down or has just gone off
+
+    bool screensaverIsEnabled(void) { return mytimer.running(); }  // switch to being screensaver if counting down
 
     void alarm(void);
     void cancel(void);

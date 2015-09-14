@@ -4,10 +4,16 @@
 #define DEBUG_ON 1
 #include "Debug.h"
 
+// todo - fix flicker
+// todo - show score, have multiple lives
+// todo - adjust angle based on where on the paddle
+// todo - speed up over time
+// todo - make it run as a self-playing screensaver
 
 void BreakoutApp::begin(void) {
   BritepadApp::begin();
   newGame();
+  dx = dy = 0;  // start off without the ball moving
 }
 
 coord_t BreakoutApp::brickx(int col) {
@@ -48,7 +54,7 @@ void BreakoutApp::newGame(void) {
   bricksleft = rows*cols;
 
   ballx = width()/2 + random(10);
-  bally = height()/2 + random(10);
+  bally = top() + height()/2 + ballr*2 + random(10);
 
   dx = 3;
   dy = 3;
@@ -63,13 +69,13 @@ void BreakoutApp::newGame(void) {
 
 BritepadApp* BreakoutApp::run(void) {
   millis_t millisNow = clock.millis();
-  if (lastDraw/millisPerFrame == millisNow/millisPerFrame && !pad.down(SCREEN_PAD)) {
+  if (lastDraw/millisPerFrame == millisNow/millisPerFrame && !pad.down(ANY_PAD)) {
     return STAY_IN_APP;
   }
 
    if (dx == 0 && dy == 0) {
     // game over, man
-      if (pad.down(SCREEN_PAD)) {
+      if (pad.down(ANY_PAD)) {
         newGame();
       } else {
         return STAY_IN_APP;

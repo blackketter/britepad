@@ -48,7 +48,7 @@ ScreensaverApp* Britepad::randomScreensaver(void) {
   int index = 0;
   BritepadApp* nextapp = getApp(index++);
   while (nextapp) {
-    if (nextapp->isScreensaver() && (((ScreensaverApp*)nextapp)->screensaverIsEnabled())) {
+    if (nextapp->isScreensaver() && (((ScreensaverApp*)nextapp)->getScreensaverEnabled())) {
       count++;
     }
     nextapp = getApp(index++);
@@ -60,7 +60,7 @@ ScreensaverApp* Britepad::randomScreensaver(void) {
   index = 0;
   nextapp = getApp(index++);
   while (nextapp) {
-    if (nextapp->isScreensaver() && (((ScreensaverApp*)nextapp)->screensaverIsEnabled())) {
+    if (nextapp->isScreensaver() && (((ScreensaverApp*)nextapp)->getScreensaverEnabled())) {
       if (count == 0) {
         return (ScreensaverApp*)nextapp;
       } else {

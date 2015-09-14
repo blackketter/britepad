@@ -11,7 +11,7 @@ class ClockApp : public ScreensaverApp {
     virtual void redraw(void);
     const char* name(void) { return "Clock"; };
     void chimerCallback();
-    bool screensaverIsEnabled() { return enabled && clock.hasBeenSet(); }
+    bool getScreensaverEnabled() { return ScreensaverApp::getScreensaverEnabled() && clock.hasBeenSet(); }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "clok";

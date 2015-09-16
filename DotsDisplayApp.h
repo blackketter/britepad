@@ -13,13 +13,13 @@ class DotsDisplayApp : public ScreensaverApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "dots";
 
-  private:
-    int pixels_wide = 0;
-    int pixels_high = 0;
-    color_t* pixels = 0;
+  protected:
+    int dots_wide = 0;
+    int dots_high = 0;
+    color_t* dots = 0;
 
     void updateDots(void);
-    void updateDot(int x, int y);
+    virtual void updateDot(int x, int y);
     void setDot(int x, int y, color_t c);
     void writeDot(int x, int y, color_t c);
     void setUpDots(int width, int height);

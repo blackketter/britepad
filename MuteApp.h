@@ -30,7 +30,7 @@ class MuteApp : public BritepadApp {
 
     bool isInvisible(void) { return true; };
 
-    color_t buttonColor(void) { return sound.getMute() ? screen.yellow : screen.darkyellow; };
+    color_t buttonColor(void) { return sound.getMute() ? screen.darkyellow : screen.yellow; };
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "mute";

@@ -18,6 +18,7 @@
 #include "StopwatchApp.h"
 #include "BreakoutApp.h"
 #include "RebootApp.h"
+#include "BriteLiteApp.h"
 
 LauncherApp theLauncherApp;
 
@@ -33,6 +34,7 @@ LauncherApp::LauncherApp(void) {
   setButton(SETTINGS_SCREEN, 1,  new SplashApp);
   setButton(SETTINGS_SCREEN, 2,  new DotsDisplayApp);
   setButton(SETTINGS_SCREEN, 3,  new ClockApp);
+  setButton(SETTINGS_SCREEN, 4,  new BriteLiteApp);
   setButton(SETTINGS_SCREEN, 8,  new SetClockApp);
   setButton(SETTINGS_SCREEN, 9,  new MuteApp);
 
@@ -63,9 +65,9 @@ LauncherApp::LauncherApp(void) {
 
   setButton(TIMERS_SCREEN, 11, new StopwatchApp);
 
-  setButton(APPS_SCREEN, 8,  new ThereminApp);
-  setButton(APPS_SCREEN, 1,  new BreakoutApp);
-  setButton(APPS_SCREEN, 2,  new RebootApp);
+  setButton(APPS_SCREEN, 0,  new BreakoutApp);
+  setButton(APPS_SCREEN, 1,  new ThereminApp);
+  setButton(APPS_SCREEN, 11,  new RebootApp);
 }
 
 void LauncherApp::begin(void) {

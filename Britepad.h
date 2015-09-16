@@ -29,7 +29,7 @@ class Britepad {
     int appCount = 0;
     static const int maxApps = 100;
     static const millis_t screensaverDelay = 5000;
-    static const millis_t screensaverSwitchInterval = 10000;
+    static const millis_t screensaverSwitchInterval = 30000;
     static const millis_t ambientUpdateInterval = 100;
 
     Timer     backlightTimer;

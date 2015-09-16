@@ -17,14 +17,12 @@ Britepad::Britepad(void) {
 }
 
 BritepadApp* Britepad::getApp(appid_t appID) {
-  DEBUG_LN("Looking for:");
-  DEBUG_LN(appID);
 
   int index = 0;
   BritepadApp* nextapp = getApp(index++);
   while (nextapp) {
-    DEBUG_PARAM_LN("checking", (unsigned long)nextapp);
-    DEBUG_LN(nextapp->id());
+//    DEBUG_PARAM_LN("checking", (unsigned long)nextapp);
+//    DEBUG_LN(nextapp->id());
 
     if (nextapp->isID(appID)) {
       return nextapp;

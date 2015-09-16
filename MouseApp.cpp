@@ -31,15 +31,15 @@ BritepadApp* MouseApp::run(void) {
   // right panel
   if (pad.changed(RIGHT_PAD)) {
     if (pad.touched(RIGHT_PAD)) {
-      DEBUG_LN("mouse press right panel");
+//      DEBUG_LN("mouse press right panel");
     } else {
       DEBUG_LN("mouse release right panel");
-      Keyboard.release(MODIFIERKEY_CTRL);
+//      Keyboard.release(MODIFIERKEY_CTRL);
     }
 
     if (pad.touched(RIGHT_PAD)) {
       // right has been pressed
-      DEBUG_LN("right panel pressed");
+//      DEBUG_LN("right panel pressed");
       // if the left is down, send a tab
       if (pad.touched(LEFT_PAD)) {
         Keyboard.press(MODIFIERKEY_GUI);
@@ -49,7 +49,7 @@ BritepadApp* MouseApp::run(void) {
       // always hold down ctrl
       Keyboard.press(MODIFIERKEY_CTRL);
     } else {
-      DEBUG_LN("right panel released");
+//      DEBUG_LN("right panel released");
       // always release ctrl
       Keyboard.release(MODIFIERKEY_CTRL);
 
@@ -94,7 +94,6 @@ BritepadApp* MouseApp::run(void) {
   }
 
   if (pad.up(LEFT_PAD)) {
-    DEBUG_LN("Left panel released");
     if (!pad.touched(RIGHT_PAD)) {
       Keyboard.release(MODIFIERKEY_GUI);
     }
@@ -210,7 +209,6 @@ BritepadApp* MouseApp::run(void) {
 
     // screen tap released
     if (pad.up(SCREEN_PAD)) {
-      DEBUG_LN("Screen Pad Up");
       long downtime = pad.time() - pad.lastDownTime(SCREEN_PAD);
       DEBUG_PARAM_LN("Downtime:", downtime);
 

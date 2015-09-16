@@ -8,13 +8,19 @@
 class MuteApp : public BritepadApp {
 
   public:
-    MuteApp(void) {};
+    MuteApp(void) {
+      uint8_t mutestate;
+      prefs.read(id(), sizeof(mutestate), &mutestate);
+      sound.setMute(mutestate);
+    };
 
     BritepadApp* run(void) {
       sound.setMute(!sound.getMute());
       if (!sound.getMute()) {
         sound.beep();
       }
+      uint8_t mutestate = sound.getMute();
+      prefs.write(id(), sizeof(mutestate), &mutestate);
       return BACK_APP;
     }
 

@@ -38,7 +38,6 @@ class Britepad {
 
     BritepadApp* apps[maxApps];
 
-
     BritepadApp* defaultApp;
     BritepadApp* currApp;
     BritepadApp* switchApp;

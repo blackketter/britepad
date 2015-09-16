@@ -12,6 +12,7 @@
 #include <Audio.h>
 #include <SD.h>
 #include <SerialFlash.h>
+#include <EEPROM.h>
 
 #include "BritepadShared.h"
 
@@ -27,6 +28,7 @@ TouchPad pad = TouchPad(screen.width(), screen.height());
 Sound sound = Sound();
 Clock clock = Clock();
 Britepad britepad = Britepad();
+Preferences prefs = Preferences();
 
 void setup(void) {
 

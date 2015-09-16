@@ -22,4 +22,7 @@ extern Clock clock;
 
 #include "Timer.h"
 
+#include "Preferences.h"
+extern Preferences prefs;
+
 #endif

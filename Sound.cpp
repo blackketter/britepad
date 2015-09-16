@@ -117,7 +117,7 @@ void Sound::bump(void) {
 }
 
 void Sound::swipe(Direction d) {
-  DEBUG_PARAM_LN("swipe direction:", d);
+//  DEBUG_PARAM_LN("swipe direction:", d);
   beep(250, 300);
 }
 

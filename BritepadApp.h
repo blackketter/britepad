@@ -6,7 +6,7 @@
 
 
 // todo move this into the base object
-#define BritepadAppScratchPadSize (32768L)
+#define BritepadAppScratchPadSize (16768L)
 extern uint8_t BritepadAppScratchPad[];
 
 class Britepad;

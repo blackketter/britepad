@@ -21,7 +21,7 @@ class MuteApp : public BritepadApp {
       }
       uint8_t mutestate = sound.getMute();
       prefs.write(id(), sizeof(mutestate), &mutestate);
-      return BACK_APP;
+      return STAY_IN_APP;
     }
 
     const char* name(void) { return sound.getMute() ? "Pad Muted" : "Mute Pad"; };
@@ -30,7 +30,7 @@ class MuteApp : public BritepadApp {
 
     bool isInvisible(void) { return true; };
 
-    color_t buttonColor(void) { return sound.getMute() ? screen.darkyellow : screen.yellow; };
+    color_t buttonColor(void) { return sound.getMute() ? screen.darkblue : screen.blue; };
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "mute";

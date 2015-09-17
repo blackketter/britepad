@@ -193,7 +193,7 @@ BritepadApp* LauncherApp::run(void) {
               exit = launched;
             } else {
               drawButton(b, false);
-              exit = BACK_APP;
+              exit = STAY_IN_APP;
             }
           } else {
             exit = launched;

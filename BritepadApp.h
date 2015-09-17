@@ -52,7 +52,7 @@ class BritepadApp {
     void drawStatusBar();
 
     static BritepadApp* STAY_IN_APP;
-    static BritepadApp* DEFAULT_APP; // typically the MouseApp
+    static BritepadApp* DEFAULT_APP; // typically the MouseApp, but might be a timer when it's running
     static BritepadApp* BACK_APP;  // return to launcher
     static BritepadApp* SCREENSAVER_APP; // go to a screensaver
 

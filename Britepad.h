@@ -11,20 +11,23 @@ class ScreensaverApp;
 class Britepad {
   public:
     Britepad(void);
+
+    void begin(void);
+    void idle(void);
+
     void addApp(BritepadApp* newApp);
     int appsAdded(void) { return appCount; };
     BritepadApp* getApp(int appIndex);
     BritepadApp* getApp(appid_t appID);
 
-    void begin(void);
-    void idle(void);
-
-    ScreensaverApp* wantsToBeScreensaver(void);
-
-    ScreensaverApp* randomScreensaver(void);
 
   private:
     void setApp(BritepadApp* newApp);  // sets the current app
+
+    BritepadApp* defaultApp(void);
+    ScreensaverApp* wantsToBeScreensaver(void);
+    ScreensaverApp* randomScreensaver(void);
+
 
     int appCount = 0;
     static const int maxApps = 100;
@@ -38,7 +41,6 @@ class Britepad {
 
     BritepadApp* apps[maxApps];
 
-    BritepadApp* defaultApp;
     BritepadApp* currApp;
     BritepadApp* switchApp;
 };

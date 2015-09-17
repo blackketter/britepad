@@ -81,6 +81,15 @@ ScreensaverApp* Britepad::wantsToBeScreensaver() {
   return nil;
 }
 
+BritepadApp* Britepad::defaultApp() {
+  BritepadApp* d = wantsToBeScreensaver();
+  if (!d) {
+    d = getApp(MouseApp::ID);
+  }
+  return d;
+}
+
+
 void Britepad::addApp(BritepadApp* app) {
   if (appCount < maxApps) {
     apps[appCount++] = app;
@@ -106,7 +115,7 @@ void Britepad::setApp(BritepadApp* newApp) {
   }
 
   if (newApp == BritepadApp::DEFAULT_APP) {
-    newApp = defaultApp;
+    newApp = defaultApp();
   } else if (newApp == BritepadApp::BACK_APP) {
     newApp = getApp(LauncherApp::ID);
   }
@@ -139,9 +148,6 @@ void backlightCallback(void* data) {
 
 void Britepad::begin(void) {
 
-// these are special apps that are shared across the enviroment
-  defaultApp = getApp(MouseApp::ID);
-
   // the launcher owns the apps and has created a splash app
   setApp(getApp(SplashApp::ID));
 
@@ -165,15 +171,15 @@ void Britepad::idle(void) {
   if (pad.down(TOP_PAD)) {
     // start or exit launcher
     if (currApp == getApp(LauncherApp::ID)) {
-      switchApp = defaultApp;
+      switchApp = defaultApp();
       sound.swipe(DIRECTION_UP);
     } else {
       switchApp = getApp(LauncherApp::ID);
       sound.swipe(DIRECTION_DOWN);
     }
-  } else if (pad.touched(ANY_PAD) && currApp->isScreensaver()) {
-    // touching resets screensaver
-    switchApp = defaultApp;
+  } else if (pad.down(ANY_PAD) && currApp->isScreensaver()) {
+    // waking goes back to the mouse
+    switchApp = getApp(MouseApp::ID);
   } else if (!currApp->disablesScreensavers()) {
     // let's check for screensavers
     if (switchApp == BritepadApp::SCREENSAVER_APP) {

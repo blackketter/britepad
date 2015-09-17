@@ -22,7 +22,7 @@ class RebootApp : public BritepadApp {
         CPU_RESTART
       };
 
-      return BACK_APP;
+      return STAY_IN_APP;  // doesn't matter, actually, but apps that have no UI should return this
     }
 
     bool disabled(void) { return true; }; // this doesn't work now

@@ -10,6 +10,8 @@ class MouseApp : public BritepadApp {
     void end(BritepadApp* nextApp);
     const char* name(void) { return "Mouse"; };
 
+    bool disablesScreensavers(void) { return pad.touched(ANY_PAD); }
+
     appid_t id() { return ID; };
     static constexpr appid_t ID = "mous";
 

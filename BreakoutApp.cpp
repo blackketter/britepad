@@ -91,26 +91,6 @@ BritepadApp* BreakoutApp::run(void) {
   // erase old circle
   screen.fillCircle(ballx, bally, ballr, bgColor());
 
-  // check if we hit the paddle, bottom or top
-  if (bally > bottom()-paddleh-ballr-dy && ballx > paddlex && ballx < paddlex+paddlew && dy > 0) {
-    // bounce off paddle
-    dy = -dy;
-    bally += 2*dy;
-    sound.beep(20,220);
-  } else if (bally > bottom()) {
-    // we hit bottom!
-
-    // stop
-    dy = dx = 0;
-
-    sound.beep(100, 220);
-
-  } else if (bally < top()) {
-    dy = -dy;
-    bally += 2*dy;
-    sound.beep();
-  }
-
   // check if we hit the sides
   ballx += dx;
   if (ballx > right()) {
@@ -142,6 +122,27 @@ BritepadApp* BreakoutApp::run(void) {
     sound.beep(20,880);
   }
 
+  // check if we hit the paddle, bottom or top
+  if (bally > bottom()-paddleh-ballr-dy && dy > 0) {
+    if (ballx > paddlex && ballx < paddlex+paddlew ) {
+      // bounce off paddle
+      dy = -dy;
+      bally += 2*dy;
+      sound.beep(20,220);
+    } else {
+      // we hit bottom!
+
+      // stop
+      dy = dx = 0;
+
+      sound.beep(100, 220);
+    }
+  } else if (bally < top()) {
+    dy = -dy;
+    bally += 2*dy;
+    sound.beep();
+  }
+
   // draw the ball
   screen.fillCircle(ballx, bally, ballr, screen.red);
 
@@ -163,8 +164,26 @@ BritepadApp* BreakoutApp::run(void) {
   newpaddlex = min(screen.width(), newpaddlex);
 
   if (newpaddlex != paddlex) {
-    screen.fillRect(paddlex, bottom()-paddleh, paddlew, paddleh, bgColor());
-    screen.fillRect(newpaddlex, bottom()-paddleh, paddlew, paddleh, screen.blue);
+    coord_t drawx, erasex, draww;
+    if (abs(newpaddlex-paddlex)<paddlew && !pad.down(SCREEN_PAD)) {
+      if (newpaddlex < paddlex) {
+        erasex = newpaddlex+paddlew;
+        drawx = newpaddlex;
+        draww = paddlex-newpaddlex;
+      } else {
+        erasex = paddlex;
+        drawx = paddlex+paddlew;
+        draww = newpaddlex-paddlex;
+      }
+    } else {
+      drawx = newpaddlex;
+      erasex = paddlex;
+      draww = paddlew;
+    }
+
+    screen.fillRect(erasex, bottom()-paddleh, draww, paddleh, bgColor());
+    screen.fillRect(drawx, bottom()-paddleh, draww, paddleh, screen.blue);
+
     paddlex=newpaddlex;
   }
 

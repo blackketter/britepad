@@ -18,6 +18,7 @@ void ClockApp::redraw(void) {
     time_t t = clock.now();
     char textTime[6];
 
+    screen.setFont(Arial_72);
     screen.setTextSize(10);
     screen.setTextColor(currentColor++, bgColor());
     sprintf(textTime, t % 2 ? "%d:%02d" : "%d %02d", clock.hourFormat12(), clock.minute());
@@ -32,6 +33,7 @@ void ClockApp::redraw(void) {
     screen.drawText(textTime);
 
     screen.setTextSize(3);
+    screen.setFont(Arial_20);
     screen.setCursor(screen.width()/5*4, screen.height()/4*3);
     screen.drawText(clock.isAM() ? "am" : "pm");
 }

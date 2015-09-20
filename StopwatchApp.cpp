@@ -21,6 +21,7 @@ BritepadApp* StopwatchApp::run(void) {
     char textTime[8];
 
     screen.setTextSize(7);
+    screen.setFont(Arial_48);
     screen.setTextColor(currentColor, bgColor());
     sprintf(textTime, "%02d:%02d.%01d", mins, secs, tenths);
     coord_t w = screen.measureTextH(textTime);

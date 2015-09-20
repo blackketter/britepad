@@ -60,10 +60,16 @@ void Clock::chimerCallback(void) {
 }
 
 void Clock::adjust(long adjustment) {
-  adjustTime(adjustment);
-  Teensy3Clock.set(now());
+  DEBUG_PARAM_LN("before:", ::now());
+  Teensy3Clock.set(now() + adjustment);
+
+  // force a resync
+  setSyncProvider(getRTCTime);
+
   set = true;
+
   resetChime();
+  DEBUG_PARAM_LN("after:", ::now());
 }
 
 

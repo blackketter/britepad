@@ -1,4 +1,5 @@
 #include "BritepadApp.h"
+#include "font_Arial.h"
 
 uint8_t BritepadAppScratchPad[BritepadAppScratchPadSize];
 
@@ -44,7 +45,8 @@ void BritepadApp::drawStatusBar(void) {
 
     screen.fillRect(0, statusBarTop, screen.width(), statusBarHeight, statusBarBGColor());
     // draw title
-    screen.setTextSize(statusBarHeight/screen.fontHeight/2);
+    screen.setFont(Arial_8);
+    screen.setTextSize(statusBarHeight/screen.fontHeight()/2);
     screen.setTextColor(statusBarFGColor());
     const char* title = statusBarTitle();
     screen.setCursor( (width() - screen.measureTextH(title)) / 2,

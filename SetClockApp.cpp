@@ -11,6 +11,7 @@ void SetClockApp::drawClock(void) {
     char textTime[6];
 
     screen.setTextSize(10);
+    screen.setFont(Arial_72);
     screen.setTextColor(screen.white, bgColor());
     sprintf(textTime,"%2d:%02d", clock.hourFormat12(), clock.minute());
     screen.setCursor(width()/2 + left() - screen.measureTextH(textTime)/2,
@@ -80,7 +81,8 @@ void SetClockApp::drawButton(int i, color_t color) {
 
   if (buttonsym[i] == 'm') {
     screen.setTextSize(3);
-    screen.setTextColor(screen.white, color);
+    screen.setFont(Arial_20);
+    screen.setTextColor(screen.white);
     const char* m = clock.isAM() ? "am" : "pm";
     screen.setCursor(buttonx[i]-screen.measureTextH(m)/2,buttony[i]-screen.measureTextV(m)*3/4);
     screen.drawText(m);
@@ -141,7 +143,7 @@ BritepadApp* SetClockApp::run(void) {
         clock.adjust(-60);
       break;
       case (6):
-        clock.adjust(12*60*60);
+        clock.adjust(clock.isAM() ? 12*60*60 : -12*60*60);
       break;
     }
     if (b != nobutton) {
@@ -149,8 +151,7 @@ BritepadApp* SetClockApp::run(void) {
         clock.adjust(-clock.now()%60);
         sound.click();
     }
-
-    // todo: cancel timers that may be running
+    // todo: cancel alarms that may be running
   }
 
   return STAY_IN_APP;

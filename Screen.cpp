@@ -33,13 +33,12 @@ int Screen::measureTextH(const char* text) {
         maxH = currH;
       currH = 0;
     } else {
-      currH += 6 * textsize;
+      uint16_t h, w;
+      measureChar(*i, &w, &h);
+      currH += w;
     }
   }
   int h = maxH > currH ? maxH : currH;
-  if (h) {
-    h -= 1 * textsize;  // remove the inter-character space at the end
-  }
   return h;
 }
 

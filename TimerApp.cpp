@@ -35,7 +35,6 @@ BritepadApp* TimerApp::run(void) {
 
     sprintf(textTime, flashingcolonformatstring, displaytime/60, displaytime%60);
 
-    screen.setTextSize(10);
     screen.setFont(Arial_72);
     coord_t width = screen.measureTextH(textTime);
 

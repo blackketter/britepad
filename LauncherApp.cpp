@@ -115,7 +115,6 @@ void LauncherApp::drawButton(int i, bool highlighted) {
 
   screen.fillCircle( x, y, radius, highlighted ? screen.mix(apps[currentScreen()][i]->buttonColor(), screen.black) : apps[currentScreen()][i]->buttonColor());
   const char* name = apps[currentScreen()][i]->name();
-  screen.setTextSize(1);
   screen.setFont(Arial_8);
   screen.setTextColor(screen.black);
   screen.setCursor( x - screen.measureTextH(name) / 2, y - screen.measureTextV(name)/2);

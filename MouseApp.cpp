@@ -122,7 +122,6 @@ BritepadApp* MouseApp::run(void) {
     DEBUG_END("]");
     screen.setCursor(0,0);
     screen.setTextColor(currentColor, 0);
-    screen.setTextSize(2);
     screen.setFont(Arial_16);
     screen.drawTextF("%3d, %3d", pad.x(), pad.y());
 #endif

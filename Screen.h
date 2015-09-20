@@ -41,8 +41,6 @@ class Screen : public ILI9341_t3 {
 
     const color_t bluegreen = 0x0410; // 0,  .5, .5
 
-    const uint8_t fontHeight(void) { return 8; };
-
     const uint8_t maxbrightness = 255;
 
     Screen(uint8_t _CS, uint8_t _DC, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :

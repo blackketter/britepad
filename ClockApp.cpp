@@ -19,9 +19,8 @@ void ClockApp::redraw(void) {
     char textTime[6];
 
     screen.setFont(Arial_72);
-    screen.setTextSize(10);
     screen.setTextColor(currentColor++, bgColor());
-    sprintf(textTime, t % 2 ? "%d:%02d" : "%d %02d", clock.hourFormat12(), clock.minute());
+    sprintf(textTime, t % 2 ? " %d:%02d " : " %d %02d ", clock.hourFormat12(), clock.minute());
     coord_t w = screen.measureTextH(textTime);
 
     screen.setCursor(screen.width()/2 - w/2,
@@ -32,7 +31,6 @@ void ClockApp::redraw(void) {
     }
     screen.drawText(textTime);
 
-    screen.setTextSize(3);
     screen.setFont(Arial_20);
     screen.setCursor(screen.width()/5*4, screen.height()/4*3);
     screen.drawText(clock.isAM() ? "am" : "pm");
@@ -61,7 +59,6 @@ void ClockApp::redraw(void) {
 
   screen.setClipRect();  // reset the clip rect
   screen.setCursor(0,0);
-  screen.setTextSize(2);
   screen.setTextColor(currentColor, screen.black);
 
   if (h == 0) h=12;

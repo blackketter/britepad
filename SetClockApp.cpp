@@ -10,10 +10,9 @@ void SetClockApp::drawClock(void) {
   if (lastTime != t) {
     char textTime[6];
 
-    screen.setTextSize(10);
     screen.setFont(Arial_72);
     screen.setTextColor(screen.white, bgColor());
-    sprintf(textTime,"%2d:%02d", clock.hourFormat12(), clock.minute());
+    sprintf(textTime," %2d:%02d ", clock.hourFormat12(), clock.minute());
     screen.setCursor(width()/2 + left() - screen.measureTextH(textTime)/2,
                      height()/2 + top() - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
@@ -80,7 +79,6 @@ void SetClockApp::drawButton(int i, color_t color) {
   screen.fillCircle(buttonx[i],buttony[i],r, color);
 
   if (buttonsym[i] == 'm') {
-    screen.setTextSize(3);
     screen.setFont(Arial_20);
     screen.setTextColor(screen.white);
     const char* m = clock.isAM() ? "am" : "pm";

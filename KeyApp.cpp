@@ -57,15 +57,14 @@ color_t KeyApp::buttonColor(void) {
 
 void KeyApp::draw(void) {
   clearScreen();
-    screen.setTextSize(3);
-    screen.setFont(Arial_20);
-    screen.setTextColor(screen.yellow);
-    int x = screen.width()/2 - (screen.measureTextH(nameStr) / 2);
-    int y = screen.height()/2 - (screen.measureTextV(nameStr) / 2);
-    screen.setCursor( x, y);
+  screen.setFont(Arial_20);
+  screen.setTextColor(screen.yellow);
+  int x = screen.width()/2 - (screen.measureTextH(nameStr) / 2);
+  int y = screen.height()/2 - (screen.measureTextV(nameStr) / 2);
+  screen.setCursor( x, y);
 
-    screen.drawText(nameStr);
+  screen.drawText(nameStr);
 
-    // todo use a timer to defer exiting rather than blocking
-    delay(200);
+  // todo use a timer to defer exiting rather than blocking
+  delay(200);
 }

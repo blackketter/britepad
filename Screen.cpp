@@ -49,7 +49,7 @@ int Screen::measureTextV(const char* text) {
       lines++;
     }
   }
-  return ((lines * fontHeight() - 1 ) * textsize);  // remove 1 for the extra inter-line row at the end
+  return (lines * fontHeight() + (lines-1)*fontLineSpacing());
 }
 
 void Screen::drawTextF(const char* format, ...) {

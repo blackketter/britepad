@@ -7,6 +7,7 @@
 #include "ScreensaverApp.h"
 #include "LauncherApp.h"
 #include "MouseApp.h"
+#include "ClockApp.h"
 #include "SplashApp.h"
 
 #define DEBUG_ON 1
@@ -180,6 +181,8 @@ void Britepad::idle(void) {
   } else if (pad.down(ANY_PAD) && currApp->isScreensaver()) {
     // waking goes back to the mouse
     switchApp = getApp(MouseApp::ID);
+  } else if (getApp(ClockApp::ID) &&  ((ScreensaverApp*)getApp(ClockApp::ID))->getScreensaverEnabled() && currApp->isScreensaver() && !currApp->isID(ClockApp::ID) && pad.getProximityPresent()) {
+    switchApp = getApp(ClockApp::ID);
   } else if (!currApp->disablesScreensavers()) {
     // let's check for screensavers
     if (switchApp == BritepadApp::SCREENSAVER_APP) {

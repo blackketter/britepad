@@ -142,8 +142,8 @@ void Sound::tone(float freq, float volume) {
     envelope2.noteOff();
   }
 
-  DEBUG_PARAM_LN("tone vol", volume);
-  DEBUG_PARAM_LN("tone freq", freq);
+//  DEBUG_PARAM_LN("tone vol", volume);
+//  DEBUG_PARAM_LN("tone freq", freq);
 
   lastToneVolume = volume;
 }

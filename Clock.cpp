@@ -89,6 +89,10 @@ uint8_t Clock::minute() {
   return ::minute();
 }
 
+uint8_t Clock::second() {
+  return ::second();
+}
+
 bool Clock::isAM() {
   return ::isAM();
 }

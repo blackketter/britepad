@@ -15,24 +15,29 @@ BritepadApp* ClockApp::run(void) {
 }
 
 void ClockApp::redraw(void) {
-    time_t t = clock.now();
     char textTime[6];
 
     screen.setFont(Arial_72);
-    screen.setTextColor(currentColor++, bgColor());
-    sprintf(textTime, t % 2 ? " %d:%02d " : " %d %02d ", clock.hourFormat12(), clock.minute());
-    coord_t w = screen.measureTextH(textTime);
 
+    screen.setTextColor(screen.luminance(currentColor) < 128 ? screen.brighten(currentColor, 128) : currentColor, bgColor());
+    currentColor++;
+    sprintf(textTime, "%d:%02d", clock.hourFormat12(), clock.minute());
+    coord_t w = screen.measureTextH(textTime);
+    coord_t h = screen.measureTextV(textTime);
     screen.setCursor(screen.width()/2 - w/2,
-                     screen.height()/2 - screen.measureTextV(textTime)/2);
+                     screen.height()/2 - h/2);
     if (w != lastWidth) {
       clearScreen();
       lastWidth = w;
     }
     screen.drawText(textTime);
 
-    screen.setFont(Arial_20);
-    screen.setCursor(screen.width()/5*4, screen.height()/4*3);
+//  screen.setFont(Arial_20);
+//  sprintf(textTime, "%02d", clock.second());
+//  screen.drawText(textTime);
+
+    screen.setFont(Arial_16);
+    screen.setCursor(screen.width()/2+w/2,screen.height()/2 + h/2 - screen.measureTextV(textTime));
     screen.drawText(clock.isAM() ? "am" : "pm");
 }
 /*

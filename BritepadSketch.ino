@@ -13,6 +13,7 @@
 #include <SD.h>
 #include <SerialFlash.h>
 #include <EEPROM.h>
+#include <font_ArialBold.h>
 
 #include "BritepadShared.h"
 

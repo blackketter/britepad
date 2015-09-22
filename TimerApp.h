@@ -19,6 +19,7 @@ class TimerApp : public ScreensaverApp {
     bool wantsToBeScreensaver(void) { return running; }  // stay being screensaver if counting down or has just gone off
 
     bool getScreensaverEnabled(void) { return mytimer.running(); }  // switch to being screensaver if counting down
+    bool displaysStatusBar(void) { return true; }
 
     void alarm(void);
     void cancel(void);

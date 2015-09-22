@@ -104,7 +104,7 @@ color_t Screen::darken(color_t c) {
 
 };
 
-color_t Screen::brighten(color_t c) {
+color_t Screen::brighten(color_t c, uint8_t offset) {
   uint16_t r, g, b;
   r = R8(c) + 64;
   g = G8(c) + 64;

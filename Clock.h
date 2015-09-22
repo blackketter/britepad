@@ -15,9 +15,10 @@ class Clock {
     millis_t millis();
     time_t now();
 
-    uint8_t hourFormat12();
     bool isAM();
+    uint8_t hourFormat12();
     uint8_t minute();
+    uint8_t second();
 
   private:
     void resetChime(void);

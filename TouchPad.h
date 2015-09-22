@@ -39,7 +39,10 @@ class TouchPad {
     int  deltax(void) { return (curr.x - last.x); };
     int  deltay(void) { return (curr.y - last.y); };
     uint16_t getAmbientLight(void) { return ambientLight;};
-    uint8_t getProximity(void) { return proximity;};
+
+    uint8_t getProximity(void) { return getProximityPresent() ? (long)(proximity - proximityThreshold) * proximityMax / (proximityMax -proximityThreshold) : 0; };
+    uint8_t getProximityPresent(void) { return proximity > proximityThreshold; };
+    uint8_t getProximityMax(void) { return proximityMax; };
 
   private:
     int height;
@@ -50,6 +53,8 @@ class TouchPad {
     millis_t lastUpT[PAD_COUNT];
     int  lastDownXPos;
     int  lastDownYPos;
+    static const uint8_t proximityThreshold = 75;
+    static const uint8_t proximityMax = 255;
 
 
     void initAPDS(void);

@@ -31,11 +31,9 @@ BritepadApp* TimerApp::run(void) {
     bool drawtext = true;
     bool erasescreen = false;
 
-    const char* flashingcolonformatstring = t % 2 ? "%d:%02d" : "%d %02d";
+    sprintf(textTime, " %d:%02d", displaytime/60, displaytime%60);
 
-    sprintf(textTime, flashingcolonformatstring, displaytime/60, displaytime%60);
-
-    screen.setFont(Arial_72);
+    screen.setFont(Arial_72_Bold);
     coord_t width = screen.measureTextH(textTime);
 
     color_t fg = current_color++;

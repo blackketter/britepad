@@ -6,6 +6,7 @@
 
 #include <ILI9341_t3.h>
 #include <font_Arial.h>
+#include <font_ArialBold.h>
 
 #define R8(x) (((x)&0xf800)>>8)
 #define G8(x) (((x)&0x07e0)>>3)
@@ -59,7 +60,7 @@ class Screen : public ILI9341_t3 {
     void pushFill(Direction dir, color_t color);
 
     color_t darken(color_t c);
-    color_t brighten(color_t c);
+    color_t brighten(color_t c, uint8_t offset = 64);
     color_t mix(color_t c1, color_t c2);
     uint8_t luminance(color_t);
 

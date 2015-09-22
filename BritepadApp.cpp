@@ -45,7 +45,7 @@ void BritepadApp::drawStatusBar(void) {
 
     screen.fillRect(0, statusBarTop, screen.width(), statusBarHeight, statusBarBGColor());
     // draw title
-    screen.setFont(Arial_8);
+    screen.setFont(Arial_8_Bold);
     screen.setTextColor(statusBarFGColor());
     const char* title = statusBarTitle();
     screen.setCursor( (width() - screen.measureTextH(title)) / 2,

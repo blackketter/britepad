@@ -3,11 +3,12 @@
 
 #include "BritepadApp.h"
 #include "Britepad.h"
+#include "Button.h"
 
 class StopwatchApp : public BritepadApp {
   public:
     BritepadApp* run(void);
-    void begin(void) { BritepadApp::begin(); startMillis = lastDrawMillis = millis(); }
+    void begin(void);
     const char* name(void) { return "Stopwatch"; };
     bool disablesScreensavers(void) { return true; }
     bool displaysStatusBar(void) { return true; }
@@ -16,9 +17,10 @@ class StopwatchApp : public BritepadApp {
     static constexpr appid_t ID = "stpw";
 
   private:
-    millis_t startMillis;
+    long startMillis;
     millis_t lastDrawMillis;
-    color_t currentColor = screen.red;
+    Button pauseButton;
+    Button resetButton;
 };
 
 #endif

@@ -27,7 +27,7 @@ BritepadApp* TimerApp::run(void) {
   if (draw) {
     char textTime[6];
 
-    long displaytime = alarm_sounded ? timer_dur : delta;
+    int displaytime = alarm_sounded ? timer_dur : delta;
     bool drawtext = true;
     bool erasescreen = false;
 

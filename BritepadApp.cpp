@@ -38,22 +38,39 @@ coord_t BritepadApp::width(void) {
   return screen.width();
 };
 
-void BritepadApp::drawStatusBar(void) {
+void BritepadApp::drawStatusBar(bool update) {
+
   if (displaysStatusBar()) {
     // set the clipping to the status bar
 	  screen.setClipRect(0, statusBarTop, screen.width(), statusBarTop+statusBarHeight);
-
-    screen.fillRect(0, statusBarTop, screen.width(), statusBarHeight, statusBarBGColor());
-    // draw title
     screen.setFont(Arial_8_Bold);
     screen.setTextColor(statusBarFGColor());
-    const char* title = statusBarTitle();
-    screen.setCursor( (width() - screen.measureTextH(title)) / 2,
-                       statusBarTop + (statusBarHeight-screen.measureTextV(title)) / 2);
-    screen.drawText(title);
+
+    if (!update) {
+      screen.fillRect(0, statusBarTop, screen.width(), statusBarHeight, statusBarBGColor());
+      // draw title
+      const char* title = statusBarTitle();
+      screen.setCursor( (width() - screen.measureTextH(title)) / 2,
+                         statusBarTop + (statusBarHeight-screen.measureTextV(title)) / 2);
+      screen.drawText(title);
+    }
+
+    if (!displaysClock()) {
+      // draw title
+      screen.setFont(Arial_8_Bold);
+      screen.setTextColor(screen.mix(statusBarFGColor(), statusBarBGColor()), statusBarBGColor());
+      char shortTime[20];
+      clock.shortTime(shortTime);
+      char shortTimeSpaced[22];
+      sprintf(shortTimeSpaced," %s ", shortTime);
+      screen.setCursor( (width() - screen.measureTextH(shortTimeSpaced) - 2),
+                         statusBarTop + (statusBarHeight-screen.measureTextV(shortTimeSpaced)) / 2);
+      screen.drawText(shortTimeSpaced);
+    }
 
     updateStatusBarBounds();
   }
+
 }
 
 void BritepadApp::updateStatusBarBounds(void) {

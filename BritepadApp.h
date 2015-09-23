@@ -29,6 +29,7 @@ class BritepadApp {
     virtual bool disablesScreensavers(void) { return false; }
     virtual bool wantsToBeScreensaver(void) { return false; }  // return true if you want to be switched to as the screensaver
     virtual bool disabled(void) { return false; } // return true if you don't want this to ever run or be visible
+    virtual bool displaysClock(void) { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
 
     virtual bool isPopup(void) { return false; };        // popup apps don't need begin or end, call run() just once
     virtual bool isInvisible(void) { return false; };    // has no UI
@@ -49,7 +50,7 @@ class BritepadApp {
     coord_t right(void) { return left() + width(); };
 
     void updateStatusBarBounds();
-    void drawStatusBar();
+    void drawStatusBar(bool update = false); // pass true to just do an update rather than a full redraw
 
     static BritepadApp* STAY_IN_APP;
     static BritepadApp* DEFAULT_APP; // typically the MouseApp, but might be a timer when it's running

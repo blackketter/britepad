@@ -20,6 +20,7 @@ class Britepad {
     BritepadApp* getApp(int appIndex);
     BritepadApp* getApp(appid_t appID);
 
+    void updateStatusBar(void);
 
   private:
     void setApp(BritepadApp* newApp);  // sets the current app
@@ -36,6 +37,7 @@ class Britepad {
     static const millis_t ambientUpdateInterval = 100;
 
     Timer     backlightTimer;
+    Timer     statusBarUpdateTimer;
 
     millis_t screensaverStartedTime = 0;
 

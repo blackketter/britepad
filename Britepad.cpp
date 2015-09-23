@@ -147,6 +147,14 @@ void backlightCallback(void* data) {
   }
 }
 
+void statusBarCallback(void* data) {
+    ((Britepad*)data)->updateStatusBar();
+}
+
+void Britepad::updateStatusBar(void) {
+  currApp->drawStatusBar(true);
+}
+
 void Britepad::begin(void) {
 
   // the launcher owns the apps and has created a splash app
@@ -163,6 +171,7 @@ void Britepad::begin(void) {
   screen.fillScreen(screen.black);
   screen.backlight(screen.maxbrightness);
   backlightTimer.setMillis(ambientUpdateInterval, (timerCallback_t)backlightCallback, (void*)this, true);
+  statusBarUpdateTimer.setMillis(1000, (timerCallback_t)statusBarCallback, (void*)this, true);
 }
 
 void Britepad::idle(void) {

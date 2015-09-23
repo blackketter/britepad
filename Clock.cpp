@@ -102,3 +102,7 @@ uint8_t Clock::second() {
 bool Clock::isAM() {
   return ::isAM();
 }
+
+void Clock::shortTime(char * timeStr) {
+  sprintf(timeStr, "%d:%02d", hourFormat12(), minute());
+};

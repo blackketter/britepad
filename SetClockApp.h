@@ -13,6 +13,7 @@ class SetClockApp : public BritepadApp {
 
     bool disablesScreensavers(void) { return true; };
     bool wantsToBeScreensaver(void) { return !hasRun && !clock.hasBeenSet(); };
+    bool displaysClock(void) { return true; };
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "sclk";

@@ -11,8 +11,9 @@ class Clock {
     void endSetClock(void) { setting = false; resetChime(); } ;
     void adjust(long adjustment);
     bool hasBeenSet() { return set && !setting; }
+    void shortTime(char * timeStr);
 
-    millis_t millis();
+    millis_t millis();  // remember, millis_t is now signed 64-bits
     time_t now();
 
     bool isAM();

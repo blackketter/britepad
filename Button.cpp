@@ -13,11 +13,36 @@ void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool
 };
 
 bool Button::down(void) {
+  track();
   if (pad.down(SCREEN_PAD) && hit(pad.x(), pad.y())) {
     sound.click();
     return true;
   } else {
     return false;
+  }
+}
+
+bool Button::up(void) {
+  track();
+  if (pad.up(SCREEN_PAD) && hit(pad.x(), pad.y())) {
+    sound.click();
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void Button::track(void) {
+  bool h = hit(pad.x(), pad.y());
+
+  if (highlighted) {
+    if (pad.up(SCREEN_PAD) || (pad.touched(SCREEN_PAD) && !h)) {
+      setHighlighted(false);
+    }
+  } else {
+    if (pad.touched(SCREEN_PAD) && h) {
+      setHighlighted(true);
+    }
   }
 }
 

@@ -12,7 +12,8 @@ void StopwatchApp::begin(void) {
 
   coord_t radius = width()/10;
   resetButton.init(radius*3, top()+height()/3*2, radius, screen.blue, false,"Reset");
-  pauseButton.init(radius*7, top()+height()/3*2, radius,  screen.green, false, "Start");
+
+  pauseButton.init(radius*7, top()+height()/3*2, radius,  startMillis < 0 ? screen.green : screen.red, false, startMillis == -1 ? "Start" : (startMillis < -1 ? "Resume" : "Pause"));
 
   resetButton.draw();
   pauseButton.draw();

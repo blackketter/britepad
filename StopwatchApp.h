@@ -17,10 +17,10 @@ class StopwatchApp : public BritepadApp {
     static constexpr appid_t ID = "stpw";
 
   private:
-    long startMillis;
+    long startMillis = -1;  // start out paused at zero(ish)
     millis_t lastDrawMillis;
-    Button pauseButton;
-    Button resetButton;
+    RoundButton pauseButton;
+    RoundButton resetButton;
 };
 
 #endif

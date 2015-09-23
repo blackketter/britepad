@@ -8,12 +8,11 @@
 void StopwatchApp::begin(void) {
   BritepadApp::begin();
 
-  startMillis = -1;
-  lastDrawMillis = millis();
+  lastDrawMillis = clock.millis();
 
-  coord_t diameter = width()/10*2;
-  resetButton.init(diameter, top()+height()/3*2-diameter/2, diameter, diameter, screen.blue, false,"Reset");
-  pauseButton.init(diameter*3, top()+height()/3*2-diameter/2, diameter, diameter,  screen.green, false, "Start");
+  coord_t radius = width()/10;
+  resetButton.init(radius*3, top()+height()/3*2, radius, screen.blue, false,"Reset");
+  pauseButton.init(radius*7, top()+height()/3*2, radius,  screen.green, false, "Start");
 
   resetButton.draw();
   pauseButton.draw();
@@ -35,10 +34,13 @@ BritepadApp* StopwatchApp::run(void) {
       pauseButton.setColor(screen.red);
       pauseButton.setTitle("Pause");
     }
-    sound.click();
+    if (pad.down(BOTTOM_PAD)) {
+      sound.click();
+    }
   }
 
   if (resetButton.down()) {
+    startMillis = -1;
     begin();
   }
 

@@ -74,7 +74,13 @@ void Clock::adjust(long adjustment) {
 
 
 millis_t Clock::millis() {
-  return ::millis();
+  millis_t nowMillis = ::millis();
+  if (nowMillis < lastMillis) {
+    // millis have rolled over, we add a new offset
+    millisOffset += 0x0000000100000000;
+  }
+  lastMillis = nowMillis;
+  return nowMillis + millisOffset;
 }
 
 time_t Clock::now() {

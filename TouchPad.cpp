@@ -3,6 +3,7 @@
 #include <Adafruit_FT6206.h>
 #include <SparkFun_APDS9960.h>
 
+#include "BritepadShared.h"
 #include "TouchPad.h"
 
 #define DEBUG_ON 1
@@ -57,7 +58,7 @@ void TouchPad::update() {
   // save the last state for future reference
   copyTPState(&last, &curr);
 
-  curr.time = millis();
+  curr.time = clock.millis();
   curr.touched[SCREEN_PAD] = ctp.touched();
 
   // Retrieve a point

@@ -21,13 +21,13 @@ void SplashApp::begin(void) {
   drawindex = 0;
   clearScreen();
   currColor = screen.red;
-  firstRun = millis();
+  firstRun = clock.millis();
 //  drawLogo(currColor);
 }
 
 
 BritepadApp* SplashApp::run(void) {
-  if (millis() - firstRun > splashDuration) {
+  if (clock.millis() - firstRun > splashDuration) {
     return SCREENSAVER_APP;
   }
 

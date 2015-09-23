@@ -18,7 +18,7 @@ class ClockApp : public ScreensaverApp {
 
 
   private:
-    millis_t lastRedraw;
+    millis_t lastRedraw = 0;
     color_t currentColor = screen.red;
     coord_t lastWidth = 0;
     static const millis_t redrawInterval = 1000;

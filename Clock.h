@@ -27,6 +27,8 @@ class Clock {
     bool set = false;
     bool setting = false;
     static const millis_t chimeInterval = 500;
+    millis_t lastMillis;
+    millis_t millisOffset = 0;
 };
 
 extern Clock clock;

@@ -9,15 +9,15 @@ class ClockApp : public ScreensaverApp {
   public:
     BritepadApp* run(void);
     virtual void redraw(void);
+
     const char* name(void) { return "Clock"; };
-    void chimerCallback();
+
     bool getScreensaverEnabled() { return ScreensaverApp::getScreensaverEnabled() && clock.hasBeenSet(); }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "clok";
 
-
-  private:
+  protected:
     millis_t lastRedraw = 0;
     color_t currentColor = screen.red;
     coord_t lastWidth = 0;

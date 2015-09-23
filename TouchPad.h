@@ -3,19 +3,26 @@
 
 #include "Types.h"
 
+// todo - turn these into a scoped enum
 #define SCREEN_PAD 0
 #define LEFT_PAD 1
 #define RIGHT_PAD 2
 #define BOTTOM_PAD 3
 #define TOP_PAD 4
 #define PAD_COUNT 5
-#define ANY_PAD 6
+
+#define PROXIMITY_SENSOR 6
+
+#define TOTAL_SENSORS 6
+
+#define ANY_PAD 7
+
 
 typedef struct TPState {
     millis_t time;
     int  x;
     int  y;
-    bool touched[PAD_COUNT];
+    bool touched[TOTAL_SENSORS];
 } TPState;
 
 class TouchPad {
@@ -40,21 +47,21 @@ class TouchPad {
     int  deltay(void) { return (curr.y - last.y); };
     uint16_t getAmbientLight(void) { return ambientLight;};
 
-    uint8_t getProximity(void) { return getProximityPresent() ? (long)(proximity - proximityThreshold) * proximityMax / (proximityMax -proximityThreshold) : 0; };
-    uint8_t getProximityPresent(void) { return proximity > proximityThreshold; };
     uint8_t getProximityMax(void) { return proximityMax; };
+    uint8_t getProximityDistance(void) { return getProximityPresent() ? (long)(proximity - proximityThreshold) * proximityMax / (proximityMax -proximityThreshold) : 0; };
 
   private:
     int height;
     int width;
     TPState curr;
     TPState last;
-    millis_t lastDownT[PAD_COUNT];
-    millis_t lastUpT[PAD_COUNT];
+    millis_t lastDownT[TOTAL_SENSORS];
+    millis_t lastUpT[TOTAL_SENSORS];
     int  lastDownXPos;
     int  lastDownYPos;
     static const uint8_t proximityThreshold = 75;
     static const uint8_t proximityMax = 255;
+    bool getProximityPresent(void) { return proximity > proximityThreshold; };
 
 
     void initAPDS(void);

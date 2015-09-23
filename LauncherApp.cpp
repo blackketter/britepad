@@ -19,6 +19,7 @@
 #include "BreakoutApp.h"
 #include "RebootApp.h"
 #include "BriteLiteApp.h"
+#include "BinaryClockApp.h"
 
 LauncherApp theLauncherApp;
 
@@ -35,6 +36,8 @@ LauncherApp::LauncherApp(void) {
   setButton(SETTINGS_SCREEN, 2,  new DotsDisplayApp);
   setButton(SETTINGS_SCREEN, 3,  new ClockApp);
   setButton(SETTINGS_SCREEN, 4,  new BriteLiteApp);
+  setButton(SETTINGS_SCREEN, 5,  new BinaryClockApp);
+
   setButton(SETTINGS_SCREEN, 8,  new SetClockApp);
   setButton(SETTINGS_SCREEN, 9,  new MuteApp);
 

@@ -140,7 +140,7 @@ void Britepad::setApp(BritepadApp* newApp) {
 
 void backlightCallback(void* data) {
   // if we detect proximity, it's probably casting a shadow and we don't want to update
-  if (pad.getProximity() < 100) {
+  if (pad.touched(PROXIMITY_SENSOR)) {
     // any ambient light greater than 255 is full brightness, 1 is the minimums
     uint8_t light = max(1,min( pad.getAmbientLight(), 255));
     screen.backlight(light);
@@ -190,8 +190,9 @@ void Britepad::idle(void) {
   } else if (pad.down(ANY_PAD) && currApp->isScreensaver()) {
     // waking goes back to the mouse
     switchApp = getApp(MouseApp::ID);
-  } else if (getApp(ClockApp::ID) &&  ((ScreensaverApp*)getApp(ClockApp::ID))->getScreensaverEnabled() && currApp->isScreensaver() && !currApp->isID(ClockApp::ID) && pad.getProximityPresent()) {
+  } else if (getApp(ClockApp::ID) &&  ((ScreensaverApp*)getApp(ClockApp::ID))->getScreensaverEnabled() && currApp->isScreensaver() && !currApp->isID(ClockApp::ID) && pad.down(PROXIMITY_SENSOR)) {
     switchApp = getApp(ClockApp::ID);
+    sound.click();
   } else if (!currApp->disablesScreensavers()) {
     // let's check for screensavers
     if (switchApp == BritepadApp::SCREENSAVER_APP) {

@@ -4,7 +4,7 @@
 
 BritepadApp* ThereminApp::run(void) {
   long octave = 6;
-  uint8_t prox = pad.getProximity();
+  uint8_t prox = pad.getProximityDistance();
   DEBUG_PARAM_LN("prox", prox);
 
   if (pad.down(SCREEN_PAD)) {

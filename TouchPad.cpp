@@ -61,6 +61,10 @@ void TouchPad::update() {
   curr.time = clock.millis();
   curr.touched[SCREEN_PAD] = ctp.touched();
 
+  updateAPDS();
+
+  curr.touched[PROXIMITY_SENSOR] = getProximityPresent();
+
   // Retrieve a point
   TS_Point p = ctp.getPoint();
 
@@ -94,7 +98,7 @@ void TouchPad::update() {
   curr.touched[RIGHT_PAD] = last.touched[RIGHT_PAD] ? r > R_LOW_THRESHOLD : r > R_HIGH_THRESHOLD;
 
   // calculate lastup and lastdown times
-  for (int i = 0; i < PAD_COUNT; i++) {
+  for (int i = 0; i < TOTAL_SENSORS; i++) {
     if (down(i)) {
       lastDownT[i] = curr.time;
     }
@@ -109,7 +113,6 @@ void TouchPad::update() {
     lastDownXPos = curr.x;
     lastDownYPos = curr.y;
   }
-  updateAPDS();
  }
 
 void TouchPad::updateAPDS(void) {

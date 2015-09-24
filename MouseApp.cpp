@@ -21,6 +21,10 @@
 
 MouseApp theMouseApp;
 
+void MouseApp::begin(void) {
+  screen.pushFill(DIRECTION_UP, bgColor());
+}
+
 void MouseApp::end(BritepadApp* nextApp) {
   Mouse.release();
   Keyboard.releaseAll();

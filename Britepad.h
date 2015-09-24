@@ -25,7 +25,6 @@ class Britepad {
   private:
     void setApp(BritepadApp* newApp);  // sets the current app
 
-    BritepadApp* defaultApp(void);
     ScreensaverApp* wantsToBeScreensaver(void);
     ScreensaverApp* randomScreensaver(void);
 

@@ -8,6 +8,7 @@ class MouseApp : public BritepadApp {
     MouseApp(void) : BritepadApp() {  Mouse.begin(); };
     BritepadApp* run(void);
     void end(BritepadApp* nextApp);
+    void begin();
     const char* name(void) { return "Mouse"; };
 
     bool disablesScreensavers(void) { return pad.touched(ANY_PAD); }

@@ -82,15 +82,6 @@ ScreensaverApp* Britepad::wantsToBeScreensaver() {
   return nil;
 }
 
-BritepadApp* Britepad::defaultApp() {
-  BritepadApp* d = wantsToBeScreensaver();
-  if (!d) {
-    d = getApp(MouseApp::ID);
-  }
-  return d;
-}
-
-
 void Britepad::addApp(BritepadApp* app) {
   if (appCount < maxApps) {
     apps[appCount++] = app;
@@ -116,7 +107,7 @@ void Britepad::setApp(BritepadApp* newApp) {
   }
 
   if (newApp == BritepadApp::DEFAULT_APP) {
-    newApp = defaultApp();
+    newApp = getApp(MouseApp::ID);
   } else if (newApp == BritepadApp::BACK_APP) {
     newApp = getApp(LauncherApp::ID);
   }
@@ -181,11 +172,11 @@ void Britepad::idle(void) {
   if (pad.down(TOP_PAD)) {
 
     // start launcher or exit to default
-    if (currApp == defaultApp() || currApp->isScreensaver()) {
+    if (currApp == getApp(MouseApp::ID) || currApp->isScreensaver()) {
       switchApp = getApp(LauncherApp::ID);
       sound.swipe(DIRECTION_DOWN);
     } else {
-      switchApp = defaultApp();
+      switchApp = getApp(MouseApp::ID);
       sound.swipe(DIRECTION_UP);
     }
 

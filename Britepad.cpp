@@ -179,14 +179,16 @@ void Britepad::idle(void) {
   pad.update();
 
   if (pad.down(TOP_PAD)) {
-    // start or exit launcher
-    if (currApp == getApp(LauncherApp::ID)) {
-      switchApp = defaultApp();
-      sound.swipe(DIRECTION_UP);
-    } else {
+
+    // start launcher or exit to default
+    if (currApp == defaultApp() || currApp->isScreensaver()) {
       switchApp = getApp(LauncherApp::ID);
       sound.swipe(DIRECTION_DOWN);
+    } else {
+      switchApp = defaultApp();
+      sound.swipe(DIRECTION_UP);
     }
+
   } else if (pad.down(ANY_PAD) && currApp->isScreensaver()) {
     // waking goes back to the mouse
     switchApp = getApp(MouseApp::ID);

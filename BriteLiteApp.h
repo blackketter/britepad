@@ -3,7 +3,7 @@
 class BriteLiteApp : public DotsDisplayApp {
 
   public:
-    void begin(void) { ScreensaverApp::begin(); setUpDots(16,14); };
+    void begin(bool asScreensaver) { ScreensaverApp::begin(asScreensaver); setUpDots(16,14); };
     BritepadApp* run(void);
 
     static constexpr appid_t ID = "lite";

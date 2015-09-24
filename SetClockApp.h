@@ -6,7 +6,7 @@
 
 class SetClockApp : public BritepadApp {
   public:
-    void begin(void);
+    void begin(bool asScreensaver);
     void end(BritepadApp* nextApp);
     BritepadApp* run(void);
     const char* name(void) { return "Set Clock"; };

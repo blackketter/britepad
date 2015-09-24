@@ -5,7 +5,7 @@
 
 class SplashApp : public ScreensaverApp {
   public:
-    void begin(void);
+    void begin(bool asScreensaver);
     BritepadApp* run(void);
     const char* name(void) { return "Splash"; };
     bool displaysStatusBar(void) { return false; };

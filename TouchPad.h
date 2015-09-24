@@ -9,13 +9,16 @@
 #define RIGHT_PAD 2
 #define BOTTOM_PAD 3
 #define TOP_PAD 4
-#define PAD_COUNT 5
 
-#define PROXIMITY_SENSOR 6
+#define TOUCH_PAD_COUNT 5
+
+#define PROXIMITY_SENSOR 5
 
 #define TOTAL_SENSORS 6
 
-#define ANY_PAD 7
+#define ANY_PAD 1000
+
+
 
 
 typedef struct TPState {
@@ -48,7 +51,7 @@ class TouchPad {
     uint16_t getAmbientLight(void) { return ambientLight;};
 
     uint8_t getProximityMax(void) { return proximityMax; };
-    uint8_t getProximityDistance(void) { return getProximityPresent() ? (long)(proximity - proximityThreshold) * proximityMax / (proximityMax -proximityThreshold) : 0; };
+    uint8_t getProximityDistance(void);
 
   private:
     int height;
@@ -59,9 +62,9 @@ class TouchPad {
     millis_t lastUpT[TOTAL_SENSORS];
     int  lastDownXPos;
     int  lastDownYPos;
-    static const uint8_t proximityThreshold = 75;
+    static const uint8_t proximityThreshold = 90;
     static const uint8_t proximityMax = 255;
-    bool getProximityPresent(void) { return proximity > proximityThreshold; };
+    bool getProximityPresent(void);
 
 
     void initAPDS(void);

@@ -10,8 +10,8 @@
 // todo - speed up over time
 // todo - make it run as a self-playing screensaver
 
-void BreakoutApp::begin(void) {
-  BritepadApp::begin();
+void BreakoutApp::begin(bool asScreensaver) {
+  BritepadApp::begin(asScreensaver);
   newGame();
   dx = dy = 0;  // start off without the ball moving
 }

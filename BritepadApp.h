@@ -14,7 +14,7 @@ class Britepad;
 class BritepadApp {
   public:
     BritepadApp();
-    virtual void begin(void) { screen.fillScreen(bgColor()); };  // initialize app state and draw first screen
+    virtual void begin(bool asScreensaver = false) { setRunningAsScreensaver(asScreensaver); screen.fillScreen(bgColor()); };  // initialize app state and draw first screen
     virtual void end(BritepadApp* nextApp) {}; // called after final run(), lets app clean up and tells it what the next app may be
     virtual BritepadApp* run(void) {return STAY_IN_APP;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants above)
 
@@ -25,7 +25,9 @@ class BritepadApp {
 
     virtual color_t buttonColor(void) { return screen.blue; }
 
-    virtual bool isScreensaver(void) { return false; };
+    virtual bool isScreensaver(void) { return false; }; // is this app capable of being a screensaver?
+    virtual bool isRunningAsScreensaver(void) { return runningAsScreensaver; } // is this app currently running as a screensaver?
+    virtual bool isCurrentApp(void) { return britepad.currentApp() == this; };
     virtual bool disablesScreensavers(void) { return false; }
     virtual bool wantsToBeScreensaver(void) { return false; }  // return true if you want to be switched to as the screensaver
     virtual bool disabled(void) { return false; } // return true if you don't want this to ever run or be visible
@@ -49,6 +51,7 @@ class BritepadApp {
     coord_t bottom(void) { return top() + height(); };
     coord_t right(void) { return left() + width(); };
 
+
     void updateStatusBarBounds();
     void drawStatusBar(bool update = false); // pass true to just do an update rather than a full redraw
 
@@ -60,6 +63,8 @@ class BritepadApp {
   protected:
     coord_t statusBarTop = 0;
     coord_t statusBarHeight = 16;
+    virtual void setRunningAsScreensaver(bool asScreensaver) { runningAsScreensaver = asScreensaver; };
+    bool runningAsScreensaver;
 };
 
 #endif

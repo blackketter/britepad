@@ -6,7 +6,7 @@
 
 class DotsDisplayApp : public ScreensaverApp {
   public:
-    void begin(void) { ScreensaverApp::begin(); setUpDots(16,12); };
+    void begin(bool asScreensaver) { ScreensaverApp::begin(asScreensaver); setUpDots(16,12); };
     const char* name(void) { return "Dots"; };
     BritepadApp* run(void);
 

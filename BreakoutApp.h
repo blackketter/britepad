@@ -9,7 +9,7 @@ class BreakoutApp : public BritepadApp {
     const char* name(void) { return "Breakout"; };
     bool disablesScreensavers(void) { return true; }
     BritepadApp* run(void);
-    void begin(void);
+    void begin(bool asScreensaver);
     void end(BritepadApp* nextApp);
 
     appid_t id() { return ID; };

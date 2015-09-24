@@ -73,7 +73,7 @@ LauncherApp::LauncherApp(void) {
   setButton(APPS_SCREEN, 11,  new RebootApp);
 }
 
-void LauncherApp::begin(void) {
+void LauncherApp::begin(bool asScreensaver) {
 
   // this should wake up the host, which is great for entering passwords
   // but might have some ugly side effects

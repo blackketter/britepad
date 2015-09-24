@@ -44,7 +44,7 @@ TouchPad::TouchPad(int w, int h) {
 
 }
 
-void TouchPad::begin() {
+void TouchPad::begin(void) {
   if (! ctp.begin(40)) {  // pass in 'sensitivity' coefficient
     DEBUG_LN("Couldn't start FT6206 touchscreen controller");
     while (1);
@@ -62,7 +62,6 @@ void TouchPad::update() {
   curr.touched[SCREEN_PAD] = ctp.touched();
 
   updateAPDS();
-
   curr.touched[PROXIMITY_SENSOR] = getProximityPresent();
 
   // Retrieve a point
@@ -114,6 +113,19 @@ void TouchPad::update() {
     lastDownYPos = curr.y;
   }
  }
+
+bool TouchPad::getProximityPresent(void) {
+  if (proximity > proximityThreshold) {
+//    DEBUG_PARAM_LN("proximity", proximity);
+    return true;
+  } else {
+    return false;
+  }
+};
+
+uint8_t TouchPad::getProximityDistance(void) {
+  return getProximityPresent() ? (long)(proximity - proximityThreshold) * proximityMax / (proximityMax -proximityThreshold) : 0;
+};
 
 void TouchPad::updateAPDS(void) {
 
@@ -189,7 +201,7 @@ void TouchPad::initAPDS(void) {
 
 bool TouchPad::touched(int pad) {
   if (pad == ANY_PAD) {
-    for (int i = 0; i < PAD_COUNT; i++) {
+    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
       if (touched(i))
         return true;
     }
@@ -202,7 +214,7 @@ bool TouchPad::touched(int pad) {
 
 bool TouchPad::changed(int pad) {
   if (pad == ANY_PAD) {
-    for (int i = 0; i < PAD_COUNT; i++) {
+    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
       if (changed(i))
         return true;
     }
@@ -215,7 +227,7 @@ bool TouchPad::changed(int pad) {
 
 bool TouchPad::down(int pad) {
   if (pad == ANY_PAD) {
-    for (int i = 0; i < PAD_COUNT; i++) {
+    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
       if (down(i))
         return true;
     }
@@ -227,7 +239,7 @@ bool TouchPad::down(int pad) {
 
 bool TouchPad::up(int pad) {
   if (pad == ANY_PAD) {
-    for (int i = 0; i < PAD_COUNT; i++) {
+    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
       if (up(pad))
         return true;
     }
@@ -241,7 +253,7 @@ bool TouchPad::up(int pad) {
 millis_t TouchPad::lastDownTime(int pad) {
   if (pad == ANY_PAD) {
     millis_t lastest = 0;
-    for (int i = 0; i < PAD_COUNT; i++) {
+    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
       if (lastDownT[i] > lastest) {
         lastest = lastDownT[i];
       }
@@ -255,7 +267,7 @@ millis_t TouchPad::lastDownTime(int pad) {
 millis_t TouchPad::lastUpTime(int pad) {
   if (pad == ANY_PAD) {
     millis_t lastest = 0;
-    for (int i = 0; i < PAD_COUNT; i++) {
+    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
       if (lastUpT[i] > lastest) {
         lastest = lastUpT[i];
       }

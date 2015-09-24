@@ -21,7 +21,7 @@
 
 MouseApp theMouseApp;
 
-void MouseApp::begin(void) {
+void MouseApp::begin(bool asScreensaver) {
   screen.pushFill(DIRECTION_UP, bgColor());
 }
 

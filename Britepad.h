@@ -19,11 +19,11 @@ class Britepad {
     int appsAdded(void) { return appCount; };
     BritepadApp* getApp(int appIndex);
     BritepadApp* getApp(appid_t appID);
-
+    BritepadApp* currentApp() { return currApp; }
     void updateStatusBar(void);
 
   private:
-    void setApp(BritepadApp* newApp);  // sets the current app
+    void setApp(BritepadApp* newApp, bool asScreensaver);  // sets the current app
 
     ScreensaverApp* wantsToBeScreensaver(void);
     ScreensaverApp* randomScreensaver(void);

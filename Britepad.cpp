@@ -95,7 +95,7 @@ BritepadApp* Britepad::getApp(int appIndex) {
 }
 
 
-void Britepad::setApp(BritepadApp* newApp) {
+void Britepad::setApp(BritepadApp* newApp, bool asScreensaver) {
 
   if (newApp == 0) {
     // just STAY_IN_APP
@@ -108,8 +108,10 @@ void Britepad::setApp(BritepadApp* newApp) {
 
   if (newApp == BritepadApp::DEFAULT_APP) {
     newApp = getApp(MouseApp::ID);
+    asScreensaver = false;
   } else if (newApp == BritepadApp::BACK_APP) {
     newApp = getApp(LauncherApp::ID);
+    asScreensaver = false;
   }
 
   if (currApp)
@@ -120,9 +122,9 @@ void Britepad::setApp(BritepadApp* newApp) {
   if (currApp) {
     currApp->updateStatusBarBounds();
     currApp->drawStatusBar();
-    currApp->begin();
+    currApp->begin(asScreensaver);
 
-    if (currApp->isScreensaver()) {
+    if (currApp->isRunningAsScreensaver()) {
       screensaverStartedTime = pad.time();
     }
   }
@@ -131,7 +133,7 @@ void Britepad::setApp(BritepadApp* newApp) {
 
 void backlightCallback(void* data) {
   // if we detect proximity, it's probably casting a shadow and we don't want to update
-  if (pad.touched(PROXIMITY_SENSOR)) {
+  if (pad.time() - pad.lastTouchedTime(PROXIMITY_SENSOR) < 1000) {
     // any ambient light greater than 255 is full brightness, 1 is the minimums
     uint8_t light = max(1,min( pad.getAmbientLight(), 255));
     screen.backlight(light);
@@ -149,7 +151,7 @@ void Britepad::updateStatusBar(void) {
 void Britepad::begin(void) {
 
   // the launcher owns the apps and has created a splash app
-  setApp(getApp(SplashApp::ID));
+  setApp(getApp(SplashApp::ID), true);
 
 // show the apps that have been loaded
   DEBUG_PARAM_LN("app count", appsAdded());
@@ -167,12 +169,14 @@ void Britepad::begin(void) {
 
 void Britepad::idle(void) {
 
+  bool asScreensaver = false;
+
   pad.update();
 
   if (pad.down(TOP_PAD)) {
 
     // start launcher or exit to default
-    if (currApp == getApp(MouseApp::ID) || currApp->isScreensaver()) {
+    if (currApp == getApp(MouseApp::ID) || currApp->isRunningAsScreensaver()) {
       switchApp = getApp(LauncherApp::ID);
       sound.swipe(DIRECTION_DOWN);
     } else {
@@ -180,24 +184,33 @@ void Britepad::idle(void) {
       sound.swipe(DIRECTION_UP);
     }
 
-  } else if (pad.down(ANY_PAD) && currApp->isScreensaver()) {
+  } else if (pad.down(SCREEN_PAD) && currApp->isRunningAsScreensaver()) {
     // waking goes back to the mouse
     switchApp = getApp(MouseApp::ID);
-  } else if (getApp(ClockApp::ID) &&  ((ScreensaverApp*)getApp(ClockApp::ID))->getScreensaverEnabled() && currApp->isScreensaver() && !currApp->isID(ClockApp::ID) && pad.down(PROXIMITY_SENSOR)) {
+  } else if (getApp(ClockApp::ID) &&  ((ScreensaverApp*)getApp(ClockApp::ID))->getScreensaverEnabled() && currApp->isRunningAsScreensaver() && !currApp->isID(ClockApp::ID) && pad.up(PROXIMITY_SENSOR)) {
     switchApp = getApp(ClockApp::ID);
+    asScreensaver = true;
     sound.click();
   } else if (!currApp->disablesScreensavers()) {
     // let's check for screensavers
+
     if (switchApp == BritepadApp::SCREENSAVER_APP) {
-      switchApp = randomScreensaver();
-    } else if (currApp->isScreensaver() && (pad.time() - screensaverStartedTime) > screensaverSwitchInterval) {
-      switchApp = randomScreensaver();
-    } else if (!currApp->isScreensaver() && (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay)) {
+      asScreensaver = true;
+    } else if (currApp->isRunningAsScreensaver() && (pad.time() - screensaverStartedTime) > screensaverSwitchInterval) {
+      asScreensaver = true;
+    } else if (!currApp->isRunningAsScreensaver() && (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay)) {
+      asScreensaver = true;
+    } else if (currApp->isID(ClockApp::ID) && (pad.time() - pad.lastTouchedTime(PROXIMITY_SENSOR)) > screensaverDelay) {
+      asScreensaver = true;
+    }
+
+    if (asScreensaver) {
       switchApp = randomScreensaver();
     }
+
   }
 
-  setApp(switchApp);
+  setApp(switchApp, asScreensaver);
 
   if (currApp) {
     switchApp = currApp->run();

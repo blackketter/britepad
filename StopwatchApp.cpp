@@ -5,50 +5,57 @@
 #include "Debug.h"
 #include "Clock.h"
 
-void StopwatchApp::begin(void) {
-  BritepadApp::begin();
+void StopwatchApp::begin(bool asScreensaver) {
+  BritepadApp::begin(asScreensaver);
+  redrawButtons();
+}
 
-  lastDrawMillis = clock.millis();
+void StopwatchApp::redrawButtons(void) {
+  if (!isRunningAsScreensaver()) {
+    coord_t radius = width()/10;
+    resetButton.init(radius*3, top()+height()/3*2, radius, screen.blue, false,"Reset");
 
-  coord_t radius = width()/10;
-  resetButton.init(radius*3, top()+height()/3*2, radius, screen.blue, false,"Reset");
+    pauseButton.init(radius*7, top()+height()/3*2, radius,  startMillis < 0 ? screen.green : screen.red, false, startMillis == -1 ? "Start" : (startMillis < -1 ? "Resume" : "Pause"));
 
-  pauseButton.init(radius*7, top()+height()/3*2, radius,  startMillis < 0 ? screen.green : screen.red, false, startMillis == -1 ? "Start" : (startMillis < -1 ? "Resume" : "Pause"));
-
-  resetButton.draw();
-  pauseButton.draw();
+    resetButton.draw();
+    pauseButton.draw();
+  }
 }
 
 BritepadApp* StopwatchApp::run(void) {
   millis_t nowMillis = clock.millis();
-
-  if (pad.down(BOTTOM_PAD) || pauseButton.down()) {
-    // negative startMillis is the time that we were paused
-    if (startMillis > 0) {
-      // pause
-      startMillis = -(nowMillis - startMillis);
-      pauseButton.setColor(screen.green);
-      pauseButton.setTitle("Resume");
-    } else {
-      // unpause
-      startMillis = nowMillis + startMillis;
-      pauseButton.setColor(screen.red);
-      pauseButton.setTitle("Pause");
+  if (!isRunningAsScreensaver()) {
+    if (pad.down(BOTTOM_PAD) || pauseButton.down()) {
+      // negative startMillis is the time that we were paused
+      if (startMillis > 0) {
+        // pause
+        startMillis = -(nowMillis - startMillis);
+        pauseButton.setColor(screen.green);
+        pauseButton.setTitle("Resume");
+      } else {
+        // unpause
+        startMillis = nowMillis + startMillis;
+        pauseButton.setColor(screen.red);
+        pauseButton.setTitle("Pause");
+      }
+      if (pad.down(BOTTOM_PAD)) {
+        sound.click();
+      }
     }
-    if (pad.down(BOTTOM_PAD)) {
-      sound.click();
-    }
-  }
 
-  if (resetButton.down()) {
-    startMillis = -1;
-    begin();
+    if (resetButton.down()) {
+      startMillis = -1;
+      redrawButtons();
+    }
+  } else if (pad.down(BOTTOM_PAD)) {
+    setRunningAsScreensaver(false);
+    clearScreen();
+    redrawButtons();
+    lastDrawMillis = 0;
   }
 
   if (lastDrawMillis/100 != nowMillis/100) {
     lastDrawMillis = nowMillis;
-
-
     long delta;
 
     if (startMillis > 0) {
@@ -76,7 +83,7 @@ BritepadApp* StopwatchApp::run(void) {
     coord_t w = screen.measureTextH(textTime);
 
     screen.setCursor(screen.width()/2 - w/2,
-                     screen.height()/3 - screen.measureTextV(textTime)/2);
+                     screen.height()/(isRunningAsScreensaver() ? 2 : 3) - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
 
     if (startMillis > 0 && secs == 0 && tenths == 0) {

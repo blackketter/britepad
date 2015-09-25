@@ -104,5 +104,5 @@ bool Clock::isAM() {
 }
 
 void Clock::shortTime(char * timeStr) {
-  sprintf(timeStr, "%d:%02d%s", hourFormat12(), minute(), isAM() ? "am":"pm");
+  sprintf(timeStr, "%d:%02d %s", hourFormat12(), minute(), isAM() ? "am":"pm");
 };

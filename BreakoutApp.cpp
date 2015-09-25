@@ -56,8 +56,8 @@ void BreakoutApp::newGame(void) {
   ballx = width()/2 + random(10);
   bally = top() + height()/2 + ballr*2 + random(10);
 
-  dx = 3;
-  dy = 3;
+  dx = defaultdy;
+  dy = defaultdx;
 
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
@@ -124,18 +124,42 @@ BritepadApp* BreakoutApp::run(void) {
 
   // check if we hit the paddle, bottom or top
   if (bally > bottom()-paddleh-ballr-dy && dy > 0) {
-    if (ballx > paddlex && ballx < paddlex+paddlew ) {
+
+   if (abs(paddlex+paddlew/2-ballx) <= ballr) {
+      // bounce straight up if we hit the middle
+      dy = -dy;
+      dx = 0;
+      bally += 2*dy;
+      sound.beep(20,550);
+    } else if (ballx > paddlex && ballx < paddlex+paddlew ) {
       // bounce off paddle
+      if (dx==0) {
+        dx = paddlex+paddlew/2-ballx < 0 ? defaultdx : -defaultdx;
+      }
       dy = -dy;
       bally += 2*dy;
-      sound.beep(20,220);
+      sound.beep(20,330);
+    } else if (ballx > paddlex+paddlew && ballx < paddlex+paddlew + ballr*2) {
+      // always bounce right if we hit the right edge
+      if (!dx) { dx = defaultdx; }
+      dx = abs(dx);
+      dy = -dy;
+      bally += 2*dy;
+      sound.beep(20,440);
+    } else if (ballx < paddlex && ballx > paddlex-ballr*2) {
+      // always bounce left if we hit the left edge
+      if (!dx) { dx = defaultdx; }
+      dx = -abs(dx);
+      dy = -dy;
+      bally += 2*dy;
+      sound.beep(20,440);
     } else {
       // we hit bottom!
 
       // stop
       dy = dx = 0;
 
-      sound.beep(100, 220);
+      sound.beep(800, 220);
     }
   } else if (bally < top()) {
     dy = -dy;

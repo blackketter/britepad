@@ -7,7 +7,7 @@
 class BreakoutApp : public BritepadApp {
   public:
     const char* name(void) { return "Breakout"; };
-    bool disablesScreensavers(void) { return true; }
+    bool disablesScreensavers(void) { return dx || dy || (pad.time() - pad.lastTouchedTime(ANY_PAD)) > timeoutMillis; }
     BritepadApp* run(void);
     void begin(bool asScreensaver);
     void end(BritepadApp* nextApp);
@@ -34,7 +34,10 @@ class BreakoutApp : public BritepadApp {
     coord_t paddleh;
     coord_t paddlex;
 
+    static const millis_t timeoutMillis = 10000;
     static const millis_t millisPerFrame = 16;
+    static const int defaultdx = 3;
+    static const int defaultdy = 3;
     millis_t lastDraw = 0;
 
     static const int rows = 6;

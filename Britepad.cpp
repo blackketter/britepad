@@ -100,18 +100,16 @@ void Britepad::setApp(BritepadApp* newApp, bool asScreensaver) {
   if (newApp == 0) {
     // just STAY_IN_APP
     return;
-  }
-
-  if (newApp == currApp) {
-    return;
-  }
-
-  if (newApp == BritepadApp::DEFAULT_APP) {
+  } else if (newApp == BritepadApp::DEFAULT_APP) {
     newApp = getApp(MouseApp::ID);
     asScreensaver = false;
   } else if (newApp == BritepadApp::BACK_APP) {
     newApp = getApp(LauncherApp::ID);
     asScreensaver = false;
+  }
+
+  if (newApp == currApp && asScreensaver == currApp->isRunningAsScreensaver()) {
+    return;
   }
 
   if (currApp)
@@ -151,7 +149,7 @@ void Britepad::updateStatusBar(void) {
 void Britepad::begin(void) {
 
   // the launcher owns the apps and has created a splash app
-  setApp(getApp(SplashApp::ID), true);
+  setApp(getApp(SplashApp::ID), false);
 
 // show the apps that have been loaded
   DEBUG_PARAM_LN("app count", appsAdded());

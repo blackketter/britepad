@@ -11,21 +11,29 @@ void StopwatchApp::begin(bool asScreensaver) {
 }
 
 void StopwatchApp::redrawButtons(void) {
-  if (!isRunningAsScreensaver()) {
-    coord_t radius = width()/10;
-    resetButton.init(radius*3, top()+height()/3*2, radius, screen.blue, false,"Reset");
+  coord_t radius = width()/10;
+  coord_t y = isRunningAsScreensaver() ? top()+height()+radius/2 :top()+height()/3*2;
 
-    pauseButton.init(radius*7, top()+height()/3*2, radius,  startMillis < 0 ? screen.green : screen.red, false, startMillis == -1 ? "Start" : (startMillis < -1 ? "Resume" : "Pause"));
+  resetButton.init(radius*3, y, radius, screen.blue, false,"Reset");
 
-    resetButton.draw();
-    pauseButton.draw();
-  }
+  pauseButton.init(radius*7, y, radius,  startMillis < 0 ? screen.green : screen.red, false, startMillis == -1 ? "Start" : (startMillis < -1 ? "Resume" : "Pause"));
+
+  resetButton.draw();
+  pauseButton.draw();
 }
 
 BritepadApp* StopwatchApp::run(void) {
   millis_t nowMillis = clock.millis();
+
+  if (pad.down(BOTTOM_PAD)) {
+    setRunningAsScreensaver(!isRunningAsScreensaver());
+    clearScreen();
+    redrawButtons();
+    lastDrawMillis = 0;
+  }
+
   if (!isRunningAsScreensaver()) {
-    if (pad.down(BOTTOM_PAD) || pauseButton.down()) {
+    if (pauseButton.down()) {
       // negative startMillis is the time that we were paused
       if (startMillis > 0) {
         // pause
@@ -47,11 +55,6 @@ BritepadApp* StopwatchApp::run(void) {
       startMillis = -1;
       redrawButtons();
     }
-  } else if (pad.down(BOTTOM_PAD)) {
-    setRunningAsScreensaver(false);
-    clearScreen();
-    redrawButtons();
-    lastDrawMillis = 0;
   }
 
   if (lastDrawMillis/100 != nowMillis/100) {

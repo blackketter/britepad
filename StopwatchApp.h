@@ -11,11 +11,10 @@ class StopwatchApp : public BritepadApp {
     const char* name(void) { return "Stopwatch"; };
     bool displaysStatusBar(void) { return true; }
     bool wantsToBeScreensaver(void) { return isRunning(); }  // stay being screensaver if counting down or has just gone off
-    bool disablesScreensavers(void) { return isRunning(); }
+    bool disablesScreensavers(void) { return !isRunningAsScreensaver(); }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stpw";
-
 
   private:
     void redrawButtons();

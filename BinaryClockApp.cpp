@@ -1,8 +1,8 @@
 #include "BinaryClockApp.h"
 
 void BinaryClockApp::redraw(void) {
-    coord_t rowspace = height()/9*2;
-    coord_t colspace = width()/15*2;
+    coord_t rowspace = screen.clipHeight()/9*2;
+    coord_t colspace = screen.clipWidth()/15*2;
     coord_t r = min(rowspace,colspace)/4;
 
     coord_t ystart = rowspace*3/4;

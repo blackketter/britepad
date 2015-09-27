@@ -64,10 +64,19 @@ class Screen : public ILI9341_t3 {
     color_t mix(color_t c1, color_t c2);
     uint8_t luminance(color_t);
 
+    inline coord_t clipTop(void) { return _clipy1; };
+    inline coord_t clipLeft(void) { return _clipx1; };
+    inline coord_t clipHeight(void) { return _clipy2 - _clipy1; };
+    inline coord_t clipWidth(void) { return _clipx2 - _clipx1; };
+    inline coord_t clipBottom(void) { return _clipy2; };
+    inline coord_t clipRight(void) { return _clipx2; };
+
 private:
     static const int BACKLIGHT_PIN = 21;
     static const long BACKLIGHT_FREQUENCY = 50000;
 
 };
+
+extern Screen screen;
 
 #endif

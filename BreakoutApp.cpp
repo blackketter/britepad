@@ -17,15 +17,15 @@ void BreakoutApp::begin(bool asScreensaver) {
 }
 
 coord_t BreakoutApp::brickx(int col) {
-  return left()+brickw*col;
+  return screen.clipLeft()+brickw*col;
 }
 coord_t BreakoutApp::bricky(int row) {
-  return top()+topbrickh+brickh*row;
+  return screen.clipTop()+topbrickh+brickh*row;
 }
 
 bool BreakoutApp::hit(coord_t x, coord_t y) {
-  int col = (x - left())/brickw;
-  int row = (y - top() - topbrickh)/brickh;
+  int col = (x - screen.clipLeft())/brickw;
+  int row = (y - screen.clipTop() - topbrickh)/brickh;
   if (row >= 0 && row < rows &&
       col >= 0 && col < cols &&
       bricks[row][col]) {
@@ -42,19 +42,19 @@ void BreakoutApp::newGame(void) {
 
   clearScreen();
 
-  brickw = width()/cols;
-  brickh = height()/16;
+  brickw = screen.clipWidth()/cols;
+  brickh = screen.clipHeight()/16;
   topbrickh = brickh*2;
 
   ballr = brickh/2;
 
-  paddlew = width()/5;
+  paddlew = screen.clipWidth()/5;
   paddleh = brickh;
 
   bricksleft = rows*cols;
 
-  ballx = width()/2 + random(10);
-  bally = top() + height()/2 + ballr*2 + random(10);
+  ballx = screen.clipWidth()/2 + random(10);
+  bally = screen.clipTop() + screen.clipHeight()/2 + ballr*2 + random(10);
 
   dx = defaultdy;
   dy = defaultdx;
@@ -93,11 +93,11 @@ BritepadApp* BreakoutApp::run(void) {
 
   // check if we hit the sides
   ballx += dx;
-  if (ballx > right()) {
+  if (ballx > screen.clipRight()) {
     dx = -dx;
     ballx += 2*dx;
     sound.beep();
-  } else if (ballx < left()) {
+  } else if (ballx < screen.clipLeft()) {
     dx = -dx;
     ballx += 2*dx;
     sound.beep();
@@ -123,7 +123,7 @@ BritepadApp* BreakoutApp::run(void) {
   }
 
   // check if we hit the paddle, bottom or top
-  if (bally > bottom()-paddleh-ballr-dy && dy > 0) {
+  if (bally > screen.clipBottom()-paddleh-ballr-dy && dy > 0) {
 
    if (abs(paddlex+paddlew/2-ballx) <= ballr) {
       // bounce straight up if we hit the middle
@@ -161,7 +161,7 @@ BritepadApp* BreakoutApp::run(void) {
 
       sound.beep(800, 220);
     }
-  } else if (bally < top()) {
+  } else if (bally < screen.clipTop()) {
     dy = -dy;
     bally += 2*dy;
     sound.beep();
@@ -185,7 +185,7 @@ BritepadApp* BreakoutApp::run(void) {
   }
 
   newpaddlex = max(0, newpaddlex);
-  newpaddlex = min(screen.width(), newpaddlex);
+  newpaddlex = min(screen.clipWidth(), newpaddlex);
 
   if (newpaddlex != paddlex) {
     coord_t drawx, erasex, draww;
@@ -205,8 +205,8 @@ BritepadApp* BreakoutApp::run(void) {
       draww = paddlew;
     }
 
-    screen.fillRect(erasex, bottom()-paddleh, draww, paddleh, bgColor());
-    screen.fillRect(drawx, bottom()-paddleh, draww, paddleh, screen.blue);
+    screen.fillRect(erasex, screen.clipBottom()-paddleh, draww, paddleh, bgColor());
+    screen.fillRect(drawx, screen.clipBottom()-paddleh, draww, paddleh, screen.blue);
 
     paddlex=newpaddlex;
   }

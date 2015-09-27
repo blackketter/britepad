@@ -13,8 +13,8 @@ void SetClockApp::drawClock(void) {
     screen.setFont(Arial_72_Bold);
     screen.setTextColor(screen.white, bgColor());
     sprintf(textTime," %2d:%02d ", clock.hourFormat12(), clock.minute());
-    screen.setCursor(width()/2 + left() - screen.measureTextH(textTime)/2,
-                     height()/2 + top() - screen.measureTextV(textTime)/2);
+    screen.setCursor(screen.clipWidth()/2 + screen.clipLeft() - screen.measureTextH(textTime)/2,
+                     screen.clipHeight()/2 + screen.clipTop() - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
     drawButton(6, screen.red);
     lastTime = t;
@@ -25,13 +25,13 @@ int SetClockApp::hitButton(int x, int y) {
   int buttonx[buttoncount];
   int buttony[buttoncount];
 
-  int ytop = top() + height()/6;
-  int ybottom = bottom() - height()/6;
+  int ytop = screen.clipTop() + screen.clipHeight()/6;
+  int ybottom = screen.clipBottom() - screen.clipHeight()/6;
   buttony[0] = buttony[1] = buttony[2] = buttony[6] = ytop;
   buttony[3] = buttony[4] = buttony[5] = ybottom;
 
-  int xspacing = width()/5;
-  int x1 =  left() + xspacing/2;
+  int xspacing = screen.clipWidth()/5;
+  int x1 =  screen.clipLeft() + xspacing/2;
   int x2 =  x1+xspacing;
   int x3 =  x2+xspacing*2;
   int x4 =  x3+xspacing;
@@ -53,13 +53,13 @@ void SetClockApp::drawButton(int i, color_t color) {
   int buttony[buttoncount];
   char buttonsym[buttoncount];
 
-  int ytop = top() + height()/6;
-  int ybottom = bottom() - height()/6;
+  int ytop = screen.clipTop() + screen.clipHeight()/6;
+  int ybottom = screen.clipBottom() - screen.clipHeight()/6;
   buttony[0] = buttony[1] = buttony[2] = buttony[6] = ytop;
   buttony[3] = buttony[4] = buttony[5] = ybottom;
 
-  int xspacing = width()/5;
-  int x1 =  left() + xspacing/2;
+  int xspacing = screen.clipWidth()/5;
+  int x1 =  screen.clipLeft() + xspacing/2;
   int x2 =  x1+xspacing;
   int x3 =  x2+xspacing*2;
   int x4 =  x3+xspacing;

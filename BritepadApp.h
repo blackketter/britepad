@@ -44,14 +44,6 @@ class BritepadApp {
     virtual const char* statusBarTitle(void) { return name(); }
     virtual void clearScreen(void) { screen.fillScreen(bgColor()); }
 
-    coord_t top(void);
-    coord_t left(void);
-    coord_t height(void);
-    coord_t width(void);
-    coord_t bottom(void) { return top() + height(); };
-    coord_t right(void) { return left() + width(); };
-
-
     void updateStatusBarBounds();
     void drawStatusBar(bool update = false); // pass true to just do an update rather than a full redraw
 

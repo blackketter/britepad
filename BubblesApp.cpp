@@ -5,8 +5,8 @@
 #include "Debug.h"
 
 BritepadApp* BubblesApp::run(void) {
-  coord_t x = random(screen.width());
-  coord_t y = random(screen.height());
+  coord_t x = random(screen.clipWidth());
+  coord_t y = random(screen.clipHeight());
   int r = random(40);
   screen.fillCircle(x, y, r, currentColor);
   currentColor++;

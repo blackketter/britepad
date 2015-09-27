@@ -7,8 +7,8 @@ void drawLogo(color_t c) {
   int weight = 20;
   int radius = 30;
   int ascender = radius*2;
-  int midheight = screen.height() / 2;
-  int midwidth = screen.width() / 2;
+  int midheight = screen.clipHeight() / 2;
+  int midwidth = screen.clipWidth() / 2;
   screen.fillCircle(midwidth-radius, midheight, radius, c);
   screen.fillCircle(midwidth-radius, midheight, radius-weight, screen.black);
   screen.fillCircle(midwidth+radius, midheight, radius, c);
@@ -32,10 +32,10 @@ BritepadApp* SplashApp::run(void) {
   }
 
   int weight = 18;
-  int loopradius = screen.height()/10;
+  int loopradius = screen.clipHeight()/10;
   int ascender = loopradius/2*5;
-  int midheight = screen.height() / 2;
-  int midwidth = screen.width() / 2;
+  int midheight = screen.clipHeight() / 2;
+  int midwidth = screen.clipWidth() / 2;
   int circlesteps = 128;
   int totalsteps = circlesteps+ascender;
   // 256 steps to draw the circles

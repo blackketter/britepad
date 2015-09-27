@@ -22,7 +22,8 @@
 MouseApp theMouseApp;
 
 void MouseApp::begin(bool asScreensaver) {
-  screen.pushFill(DIRECTION_UP, bgColor());
+//  screen.pushFill(DIRECTION_UP, bgColor());
+  clearScreen();
 }
 
 void MouseApp::end(BritepadApp* nextApp) {
@@ -105,15 +106,15 @@ BritepadApp* MouseApp::run(void) {
 
   // show feedback on touch panels
   if (pad.changed(RIGHT_PAD)) {
-    screen.fillCircle(screen.width(),screen.height()/2,screen.height()/4, pad.touched(RIGHT_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(screen.clipWidth(),screen.clipHeight()/2,screen.clipHeight()/4, pad.touched(RIGHT_PAD) ? screen.red : backgroundColor);
   }
 
   if (pad.changed(LEFT_PAD)) {
-    screen.fillCircle(1,screen.height()/2,screen.height()/4, pad.touched(LEFT_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(1,screen.clipHeight()/2,screen.clipHeight()/4, pad.touched(LEFT_PAD) ? screen.red : backgroundColor);
   }
 
   if (pad.changed(BOTTOM_PAD)) {
-    screen.fillCircle(screen.width()/2,screen.height(),screen.height()/4, pad.touched(BOTTOM_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(screen.clipWidth()/2,screen.clipHeight(),screen.clipHeight()/4, pad.touched(BOTTOM_PAD) ? screen.red : backgroundColor);
   }
 
 
@@ -138,21 +139,21 @@ BritepadApp* MouseApp::run(void) {
     if (scrollMode) {
       // we are in scroll mode
       DEBUG_LN("scroll mode scrolling");
-      if (pad.y() < screen.height()/2) {
+      if (pad.y() < screen.clipHeight()/2) {
         Keyboard.press(KEY_PAGE_UP);
         Keyboard.release(KEY_PAGE_UP);
-        screen.fillCircle(screen.width(),screen.height()/4,screen.height()/4, currentColor);
+        screen.fillCircle(screen.clipWidth(),screen.clipHeight()/4,screen.clipHeight()/4, currentColor);
       } else {
         Keyboard.press(KEY_PAGE_DOWN);
         Keyboard.release(KEY_PAGE_DOWN);
-        screen.fillCircle(screen.width(),screen.height()*3/4,screen.height()/4, currentColor);
+        screen.fillCircle(screen.clipWidth(),screen.clipHeight()*3/4,screen.clipHeight()/4, currentColor);
       }
     }
 
     // send a move message only if we actually move
     if (pad.deltax() != 0 || pad.deltay() != 0) {
       // if the touch is in the edge, then we scroll
-      if (pad.x() > (screen.width() - SCROLL_EDGE_MARGIN)) {
+      if (pad.x() > (screen.clipWidth() - SCROLL_EDGE_MARGIN)) {
         if (pad.deltay() != 0) {
           static millis_t lastScroll = pad.time();
           static int16_t accumScroll = 0;
@@ -165,7 +166,7 @@ BritepadApp* MouseApp::run(void) {
           if (pad.time() - lastScroll > 25 && abs(accumScroll) > scrollFactor) {
             int8_t mouseScrollUnits = accumScroll/scrollFactor;
             Mouse.scroll(-mouseScrollUnits); // negative because we use new natural scrolling
-            screen.fillRect(0, pad.y()-radius, screen.width(), radius*2, currentColor++);
+            screen.fillRect(0, pad.y()-radius, screen.clipWidth(), radius*2, currentColor++);
             DEBUG_PARAM_LN("Scroll", mouseScrollUnits);
             accumScroll -= mouseScrollUnits*scrollFactor;
             lastScroll = pad.time();
@@ -203,7 +204,7 @@ BritepadApp* MouseApp::run(void) {
         DEBUG("<move:"); DEBUG(deltax);
         DEBUG(", "); DEBUG(deltay);     DEBUG(">");
 #endif
-        screen.drawLine(screen.width()/2, screen.height()/2, screen.width()/2+deltax, screen.height()/2+deltay, ~currentColor);
+        screen.drawLine(screen.clipWidth()/2, screen.clipHeight()/2, screen.clipWidth()/2+deltax, screen.clipHeight()/2+deltay, ~currentColor);
       }
     }
 
@@ -218,16 +219,16 @@ BritepadApp* MouseApp::run(void) {
 
       if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < 20 && (abs(pad.lastDownY() - pad.y()) < 20)) ) {
 
-        if (pad.x() > (screen.width() - SCROLL_EDGE_MARGIN)) {
+        if (pad.x() > (screen.clipWidth() - SCROLL_EDGE_MARGIN)) {
           DEBUG_PARAM_LN("pad.x()",pad.x());
-          if (pad.y() < screen.height()/2) {
+          if (pad.y() < screen.clipHeight()/2) {
             Keyboard.press(KEY_PAGE_UP);
             Keyboard.release(KEY_PAGE_UP);
-            screen.fillCircle(screen.width(),screen.height()/4,screen.height()/4, currentColor);
+            screen.fillCircle(screen.clipWidth(),screen.clipHeight()/4,screen.clipHeight()/4, currentColor);
           } else {
             Keyboard.press(KEY_PAGE_DOWN);
             Keyboard.release(KEY_PAGE_DOWN);
-            screen.fillCircle(screen.width(),screen.height()*3/4,screen.height()/4, currentColor);
+            screen.fillCircle(screen.clipWidth(),screen.clipHeight()*3/4,screen.clipHeight()/4, currentColor);
           }
           scrollMode = true;
           DEBUG_LN("scrollMode on");

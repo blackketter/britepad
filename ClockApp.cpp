@@ -24,8 +24,8 @@ void ClockApp::redraw(void) {
     sprintf(textTime, "%d:%02d", clock.hourFormat12(), clock.minute());
     coord_t w = screen.measureTextH(textTime);
     coord_t h = screen.measureTextV(textTime);
-    screen.setCursor(screen.width()/2 - w/2,
-                     screen.height()/2 - h/2);
+    screen.setCursor(screen.clipWidth()/2 - w/2,
+                     screen.clipHeight()/2 - h/2);
     if (w != lastWidth) {
       clearScreen();
       lastWidth = w;
@@ -37,13 +37,13 @@ void ClockApp::redraw(void) {
 //  screen.drawText(textTime);
 
     screen.setFont(Arial_16);
-    screen.setCursor(screen.width()/2+w/2,screen.height()/2 + h/2 - screen.measureTextV(textTime));
+    screen.setCursor(screen.clipWidth()/2+w/2,screen.clipHeight()/2 + h/2 - screen.measureTextV(textTime));
     screen.drawText(clock.isAM() ? "am" : "pm");
 }
 /*
 // Draws analog clock
-  int x = random(screen.width());
-  int y = random(screen.height());
+  int x = random(screen.clipWidth());
+  int y = random(screen.clipHeight());
   long r = random(40);
   time_t tt = now();
   long h = hourFormat12(tt);
@@ -52,7 +52,7 @@ void ClockApp::redraw(void) {
   long t = h*60+m;
 
   // clip out the area where we'll draw the text
-  screen.setClipRect(0, 20, screen.width(), screen.height());
+  screen.setClipRect(0, 20, screen.clipWidth(), screen.clipHeight());
 
   screen.fillCircle(x, y, r, currentColor);
   screen.drawCircle(x, y, r, ~currentColor);

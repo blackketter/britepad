@@ -12,32 +12,6 @@ BritepadApp::BritepadApp(void)  {
   britepad.addApp(this);
 }
 
-coord_t BritepadApp::top(void) {
-  if (displaysStatusBar() && statusBarTop == 0) {
-    return statusBarHeight;
-  } else {
-    return 0;
-  };
-};
-
-coord_t BritepadApp::height(void) {
-  coord_t h = screen.height();
-  if (displaysStatusBar()) {
-    h -= statusBarHeight;
-  }
-  return h;
-};
-
-
-coord_t BritepadApp::left(void) {
-  return 0;
-};
-
-
-coord_t BritepadApp::width(void) {
-  return screen.width();
-};
-
 void BritepadApp::drawStatusBar(bool update) {
 
   if (displaysStatusBar()) {
@@ -47,10 +21,10 @@ void BritepadApp::drawStatusBar(bool update) {
     screen.setTextColor(statusBarFGColor());
 
     if (!update) {
-      screen.fillRect(0, statusBarTop, screen.width(), statusBarHeight, statusBarBGColor());
+      screen.fillRect(0, statusBarTop, screen.clipWidth(), statusBarHeight, statusBarBGColor());
       // draw title
       const char* title = statusBarTitle();
-      screen.setCursor( (width() - screen.measureTextH(title)) / 2,
+      screen.setCursor( (screen.clipWidth() - screen.measureTextH(title)) / 2,
                          statusBarTop + (statusBarHeight-screen.measureTextV(title)) / 2);
       screen.drawText(title);
     }
@@ -63,7 +37,7 @@ void BritepadApp::drawStatusBar(bool update) {
       clock.shortTime(shortTime);
       char shortTimeSpaced[22];
       sprintf(shortTimeSpaced," %s ", shortTime);
-      screen.setCursor( (width() - screen.measureTextH(shortTimeSpaced) - 2),
+      screen.setCursor( (screen.clipWidth() - screen.measureTextH(shortTimeSpaced) - 2),
                          statusBarTop + (statusBarHeight-screen.measureTextV(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
     }
@@ -76,7 +50,7 @@ void BritepadApp::drawStatusBar(bool update) {
 void BritepadApp::updateStatusBarBounds(void) {
   if (displaysStatusBar()) {
     // set the clipping to the app area
-    screen.setClipRect(left(), top(), left()+width(), top()+height());
+    screen.setClipRect(0, statusBarHeight, screen.width(), screen.height());
 
   } else {
     screen.setClipRect();

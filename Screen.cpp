@@ -135,3 +135,4 @@ uint8_t Screen::luminance(color_t c) {
   return sqrt16(r*r+g*g+b*b);
 };
 
+

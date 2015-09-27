@@ -12,6 +12,7 @@
 #include "SetClockApp.h"
 #include "ClockApp.h"
 #include "DotsDisplayApp.h"
+#include "LifeApp.h"
 #include "SetTimerApp.h"
 #include "MuteApp.h"
 #include "ThereminApp.h"
@@ -37,6 +38,7 @@ LauncherApp::LauncherApp(void) {
   setButton(SETTINGS_SCREEN, 3,  new ClockApp);
   setButton(SETTINGS_SCREEN, 4,  new BriteLiteApp);
   setButton(SETTINGS_SCREEN, 5,  new BinaryClockApp);
+  setButton(SETTINGS_SCREEN, 6,  new LifeApp);
 
   setButton(SETTINGS_SCREEN, 8,  new SetClockApp);
   setButton(SETTINGS_SCREEN, 9,  new MuteApp);
@@ -108,15 +110,18 @@ void LauncherApp::drawButton(int i, bool highlighted) {
     return;
   }
   // todo: factor out these into function that finds button coordinates
-  const int vsize = height() / v_buttons;
-  const int hsize = width() / h_buttons;
+  const int vsize = screen.clipHeight() / v_buttons;
+  const int hsize = screen.clipWidth() / h_buttons;
 
-  int x = hsize/2 + hsize*(i%h_buttons) + left();
-  int y = vsize/2 + vsize*(i/h_buttons) + top();
+  DEBUG_PARAM_LN("vsize",vsize);
+  DEBUG_PARAM_LN("hsize",hsize);
+  int x = hsize/2 + hsize*(i%h_buttons) + screen.clipLeft();
+  int y = vsize/2 + vsize*(i/h_buttons) + screen.clipTop();
 
   const int radius = min(hsize,vsize) / 2 - 2;
 
-  screen.fillCircle( x, y, radius, highlighted ? screen.mix(apps[currentScreen()][i]->buttonColor(), screen.black) : apps[currentScreen()][i]->buttonColor());
+  screen.fillCircle( x, y, radius,
+    highlighted ? screen.mix(apps[currentScreen()][i]->buttonColor(), screen.black) : apps[currentScreen()][i]->buttonColor());
   const char* name = apps[currentScreen()][i]->name();
   screen.setFont(Arial_9_Bold);
   screen.setTextColor(screen.black);
@@ -126,8 +131,8 @@ void LauncherApp::drawButton(int i, bool highlighted) {
 
 int LauncherApp::buttonHit(int x, int y) {
 
-  int h = (x - left()) / (width() / h_buttons);
-  int v = (y - top()) / (height() / v_buttons);
+  int h = (x - screen.clipLeft()) / (screen.clipWidth() / h_buttons);
+  int v = (y - screen.clipTop()) / (screen.clipHeight() / v_buttons);
 
   int i = v*h_buttons+h;
   if (getButton(i)) {

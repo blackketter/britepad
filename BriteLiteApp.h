@@ -3,7 +3,7 @@
 class BriteLiteApp : public DotsDisplayApp {
 
   public:
-    void begin(bool asScreensaver) { ScreensaverApp::begin(asScreensaver); setUpDots(16,14); };
+    void begin(bool asScreensaver) { ScreensaverApp::begin(asScreensaver); dots.init(16,14, BritepadAppScratchPad); };
     BritepadApp* run(void);
 
     static constexpr appid_t ID = "lite";
@@ -11,10 +11,8 @@ class BriteLiteApp : public DotsDisplayApp {
     const char* name(void) { return "LiteBrite"; };
 
 
-  protected:
-    virtual void updateDot(int x, int y);
-
   private:
+    HexDotMatrix dots;
     int cursor_x;
     int cursor_y;
     color_t lastColor;

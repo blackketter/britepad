@@ -5,14 +5,14 @@
 #include "Debug.h"
 #include "Clock.h"
 
-void StopwatchApp::begin(bool asScreensaver) {
-  BritepadApp::begin(asScreensaver);
+void StopwatchApp::begin(AppMode asMode) {
+  BritepadApp::begin(asMode);
   redrawButtons();
 }
 
 void StopwatchApp::redrawButtons(void) {
   coord_t radius = screen.clipWidth()/10;
-  coord_t y = isRunningAsScreensaver() ? screen.clipTop()+screen.clipHeight()+radius/2 :screen.clipTop()+screen.clipHeight()/3*2;
+  coord_t y = isAppMode(SCREENSAVER) ? screen.clipTop()+screen.clipHeight()+radius/2 :screen.clipTop()+screen.clipHeight()/3*2;
 
   resetButton.init(radius*3, y, radius, screen.blue, false,"Reset");
 
@@ -26,13 +26,17 @@ BritepadApp* StopwatchApp::run(void) {
   millis_t nowMillis = clock.millis();
 
   if (pad.down(BOTTOM_PAD)) {
-    setRunningAsScreensaver(!isRunningAsScreensaver());
+    if (isAppMode(SCREENSAVER)) {
+      setAppMode(INTERACTIVE);
+    } else {
+      setAppMode(SCREENSAVER);
+    }
     clearScreen();
     redrawButtons();
     lastDrawMillis = 0;
   }
 
-  if (!isRunningAsScreensaver()) {
+  if (isAppMode(INTERACTIVE)) {
     if (pauseButton.down()) {
       // negative startMillis is the time that we were paused
       if (startMillis > 0) {
@@ -78,7 +82,7 @@ BritepadApp* StopwatchApp::run(void) {
     screen.setFont(Arial_48_Bold);
     screen.setTextColor(screen.white, bgColor());
     if (!hours) {
-      sprintf(textTime, "%02d:%02d.%01d", mins, secs, tenths);
+      sprintf(textTime, " %02d:%02d.%01d ", mins, secs, tenths);
     } else {
       sprintf(textTime, "%02d:%02d:%02d", hours, mins, secs);
     }
@@ -86,7 +90,7 @@ BritepadApp* StopwatchApp::run(void) {
     coord_t w = screen.measureTextH(textTime);
 
     screen.setCursor(screen.clipWidth()/2 - w/2,
-                     screen.clipHeight()/(isRunningAsScreensaver() ? 2 : 3) - screen.measureTextV(textTime)/2);
+                     screen.clipHeight()/(isAppMode(SCREENSAVER) ? 2 : 3) - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
 
     if (startMillis > 0 && secs == 0 && tenths == 0) {

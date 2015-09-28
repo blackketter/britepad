@@ -8,7 +8,7 @@
 class TimerApp : public ScreensaverApp {
   public:
     BritepadApp* run(void);
-    void begin(bool asScreensaver) { ScreensaverApp::begin(asScreensaver); beeps = 10; }
+    void begin(AppMode asMode) { ScreensaverApp::begin(asMode); beeps = 10; }
     void end(BritepadApp* nextApp);
     const char* name(void) { return "Timer"; };
     void setTime(time_t t);
@@ -18,7 +18,7 @@ class TimerApp : public ScreensaverApp {
 
     bool wantsToBeScreensaver(void) { return running; }  // stay being screensaver if counting down or has just gone off
 
-    bool getScreensaverEnabled(void) { return mytimer.running(); }  // switch to being screensaver if counting down
+    bool getEnabled(void) { return mytimer.running(); }  // switch to being screensaver if counting down
     bool displaysStatusBar(void) { return true; }
 
     void alarm(void);

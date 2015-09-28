@@ -14,7 +14,7 @@ enum ScreenNames {
 class LauncherApp : public BritepadApp {
   public:
     LauncherApp(void);
-    void begin(bool asScreensaver);
+    void begin(AppMode asMode);
     void end(BritepadApp* newApp);
     BritepadApp* run(void);
     void setButton(int screen, int i, BritepadApp* b);

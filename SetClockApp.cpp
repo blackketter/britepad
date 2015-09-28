@@ -99,7 +99,7 @@ void SetClockApp::drawButtons() {
   }
 }
 
-void SetClockApp::begin(bool asScreensaver) {
+void SetClockApp::begin(AppMode asMode) {
   lastTime = 0;
   clearScreen();
 

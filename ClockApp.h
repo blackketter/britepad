@@ -12,7 +12,7 @@ class ClockApp : public ScreensaverApp {
 
     const char* name(void) { return "Clock"; };
 
-    bool getScreensaverEnabled() { return ScreensaverApp::getScreensaverEnabled() && clock.hasBeenSet(); }
+    bool getEnabled() { return enabled && clock.hasBeenSet(); }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "clok";

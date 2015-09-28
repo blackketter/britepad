@@ -42,20 +42,13 @@ void BritepadApp::drawStatusBar(bool update) {
       screen.drawText(shortTimeSpaced);
     }
 
-    updateStatusBarBounds();
-  }
-
-}
-
-void BritepadApp::updateStatusBarBounds(void) {
-  if (displaysStatusBar()) {
     // set the clipping to the app area
     screen.setClipRect(0, statusBarHeight, screen.width(), screen.height());
-
   } else {
     screen.setClipRect();
   }
-};
+
+}
 
 bool BritepadApp::isID(appid_t match) {
   return !strcmp(match, id());

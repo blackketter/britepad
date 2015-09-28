@@ -9,8 +9,8 @@ BritepadApp* LifeApp::run() {
 }
 
 
-void LifeApp::begin(bool asScreensaver) {
+void LifeApp::begin(AppMode asMode) {
   DEBUG_LN("begin LifeApp");
-  ScreensaverApp::begin(asScreensaver);
+  ScreensaverApp::begin(asMode);
   dots.init(16,12,BritepadAppScratchPad);
 };

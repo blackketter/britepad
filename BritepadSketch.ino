@@ -39,7 +39,6 @@ void setup(void) {
   DEBUG_INIT();
 
   DEBUG_LN("britepad starting...");
-  DEBUG_PARAM_LN("Teensy3Clock.get()", year(Teensy3Clock.get()));
 
   DEBUG_LN("starting screen");
   screen.begin();

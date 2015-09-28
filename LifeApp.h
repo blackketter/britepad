@@ -5,7 +5,7 @@
 
 class LifeApp : public DotsDisplayApp {
   public:
-    void begin(bool asScreensaver);
+    void begin(AppMode asMode);
     BritepadApp* run(void);
 
     const char* name(void) { return "Life"; };

@@ -8,11 +8,11 @@ class MouseApp : public BritepadApp {
     MouseApp(void) : BritepadApp() {  Mouse.begin(); };
     BritepadApp* run(void);
     void end(BritepadApp* nextApp);
-    void begin(bool asScreensaver);
+    void begin(AppMode asMode);
+
+    bool canBeAppMode(AppMode b) { return (b==MOUSE); };
+
     const char* name(void) { return "Mouse"; };
-
-    bool disablesScreensavers(void) { return pad.touched(ANY_PAD); }
-
     appid_t id() { return ID; };
     static constexpr appid_t ID = "mous";
 

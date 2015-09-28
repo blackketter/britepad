@@ -11,6 +11,13 @@ enum Direction {
   DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT
 };
 
+enum AppMode {
+  MOUSE,
+  INTERACTIVE,
+  SCREENSAVER
+};
+
+
 typedef long long millis_t;
 typedef const char* appid_t;
 

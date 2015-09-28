@@ -6,7 +6,6 @@
 
 class BritepadApp;
 class LauncherApp;
-class ScreensaverApp;
 
 class Britepad {
   public:
@@ -23,10 +22,10 @@ class Britepad {
     void updateStatusBar(void);
 
   private:
-    void setApp(BritepadApp* newApp, bool asScreensaver);  // sets the current app
+    void setApp(BritepadApp* newApp, AppMode asMode);  // sets the current app
 
-    ScreensaverApp* wantsToBeScreensaver(void);
-    ScreensaverApp* randomScreensaver(void);
+    BritepadApp* wantsToBeScreensaver(void);
+    BritepadApp* randomApp(AppMode m);
 
 
     int appCount = 0;

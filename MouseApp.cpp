@@ -21,8 +21,7 @@
 
 MouseApp theMouseApp;
 
-void MouseApp::begin(bool asScreensaver) {
-//  screen.pushFill(DIRECTION_UP, bgColor());
+void MouseApp::begin(AppMode asMode) {
   clearScreen();
 }
 

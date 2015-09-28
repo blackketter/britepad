@@ -72,10 +72,10 @@ LauncherApp::LauncherApp(void) {
 
   setButton(APPS_SCREEN, 0,  new BreakoutApp);
   setButton(APPS_SCREEN, 1,  new ThereminApp);
-  setButton(APPS_SCREEN, 11,  new RebootApp);
+//  setButton(APPS_SCREEN, 11,  new RebootApp);  // todo: doesn't work yet
 }
 
-void LauncherApp::begin(bool asScreensaver) {
+void LauncherApp::begin(AppMode asMode) {
 
   // this should wake up the host, which is great for entering passwords
   // but might have some ugly side effects
@@ -106,15 +106,13 @@ void LauncherApp::drawButtons(void) {
 }
 
 void LauncherApp::drawButton(int i, bool highlighted) {
-  if (i == noButton || i >= buttons_per_screen || apps[currentScreen()][i]->disabled()) {
+  if (i == noButton || i >= buttons_per_screen) {
     return;
   }
   // todo: factor out these into function that finds button coordinates
   const int vsize = screen.clipHeight() / v_buttons;
   const int hsize = screen.clipWidth() / h_buttons;
 
-  DEBUG_PARAM_LN("vsize",vsize);
-  DEBUG_PARAM_LN("hsize",hsize);
   int x = hsize/2 + hsize*(i%h_buttons) + screen.clipLeft();
   int y = vsize/2 + vsize*(i/h_buttons) + screen.clipTop();
 
@@ -193,11 +191,11 @@ BritepadApp* LauncherApp::run(void) {
           }
         } else {
           // todo handle screensavers
-          if (launched->isScreensaver()) {
-            ScreensaverApp* ss = (ScreensaverApp*)launched;
+          if (launched->canBeAppMode(SCREENSAVER)) {
+
             // toggle the enabledness of the screensaver, and launch it if we're enabling it
-            ss->setScreensaverEnabled(!ss->getScreensaverEnabled());
-            if (ss->getScreensaverEnabled()) {
+            launched->setEnabled(!launched->getEnabled());
+            if (launched->getEnabled()) {
               exit = launched;
             } else {
               drawButton(b, false);

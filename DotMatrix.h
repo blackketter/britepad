@@ -8,6 +8,7 @@ class DotMatrix {
   public:
     virtual void init(int dotsWide, int dotsHigh, void* mem);
     virtual void redraw(void);
+    virtual void clear(void);
 
     int getDotsWide() { return dots_wide; }
     int getDotsHigh() { return dots_high; }

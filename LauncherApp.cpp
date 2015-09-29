@@ -13,6 +13,7 @@
 #include "ClockApp.h"
 #include "DotsDisplayApp.h"
 #include "LifeApp.h"
+#include "FadeDots.h"
 #include "SetTimerApp.h"
 #include "MuteApp.h"
 #include "ThereminApp.h"
@@ -25,20 +26,21 @@
 LauncherApp theLauncherApp;
 
 LauncherApp::LauncherApp(void) {
-  for (int s = 0; s < total_screens; s++) {
+  for (int s = 0; s < TOTAL_SCREENS; s++) {
     for (int i = 0; i < buttons_per_screen; i++) {
       setButton(s, i,nil);
     }
   }
 
 // left screen contains screensavers and settings
-  setButton(SETTINGS_SCREEN, 0,  new BubblesApp);
-  setButton(SETTINGS_SCREEN, 1,  new SplashApp);
-  setButton(SETTINGS_SCREEN, 2,  new DotsDisplayApp);
-  setButton(SETTINGS_SCREEN, 3,  new ClockApp);
-  setButton(SETTINGS_SCREEN, 4,  new BriteLiteApp);
-  setButton(SETTINGS_SCREEN, 5,  new BinaryClockApp);
-  setButton(SETTINGS_SCREEN, 6,  new LifeApp);
+  setButton(SCREENSAVERS_SCREEN, 0,  new BubblesApp);
+  setButton(SCREENSAVERS_SCREEN, 1,  new SplashApp);
+  setButton(SCREENSAVERS_SCREEN, 2,  new DotsDisplayApp);
+  setButton(SCREENSAVERS_SCREEN, 3,  new ClockApp);
+  setButton(SCREENSAVERS_SCREEN, 4,  new BriteLiteApp);
+  setButton(SCREENSAVERS_SCREEN, 5,  new BinaryClockApp);
+  setButton(SCREENSAVERS_SCREEN, 6,  new LifeApp);
+  setButton(SCREENSAVERS_SCREEN, 7,  new FadeDotsApp);
 
   setButton(SETTINGS_SCREEN, 8,  new SetClockApp);
   setButton(SETTINGS_SCREEN, 9,  new MuteApp);
@@ -228,7 +230,7 @@ BritepadApp* LauncherApp::run(void) {
   }
 
   if (pad.down(RIGHT_PAD)) {
-    if (currentScreen() < total_screens - 1) {
+    if (currentScreen() < TOTAL_SCREENS - 1) {
       current_screen++;
       sound.swipe(DIRECTION_RIGHT);
       screen.pushFill(DIRECTION_RIGHT, bgColor());

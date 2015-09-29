@@ -6,9 +6,11 @@
 
 enum ScreenNames {
   SETTINGS_SCREEN,
+  SCREENSAVERS_SCREEN,
   KEYS_SCREEN,
   TIMERS_SCREEN,
-  APPS_SCREEN
+  APPS_SCREEN,
+  TOTAL_SCREENS
 };
 
 class LauncherApp : public BritepadApp {
@@ -30,21 +32,22 @@ class LauncherApp : public BritepadApp {
 
     const static int h_buttons = 4;
     const static int v_buttons = 3;
-    const static int total_screens = 4;
     const static int buttons_per_screen = h_buttons * v_buttons;
     const static int resetScreenTimeout = 10;  // seconds
 
-    BritepadApp* apps[total_screens][buttons_per_screen];
+    BritepadApp* apps[TOTAL_SCREENS][buttons_per_screen];
 
-    const char* screenNames[total_screens] = {
+    const char* screenNames[TOTAL_SCREENS] = {
         "Settings",
+        "Screensavers",
         "Keys",
         "Timers",
         "Apps"
       };
 
-    const color_t screenColor[total_screens] = {
+    const color_t screenColor[TOTAL_SCREENS] = {
         screen.darkerred,
+        screen.darkeryellow,
         screen.darkergreen,
         screen.darkerblue,
         screen.darkergrey

@@ -189,6 +189,7 @@ void Britepad::idle(void) {
   } else if (getApp(ClockApp::ID) &&  (getApp(ClockApp::ID))->getEnabled() && currApp->isAppMode(SCREENSAVER) && !currApp->isID(ClockApp::ID) && pad.up(PROXIMITY_SENSOR)) {
     switchApp = getApp(ClockApp::ID);
     asMode = SCREENSAVER;
+    DEBUG_LN("Proximity detected: showing clock");
 
   } else if (!currApp->disablesScreensavers()) {
     // let's check to see if we should run a screensaver

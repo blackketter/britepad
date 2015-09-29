@@ -2,6 +2,8 @@
 #include <EEPROM.h>
 #include "Preferences.h"
 
+#include "Debug.h"
+
 // preferences are saved:
 //   tag string (null terminated), length byte, data bytes (of length given before)
 
@@ -128,6 +130,11 @@ void Preferences::saveOut(void) {
   // todo - only write out the bytes that have changed
   for (size_t i = 0; i < sizeof(prefsData); i++) {
     EEPROM.write(i, prefsData[i]);
+#if 0
+    char dumper[100];
+    sprintf(dumper, "%4d - %c (%2x)", i, prefsData[i], prefsData[i]);
+    DEBUG_LN(dumper);
+#endif
   }
 }
 

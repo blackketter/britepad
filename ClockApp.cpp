@@ -24,8 +24,8 @@ void ClockApp::redraw(void) {
     sprintf(textTime, "%d:%02d", clock.hourFormat12(), clock.minute());
     coord_t w = screen.measureTextH(textTime);
     coord_t h = screen.measureTextV(textTime);
-    screen.setCursor(screen.clipWidth()/2 - w/2,
-                     screen.clipHeight()/2 - h/2);
+    screen.setCursor(screen.clipMidWidth() - w/2,
+                     screen.clipMidHeight() - h/2);
     if (w != lastWidth) {
       clearScreen();
       lastWidth = w;
@@ -37,7 +37,7 @@ void ClockApp::redraw(void) {
 //  screen.drawText(textTime);
 
     screen.setFont(Arial_16);
-    screen.setCursor(screen.clipWidth()/2+w/2,screen.clipHeight()/2 + h/2 - screen.measureTextV(textTime));
+    screen.setCursor(screen.clipMidWidth()+w/2,screen.clipMidHeight() + h/2 - screen.measureTextV(textTime));
     screen.drawText(clock.isAM() ? "am" : "pm");
 }
 /*

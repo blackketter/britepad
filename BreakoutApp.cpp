@@ -53,8 +53,8 @@ void BreakoutApp::newGame(void) {
 
   bricksleft = rows*cols;
 
-  ballx = screen.clipWidth()/2 + random(10);
-  bally = screen.clipTop() + screen.clipHeight()/2 + ballr*2 + random(10);
+  ballx = screen.clipMidWidth() + random(10);
+  bally = screen.clipMidHeight() + ballr*2 + random(10);
 
   dx = defaultdy;
   dy = defaultdx;

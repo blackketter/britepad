@@ -4,24 +4,25 @@
 #include "Debug.h"
 
 // apps are included here
+#include "BinaryClockApp.h"
+#include "BreakoutApp.h"
+#include "BriteLiteApp.h"
 #include "BritepadApp.h"
 #include "BubblesApp.h"
-#include "SplashApp.h"
-#include "PassApp.h"
-#include "KeyApp.h"
-#include "SetClockApp.h"
 #include "ClockApp.h"
 #include "DotsDisplayApp.h"
+#include "FadeDotsApp.h"
+#include "KeyApp.h"
 #include "LifeApp.h"
-#include "FadeDots.h"
-#include "SetTimerApp.h"
 #include "MuteApp.h"
-#include "ThereminApp.h"
-#include "StopwatchApp.h"
-#include "BreakoutApp.h"
+#include "PaintApp.h"
+#include "PassApp.h"
 #include "RebootApp.h"
-#include "BriteLiteApp.h"
-#include "BinaryClockApp.h"
+#include "SetClockApp.h"
+#include "SetTimerApp.h"
+#include "SplashApp.h"
+#include "StopwatchApp.h"
+#include "ThereminApp.h"
 
 LauncherApp theLauncherApp;
 
@@ -74,6 +75,7 @@ LauncherApp::LauncherApp(void) {
 
   setButton(APPS_SCREEN, 0,  new BreakoutApp);
   setButton(APPS_SCREEN, 1,  new ThereminApp);
+  setButton(APPS_SCREEN, 2,  new PaintApp);
 //  setButton(APPS_SCREEN, 11,  new RebootApp);  // todo: doesn't work yet
 }
 
@@ -193,7 +195,7 @@ BritepadApp* LauncherApp::run(void) {
           }
         } else {
           // todo handle screensavers
-          if (launched->canBeAppMode(SCREENSAVER)) {
+          if (launched->canBeScreensaver()) {
 
             // toggle the enabledness of the screensaver, and launch it if we're enabling it
             launched->setEnabled(!launched->getEnabled());

@@ -1,5 +1,5 @@
 #include "BritepadShared.h"
-#include "MouseApp.h"
+#include "PaintApp.h"
 #include "Screen.h"
 #include "Debug.h"
 #include "Sound.h"
@@ -7,31 +7,20 @@
 // Size of the color selection boxes and the paintbrush size
 #define PENRADIUS 10
 
-MouseApp theMouseApp;
-
-void MouseApp::begin(AppMode asMode) {
-  clearScreen();
-  mouse.begin();
-}
-
-void MouseApp::end(BritepadApp* nextApp) {
-  mouse.end();
-}
-
-BritepadApp* MouseApp::run(void) {
-  mouse.run();
+BritepadApp* PaintApp::run(void) {
+  BritepadApp::run();
 
   // show feedback on touch panels
   if (pad.changed(RIGHT_PAD)) {
-    screen.fillCircle(screen.clipWidth(),screen.clipHeight()/2,screen.clipHeight()/4, pad.touched(RIGHT_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(screen.clipWidth(),screen.clipMidHeight(),screen.clipHeight()/4, pad.touched(RIGHT_PAD) ? screen.red : backgroundColor);
   }
 
   if (pad.changed(LEFT_PAD)) {
-    screen.fillCircle(1,screen.clipHeight()/2,screen.clipHeight()/4, pad.touched(LEFT_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(1,screen.clipMidHeight(),screen.clipHeight()/4, pad.touched(LEFT_PAD) ? screen.red : backgroundColor);
   }
 
   if (pad.changed(BOTTOM_PAD)) {
-    screen.fillCircle(screen.clipWidth()/2,screen.clipHeight(),screen.clipHeight()/4, pad.touched(BOTTOM_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(screen.clipMidWidth(),screen.clipHeight(),screen.clipHeight()/4, pad.touched(BOTTOM_PAD) ? screen.red : backgroundColor);
   }
 
   if (pad.touched(SCREEN_PAD)) {
@@ -57,7 +46,7 @@ BritepadApp* MouseApp::run(void) {
     if (scrollMode) {
       // we are in scroll mode
       DEBUG_LN("scroll mode scrolling");
-      if (pad.y() < screen.clipHeight()/2) {
+      if (pad.y() < screen.clipMidHeight() {
         screen.fillCircle(screen.clipWidth(),screen.clipHeight()/4,screen.clipHeight()/4, currentColor);
       } else {
         screen.fillCircle(screen.clipWidth(),screen.clipHeight()*3/4,screen.clipHeight()/4, currentColor);
@@ -67,7 +56,7 @@ BritepadApp* MouseApp::run(void) {
      screen.fillCircle(pad.x(), pad.y(), radius, currentColor++);
   }
 // draw delta line
-//        screen.drawLine(screen.clipWidth()/2, screen.clipHeight()/2, screen.clipWidth()/2+deltax, screen.clipHeight()/2+deltay, ~currentColor);
+//        screen.drawLine(screen.clipMidWidth(), screen.clipMidHeight(), screen.clipMidWidth()+deltax, screen.clipMidHeight()+deltay, ~currentColor);
 
 // draw page up
 //            screen.fillCircle(screen.clipWidth(),screen.clipHeight()/4,screen.clipHeight()/4, currentColor);

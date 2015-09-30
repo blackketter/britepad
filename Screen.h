@@ -71,6 +71,9 @@ class Screen : public ILI9341_t3 {
     inline coord_t clipWidth(void) { return _clipx2 - _clipx1; };
     inline coord_t clipBottom(void) { return _clipy2; };
     inline coord_t clipRight(void) { return _clipx2; };
+    inline coord_t clipMidHeight(void) { return clipTop() + clipHeight()/2; };
+    inline coord_t clipMidWidth(void) { return clipLeft() + clipWidth()/2; };
+
 
 private:
     static const int BACKLIGHT_PIN = 21;

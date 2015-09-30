@@ -13,9 +13,9 @@ class Britepad;
 class BritepadApp {
   public:
     BritepadApp();
-    virtual void begin(AppMode asMode) { setAppMode(asMode); screen.fillScreen(bgColor()); };  // initialize app state and draw first screen
-    virtual void end(BritepadApp* nextApp) {}; // called after final run(), lets app clean up and tells it what the next app may be
-    virtual BritepadApp* run(void) {return STAY_IN_APP;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants above)
+    virtual void begin(AppMode asMode);  // initialize app state and draw first screen
+    virtual void end(BritepadApp* nextApp); // called after final run(), lets app clean up and tells it what the next app may be
+    virtual BritepadApp* run(void) { if (isAppMode(MOUSE)) { mouse.run(); } return STAY_IN_APP;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants above)
 
     virtual const char* name(void) = 0;
     virtual appid_t id(void) = 0;
@@ -32,11 +32,15 @@ class BritepadApp {
     virtual bool getEnabled(void) { return enabled; }
     virtual void setEnabled(bool e) { enabled = e; }
 
-    virtual AppMode getAppMode() { return currAppMode; }
-    virtual void setAppMode( AppMode newMode ) { currAppMode = newMode; };
-    virtual bool isAppMode(AppMode is) { return (is == getAppMode()); }
+    virtual void setAppMode( AppMode newMode );
 
-    virtual bool canBeAppMode(AppMode b) { return (b == INTERACTIVE); }
+    AppMode getAppMode() { return currAppMode; }
+    bool isAppMode(AppMode is) { return (is == getAppMode()); }
+    bool canBeAppMode(AppMode b);
+
+    virtual bool canBeScreensaver(void) { return false; }
+    virtual bool canBeInteractive(void) { return true; }
+    virtual bool canBeMouse(void) { return false; }
 
     virtual bool isPopup(void) { return false; };        // popup apps don't need begin or end, call run() just once
     virtual bool isInvisible(void) { return false; };    // has no UI
@@ -61,7 +65,7 @@ class BritepadApp {
     coord_t statusBarTop = 0;
     coord_t statusBarHeight = 16;
 
-    AppMode currAppMode;
+    AppMode currAppMode = INACTIVE;
 };
 
 #endif

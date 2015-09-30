@@ -15,7 +15,8 @@ class ScreensaverApp : public BritepadApp {
     virtual bool disablesScreensaver() { return isAppMode(INTERACTIVE); }
 
     // by default, screensavers are not interactive
-    virtual bool canBeAppMode(AppMode b) {  if (b==SCREENSAVER) return true; if (b==INTERACTIVE) return false;  return BritepadApp::canBeAppMode(b); }
+    virtual bool canBeScreensaver() { return true; }
+    virtual bool canBeInteractive() { return false; }
 
     // by default, screensavers just have one setting for if they are enabled or not
     virtual bool getEnabled(void) { readPrefs(); return enabled; }

@@ -54,3 +54,48 @@ bool BritepadApp::isID(appid_t match) {
   return !strcmp(match, id());
 }
 
+bool BritepadApp::canBeAppMode(AppMode b) {
+  switch (b) {
+    case SCREENSAVER:
+      return canBeScreensaver();
+    case MOUSE:
+      return canBeMouse();
+    case INTERACTIVE:
+      return canBeInteractive();
+    case INACTIVE:
+      return true;
+    default:
+      return false;
+  }
+}
+
+void BritepadApp::begin(AppMode asMode) {
+
+  setAppMode(asMode);
+
+  screen.fillScreen(bgColor());
+
+};  // initialize app state and draw first screen
+
+void BritepadApp::end(BritepadApp* nextApp) {
+  setAppMode(INACTIVE);
+}
+
+void BritepadApp::setAppMode(AppMode newMode) {
+
+  if (!canBeAppMode(newMode)) {
+    DEBUG_PARAM_LN("cannot set new app mode", newMode);
+    return;
+  }
+
+  if (currAppMode != newMode) {
+    if (currAppMode == MOUSE) {
+      mouse.end();
+    }
+
+    if (newMode == MOUSE) {
+      mouse.begin();
+    }
+  }
+  currAppMode = newMode;
+}

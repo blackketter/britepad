@@ -89,8 +89,8 @@ BritepadApp* StopwatchApp::run(void) {
 
     coord_t w = screen.measureTextH(textTime);
 
-    screen.setCursor(screen.clipWidth()/2 - w/2,
-                     screen.clipHeight()/(isAppMode(SCREENSAVER) ? 2 : 3) - screen.measureTextV(textTime)/2);
+    screen.setCursor(screen.clipMidWidth() - w/2,
+                     screen.clipTop() + screen.clipHeight()/(isAppMode(SCREENSAVER) ? 2 : 3) - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
 
     if (startMillis > 0 && secs == 0 && tenths == 0) {

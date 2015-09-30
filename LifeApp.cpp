@@ -1,20 +1,22 @@
 #include "LifeApp.h"
 #define DOTSWIDE (32)
 #define DOTSHIGH (24)
+
 #define MILLIS_PER_FRAME (150)
 #define MILLIS_DELAY (1000)
-#define ONCOLOR (screen.white)
-#define OFFCOLOR (screen.black)
 
+#define MAX_SAME_POPULATION (5000/MILLIS_PER_FRAME)
+
+#define OFFCOLOR (0x0000)
+
+#define MINCOLOR (0x2104)
+#define COLORINC (0x2104)
+#define MAXCOLOR (0xe71c)
 
 void LifeApp::begin(AppMode asMode) {
   DEBUG_LN("begin LifeApp");
 
   ScreensaverApp::begin(asMode);
-
-  if (asMode == MOUSE) {
-    mouse.begin();
-  }
 
   dots.init(DOTSWIDE,DOTSHIGH,BritepadAppScratchPad);
 
@@ -23,30 +25,11 @@ void LifeApp::begin(AppMode asMode) {
   }
 };
 
-void LifeApp::end(void) {
-  if (isAppMode(MOUSE)) {
-    mouse.end();
-  }
-}
-
-void LifeApp::setAppMode( AppMode newMode ) {
-  if (!isAppMode(newMode)) {
-    if (newMode == MOUSE) {
-      mouse.begin();
-    } else if (isAppMode(MOUSE)) {
-      mouse.end();
-    }
-    ScreensaverApp::setAppMode(newMode);
-  }
-};
-
 BritepadApp* LifeApp::run() {
+  BritepadApp::run();
 
   switch (getAppMode()) {
     case MOUSE:
-      mouse.run();
-      // fall thorough
-
     case INTERACTIVE:
       if (pad.down(SCREEN_PAD) && generation) {
         wipe();
@@ -54,7 +37,7 @@ BritepadApp* LifeApp::run() {
       if (pad.touched(SCREEN_PAD)) {
         int x, y;
         if (dots.hit(pad.x(), pad.y(), &x, &y)) {
-          dots.setDot(x,y, ONCOLOR);
+          dots.setDot(x,y, MAXCOLOR);
           dots.updateDot(x,y);
           nextRun = pad.time() + MILLIS_DELAY;
         }
@@ -113,14 +96,23 @@ void LifeApp::iterate(void) {
       }
     }
     int population = 0;
-    int delta = 0;
     for (int x = 0; x < DOTSWIDE; x++) {
       for (int y = 0; y < DOTSHIGH; y++) {
-        color_t newcolor = nextgen[x][y] ? ONCOLOR : OFFCOLOR;
-        if (newcolor != dots.getDot(x,y)) {
-          dots.setDot(x,y, newcolor);
+        color_t newColor;
+        color_t oldColor = dots.getDot(x,y);
+        if (nextgen[x][y]) {
+          if (oldColor < MAXCOLOR) {
+            newColor = oldColor + COLORINC;
+          } else {
+            newColor = oldColor;
+          }
+        } else {
+          newColor = OFFCOLOR;
+        }
+
+        if (newColor != oldColor) {
+          dots.setDot(x,y, newColor);
           dots.updateDot(x,y);
-          delta++;
         }
         if (nextgen[x][y]) {
           population++;
@@ -128,13 +120,19 @@ void LifeApp::iterate(void) {
       }
     }
 
-    if (population == 0 || delta == 0) {
+    if (samelastpopulation > MAX_SAME_POPULATION) {
       reseed = true;
-      nextRun = pad.time()+MILLIS_DELAY;
+      samelastpopulation = 0;
     } else {
       reseed = false;
       generation++;
     }
+    if (lastpopulation == population) {
+      samelastpopulation++;
+    } else {
+      samelastpopulation = 0;
+    }
+    lastpopulation = population;
   }
 }
 
@@ -146,6 +144,6 @@ void LifeApp::wipe(void) {
 void LifeApp::seed(void) {
   wipe();
   for (int i = 0; i < 400; i++) {
-    dots.setDot(random(DOTSWIDE), random(DOTSHIGH), ONCOLOR);
+    dots.setDot(random(DOTSWIDE), random(DOTSHIGH), MINCOLOR);
   }
 }

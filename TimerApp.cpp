@@ -59,8 +59,8 @@ BritepadApp* TimerApp::run(void) {
     if (drawtext) {
       screen.setTextColor(fg, bgColor());
 
-      screen.setCursor(screen.clipWidth()/2 - width/2,
-                       screen.clipHeight()/2 - screen.measureTextV(textTime)/2);
+      screen.setCursor(screen.clipMidWidth() - width/2,
+                       screen.clipMidHeight() - screen.measureTextV(textTime)/2);
 
       screen.drawText(textTime);
       last_width = width;

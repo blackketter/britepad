@@ -13,8 +13,8 @@ void SetClockApp::drawClock(void) {
     screen.setFont(Arial_72_Bold);
     screen.setTextColor(screen.white, bgColor());
     sprintf(textTime," %2d:%02d ", clock.hourFormat12(), clock.minute());
-    screen.setCursor(screen.clipWidth()/2 + screen.clipLeft() - screen.measureTextH(textTime)/2,
-                     screen.clipHeight()/2 + screen.clipTop() - screen.measureTextV(textTime)/2);
+    screen.setCursor(screen.clipMidWidth() - screen.measureTextH(textTime)/2,
+                     screen.clipMidHeight() - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
     drawButton(6, screen.red);
     lastTime = t;

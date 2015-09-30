@@ -98,6 +98,7 @@ BritepadApp* Britepad::getApp(int appIndex) {
 
 void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
+
   if (newApp == 0) {
     // just STAY_IN_APP
     return;
@@ -109,7 +110,12 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     asMode = INTERACTIVE;
   }
 
-  if (newApp == currApp && currApp->isAppMode(asMode)) {
+  if (asMode == SCREENSAVER) {
+    screensaverStartedTime = pad.time();
+  }
+
+  if (newApp == currApp) {
+    currApp->setAppMode(asMode);
     return;
   }
 
@@ -121,10 +127,6 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   if (currApp) {
     currApp->drawStatusBar();
     currApp->begin(asMode);
-
-    if (currApp->isAppMode(SCREENSAVER)) {
-      screensaverStartedTime = pad.time();
-    }
   }
 }
 
@@ -182,9 +184,9 @@ void Britepad::idle(void) {
       sound.swipe(DIRECTION_UP);
     }
 
-  } else if (currApp->isAppMode(SCREENSAVER) && (pad.down(SCREEN_PAD) || (pad.down(ANY_PAD) && !currApp->canBeAppMode(INTERACTIVE)))) {
+  } else if (currApp->isAppMode(SCREENSAVER) && (pad.down(SCREEN_PAD) || (pad.down(ANY_PAD) && !currApp->canBeInteractive()))) {
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
-    if (currApp->canBeAppMode(MOUSE)) {
+    if (currApp->canBeMouse()) {
       currApp->setAppMode(MOUSE);
     } else {
       switchApp = randomApp(MOUSE);

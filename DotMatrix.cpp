@@ -24,6 +24,7 @@ void DotMatrix::init(int w, int h, void* mem) {
 
     r = min((screen.clipWidth() * 8 / dots_wide) / 10 / 2, (screen.clipHeight() * 8 / dots_high) / 10 / 2);  // dots are 80% of space
     dots = (color_t*)mem;
+    memset(dots, 0, dots_wide*dots_high*sizeof(color_t));
 }
 
 void DotMatrix::clear(void) {

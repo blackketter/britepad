@@ -5,7 +5,7 @@
 #include "Debug.h"
 
 BritepadApp* BriteLiteApp::run(void) {
-
+  ScreensaverApp::run();
   switch (random(8)) {
     case 0:
       cursor_x++;

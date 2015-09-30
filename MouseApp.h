@@ -11,6 +11,7 @@ class MouseApp : public BritepadApp {
     void begin(AppMode asMode);
 
     bool canBeAppMode(AppMode b) { return (b==MOUSE); };
+    bool getEnabled() { return false; }
 
     const char* name(void) { return "Mouse"; };
     appid_t id() { return ID; };

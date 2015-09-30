@@ -14,7 +14,8 @@ enum Direction {
 enum AppMode {
   MOUSE,
   INTERACTIVE,
-  SCREENSAVER
+  SCREENSAVER,
+  INACTIVE,
 };
 
 

@@ -68,6 +68,7 @@ BritepadApp* Britepad::randomApp(AppMode m) {
     }
     nextapp = getApp(index++);
   }
+  DEBUG_PARAM_LN("No random app avaialble for mode ", m);
   return nil;
 }
 
@@ -155,7 +156,7 @@ void Britepad::begin(void) {
   int count=0;
   BritepadApp* anApp = getApp(count++);
   while (anApp) {
-//    DEBUG_LN(anApp->name());
+    DEBUG_LN(anApp->name());
     anApp = getApp(count++);
   }
   screen.fillScreen(screen.black);
@@ -183,7 +184,11 @@ void Britepad::idle(void) {
 
   } else if (currApp->isAppMode(SCREENSAVER) && (pad.down(SCREEN_PAD) || (pad.down(ANY_PAD) && !currApp->canBeAppMode(INTERACTIVE)))) {
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
-    switchApp = randomApp(MOUSE);
+    if (currApp->canBeAppMode(MOUSE)) {
+      currApp->setAppMode(MOUSE);
+    } else {
+      switchApp = randomApp(MOUSE);
+    }
     asMode = MOUSE;
 
   } else if (getApp(ClockApp::ID) &&  (getApp(ClockApp::ID))->getEnabled() && currApp->isAppMode(SCREENSAVER) && !currApp->isID(ClockApp::ID) && pad.up(PROXIMITY_SENSOR)) {
@@ -204,10 +209,6 @@ void Britepad::idle(void) {
 
     // is it time for the screensaver to kick in?
     } else if (!currApp->isAppMode(SCREENSAVER) && (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay)) {
-      asMode = SCREENSAVER;
-
-    // is it time to put away the clock?  TODO: this makes the clock never stay up, even if it's a screensaver
-    } else if (currApp->isID(ClockApp::ID) && (pad.time() - pad.lastTouchedTime(PROXIMITY_SENSOR)) > screensaverDelay) {
       asMode = SCREENSAVER;
     }
 

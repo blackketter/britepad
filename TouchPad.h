@@ -53,6 +53,9 @@ class TouchPad {
     uint8_t getProximityMax(void) { return proximityMax; };
     uint8_t getProximityDistance(void);
 
+    int getHeight() { return width; };
+    int getWidth() { return height; };
+
   private:
     int height;
     int width;

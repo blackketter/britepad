@@ -30,6 +30,7 @@ Sound sound = Sound();
 Clock clock = Clock();
 Britepad britepad = Britepad();
 Preferences prefs = Preferences();
+MousePad mouse = MousePad();
 
 void setup(void) {
 

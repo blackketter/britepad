@@ -14,6 +14,9 @@ extern TouchPad pad;
 #include "Sound.h"
 extern Sound sound;
 
+#include "MousePad.h"
+extern MousePad mouse;
+
 #include "Britepad.h"
 extern Britepad britepad;
 

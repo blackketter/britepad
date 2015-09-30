@@ -23,17 +23,30 @@ void DotMatrix::init(int w, int h, void* mem) {
     dotspacing_h = screen.clipHeight() / dots_high;
 
     r = min((screen.clipWidth() * 8 / dots_wide) / 10 / 2, (screen.clipHeight() * 8 / dots_high) / 10 / 2);  // dots are 80% of space
-
     dots = (color_t*)mem;
-
-    clear();
-    redraw();
 }
 
 void DotMatrix::clear(void) {
     memset(dots, 0, dots_wide*dots_high*sizeof(color_t));
+    screen.fillScreen(bgColor);
 }
 
+bool DotMatrix::hit(coord_t x, coord_t y, int* hitx, int* hity) {
+  if (x < screen.clipRight() &&
+      y < screen.clipBottom() &&
+      x >= screen.clipLeft() &&
+      y >= screen.clipTop()) {
+    if (hitx) {
+      *hitx= x/dotspacing_w;
+    }
+    if (hity) {
+      *hity = y/dotspacing_h;
+    }
+    return true;
+  } else {
+    return false;
+  }
+}
 
 void HexDotMatrix::updateDot(int x, int y) {
 

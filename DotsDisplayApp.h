@@ -17,6 +17,7 @@ class DotsDisplayApp : public ScreensaverApp {
 
   protected:
     DotMatrix dots;
+    color_t lastColor;
 };
 
 #endif

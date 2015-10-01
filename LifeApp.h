@@ -25,6 +25,7 @@ class LifeApp : public DotsDisplayApp {
     long samelastpopulation = 0;
     millis_t nextRun = 0;
     bool reseed = true;
+    int ruleset = 0;
 };
 
 #endif

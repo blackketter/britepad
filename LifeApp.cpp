@@ -2,8 +2,10 @@
 #define DOTSWIDE (32)
 #define DOTSHIGH (24)
 
-#define MILLIS_PER_FRAME (150)
+#define MILLIS_PER_FRAME (100)
 #define MILLIS_DELAY (1000)
+
+#define SEEDS (200)
 
 #define MAX_SAME_POPULATION (5000/MILLIS_PER_FRAME)
 
@@ -13,8 +15,11 @@
 #define COLORINC (0x2104)
 #define MAXCOLOR (0xe71c)
 
+#define RULESETS (3)
+//                                             conway,            maze,               mazectric
+const bool born[RULESETS][9] =    {{0,0,0,1,0,0,0,0,0},{0,0,0,1,0,0,0,0,0},{0,1,0,0,0,0,0,0}};
+const bool survive[RULESETS][9] = {{0,0,1,1,0,0,0,0,0},{0,1,1,1,1,1,0,0,0},{0,1,1,1,1,0,0,0}};
 void LifeApp::begin(AppMode asMode) {
-  DEBUG_LN("begin LifeApp");
 
   ScreensaverApp::begin(asMode);
 
@@ -84,14 +89,9 @@ void LifeApp::iterate(void) {
         color_t curr = dots.getDot(x,y);
         if (!curr) {
           // birth
-          nextgen[x][y] = (neighbors == 3);
+          nextgen[x][y] = born[ruleset][neighbors];
         } else {
-          if (neighbors == 2 || neighbors == 3) {
-            // survival
-            nextgen[x][y] = true;
-          } else {
-            nextgen[x][y] = false;
-          }
+          nextgen[x][y] = survive[ruleset][neighbors];
         }
       }
     }
@@ -139,11 +139,12 @@ void LifeApp::iterate(void) {
 void LifeApp::wipe(void) {
   dots.clear();
   generation = 0;
+  ruleset = random(RULESETS);
 }
 
 void LifeApp::seed(void) {
   wipe();
-  for (int i = 0; i < 400; i++) {
+  for (int i = 0; i < SEEDS; i++) {
     dots.setDot(random(DOTSWIDE), random(DOTSHIGH), MINCOLOR);
   }
 }

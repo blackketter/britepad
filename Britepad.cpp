@@ -11,6 +11,8 @@
 #define DEBUG_ON 1
 #include "Debug.h"
 
+#define PROXIMITY_DEAD_TIME (1000)
+
 Britepad::Britepad(void) {
 
 }
@@ -133,7 +135,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
 void backlightCallback(void* data) {
   // if we detect proximity, it's probably casting a shadow and we don't want to update
-  if (pad.time() - pad.lastTouchedTime(PROXIMITY_SENSOR) < 1000) {
+  if (pad.time() - pad.lastTouchedTime(PROXIMITY_SENSOR) > PROXIMITY_DEAD_TIME) {
     // any ambient light greater than 255 is full brightness, 1 is the minimums
     uint8_t light = max(1,min( pad.getAmbientLight(), 255));
     screen.backlight(light);

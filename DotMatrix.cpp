@@ -27,6 +27,7 @@ void DotMatrix::init(int w, int h, void* mem) {
     memset(dots, 0, dots_wide*dots_high*sizeof(color_t));
 }
 
+
 void DotMatrix::clear(void) {
     memset(dots, 0, dots_wide*dots_high*sizeof(color_t));
     screen.fillScreen(bgColor);
@@ -48,6 +49,7 @@ bool DotMatrix::hit(coord_t x, coord_t y, int* hitx, int* hity) {
     return false;
   }
 }
+// todo: add correct HexDotMatrix::hit()
 
 void HexDotMatrix::updateDot(int x, int y) {
 

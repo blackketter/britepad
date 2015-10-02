@@ -6,6 +6,13 @@
 
 BritepadApp* BriteLiteApp::run(void) {
   ScreensaverApp::run();
+  if (pad.touched(SCREEN_PAD)) {
+    int x, y;
+    if (dots.hit(pad.x(), pad.y(), &x, &y)) {
+      dots.setDot(x,y, lastColor++ | 0x8000);
+      dots.updateDot(x,y);
+    }
+  } else if (isAppMode(SCREENSAVER)) {
   switch (random(8)) {
     case 0:
       cursor_x++;
@@ -35,5 +42,8 @@ BritepadApp* BriteLiteApp::run(void) {
 
   dots.setDot(cursor_x, cursor_y, lastColor++ | 0x8000);
   dots.updateDot(cursor_x, cursor_y);
+  }
   return STAY_IN_APP;
 }
+
+

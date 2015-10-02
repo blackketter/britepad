@@ -11,9 +11,9 @@ class BriteLiteApp : public DotsDisplayApp {
     const char* name(void) { return "LiteBrite"; };
 
 
+
   private:
     HexDotMatrix dots;
     int cursor_x;
     int cursor_y;
-    color_t lastColor;
 };

@@ -11,6 +11,8 @@ class BubblesApp : public ScreensaverApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "bubb";
 
+    bool canBeMouse(void) { return true; }
+
   private:
     int currentColor = screen.red;
 

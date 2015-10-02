@@ -8,10 +8,12 @@
 class DotsDisplayApp : public ScreensaverApp {
   public:
     void begin(AppMode asMode) { ScreensaverApp::begin(asMode); dots.init(16,12, BritepadAppScratchPad); };
-    const char* name(void) { return "Dots"; };
     BritepadApp* run(void);
+    virtual void setAppMode( AppMode newMode ) {  ScreensaverApp::setAppMode(newMode);  dots.clear(); }
+
     bool canBeMouse(void) { return true; };
 
+    const char* name(void) { return "Dots"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "dots";
 

@@ -11,7 +11,10 @@ class StopwatchApp : public BritepadApp {
     const char* name(void) { return "Stopwatch"; };
     bool displaysStatusBar(void) { return true; }
     bool wantsToBeScreensaver(void) { return isStopwatchRunning(); }
+    bool getEnabled() { return isStopwatchRunning(); }
     bool disablesScreensavers(void) { return isAppMode(INTERACTIVE); }
+    bool canBeInteractive() { return true; }
+    bool canBeScreensaver() { return true; }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stpw";

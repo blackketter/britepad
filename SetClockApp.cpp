@@ -16,92 +16,37 @@ void SetClockApp::drawClock(void) {
     screen.setCursor(screen.clipMidWidth() - screen.measureTextH(textTime)/2,
                      screen.clipMidHeight() - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
-    drawButton(6, screen.red);
+    button[6].setTitle(clock.isAM() ? "am" : "pm");
     lastTime = t;
-  }
-}
-
-int SetClockApp::hitButton(int x, int y) {
-  int buttonx[buttoncount];
-  int buttony[buttoncount];
-
-  int ytop = screen.clipTop() + screen.clipHeight()/6;
-  int ybottom = screen.clipBottom() - screen.clipHeight()/6;
-  buttony[0] = buttony[1] = buttony[2] = buttony[6] = ytop;
-  buttony[3] = buttony[4] = buttony[5] = ybottom;
-
-  int xspacing = screen.clipWidth()/5;
-  int x1 =  screen.clipLeft() + xspacing/2;
-  int x2 =  x1+xspacing;
-  int x3 =  x2+xspacing*2;
-  int x4 =  x3+xspacing;
-
-  buttonx[0] = buttonx[3] = x2;
-  buttonx[1] = buttonx[4] = x3;
-  buttonx[2] = buttonx[5] = x4;
-  buttonx[6] = x1;  //  am/pm
-
-  for (int i = 0; i < buttoncount; i++) {
-    if ((abs(buttonx[i] - x) < buttonradius) && (abs(buttony[i] - y) < buttonradius))
-      return i;
-  }
-  return nobutton;
-}
-
-void SetClockApp::drawButton(int i, color_t color) {
-  int buttonx[buttoncount];
-  int buttony[buttoncount];
-  char buttonsym[buttoncount];
-
-  int ytop = screen.clipTop() + screen.clipHeight()/6;
-  int ybottom = screen.clipBottom() - screen.clipHeight()/6;
-  buttony[0] = buttony[1] = buttony[2] = buttony[6] = ytop;
-  buttony[3] = buttony[4] = buttony[5] = ybottom;
-
-  int xspacing = screen.clipWidth()/5;
-  int x1 =  screen.clipLeft() + xspacing/2;
-  int x2 =  x1+xspacing;
-  int x3 =  x2+xspacing*2;
-  int x4 =  x3+xspacing;
-
-  buttonx[0] = buttonx[3] = x2;
-  buttonx[1] = buttonx[4] = x3;
-  buttonx[2] = buttonx[5] = x4;
-  buttonx[6] = x1;  //  am/pm
-
-
-  buttonsym[0] = buttonsym[1] = buttonsym[2] = '+';
-  buttonsym[3] = buttonsym[4] = buttonsym[5] ='-';
-  buttonsym[6] = 'm';
-
-  int r = buttonradius;
-
-  screen.fillCircle(buttonx[i],buttony[i],r, color);
-
-  if (buttonsym[i] == 'm') {
-    screen.setFont(Arial_20_Bold);
-    screen.setTextColor(screen.white);
-    const char* m = clock.isAM() ? "am" : "pm";
-    screen.setCursor(buttonx[i]-screen.measureTextH(m)/2,buttony[i]-screen.measureTextV(m)*3/4);
-    screen.drawText(m);
-  } else {
-    screen.fillRect(buttonx[i] - r/2, buttony[i] - r/8, r, r/4, screen.white);
-
-    if (buttonsym[i] == '+') {
-      screen.fillRect(buttonx[i] - r/8, buttony[i] - r/2, r/4, r, screen.white);
-    }
   }
 }
 
 void SetClockApp::drawButtons() {
   for (int i = 0; i < buttoncount; i++) {
-    drawButton(i, screen.red);
+    button[i].draw();
   }
 }
 
 void SetClockApp::begin(AppMode asMode) {
   lastTime = 0;
   clearScreen();
+
+  int ytop = screen.clipTop() + screen.clipHeight()/6;
+  int ybottom = screen.clipBottom() - screen.clipHeight()/6;
+
+  // todo: fix hard coded pixels because the font is hard coded
+  int x1 =  screen.clipLeft() + 55;
+  int x2 =  x1+60;
+  int x3 =  x2+90;
+  int x4 =  x3+60;
+
+  button[0].init(x2, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
+  button[1].init(x3, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
+  button[2].init(x4, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
+  button[3].init(x2, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
+  button[4].init(x3, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
+  button[5].init(x4, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
+  button[6].init(x1, ytop, buttonradius,screen.red, false, clock.isAM() ? "am" : "pm", Arial_18_Bold, screen.white);
 
   drawClock();
   drawButtons();
@@ -115,42 +60,23 @@ void SetClockApp::end(BritepadApp* nextApp) {
 BritepadApp* SetClockApp::run(void) {
 
   hasRun = true;
-  drawClock();
+  bool changed = false;
+  if (button[0].down()) { clock.adjust(60*60); changed = true; }
+  if (button[1].down()) { clock.adjust(60*10); changed = true; }
+  if (button[2].down()) { clock.adjust(60); changed = true; }
+  if (button[3].down()) { clock.adjust(-60*60); changed = true; }
+  if (button[4].down()) { clock.adjust(-60*10); changed = true; }
+  if (button[5].down()) { clock.adjust(-60); changed = true; }
+  if (button[6].down()) { clock.adjust(clock.isAM() ? 12*60*60 : -12*60*60); changed = true; }
 
-  if (pad.down(SCREEN_PAD)) {
-    int x = pad.x();
-    int y = pad.y();
-    int b = hitButton(x,y);
-    switch (b) {
-      case (0):
-        clock.adjust(60*60);
-      break;
-      case (1):
-        clock.adjust(60*10);
-      break;
-      case (2):
-        clock.adjust(60);
-      break;
-      case (3):
-        clock.adjust(-60*60);
-      break;
-      case (4):
-        clock.adjust(-60*10);
-      break;
-      case (5):
-        clock.adjust(-60);
-      break;
-      case (6):
-        clock.adjust(clock.isAM() ? 12*60*60 : -12*60*60);
-      break;
-    }
-    if (b != nobutton) {
-        // reset the minute
-        clock.adjust(-clock.now()%60);
-        sound.click();
-    }
+  if (changed) {
+    // reset the minute
+    clock.adjust(-clock.now()%60);
+    sound.click();
     // todo: cancel alarms that may be running
   }
+
+  drawClock();
 
   return STAY_IN_APP;
 }

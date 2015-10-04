@@ -8,12 +8,12 @@
 void TimerApp::end(BritepadApp* nextApp) {
   // don't bother coming back as a screensaver if the alarm has sounded
   if (alarm_sounded) {
-    cancel();
+    mytimer.cancel();
+    beeps = 0;
   }
 }
 
-BritepadApp* TimerApp::run(void) {
-  time_t t = clock.now();
+void TimerApp::drawTime(void) {
 
   int delta = mytimer.remainingSecs();
 
@@ -21,78 +21,46 @@ BritepadApp* TimerApp::run(void) {
     delta = 0;
   }
 
-  bool everysecond = (last_time_drawn != t);
-  bool draw = everysecond;
+  millis_t now = clock.millis();
+  if (lastDrawMillis/1000 != now/1000) {
+    lastDrawMillis = now;
 
-  if (draw) {
     char textTime[6];
 
     int displaytime = alarm_sounded ? timer_dur : delta;
-    bool drawtext = true;
-    bool erasescreen = false;
+    color_t textColor = screen.white;
 
-    sprintf(textTime, " %d:%02d", displaytime/60, displaytime%60);
+    sprintf(textTime, " %d:%02d ", displaytime/60, displaytime%60);
 
-    screen.setFont(Arial_72_Bold);
+    screen.setFont(isAppMode(SCREENSAVER) ? Arial_72_Bold : Arial_48_Bold);
     coord_t width = screen.measureTextH(textTime);
 
-    color_t fg = current_color++;
-
     if (alarm_sounded) {
-      if (t % 2) {
-        erasescreen = false;
-        drawtext = true;
-      } else {
-        erasescreen = true;
-        drawtext = false;
-      }
-    } else {
-      if (last_width != width) {
-        erasescreen = true;
+      if ((now/1000) % 2) {
+        textColor = screen.red;
       }
     }
 
-    if (erasescreen) {
-      clearScreen();
-    }
+    screen.setTextColor(textColor, bgColor());
 
-    if (drawtext) {
-      screen.setTextColor(fg, bgColor());
+    screen.setCursor(screen.clipMidWidth() - width/2,
+                     screen.clipTop() + screen.clipHeight()/(isAppMode(SCREENSAVER) ? 2 : 3) - screen.measureTextV(textTime)/2);
 
-      screen.setCursor(screen.clipMidWidth() - width/2,
-                       screen.clipMidHeight() - screen.measureTextV(textTime)/2);
+    screen.drawText(textTime);
 
-      screen.drawText(textTime);
-      last_width = width;
-    }
-
-    last_time_drawn = t;
+    last_width = width;
   }
 
-  if (pad.down(BOTTOM_PAD)) {
-    if (mytimer.isPaused()) {
-      mytimer.resume();
-    } else {
-      mytimer.pause();
-    }
-  }
-
-  return running ? STAY_IN_APP : DEFAULT_APP;
 }
 
 void alarmcallback(void* data) {
   ((TimerApp*)data)->alarm();
 }
 
-void cancelVisualNotification(void* data) {
-  ((TimerApp*)data)->cancel();
-}
-
 void TimerApp::setTime(time_t t) {
   beeps = 9;
   timer_dur = t;
   alarm_sounded = 0;
-  running = true;
   mytimer.setSecs(t, (timerCallback_t)alarmcallback, (void*)this);
 };
 
@@ -100,16 +68,17 @@ void TimerApp::alarm(void) {
   alarm_sounded = clock.now();
   if (beeps) {
     sound.beep();
-    mytimer.setMillis(1000, (timerCallback_t)alarmcallback, (void*)this);
+    mytimer.setMillis(500, (timerCallback_t)alarmcallback, (void*)this);
     beeps--;
   } else {
-    mytimer.setSecs(5*60, (timerCallback_t)cancelVisualNotification, (void*)this);
+    mytimer.setSecs(alarm_dur);  // keep the timer running a while to keep the app on screen, when it's done it will exit automatically because the timer isn't running
   }
 }
 
-void TimerApp::cancel(void) {
-  running = false;
+void TimerApp::reset(void) {
   beeps = 0;
   mytimer.cancel();
+  setTime(timer_dur);
+  pause();
 }
 

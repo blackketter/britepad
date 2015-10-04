@@ -4,40 +4,39 @@
 #include "ScreensaverApp.h"
 #include "BritepadShared.h"
 #include "Timer.h"
+#include "StopwatchApp.h"
 
-class TimerApp : public ScreensaverApp {
+class TimerApp : public StopwatchApp {
   public:
-    BritepadApp* run(void);
-    void begin(AppMode asMode) { ScreensaverApp::begin(asMode); beeps = 10; }
+    void begin(AppMode asMode) { StopwatchApp::begin(SCREENSAVER); beeps = 10; }  // always start as a screensaver
     void end(BritepadApp* nextApp);
+    bool wantsToBeScreensaver(void) { return !isReset(); }
+    bool disablesScreensavers(void) { return false; }
     const char* name(void) { return "Timer"; };
+
     void setTime(time_t t);
     time_t timerTime(void) { return timer_dur; };
-
     bool timerActive(void) { return mytimer.running(); }  // are we counting down?
-
-    bool wantsToBeScreensaver(void) { return running; }  // stay being screensaver if counting down or has just gone off
-
-    bool getEnabled(void) { return mytimer.running(); }  // switch to being screensaver if counting down
-    bool displaysStatusBar(void) { return true; }
-
     void alarm(void);
-    void cancel(void);
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "timr";
 
-  private:
-    const int alarm_dur = (60*5);
+    virtual bool isPaused() { return mytimer.isPaused(); };
+    virtual void pause(void) { mytimer.pause(); }
+    virtual void resume(void) { mytimer.resume(); }
+    virtual void reset(void);
+    virtual bool isReset(void) { return !mytimer.running(); }
+    virtual void drawTime(void);
 
-    time_t last_time_drawn = 0;
-    color_t current_color = screen.red;
+  private:
+    const int alarm_dur = (60);  // show the time for a while after the alarm goes off
+
     coord_t last_width;
     Timer mytimer;
     int beeps;
     time_t timer_dur = 0;
     time_t alarm_sounded = 0;
-    bool running = false;
 };
 
 #endif

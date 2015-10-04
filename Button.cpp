@@ -1,7 +1,7 @@
 #include "Button.h"
 #include "Debug.h"
 
-void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight, const char* title, uint8_t* icon) {
+void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight, const char* title, font_t f, color_t titleColor) {
   xpos = x;
   ypos = y;
   width = w;
@@ -9,7 +9,8 @@ void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool
   colored = color;
   highlighted = highlight;
   titleStr = title;
-  iconData = icon;
+  titleFont = f;
+  titleColor = titleCol;
 };
 
 bool Button::down(void) {
@@ -59,13 +60,13 @@ void Button::draw(void) {
 }
 
 void Button::drawTitle(void) {
-  screen.setFont(Arial_9_Bold);
-  screen.setTextColor(screen.black);
+  screen.setFont(titleFont);
+  screen.setTextColor(titleCol);
   screen.setCursor( xpos+height/2 - screen.measureTextH(titleStr) / 2, ypos+width/2 - screen.measureTextV(titleStr) / 2);
   screen.drawText(titleStr);
 }
 
-void RoundButton::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight, const char* title, uint8_t* icon) {
+void RoundButton::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight, const char* title, font_t f, color_t titleColor) {
   xpos = x - r;
   ypos = y - r;
   width = r*2;
@@ -73,7 +74,8 @@ void RoundButton::init(coord_t x, coord_t y, coord_t r,color_t color, bool highl
   colored = color;
   highlighted = highlight;
   titleStr = title;
-  iconData = icon;
+  titleFont = f;
+  titleCol = titleColor;
 }
 
 void RoundButton::drawbg(void) {

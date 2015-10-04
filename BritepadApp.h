@@ -26,7 +26,7 @@ class BritepadApp {
     virtual bool isCurrentApp(void) { return britepad.currentApp() == this; };
 
     virtual bool disablesScreensavers(void) { return false; }
-    virtual bool wantsToBeScreensaver(void) { return false; }  // return true if you want to be switched to as the screensaver
+    virtual bool wantsToBeScreensaver(void) { return false; }  // return true if you want to be switched to as the screensaver (canBeScreensaver() doesn't have to be true)
     virtual bool displaysClock(void) { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
 
     virtual bool getEnabled(void) { return enabled; }

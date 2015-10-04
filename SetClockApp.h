@@ -3,7 +3,7 @@
 
 #include "BritepadApp.h"
 #include "BritepadShared.h"
-
+#include "Button.h"
 class SetClockApp : public BritepadApp {
   public:
     void begin(AppMode asMode);
@@ -23,9 +23,9 @@ class SetClockApp : public BritepadApp {
     static const int buttonradius = 24;
     static const int nobutton = -1;
 
+    RoundButton button[buttoncount];
     void drawClock(void);
     void drawButton(int i, color_t color);
-    int hitButton(int x, int y);
     void drawButtons(void);
     time_t lastTime = 0;
     bool hasRun = false;

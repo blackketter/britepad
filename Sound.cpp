@@ -90,7 +90,7 @@ void Sound::click(void) {
 
     envelopes[beeper]->sustain(0);  //  just a percussive sound, no sustain
     envelopes[beeper]->noteOn();
-    DEBUG_LN("click");
+//    DEBUG_LN("click");
   }
  }
 
@@ -112,7 +112,7 @@ void Sound::beep(millis_t ms, float freq)
 }
 
 void Sound::bump(void) {
-  DEBUG_LN("bump");
+//  DEBUG_LN("bump");
   beep(1, 300);
 }
 

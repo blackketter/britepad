@@ -29,8 +29,8 @@ void MousePad::run(void) {
     if (pad.touched(RIGHT_PAD)) {
 //      DEBUG_LN("mouse press right panel");
     } else {
-      DEBUG_LN("mouse release right panel");
-//      Keyboard.release(MODIFIERKEY_CTRL);
+//      DEBUG_LN("mouse release right panel");
+      Keyboard.release(MODIFIERKEY_CTRL);
     }
 
     if (pad.touched(RIGHT_PAD)) {
@@ -72,7 +72,7 @@ void MousePad::run(void) {
   // left panel
   if (pad.down(LEFT_PAD)) {
     // left has been pressed
-    DEBUG_LN("Left panel pressed");
+//    DEBUG_LN("Left panel pressed");
     Keyboard.press(MODIFIERKEY_GUI);
     if (pad.touched(RIGHT_PAD)) {
       // release ctrl so we can command tab
@@ -124,13 +124,13 @@ void MousePad::run(void) {
 
           accumScroll += pad.deltay();
 
-          DEBUG_PARAM_LN("deltay", pad.deltay());
+//          DEBUG_PARAM_LN("deltay", pad.deltay());
           // limit scroll messages to max 25ms intervals and some movement
           if (pad.time() - lastScroll > 25 && abs(accumScroll) > scrollFactor) {
             int8_t mouseScrollUnits = accumScroll/scrollFactor;
             Mouse.scroll(-mouseScrollUnits); // negative because we use new natural scrolling
             // todo: notify scroll
-            DEBUG_PARAM_LN("Scroll", mouseScrollUnits);
+//            DEBUG_PARAM_LN("Scroll", mouseScrollUnits);
             accumScroll -= mouseScrollUnits*scrollFactor;
             lastScroll = pad.time();
           }
@@ -182,7 +182,7 @@ void MousePad::run(void) {
       if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < 20 && (abs(pad.lastDownY() - pad.y()) < 20)) ) {
 
         if (pad.x() > (pad.getWidth() - SCROLL_EDGE_MARGIN)) {
-          DEBUG_PARAM_LN("pad.x()",pad.x());
+//          DEBUG_PARAM_LN("pad.x()",pad.x());
           if (pad.y() < pad.getHeight()/2) {
             Keyboard.press(KEY_PAGE_UP);
             Keyboard.release(KEY_PAGE_UP);
@@ -193,16 +193,16 @@ void MousePad::run(void) {
             // todo: notify page down
           }
           scrollMode = true;
-          DEBUG_LN("scrollMode on");
+//          DEBUG_LN("scrollMode on");
         } else {
           if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
             Mouse.release();
-            DEBUG_LN("mouse release in order to press after touch up");
+//            DEBUG_LN("mouse release in order to press after touch up");
             // todo: notify mouse up
           }
           Mouse.press();
           sound.click();
-          DEBUG_LN("mouse press after touch up");
+//          DEBUG_LN("mouse press after touch up");
           // todo: notify mouse down
         }
       }
@@ -218,7 +218,7 @@ void MousePad::run(void) {
             }
             // todo: notify mouse up
             Mouse.release();
-            DEBUG_LN("mouse release after timeout");
+//            DEBUG_LN("mouse release after timeout");
           }
           scrollMode = false;
         }

@@ -83,11 +83,6 @@ void BritepadApp::end(BritepadApp* nextApp) {
 
 void BritepadApp::setAppMode(AppMode newMode) {
 
-  if (!canBeAppMode(newMode)) {
-    DEBUG_PARAM_LN("cannot set new app mode", newMode);
-    return;
-  }
-
   if (currAppMode != newMode) {
     if (currAppMode == MOUSE) {
       mouse.end();

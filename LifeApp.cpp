@@ -5,7 +5,7 @@
 #define MILLIS_PER_FRAME (100)
 #define MILLIS_DELAY (1000)
 
-#define SEEDS (200)
+#define SEEDS (100)
 
 #define MAX_SAME_POPULATION (5000/MILLIS_PER_FRAME)
 

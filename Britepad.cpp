@@ -70,7 +70,7 @@ BritepadApp* Britepad::randomApp(AppMode m) {
     }
     nextapp = getApp(index++);
   }
-  DEBUG_PARAM_LN("No random app avaialble for mode ", m);
+//  DEBUG_PARAM_LN("No random app avaialble for mode ", m);
   return nil;
 }
 

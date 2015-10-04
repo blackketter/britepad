@@ -14,6 +14,7 @@
 
 typedef uint16_t color_t;
 typedef int16_t coord_t;
+typedef ILI9341_t3_font_t font_t;
 
 class Screen : public ILI9341_t3 {
   public:

@@ -5,7 +5,7 @@
 
 class Button {
   public:
-    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nil, uint8_t* icon = nil);
+    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nil, font_t f = Arial_9_Bold, color_t titleColor = screen.black);
 
     virtual void draw(void);
 
@@ -28,8 +28,9 @@ class Button {
     virtual void setHighlighted(bool highlight) { highlighted = highlight; draw(); };
 
     const char* titleStr;
-    uint8_t* iconData;
 
+    font_t titleFont;
+    color_t titleCol;
     coord_t xpos;
     coord_t ypos;
     coord_t width;
@@ -41,7 +42,7 @@ class Button {
 
 class RoundButton : public Button {
   public:
-   virtual void init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nil, uint8_t* icon = nil);
+   virtual void init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nil, font_t f = Arial_9_Bold, color_t titleColor = screen.black);
 
   protected:
     virtual void drawbg();

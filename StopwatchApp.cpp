@@ -16,56 +16,62 @@ void StopwatchApp::redrawButtons(void) {
 
   resetButton.init(radius*3, y, radius, screen.blue, false,"Reset");
 
-  pauseButton.init(radius*7, y, radius,  startMillis < 0 ? screen.green : screen.red, false, startMillis == -1 ? "Start" : (startMillis < -1 ? "Resume" : "Pause"));
+  pauseButton.init(radius*7, y, radius,  isPaused() ? screen.green : screen.red, false, isReset() ? "Start" : (isPaused() ? "Resume" : "Pause"));
 
   resetButton.draw();
   pauseButton.draw();
 }
 
 BritepadApp* StopwatchApp::run(void) {
-  millis_t nowMillis = clock.millis();
 
   if (pad.down(BOTTOM_PAD)) {
+    sound.click();
     if (isAppMode(SCREENSAVER)) {
       setAppMode(INTERACTIVE);
     } else {
       setAppMode(SCREENSAVER);
     }
-    clearScreen();
-    redrawButtons();
-    lastDrawMillis = 0;
   }
 
   if (isAppMode(INTERACTIVE)) {
     if (pauseButton.down()) {
-      // negative startMillis is the time that we were paused
-      if (startMillis > 0) {
+      sound.click();
+
+      if (!isPaused()) {
         // pause
-        startMillis = -(nowMillis - startMillis);
+        pause();
         pauseButton.setColor(screen.green);
         pauseButton.setTitle("Resume");
       } else {
         // unpause
-        startMillis = nowMillis + startMillis;
+        resume();
         pauseButton.setColor(screen.red);
         pauseButton.setTitle("Pause");
       }
-      if (pad.down(BOTTOM_PAD)) {
-        sound.click();
-      }
+      redrawTime();
     }
 
     if (resetButton.down()) {
-      startMillis = -1;
+      sound.click();
+      reset();
       redrawButtons();
+      redrawTime();
     }
   }
+
+  drawTime();
+
+  return STAY_IN_APP;
+}
+
+void StopwatchApp::drawTime(void) {
+  millis_t nowMillis = clock.millis();
 
   if (lastDrawMillis/100 != nowMillis/100) {
     lastDrawMillis = nowMillis;
     long delta;
 
-    if (startMillis > 0) {
+    if (!isPaused()) {
       delta = nowMillis - startMillis;
     }  else {
       delta = -startMillis;
@@ -93,11 +99,9 @@ BritepadApp* StopwatchApp::run(void) {
                      screen.clipTop() + screen.clipHeight()/(isAppMode(SCREENSAVER) ? 2 : 3) - screen.measureTextV(textTime)/2);
     screen.drawText(textTime);
 
-    if (startMillis > 0 && secs == 0 && tenths == 0) {
+    if (!isPaused() && secs == 0 && tenths == 0) {
         sound.beep();
     }
 
   }
-  return STAY_IN_APP;
 }
-

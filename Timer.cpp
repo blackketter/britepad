@@ -148,11 +148,13 @@ void Timer::idle(void) {
         t = t->next;
       } else {
         Timer* nextup = t->next;
-        t->remove();
+        t->cancel();  // remove the timer and reset its timing values
         t = nextup;
       }
 
-      (callback)(callbackdata);
+      if (callback) {
+        (callback)(callbackdata);
+      }
 
     } else {
       t = t->next;

@@ -37,7 +37,7 @@ void copyTPState( TPState* dest, TPState* src ) {
   memcpy(dest,src,sizeof(TPState));
 }
 
-TouchPad::TouchPad(int w, int h) {
+TouchPad::TouchPad(coord_t w, coord_t h) {
 
   height = h;
   width = w;
@@ -111,6 +111,18 @@ void TouchPad::update() {
   if (down(SCREEN_PAD)) {
     lastDownXPos = curr.x;
     lastDownYPos = curr.y;
+    historyCount = 0;
+    DEBUG_LN("Starting history");
+  }
+
+  if (touched(SCREEN_PAD)) {
+    if (historyCount < maxHistory && ((history[historyCount].x != curr.x) || (history[historyCount].y != curr.y))){
+      history[historyCount].x = curr.x;
+      history[historyCount].y = curr.y;
+      historyCount++;
+    } else {
+      DEBUG_LN("Exceeded history size");
+    }
   }
  }
 
@@ -282,10 +294,10 @@ millis_t TouchPad::lastTouchedTime(int pad) {
   return touched(pad) ? time() : lastUpTime(pad);
 }
 
-int TouchPad::lastDownX(void) {
+coord_t TouchPad::lastDownX(void) {
   return lastDownXPos;
 }
 
-int TouchPad::lastDownY(void) {
+coord_t TouchPad::lastDownY(void) {
   return lastDownYPos;
 }

@@ -16,8 +16,6 @@ class PaintApp : public BritepadApp {
 
   private:
     int currentColor = screen.red;
-    int backgroundColor = screen.black;
-    bool scrollMode = false;
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include "Debug.h"
 
 // apps are included here
+#include "AnalogClockApp.h"
 #include "BinaryClockApp.h"
 #include "BreakoutApp.h"
 #include "BriteLiteApp.h"
@@ -12,6 +13,7 @@
 #include "ClockApp.h"
 #include "DotsDisplayApp.h"
 #include "FadeDotsApp.h"
+#include "GestureApp.h"
 #include "KeyApp.h"
 #include "LifeApp.h"
 #include "MuteApp.h"
@@ -42,6 +44,7 @@ LauncherApp::LauncherApp(void) {
   setButton(SCREENSAVERS_SCREEN, 5,  new BinaryClockApp);
   setButton(SCREENSAVERS_SCREEN, 6,  new LifeApp);
   setButton(SCREENSAVERS_SCREEN, 7,  new FadeDotsApp);
+  setButton(SCREENSAVERS_SCREEN, 8,  new AnalogClockApp);
 
   setButton(SETTINGS_SCREEN, 8,  new SetClockApp);
   setButton(SETTINGS_SCREEN, 9,  new MuteApp);
@@ -76,6 +79,7 @@ LauncherApp::LauncherApp(void) {
   setButton(APPS_SCREEN, 0,  new BreakoutApp);
   setButton(APPS_SCREEN, 1,  new ThereminApp);
   setButton(APPS_SCREEN, 2,  new PaintApp);
+  setButton(APPS_SCREEN, 3,  new GestureApp);
 //  setButton(APPS_SCREEN, 11,  new RebootApp);  // todo: doesn't work yet
 }
 

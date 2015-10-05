@@ -10,7 +10,7 @@ void Screen::backlight(uint8_t brightness) {
 
 void Screen::drawText(const char* text) {
 
-    int origx = cursor_x;
+    coord_t origx = cursor_x;
 
     int i = 0;
     while (text[i] != 0) {
@@ -24,9 +24,9 @@ void Screen::drawText(const char* text) {
     }
 }
 
-int Screen::measureTextH(const char* text) {
-  int maxH = 0;
-  int currH = 0;
+coord_t Screen::measureTextH(const char* text) {
+  coord_t maxH = 0;
+  coord_t currH = 0;
   for (const char* i = text; *i != 0; i++) {
     if (*i == '\n') {
       if (currH > maxH)
@@ -38,11 +38,11 @@ int Screen::measureTextH(const char* text) {
       currH += w;
     }
   }
-  int h = maxH > currH ? maxH : currH;
+  coord_t h = maxH > currH ? maxH : currH;
   return h;
 }
 
-int Screen::measureTextV(const char* text) {
+coord_t Screen::measureTextV(const char* text) {
   int lines = 1;
   for (const char* i = text; *i != 0; i++) {
     if (*i == '\n') {
@@ -63,29 +63,29 @@ void Screen::drawTextF(const char* format, ...) {
 }
 
 void Screen::pushFill(Direction dir, color_t color) {
-  const int stepSize = 4;
+  const coord_t stepSize = 4;
 
   switch(dir) {
     case DIRECTION_UP:
-      for (int i = height() - stepSize; i >= 0; i -= stepSize) {
+      for (coord_t i = height() - stepSize; i >= 0; i -= stepSize) {
         fillRect(0, i, width(), stepSize, color);
         delay(1);
       }
       break;
     case DIRECTION_DOWN:
-      for (int i = 0; i < height(); i += stepSize) {
+      for (coord_t i = 0; i < height(); i += stepSize) {
         fillRect(0, i, width(), stepSize, color);
         delay(1);
       }
       break;
     case DIRECTION_LEFT:
-      for (int i = 0; i < width(); i += stepSize) {
+      for (coord_t i = 0; i < width(); i += stepSize) {
         fillRect(i, 0, stepSize, height(), color);
         delay(1);
       }
       break;
     case DIRECTION_RIGHT:
-      for (int i = width() - stepSize; i >= 0; i -= stepSize) {
+      for (coord_t i = width() - stepSize; i >= 0; i -= stepSize) {
         fillRect(i, 0, stepSize, height(), color);
         delay(1);
       }
@@ -134,5 +134,3 @@ uint8_t Screen::luminance(color_t c) {
   b = B8(c);
   return sqrt16(r*r+g*g+b*b);
 };
-
-

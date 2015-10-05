@@ -14,6 +14,12 @@
 
 typedef uint16_t color_t;
 typedef int16_t coord_t;
+
+typedef struct point_t {
+  coord_t x;
+  coord_t y;
+} point_t;
+
 typedef ILI9341_t3_font_t font_t;
 
 class Screen : public ILI9341_t3 {
@@ -46,6 +52,8 @@ class Screen : public ILI9341_t3 {
 
     const uint8_t maxbrightness = 255;
 
+    const coord_t offscreen = -100;
+
     Screen(uint8_t _CS, uint8_t _DC, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
       ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO) {
       pinMode(21, OUTPUT);
@@ -56,8 +64,8 @@ class Screen : public ILI9341_t3 {
 
     void drawText(const char* text);
     void drawTextF(const char* format, ...);
-    int measureTextH(const char* text);
-    int measureTextV(const char* text);
+    coord_t measureTextH(const char* text);
+    coord_t measureTextV(const char* text);
 
     void pushFill(Direction dir, color_t color);
 

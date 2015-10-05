@@ -12,15 +12,15 @@ BritepadApp* PaintApp::run(void) {
 
   // show feedback on touch panels
   if (pad.changed(RIGHT_PAD)) {
-    screen.fillCircle(screen.clipWidth(),screen.clipMidHeight(),screen.clipHeight()/4, pad.touched(RIGHT_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(screen.clipWidth(),screen.clipMidHeight(),screen.clipHeight()/4, pad.touched(RIGHT_PAD) ? screen.red : bgColor());
   }
 
   if (pad.changed(LEFT_PAD)) {
-    screen.fillCircle(1,screen.clipMidHeight(),screen.clipHeight()/4, pad.touched(LEFT_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(1,screen.clipMidHeight(),screen.clipHeight()/4, pad.touched(LEFT_PAD) ? screen.red : bgColor());
   }
 
   if (pad.changed(BOTTOM_PAD)) {
-    screen.fillCircle(screen.clipMidWidth(),screen.clipHeight(),screen.clipHeight()/4, pad.touched(BOTTOM_PAD) ? screen.red : backgroundColor);
+    screen.fillCircle(screen.clipMidWidth(),screen.clipHeight(),screen.clipHeight()/4, pad.touched(BOTTOM_PAD) ? screen.red : bgColor());
   }
 
   if (pad.touched(SCREEN_PAD)) {

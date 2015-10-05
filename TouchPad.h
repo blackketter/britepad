@@ -18,20 +18,17 @@
 
 #define ANY_PAD 1000
 
-
-
-
 typedef struct TPState {
     millis_t time;
-    int  x;
-    int  y;
+    coord_t  x;
+    coord_t  y;
     bool touched[TOTAL_SENSORS];
 } TPState;
 
 class TouchPad {
 
   public:
-    TouchPad(int w, int h);
+    TouchPad(coord_t w, coord_t h);
     void begin(void);
     void update(void);
     bool touched(int pad = SCREEN_PAD);  // is the pad being touched?
@@ -41,34 +38,37 @@ class TouchPad {
     millis_t lastDownTime(int pad = SCREEN_PAD); // last time the pad was down
     millis_t lastUpTime(int pad = SCREEN_PAD);   // last time the pad was released
     millis_t lastTouchedTime(int pad = SCREEN_PAD); // last time the pad was touched
-    int  lastDownX(void);
-    int  lastDownY(void);
-    int  x(void) { return curr.x; };
-    int  y(void) { return curr.y; };
+    coord_t  lastDownX(void);
+    coord_t  lastDownY(void);
+    coord_t  x(void) { return curr.x; };
+    coord_t  y(void) { return curr.y; };
     millis_t  time(void) { return curr.time; };
-    int  deltax(void) { return (curr.x - last.x); };
-    int  deltay(void) { return (curr.y - last.y); };
+    coord_t  deltax(void) { return (curr.x - last.x); };
+    coord_t  deltay(void) { return (curr.y - last.y); };
     uint16_t getAmbientLight(void) { return ambientLight;};
 
     uint8_t getProximityMax(void) { return proximityMax; };
     uint8_t getProximityDistance(void);
 
-    int getHeight() { return width; };
-    int getWidth() { return height; };
+    coord_t getHeight() { return width; };
+    coord_t getWidth() { return height; };
 
   private:
-    int height;
-    int width;
+    coord_t height;
+    coord_t width;
     TPState curr;
     TPState last;
     millis_t lastDownT[TOTAL_SENSORS];
     millis_t lastUpT[TOTAL_SENSORS];
-    int  lastDownXPos;
-    int  lastDownYPos;
+    coord_t  lastDownXPos;
+    coord_t  lastDownYPos;
     static const uint8_t proximityThreshold = 100;
     static const uint8_t proximityMax = 255;
     bool getProximityPresent(void);
 
+    static const int maxHistory = 256;
+    point_t history[maxHistory];
+    int historyCount = 0;
 
     void initAPDS(void);
     void updateAPDS(void);
@@ -81,6 +81,7 @@ class TouchPad {
     uint16_t blueLight;
     uint8_t proximity;
     int gesture;
+
 };
 
 #endif

@@ -112,14 +112,21 @@ void TouchPad::update() {
     lastDownXPos = curr.x;
     lastDownYPos = curr.y;
     historyCount = 0;
-    DEBUG_LN("Starting history");
   }
 
   if (touched(SCREEN_PAD)) {
     if (historyCount < maxHistory && ((history[historyCount].x != curr.x) || (history[historyCount].y != curr.y))){
-      history[historyCount].x = curr.x;
-      history[historyCount].y = curr.y;
-      historyCount++;
+      // touchpad seems to be a little jumpy, filter out any giant steps
+      if ((historyCount == 0) ||
+            ( (abs(curr.x-history[historyCount-1].x) < 128) &&
+               abs(curr.y-history[historyCount-1].y < 128) &&
+               ((curr.time-lastHistoryTime) >= minHistoryInterval)
+          ) ) {
+        history[historyCount].x = curr.x;
+        history[historyCount].y = curr.y;
+        historyCount++;
+        lastHistoryTime = curr.time;
+      }
     } else {
       DEBUG_LN("Exceeded history size");
     }

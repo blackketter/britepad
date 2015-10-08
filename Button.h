@@ -14,6 +14,8 @@ class Button {
 
     virtual void setColor(color_t newColor) {  colored = newColor; draw(); }
     virtual void setTitle(const char* newTitle) { titleStr = newTitle; draw(); }
+    // todo: make setting the visibility cause a redraw or erase
+    virtual void setVisible(bool visibility) { visible = visibility; }
 
   protected:
     virtual void drawbg();
@@ -22,7 +24,7 @@ class Button {
     virtual color_t fillColor();
 
     virtual void track();
-    virtual bool hit(coord_t x, coord_t y) { return (x >= xpos) && (x <= xpos+width) && (y > ypos) && (y <= ypos + height); }
+    virtual bool hit(coord_t x, coord_t y) { return visible && (x >= xpos) && (x <= xpos+width) && (y > ypos) && (y <= ypos + height); }
 
     virtual bool getHighlighted(void) { return highlighted; };
     virtual void setHighlighted(bool highlight) { highlighted = highlight; draw(); };
@@ -38,6 +40,7 @@ class Button {
 
     color_t colored;
     bool highlighted;
+    bool visible;
 };
 
 class RoundButton : public Button {

@@ -53,6 +53,10 @@ class TouchPad {
     coord_t getHeight() { return width; };
     coord_t getWidth() { return height; };
 
+    int getHistoryCount() { return historyCount; }
+    point_t* getHistory() { return history; }
+
+
   private:
     coord_t height;
     coord_t width;
@@ -67,8 +71,11 @@ class TouchPad {
     bool getProximityPresent(void);
 
     static const int maxHistory = 256;
+    static const millis_t minHistoryInterval = 5;
+    millis_t lastHistoryTime;
     point_t history[maxHistory];
     int historyCount = 0;
+
 
     void initAPDS(void);
     void updateAPDS(void);
@@ -83,5 +90,7 @@ class TouchPad {
     int gesture;
 
 };
+
+extern TouchPad pad;
 
 #endif

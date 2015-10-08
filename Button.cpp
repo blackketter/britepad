@@ -11,6 +11,7 @@ void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool
   titleStr = title;
   titleFont = f;
   titleColor = titleCol;
+  visible = true;
 };
 
 bool Button::down(void) {
@@ -55,8 +56,10 @@ void Button::drawbg(void) {
   screen.fillRect(xpos, ypos,width, height, fillColor());
 }
 void Button::draw(void) {
-  drawbg();
-  drawTitle();
+  if (visible) {
+    drawbg();
+    drawTitle();
+  }
 }
 
 void Button::drawTitle(void) {
@@ -76,6 +79,7 @@ void RoundButton::init(coord_t x, coord_t y, coord_t r,color_t color, bool highl
   titleStr = title;
   titleFont = f;
   titleCol = titleColor;
+  visible = true;
 }
 
 void RoundButton::drawbg(void) {

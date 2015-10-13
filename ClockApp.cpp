@@ -7,14 +7,14 @@
 BritepadApp* ClockApp::run(void) {
   millis_t mt = clock.millis();
 
-  if (mt - lastRedraw > redrawInterval) {
-    redraw();
-    lastRedraw = mt;
+  if (mt - lastUpdate > updateInterval()) {
+    update();
+    lastUpdate = mt;
   }
   return STAY_IN_APP;
 }
 
-void ClockApp::redraw(void) {
+void ClockApp::update(void) {
     char textTime[6];
 
     screen.setFont(Arial_72);

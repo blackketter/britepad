@@ -15,6 +15,7 @@
 #include "FadeDotsApp.h"
 #include "GestureApp.h"
 #include "KeyApp.h"
+#include "KeyboardApp.h"
 #include "LifeApp.h"
 #include "MuteApp.h"
 #include "PaintApp.h"
@@ -53,6 +54,8 @@ LauncherApp::LauncherApp(void) {
   setButton(KEYS_SCREEN, 0,  new KeyApp("Vol+", KEY_MEDIA_VOLUME_INC, screen.bluegreen));
   setButton(KEYS_SCREEN, 4,  new KeyApp("Vol-", KEY_MEDIA_VOLUME_DEC, screen.bluegreen));
   setButton(KEYS_SCREEN, 8,  new KeyApp("Mute", KEY_MEDIA_MUTE, screen.blue));
+
+  setButton(KEYS_SCREEN, 5,  new KeyboardApp);
 
   setButton(KEYS_SCREEN, 1,  new KeyApp("<<", KEY_MEDIA_PREV_TRACK, screen.orange));
   setButton(KEYS_SCREEN, 2,  new KeyApp("||", KEY_MEDIA_PLAY_PAUSE, screen.orange));

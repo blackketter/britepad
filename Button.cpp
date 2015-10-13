@@ -63,10 +63,22 @@ void Button::draw(void) {
 }
 
 void Button::drawTitle(void) {
+
+  const char* drawStr;
+  char onechar[2];
+
+  if ((uint32_t)titleStr > 0xff) {
+    drawStr = titleStr;
+  } else {
+    onechar[0] = (uint32_t)titleStr;
+    onechar[1] = 0;
+    drawStr = onechar;
+  }
+
   screen.setFont(titleFont);
   screen.setTextColor(titleCol);
-  screen.setCursor( xpos+height/2 - screen.measureTextH(titleStr) / 2, ypos+width/2 - screen.measureTextV(titleStr) / 2);
-  screen.drawText(titleStr);
+  screen.setCursor( xpos+height/2 - screen.measureTextH(drawStr) / 2, ypos+width/2 - screen.measureTextV(drawStr) / 2);
+  screen.drawText(drawStr);
 }
 
 void RoundButton::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight, const char* title, font_t f, color_t titleColor) {

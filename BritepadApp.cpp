@@ -35,9 +35,9 @@ void BritepadApp::drawStatusBar(bool update) {
       screen.setTextColor(screen.mix(statusBarFGColor(), statusBarBGColor()), statusBarBGColor());
       char shortTime[20];
       clock.shortTime(shortTime);
-      char shortTimeSpaced[22];
-      sprintf(shortTimeSpaced," %s ", shortTime);
-      screen.setCursor( (screen.clipWidth() - screen.measureTextH(shortTimeSpaced) - 2),
+      char shortTimeSpaced[100];
+      sprintf(shortTimeSpaced,"  %s ", shortTime);
+      screen.setCursor( (screen.clipRight() - screen.measureTextH(shortTimeSpaced) - 2),
                          statusBarTop + (statusBarHeight-screen.measureTextV(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
     }

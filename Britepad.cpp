@@ -177,13 +177,23 @@ void Britepad::idle(void) {
 
   if (pad.down(TOP_PAD)) {
 
-    if (!currApp->isID(LauncherApp::ID)) {
+    BritepadApp* nextApp = currApp->exitsTo();
+
+    if (nextApp == BritepadApp::BACK_APP) {
       switchApp = getApp(LauncherApp::ID);
       sound.swipe(DIRECTION_DOWN);
-    } else {
-      switchApp = randomApp(MOUSE);
-      asMode = MOUSE;
+    } else if (nextApp == BritepadApp::DEFAULT_APP) {
+      BritepadApp* wants = wantsToBeScreensaver();
+      if (wants) {
+        switchApp = wants;
+        asMode = SCREENSAVER;
+      } else {
+        switchApp = randomApp(MOUSE);
+        asMode = MOUSE;
+      }
       sound.swipe(DIRECTION_UP);
+    } else {
+      switchApp = nextApp;
     }
 
   } else if (currApp->isAppMode(SCREENSAVER) && (pad.down(SCREEN_PAD) || (pad.down(ANY_PAD) && !currApp->canBeInteractive()))) {
@@ -195,7 +205,11 @@ void Britepad::idle(void) {
     }
     asMode = MOUSE;
 
-  } else if (getApp(ClockApp::ID) &&  (getApp(ClockApp::ID))->getEnabled() && currApp->isAppMode(SCREENSAVER) && !currApp->isID(ClockApp::ID) && pad.up(PROXIMITY_SENSOR)) {
+  } else if (pad.up(PROXIMITY_SENSOR) &&
+             getApp(ClockApp::ID) &&  (getApp(ClockApp::ID))->getEnabled() && !currApp->isID(ClockApp::ID) &&
+             currApp->isAppMode(SCREENSAVER) &&
+             (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay))
+  {
     switchApp = getApp(ClockApp::ID);
     asMode = SCREENSAVER;
     DEBUG_LN("Proximity detected: showing clock");

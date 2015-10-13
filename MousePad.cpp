@@ -24,6 +24,12 @@ void MousePad::end() {
 
 void MousePad::run(void) {
 
+  // todo: make these sounds more descriptive
+  if (pad.down(RIGHT_PAD)) { sound.click(); }
+  if (pad.up(RIGHT_PAD)) { sound.click(); }
+  if (pad.down(LEFT_PAD)) { sound.click(); }
+  if (pad.up(LEFT_PAD)) { sound.click(); }
+
   // right panel
   if (pad.changed(RIGHT_PAD)) {
     if (pad.touched(RIGHT_PAD)) {
@@ -57,17 +63,15 @@ void MousePad::run(void) {
 
   // bottom panel
   if (pad.down(BOTTOM_PAD)) {
-    if (!Mouse.isPressed()) {
-      sound.click();
+    if (!mouseLock) {
+      mouseLock = true;
       Mouse.press();
-    }
-  }
-  if (pad.up(BOTTOM_PAD)) {
-    if (Mouse.isPressed()) {
+    } else {
+      mouseLock = false;
       Mouse.release();
     }
+    sound.click();
   }
-
 
   // left panel
   if (pad.down(LEFT_PAD)) {
@@ -195,15 +199,17 @@ void MousePad::run(void) {
           scrollMode = true;
 //          DEBUG_LN("scrollMode on");
         } else {
-          if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
-            Mouse.release();
-//            DEBUG_LN("mouse release in order to press after touch up");
-            // todo: notify mouse up
+          if (!mouseLock) {
+            if (Mouse.isPressed()) {
+              Mouse.release();
+  //            DEBUG_LN("mouse release in order to press after touch up");
+              // todo: notify mouse up
+            }
+            Mouse.press();
+            sound.click();
+  //          DEBUG_LN("mouse press after touch up");
+            // todo: notify mouse down
           }
-          Mouse.press();
-          sound.click();
-//          DEBUG_LN("mouse press after touch up");
-          // todo: notify mouse down
         }
       }
 
@@ -211,8 +217,8 @@ void MousePad::run(void) {
       if (pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_TAP_UP_DUR) {
         bool releaseDrag = pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_RELEASE_DRAG_DUR;
         bool noDrag = pad.time() - pad.lastDownTime(SCREEN_PAD) < MOUSE_DRAG_DUR;
-        if (noDrag || releaseDrag) {
-          if (Mouse.isPressed() && !pad.touched(BOTTOM_PAD)) {
+        if (!mouseLock && (noDrag || releaseDrag)) {
+          if (Mouse.isPressed()) {
             if (releaseDrag) {
               sound.click();
             }

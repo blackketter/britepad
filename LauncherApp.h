@@ -19,13 +19,15 @@ class LauncherApp : public BritepadApp {
     void begin(AppMode asMode);
     void end(BritepadApp* newApp);
     BritepadApp* run(void);
+    BritepadApp* exitsTo(void) { return DEFAULT_APP; }
+
+    appid_t id() { return ID; };
+    static constexpr appid_t ID = "laun";
+
     void setButton(int screen, int i, BritepadApp* b);
     BritepadApp* getButton(int i);
     const char* name(void) { return "Launcher"; };
     const char* statusBarTitle(void);
-
-    appid_t id() { return ID; };
-    static constexpr appid_t ID = "laun";
 
   private:
     const static int noButton = -1;

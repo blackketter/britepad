@@ -17,14 +17,15 @@ class Button {
     // todo: make setting the visibility cause a redraw or erase
     virtual void setVisible(bool visibility) { visible = visibility; }
 
+    virtual bool hit(coord_t x, coord_t y) { return visible && (x >= xpos) && (x <= xpos+width) && (y > ypos) && (y <= ypos + height); }
+    virtual void track();
+
   protected:
     virtual void drawbg();
     virtual void drawTitle();
 
     virtual color_t fillColor();
 
-    virtual void track();
-    virtual bool hit(coord_t x, coord_t y) { return visible && (x >= xpos) && (x <= xpos+width) && (y > ypos) && (y <= ypos + height); }
 
     virtual bool getHighlighted(void) { return highlighted; };
     virtual void setHighlighted(bool highlight) { highlighted = highlight; draw(); };

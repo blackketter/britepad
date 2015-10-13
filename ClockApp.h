@@ -8,7 +8,8 @@
 class ClockApp : public ScreensaverApp {
   public:
     BritepadApp* run(void);
-    virtual void redraw(void);
+    virtual void update(void);
+    virtual millis_t updateInterval() { return 1000; }
 
     const char* name(void) { return "Clock"; };
 
@@ -18,10 +19,9 @@ class ClockApp : public ScreensaverApp {
     static constexpr appid_t ID = "clok";
 
   protected:
-    millis_t lastRedraw = 0;
+    millis_t lastUpdate = 0;
     color_t currentColor = screen.red;
     coord_t lastWidth = 0;
-    static const millis_t redrawInterval = 1000;
 };
 
 #endif

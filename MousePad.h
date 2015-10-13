@@ -12,6 +12,7 @@ class MousePad {
 
   private:
     bool scrollMode = false;
+    bool mouseLock = false;
 };
 
 #endif

@@ -6,21 +6,35 @@
 
 BritepadApp* BubblesApp::run(void) {
   ScreensaverApp::run();
-  coord_t x, y;
   int r;
   if (pad.down()) {
     clearScreen();
   }
   if (pad.touched(SCREEN_PAD)) {
-    x = pad.x() + random(40)-20;
-    y = pad.y() + random(40)-20;
-    r = random(20);
+    lastX = pad.x();
+    lastY = pad.y();
   } else {
-    x = random(screen.clipWidth());
-    y = random(screen.clipHeight());
-    r = random(40);
+    deltaX = random(40)-20;
+    deltaY = random(40)-20;
+    lastX += deltaX;
+    lastY += deltaY;
+    if (lastY < screen.clipTop()) {
+      lastY = screen.clipTop();
+    }
+    if (lastY > screen.clipBottom()) {
+      lastY = screen.clipBottom();
+    }
+    if (lastX < screen.clipLeft()) {
+      lastX = screen.clipLeft();
+    }
+    if (lastX > screen.clipRight()) {
+      lastX = screen.clipRight();
+    }
   }
-  screen.fillCircle(x, y, r, currentColor);
+  r = random(20);
+  coord_t scatterX = random(40)-20;
+  coord_t scatterY = random(40)-20;
+  screen.fillCircle(lastX+scatterX, lastY+scatterY, r, currentColor);
   currentColor++;
 
   return STAY_IN_APP;

@@ -8,16 +8,16 @@ struct pointf_t {
   float x;
   float y;
 };
-
+// encapsulates a touchpad gesture, with a series of points that can be compared against other gestures
 class Gesture {
   public:
     Gesture() { reset(); }
     void reset() { sampleCount = 0; width=0; height=0; theta=0; centerx=0; centery=0; centroid.x=0;centroid.y=0;}
-    bool capture();
+    bool capture(); // captures from the global touchpad
     uint16_t compare(const Gesture &to);
     void addSample(float x, float y) { samples[sampleCount].x = x; samples[sampleCount].y = y; sampleCount++; }
     uint8_t getSampleCount(void) { return sampleCount; }
-    uint16_t compare(Gesture* to);
+    uint16_t compare(Gesture* to); // sum of distances of points.  0 is a perfect match
     int minSamplesRequired() { return 10; }  // seems like a reasonable number
     int minPathLength() { return 25; }
     void setDraw(color_t color) { draw = color; }

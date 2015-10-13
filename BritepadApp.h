@@ -15,7 +15,7 @@ class BritepadApp {
     BritepadApp();
     virtual void begin(AppMode asMode);  // initialize app state and draw first screen
     virtual void end(BritepadApp* nextApp); // called after final run(), lets app clean up and tells it what the next app may be
-    virtual BritepadApp* run(void) { if (isAppMode(MOUSE)) { mouse.run(); } return STAY_IN_APP;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants above)
+    virtual BritepadApp* run(void) { if (isAppMode(MOUSE)) { mouse.run(); } return STAY_IN_APP;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants below)
 
     virtual const char* name(void) = 0;
     virtual appid_t id(void) = 0;
@@ -27,6 +27,7 @@ class BritepadApp {
 
     virtual bool disablesScreensavers(void) { return false; }
     virtual bool wantsToBeScreensaver(void) { return false; }  // return true if you want to be switched to as the screensaver (canBeScreensaver() doesn't have to be true)
+    virtual BritepadApp* exitsTo(void) { return BACK_APP; }  // when exiting the app, typically by the TOP_PAD, where should it go by default (BACK_APP is to LauncherApp, DEFAULT_APP is to a mouse capable app)
     virtual bool displaysClock(void) { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
 
     virtual bool getEnabled(void) { return enabled; }
@@ -51,7 +52,6 @@ class BritepadApp {
     virtual color_t statusBarBGColor(void) { return screen.mix(bgColor(), screen.grey); }  // bgcolor of status bar
     virtual color_t statusBarFGColor(void) { return screen.luminance(statusBarBGColor()) > 127 ? screen.black : screen.white; } // color of text, graphics on status bar
     virtual const char* statusBarTitle(void) { return name(); }
-    virtual void clearScreen(void) { screen.fillScreen(bgColor()); }
 
     void drawStatusBar(bool update = false); // pass true to just do an update rather than a full redraw
 
@@ -66,6 +66,8 @@ class BritepadApp {
     coord_t statusBarHeight = 16;
 
     AppMode currAppMode = INACTIVE;
+
+    virtual void clearScreen(void) { screen.fillScreen(bgColor()); }
 };
 
 #endif

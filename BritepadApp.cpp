@@ -71,26 +71,20 @@ bool BritepadApp::canBeAppMode(AppMode b) {
 
 void BritepadApp::begin(AppMode asMode) {
 
-  setAppMode(asMode);
+  if (currAppMode != asMode) {
+    if (currAppMode == MOUSE) {
+      mouse.end();
+    }
 
+    if (asMode == MOUSE) {
+      mouse.begin();
+    }
+  }
+  currAppMode = asMode;
   screen.fillScreen(bgColor());
 
 };  // initialize app state and draw first screen
 
 void BritepadApp::end(BritepadApp* nextApp) {
-  setAppMode(INACTIVE);
-}
-
-void BritepadApp::setAppMode(AppMode newMode) {
-
-  if (currAppMode != newMode) {
-    if (currAppMode == MOUSE) {
-      mouse.end();
-    }
-
-    if (newMode == MOUSE) {
-      mouse.begin();
-    }
-  }
-  currAppMode = newMode;
+  currAppMode = INACTIVE;
 }

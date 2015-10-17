@@ -13,8 +13,11 @@ class StopwatchApp : public BritepadApp {
     bool wantsToBeScreensaver(void) { return !isPaused() && !isReset(); }
     bool disablesScreensavers(void) { return isAppMode(INTERACTIVE) && wantsToBeScreensaver(); }
     bool canBeInteractive() { return true; }
-    virtual void setAppMode( AppMode newMode ) {  BritepadApp::setAppMode(newMode);  clearScreen(); redrawButtons(); redrawTime();}
 
+    appid_t id() { return ID; };
+    static constexpr appid_t ID = "stpw";
+
+  private:
     virtual bool isPaused() { return startMillis < 0; };
     virtual void pause(void) { startMillis = -(clock.millis() - startMillis); }
     virtual void resume(void) { startMillis = clock.millis() + startMillis; }
@@ -23,10 +26,7 @@ class StopwatchApp : public BritepadApp {
     virtual void drawTime(void);
 
     void redrawTime(void) { lastDrawMillis = 0; };
-    appid_t id() { return ID; };
-    static constexpr appid_t ID = "stpw";
 
-  private:
     void redrawButtons();
     long startMillis = -1;  // start out paused at zero(ish)
     RoundButton pauseButton;

@@ -19,6 +19,7 @@ void Screen::drawText(const char* text) {
       // don't wrap to the left, wrap to the original spot
       if (wrap && text[i] == '\n') {
         cursor_x = origx;
+        cursor_y += fontHeight() + fontLineSpacing();
       }
       i++;
     }

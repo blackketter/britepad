@@ -33,8 +33,6 @@ class BritepadApp {
     virtual bool getEnabled(void) { return enabled; }
     virtual void setEnabled(bool e) { enabled = e; }
 
-    virtual void setAppMode( AppMode newMode );
-
     AppMode getAppMode() { return currAppMode; }
     bool isAppMode(AppMode is) { return (is == getAppMode()); }
     bool canBeAppMode(AppMode b);

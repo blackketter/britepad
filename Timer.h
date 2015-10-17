@@ -25,14 +25,15 @@ class Timer {
     time_t durationSecs(void);  // how far out was the timer when it was initially set?
     long durationMillis(void);
 
-    bool passed(void);         // is the timer in the past
 
     void cancel(void);         // cancel timer including callback
-    bool running(void);        // is the timer running?  (returns true even if paused)
 
     void pause(void);          // pause timer
     void resume(void);         // resume timer
     bool isPaused(void);       // is paused
+    bool isRunning(void);        // is the timer running?  (i.e. is not paused and is set)
+    bool hasPassed(void);         // is the timer in the past
+    bool isReset(void) { return ((millisTime == 0) && (clockTime == 0)); }
 
     static void idle(void);    // idle so callbacks get a chance to run
 

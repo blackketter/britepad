@@ -58,7 +58,7 @@ void alarmcallback(void* data) {
 }
 
 void TimerApp::setTime(time_t t) {
-  beeps = 9;
+  beeps = totalBeeps -1;
   timer_dur = t;
   alarm_sounded = 0;
   mytimer.setSecs(t, (timerCallback_t)alarmcallback, (void*)this);
@@ -68,10 +68,10 @@ void TimerApp::alarm(void) {
   alarm_sounded = clock.now();
   if (beeps) {
     sound.beep();
-    mytimer.setMillis(500, (timerCallback_t)alarmcallback, (void*)this);
+    mytimer.setMillis(beepInterval, (timerCallback_t)alarmcallback, (void*)this);
     beeps--;
   } else {
-    mytimer.setSecs(alarm_dur);  // keep the timer running a while to keep the app on screen, when it's done it will exit automatically because the timer isn't running
+    mytimer.setSecs(alarmDur);  // keep the timer running a while to keep the app on screen, when it's done it will exit automatically because the timer isn't running
   }
 }
 

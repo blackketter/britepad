@@ -8,6 +8,7 @@
 void StopwatchApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);
   redrawButtons();
+  redrawTime();
 }
 
 void StopwatchApp::redrawButtons(void) {
@@ -27,9 +28,9 @@ BritepadApp* StopwatchApp::run(void) {
   if (pad.down(BOTTOM_PAD)) {
     sound.click();
     if (isAppMode(SCREENSAVER)) {
-      setAppMode(INTERACTIVE);
+      begin(INTERACTIVE);
     } else {
-      setAppMode(SCREENSAVER);
+      begin(SCREENSAVER);
     }
   }
 

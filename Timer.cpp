@@ -76,7 +76,7 @@ long Timer::durationMillis(void) {
   }
 }
 
-bool Timer::passed(void) {
+bool Timer::hasPassed(void) {
 
   if (isPaused()) { return false; }
 
@@ -92,8 +92,8 @@ bool Timer::passed(void) {
   return false;
 }
 
-bool Timer::running(void) {
-  return millisTime || clockTime;
+bool Timer::isRunning(void) {
+  return (millisTime > 0) || (clockTime > 0);
 }
 
 void Timer::cancel(void) {
@@ -136,7 +136,7 @@ void Timer::idle(void) {
   Timer* t = first;
 
   while (t) {
-    if (t->passed()) {
+    if (t->hasPassed()) {
 
       // save callback data so we can call the timer after it's been removed.
       // this way the callback function can reuse the timer.

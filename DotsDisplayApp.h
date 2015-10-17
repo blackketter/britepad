@@ -9,7 +9,6 @@ class DotsDisplayApp : public ScreensaverApp {
   public:
     void begin(AppMode asMode) { ScreensaverApp::begin(asMode); dots.init(16,12, BritepadAppScratchPad); };
     BritepadApp* run(void);
-    virtual void setAppMode( AppMode newMode ) {  ScreensaverApp::setAppMode(newMode);  dots.clear(); }
 
     bool canBeMouse(void) { return true; };
 

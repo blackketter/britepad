@@ -14,6 +14,7 @@
 #include "DotsDisplayApp.h"
 #include "FadeDotsApp.h"
 #include "GestureApp.h"
+#include "InfoApp.h"
 #include "KeyApp.h"
 #include "KeyboardApp.h"
 #include "LifeApp.h"
@@ -83,6 +84,7 @@ LauncherApp::LauncherApp(void) {
   setButton(APPS_SCREEN, 1,  new ThereminApp);
   setButton(APPS_SCREEN, 2,  new PaintApp);
   setButton(APPS_SCREEN, 3,  new GestureApp);
+  setButton(APPS_SCREEN, 10, new InfoApp);
 //  setButton(APPS_SCREEN, 11,  new RebootApp);  // todo: doesn't work yet
 }
 

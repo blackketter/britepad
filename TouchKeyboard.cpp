@@ -20,17 +20,20 @@ void TouchKeyboard::initButtons() {
   DEBUG_LN("initButtons");
   coord_t buttonDistance = min(width/maxKeysPerRow, height/rows);
   DEBUG_PARAM_LN("buttonDistance",buttonDistance);
-  coord_t radius = (buttonDistance*90)/100/2;  // key diameter is 80% of space
+  coord_t radius = (buttonDistance-2)/2;  // leave a tiny space between
   DEBUG_PARAM_LN("radius",radius);
 
   // initialize all those buttons
   for (int r = 0; r < rows; r++) {
     int rowLen = keysInRow(r);
-    coord_t keyY = ypos + height/rows/2 + height/rows*r;
+//    coord_t keyY = ypos + height/rows*r                             + height/rows/2;
+      coord_t keyY = ypos + ((long)buttonDistance * 866L * r) / 1000L + height/rows/2;  // .8660 is sqrt(3)/2
+
     for (int c = 0; c < rowLen; c++) {
       char key = keymap[currSet][r][c];
       char* keyStr = (char*)((uint32_t)key);
       coord_t keyX = xpos + buttonDistance/2 + buttonDistance*c;
+      keyX += r % 2 ? buttonDistance/2 : 0;  // every other line is offset by half the distance to nest them together
       DEBUG_PARAM_LN("button init", key);
       buttons[r][c].init(keyX,keyY,radius,colored,false,keyStr,legendF,legendC);
     }

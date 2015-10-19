@@ -5,7 +5,7 @@
 #include "Debug.h"
 
 // preferences are saved:
-//   tag string (null terminated), length byte, data bytes (of length given before)
+//   tag string (zero terminated), length byte, data bytes (of length given before)
 
 Preferences::Preferences(void) {
   // todo - only read in the bytes that have been used

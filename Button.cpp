@@ -24,6 +24,15 @@ bool Button::down(void) {
   }
 }
 
+bool Button::hold(void) {
+  track();
+  if (getHighlighted() && (pad.time() - highlightedTime > holdTime)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 bool Button::up(void) {
   track();
   if (pad.up(SCREEN_PAD) && hit(pad.x(), pad.y())) {

@@ -37,6 +37,7 @@ class Screen : public ILI9341_t3 {
     const color_t cyan = 0x07ff; // 0, 1, 1
 
     const color_t grey = 0x4208; // .25, .25, .25
+    const color_t lightgrey = 0x8410;
 
     const color_t darkred =   0x8000; // .5, 0, 0
     const color_t darkgreen = 0x0400; // 0, .5, .0

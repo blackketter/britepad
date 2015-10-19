@@ -12,23 +12,30 @@ BritepadApp::BritepadApp(void)  {
   britepad.addApp(this);
 }
 
-void BritepadApp::drawStatusBar(bool update) {
+void BritepadApp::resetClipRect(void) {
+  coord_t top = displaysStatusBar() ? statusBarHeight : 0;
+  coord_t bottom = displaysInfoBar() ? screen.height()-statusBarHeight : screen.height();
+  screen.setClipRect(0, top, screen.width(), bottom);
+}
 
+void BritepadApp::drawStatusBar(bool update) {
   if (displaysStatusBar()) {
-    // set the clipping to the status bar
-	  screen.setClipRect(0, statusBarTop, screen.width(), statusBarTop+statusBarHeight);
+    screen.setClipRect(0, 0, screen.width(), statusBarHeight);
+
     screen.setFont(Arial_8_Bold);
     screen.setTextColor(statusBarFGColor());
 
     if (!update) {
-      screen.fillRect(0, statusBarTop, screen.clipWidth(), statusBarHeight, statusBarBGColor());
+      screen.fillScreen(statusBarBGColor());
+
       // draw title
       const char* title = statusBarTitle();
       screen.setCursor( (screen.clipWidth() - screen.measureTextH(title)) / 2,
-                         statusBarTop + (statusBarHeight-screen.measureTextV(title)) / 2);
+                         (statusBarHeight-screen.measureTextV(title)) / 2);
       screen.drawText(title);
     }
 
+    // only include the clock if the app doesn't already draw a clock
     if (!displaysClock()) {
       // draw title
       screen.setFont(Arial_8_Bold);
@@ -38,16 +45,38 @@ void BritepadApp::drawStatusBar(bool update) {
       char shortTimeSpaced[100];
       sprintf(shortTimeSpaced,"  %s ", shortTime);
       screen.setCursor( (screen.clipRight() - screen.measureTextH(shortTimeSpaced) - 2),
-                         statusBarTop + (statusBarHeight-screen.measureTextV(shortTimeSpaced)) / 2);
+                        (statusBarHeight-screen.measureTextV(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
     }
 
-    // set the clipping to the app area
-    screen.setClipRect(0, statusBarHeight, screen.width(), screen.height());
-  } else {
-    screen.setClipRect();
   }
+  resetClipRect();
+}
 
+void BritepadApp::drawInfoBar(bool update) {
+  if (displaysInfoBar()) {
+    coord_t top = screen.height()-statusBarHeight;
+    screen.setClipRect(0, top, screen.width(), screen.height());
+
+    screen.setFont(Arial_8_Bold);
+    screen.setTextColor(infoBarFGColor());
+
+    const char* text = infoBarText();
+    if (!update && text) {
+      screen.fillScreen(infoBarBGColor());
+
+      screen.setCursor( (screen.clipWidth() - screen.measureTextH(text)) / 2,
+                         top + (statusBarHeight-screen.measureTextV(text)) / 2);
+      screen.drawText(text);
+    }
+
+  }
+  resetClipRect();
+}
+
+void BritepadApp::drawBars(bool update) {
+  drawInfoBar(update);
+  drawStatusBar(update);
 }
 
 bool BritepadApp::isID(appid_t match) {

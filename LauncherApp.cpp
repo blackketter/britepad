@@ -233,7 +233,7 @@ BritepadApp* LauncherApp::run(void) {
       current_screen--;
       sound.swipe(DIRECTION_LEFT);
       screen.pushFill(DIRECTION_LEFT, bgColor());
-      drawStatusBar();
+      drawBars();
       drawButtons();
     } else {
       sound.bump();
@@ -245,7 +245,7 @@ BritepadApp* LauncherApp::run(void) {
       current_screen++;
       sound.swipe(DIRECTION_RIGHT);
       screen.pushFill(DIRECTION_RIGHT, bgColor());
-      drawStatusBar();
+      drawBars();
       drawButtons();
     } else {
       sound.bump();
@@ -266,6 +266,10 @@ int LauncherApp::currentScreen(void) {
 
 color_t LauncherApp::bgColor(void) {
   return screenColor[currentScreen()];
+}
+
+const char* LauncherApp::infoBarText(void) {
+  return currentScreen() == SCREENSAVERS_SCREEN ? "Press and hold to test" : nullptr;
 }
 
 const char* LauncherApp::statusBarTitle(void) {

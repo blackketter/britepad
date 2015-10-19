@@ -22,8 +22,6 @@ BritepadApp* Britepad::getApp(appid_t appID) {
   int index = 0;
   BritepadApp* nextapp = getApp(index++);
   while (nextapp) {
-//    DEBUG_PARAM_LN("checking", (unsigned long)nextapp);
-//    DEBUG_LN(nextapp->id());
 
     if (nextapp->isID(appID)) {
       return nextapp;
@@ -44,7 +42,7 @@ BritepadApp* Britepad::randomApp(AppMode m) {
     }
   }
 
-  // count the enabled screensavers
+  // count the enabled apps
   int count = 0;
   int index = 0;
   BritepadApp* nextapp = getApp(index++);
@@ -129,7 +127,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   currApp = newApp;
 
   if (currApp) {
-    currApp->drawStatusBar();
+    currApp->drawBars();
     currApp->begin(asMode);
   }
 }
@@ -149,6 +147,7 @@ void statusBarCallback(void* data) {
 }
 
 void Britepad::updateStatusBar(void) {
+  // updates the clock in the status bar
   currApp->drawStatusBar(true);
 }
 

@@ -46,12 +46,19 @@ class BritepadApp {
 
     virtual color_t bgColor(void) { return screen.black; }  // background color of app screen
 
+    void drawBars(bool update = false); // draw the status and info bars
+
+    void drawStatusBar(bool update);
     virtual bool displaysStatusBar(void) { return true; };  // apps show status bar by default
     virtual color_t statusBarBGColor(void) { return screen.mix(bgColor(), screen.grey); }  // bgcolor of status bar
     virtual color_t statusBarFGColor(void) { return screen.luminance(statusBarBGColor()) > 127 ? screen.black : screen.white; } // color of text, graphics on status bar
     virtual const char* statusBarTitle(void) { return name(); }
 
-    void drawStatusBar(bool update = false); // pass true to just do an update rather than a full redraw
+    void drawInfoBar(bool update);
+    virtual bool displaysInfoBar(void) { return infoBarText() != nullptr; };
+    virtual color_t infoBarBGColor(void) { return bgColor(); }
+    virtual color_t infoBarFGColor(void) { return screen.luminance(infoBarBGColor()) > 127 ? screen.grey : screen.lightgrey; }  // info text is faded, by default
+    virtual const char* infoBarText(void) { return nullptr; }
 
     static BritepadApp* STAY_IN_APP;
     static BritepadApp* DEFAULT_APP; // typically the MouseApp, but might be a timer when it's running
@@ -60,12 +67,13 @@ class BritepadApp {
 
   protected:
     bool enabled = true;
-    coord_t statusBarTop = 0;
     coord_t statusBarHeight = 16;
 
     AppMode currAppMode = INACTIVE;
 
     virtual void clearScreen(void) { screen.fillScreen(bgColor()); }
+    void resetClipRect();  // resets clip rect to content area
+
 };
 
 #endif

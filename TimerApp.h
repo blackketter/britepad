@@ -8,7 +8,7 @@
 
 class TimerApp : public StopwatchApp {
   public:
-    void begin(AppMode asMode) { StopwatchApp::begin(SCREENSAVER); beeps = 10; }  // always start as a screensaver
+    void begin(AppMode asMode) { StopwatchApp::begin(asMode); beeps = 10; }  // always start as a screensaver
     void end(BritepadApp* nextApp);
     bool wantsToBeScreensaver(void) { return isRunning() || !isReset(); }
     bool disablesScreensavers(void) { return false; }

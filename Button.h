@@ -11,6 +11,7 @@ class Button {
 
     virtual bool down(void);
     virtual bool up(void);
+    virtual bool hold(void);
 
     virtual void setColor(color_t newColor) {  colored = newColor; draw(); }
     virtual void setTitle(const char* newTitle) { titleStr = newTitle; draw(); }
@@ -28,7 +29,7 @@ class Button {
 
 
     virtual bool getHighlighted(void) { return highlighted; };
-    virtual void setHighlighted(bool highlight) { highlighted = highlight; draw(); };
+    virtual void setHighlighted(bool highlight) { highlighted = highlight; highlightedTime = pad.time(); draw(); };
 
     const char* titleStr;
 
@@ -41,7 +42,9 @@ class Button {
 
     color_t colored;
     bool highlighted;
+    millis_t highlightedTime;
     bool visible;
+    static const millis_t holdTime = 1000;
 };
 
 class RoundButton : public Button {

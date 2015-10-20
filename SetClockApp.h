@@ -19,7 +19,7 @@ class SetClockApp : public BritepadApp {
     static constexpr appid_t ID = "sclk";
 
   private:
-    static const int buttoncount = 7;
+    static const int buttoncount = 8;
     static const int buttonradius = 24;
     static const int nobutton = -1;
 
@@ -29,6 +29,7 @@ class SetClockApp : public BritepadApp {
     void drawButtons(void);
     time_t lastTime = 0;
     bool hasRun = false;
+    bool setDate = false;
 
 };
 #endif

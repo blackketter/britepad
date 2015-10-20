@@ -20,6 +20,7 @@ enum AppMode {
 
 
 typedef long long millis_t;
+typedef unsigned long stime_t; // signed time for relative time, deltas, adjustments, etc.
 typedef const char* appid_t;
 
 #endif

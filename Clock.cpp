@@ -15,7 +15,7 @@ Clock::Clock(void) {
     // todo - if the clock has NEVER been set, then set it to a reasonable time
 
     setSyncProvider(getRTCTime);
-    if (timeStatus()!= timeSet) {
+    if (timeStatus()!= timeSet || year() < 2015) {
 //      DEBUG_LN("Unable to sync with the RTC");
       // set clock to a recent time - not needed with RTC
       ::setTime(16,20,0,1,1,2015);
@@ -59,7 +59,7 @@ void Clock::chimerCallback(void) {
   }
 }
 
-void Clock::adjust(long adjustment) {
+void Clock::adjust(stime_t adjustment) {
   DEBUG_PARAM_LN("before:", ::now());
   Teensy3Clock.set(now() + adjustment);
 
@@ -99,6 +99,22 @@ uint8_t Clock::second() {
   return ::second();
 }
 
+uint16_t Clock::year() {
+  return ::year();
+}
+
+uint8_t Clock::month() {
+  return ::month();
+}
+
+uint8_t Clock::day() {
+  return ::day();
+}
+
+uint8_t Clock::weekday() {
+  return ::weekday();
+}
+
 bool Clock::isAM() {
   return ::isAM();
 }
@@ -106,3 +122,20 @@ bool Clock::isAM() {
 void Clock::shortTime(char * timeStr) {
   sprintf(timeStr, "%d:%02d %s", hourFormat12(), minute(), isAM() ? "am":"pm");
 };
+
+static const uint8_t monthDays[]={31,28,31,30,31,30,31,31,30,31,30,31}; // API starts months from 1, this array starts from 0
+static const char* dayStrings[] = { "", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+static const char* monthStrings[] = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+
+uint8_t Clock::daysInMonth(uint8_t m) {
+  // todo: make this work for leap years
+  return monthDays[m-1]; // m is 1 based, the array is zero based
+}
+
+void Clock::longDate(char* dateStr) {
+  sprintf(dateStr, "%s, %s %d, %d", dayStrings[weekday()], monthStrings[month()], day(), year());
+}
+
+void Clock::shortDate(char* dateStr) {
+  sprintf(dateStr, "%d-%02d-%02d", year(), month(), day());
+}

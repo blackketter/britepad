@@ -47,6 +47,12 @@ void BritepadApp::drawStatusBar(bool update) {
       screen.setCursor( (screen.clipRight() - screen.measureTextH(shortTimeSpaced) - 2),
                         (statusBarHeight-screen.measureTextV(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
+
+      clock.shortDate(shortTime);
+      sprintf(shortTimeSpaced,"  %s ", shortTime);
+      screen.setCursor( screen.clipLeft() + 2,
+                        (statusBarHeight-screen.measureTextV(shortTimeSpaced)) / 2);
+      screen.drawText(shortTimeSpaced);
     }
 
   }

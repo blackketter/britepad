@@ -59,8 +59,8 @@ void KeyApp::draw(void) {
   clearScreen();
   screen.setFont(Arial_20_Bold);
   screen.setTextColor(screen.yellow);
-  int x = screen.clipMidWidth() - (screen.measureTextH(nameStr) / 2);
-  int y = screen.clipMidHeight() - (screen.measureTextV(nameStr) / 2);
+  int x = screen.clipMidWidth() - (screen.measureTextWidth(nameStr) / 2);
+  int y = screen.clipMidHeight() - (screen.measureTextHeight(nameStr) / 2);
   screen.setCursor( x, y);
 
   screen.drawText(nameStr);

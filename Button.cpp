@@ -86,7 +86,7 @@ void Button::drawTitle(void) {
 
   screen.setFont(titleFont);
   screen.setTextColor(titleCol);
-  screen.setCursor( xpos+height/2 - screen.measureTextH(drawStr) / 2, ypos+width/2 - screen.measureTextV(drawStr) / 2);
+  screen.setCursor( xpos+height/2 - screen.measureTextWidth(drawStr) / 2, ypos+width/2 - screen.measureTextHeight(drawStr) / 2);
   screen.drawText(drawStr);
 }
 

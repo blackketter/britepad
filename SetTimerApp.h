@@ -9,19 +9,28 @@ class SetTimerApp : public BritepadApp {
 
   public:
     SetTimerApp(const char* name, time_t duration);
+    SetTimerApp();
 
-    BritepadApp* run(void) { timer_app.setTime(timer_duration); return &timer_app; };
+    void begin(AppMode asMode);
+    BritepadApp* run(void);
     const char* name(void) { return name_str; };
+
+    bool disablesScreensavers(void) { return true; }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stmr";
 
   private:
-    const char* name_str;
-    time_t timer_duration = 0;
-    color_t button_color = 0;
-    static TimerApp timer_app;
+    bool edit = true;
+    const char* name_str = "Timer";
+    int timer_duration = 0;
 
+    void drawTime();
+    void drawButtons();
+    static TimerApp timer_app;
+    static const int buttoncount = 5;
+
+    RoundButton button[buttoncount];
 };
 
 

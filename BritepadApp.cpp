@@ -30,8 +30,8 @@ void BritepadApp::drawStatusBar(bool update) {
 
       // draw title
       const char* title = statusBarTitle();
-      screen.setCursor( (screen.clipWidth() - screen.measureTextH(title)) / 2,
-                         (statusBarHeight-screen.measureTextV(title)) / 2);
+      screen.setCursor( (screen.clipWidth() - screen.measureTextWidth(title)) / 2,
+                         (statusBarHeight-screen.measureTextHeight(title)) / 2);
       screen.drawText(title);
     }
 
@@ -44,14 +44,14 @@ void BritepadApp::drawStatusBar(bool update) {
       clock.shortTime(shortTime);
       char shortTimeSpaced[100];
       sprintf(shortTimeSpaced,"  %s ", shortTime);
-      screen.setCursor( (screen.clipRight() - screen.measureTextH(shortTimeSpaced) - 2),
-                        (statusBarHeight-screen.measureTextV(shortTimeSpaced)) / 2);
+      screen.setCursor( (screen.clipRight() - screen.measureTextWidth(shortTimeSpaced) - 2),
+                        (statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
 
       clock.shortDate(shortTime);
       sprintf(shortTimeSpaced,"  %s ", shortTime);
       screen.setCursor( screen.clipLeft() + 2,
-                        (statusBarHeight-screen.measureTextV(shortTimeSpaced)) / 2);
+                        (statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
     }
 
@@ -71,8 +71,8 @@ void BritepadApp::drawInfoBar(bool update) {
     if (!update && text) {
       screen.fillScreen(infoBarBGColor());
 
-      screen.setCursor( (screen.clipWidth() - screen.measureTextH(text)) / 2,
-                         top + (statusBarHeight-screen.measureTextV(text)) / 2);
+      screen.setCursor( (screen.clipWidth() - screen.measureTextWidth(text)) / 2,
+                         top + (statusBarHeight-screen.measureTextHeight(text)) / 2);
       screen.drawText(text);
     }
 

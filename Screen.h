@@ -66,8 +66,8 @@ class Screen : public ILI9341_t3 {
 
     void drawText(const char* text);
     void drawTextF(const char* format, ...);
-    coord_t measureTextH(const char* text);
-    coord_t measureTextV(const char* text);
+    coord_t measureTextWidth(const char* text);
+    coord_t measureTextHeight(const char* text);
 
     void pushFill(Direction dir, color_t color);
 

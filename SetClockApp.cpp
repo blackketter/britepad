@@ -14,16 +14,16 @@ void SetClockApp::drawClock(void) {
 
       screen.setFont(Arial_40_Bold);
       sprintf(textDate, "%d-%02d-%02d", clock.year(), clock.month(), clock.day());
-      screen.setCursor(screen.clipMidWidth() - screen.measureTextH(textDate)/2,
-                       screen.clipMidHeight() - screen.measureTextV(textDate)/2);
+      screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(textDate)/2,
+                       screen.clipMidHeight() - screen.measureTextHeight(textDate)/2);
       screen.drawText(textDate);
     } else {
       char textTime[6];
 
       screen.setFont(Arial_72_Bold);
       sprintf(textTime," %2d:%02d ", clock.hourFormat12(), clock.minute());
-      screen.setCursor(screen.clipMidWidth() - screen.measureTextH(textTime)/2,
-                       screen.clipMidHeight() - screen.measureTextV(textTime)/2);
+      screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(textTime)/2,
+                       screen.clipMidHeight() - screen.measureTextHeight(textTime)/2);
       screen.drawText(textTime);
       button[6].setTitle(clock.isAM() ? "am" : "pm");
     }

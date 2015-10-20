@@ -13,7 +13,7 @@ void StopwatchApp::begin(AppMode asMode) {
 
 void StopwatchApp::redrawButtons(void) {
   coord_t radius = screen.clipWidth()/10;
-  coord_t y = isAppMode(SCREENSAVER) ? screen.clipTop()+screen.clipHeight()+radius/2 :screen.clipTop()+screen.clipHeight()/3*2;
+  coord_t y = isAppMode(SCREENSAVER) ? screen.clipTop()+screen.clipHeight()+radius/2 :screen.clipTop()+screen.clipHeight()/4*3;
 
   resetButton.init(radius*3, y, radius, screen.blue, false,"Reset");
 
@@ -94,10 +94,10 @@ void StopwatchApp::drawTime(void) {
       sprintf(textTime, "%02d:%02d:%02d", hours, mins, secs);
     }
 
-    coord_t w = screen.measureTextH(textTime);
+    coord_t w = screen.measureTextWidth(textTime);
 
     screen.setCursor(screen.clipMidWidth() - w/2,
-                     screen.clipTop() + screen.clipHeight()/(isAppMode(SCREENSAVER) ? 2 : 3) - screen.measureTextV(textTime)/2);
+                     screen.clipTop() + screen.clipHeight()/(isAppMode(SCREENSAVER) ? 2 : 3) - screen.measureTextHeight(textTime)/2);
     screen.drawText(textTime);
 
     if (!isPaused() && secs == 0 && tenths == 0) {

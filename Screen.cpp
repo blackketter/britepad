@@ -25,7 +25,7 @@ void Screen::drawText(const char* text) {
     }
 }
 
-coord_t Screen::measureTextH(const char* text) {
+coord_t Screen::measureTextWidth(const char* text) {
   coord_t maxH = 0;
   coord_t currH = 0;
   for (const char* i = text; *i != 0; i++) {
@@ -43,7 +43,7 @@ coord_t Screen::measureTextH(const char* text) {
   return h;
 }
 
-coord_t Screen::measureTextV(const char* text) {
+coord_t Screen::measureTextHeight(const char* text) {
   int lines = 1;
   for (const char* i = text; *i != 0; i++) {
     if (*i == '\n') {

@@ -76,7 +76,7 @@ LauncherApp::LauncherApp(void) {
   setButton(TIMERS_SCREEN, 1, new SetTimerApp("3 min", 3*60));
   setButton(TIMERS_SCREEN, 2, new SetTimerApp("25 min", 25*60));
   setButton(TIMERS_SCREEN, 3, new SetTimerApp("55 min", 55*60));
-
+  setButton(TIMERS_SCREEN, 8, new SetTimerApp());
 
   setButton(TIMERS_SCREEN, 11, new StopwatchApp);
 
@@ -136,7 +136,7 @@ void LauncherApp::drawButton(int i, bool highlighted) {
   const char* name = apps[currentScreen()][i]->name();
   screen.setFont(Arial_9_Bold);
   screen.setTextColor(screen.black);
-  screen.setCursor( x - screen.measureTextH(name) / 2, y - screen.measureTextV(name)/2);
+  screen.setCursor( x - screen.measureTextWidth(name) / 2, y - screen.measureTextHeight(name)/2);
   screen.drawText(name);
 }
 

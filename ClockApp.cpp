@@ -17,7 +17,7 @@ BritepadApp* ClockApp::run(void) {
 void ClockApp::update(void) {
     char textTime[6];
 
-    screen.setFont(Arial_72);
+    screen.setFont(Arial_72_Bold);
 
     screen.setTextColor(screen.luminance(currentColor) < 128 ? screen.brighten(currentColor, 128) : currentColor, bgColor());
     sprintf(textTime, "%d:%02d", clock.hourFormat12(), clock.minute());

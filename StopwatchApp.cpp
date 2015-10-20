@@ -7,6 +7,9 @@
 
 void StopwatchApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);
+  if (isReset()) {
+    resume();
+  }
   redrawButtons();
   redrawTime();
 }

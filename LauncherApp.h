@@ -67,6 +67,8 @@ class LauncherApp : public BritepadApp {
     int highlighted_button = noButton;
 
     time_t lastRun = 0;
+    static const millis_t holdTime = 1000;
+    BritepadApp* launchOnRelease = nullptr;
 };
 #endif
 

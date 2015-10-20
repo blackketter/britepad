@@ -91,7 +91,7 @@ LauncherApp::LauncherApp(void) {
 void LauncherApp::begin(AppMode asMode) {
 
   // this should wake up the host, which is great for entering passwords
-  // but might have some ugly side effects
+  // but might have some side effects
   Keyboard.press(KEY_LEFT_SHIFT);
   Keyboard.release(KEY_LEFT_SHIFT);
 
@@ -170,25 +170,36 @@ BritepadApp* LauncherApp::run(void) {
 
   lastRun = clock.now();
 
-  BritepadApp* exit = nil;  // by default, don't exit
+  BritepadApp* exit = STAY_IN_APP;  // by default, don't exit
 
   int b = buttonHit(pad.x(),pad.y());
 
-  if (pad.touched(SCREEN_PAD)) {
+  if (launchOnRelease) {
+    if (pad.up(SCREEN_PAD)) {
+      exit = launchOnRelease;
+      launchOnRelease = nullptr;
+    }
+  } else if (pad.touched(SCREEN_PAD)) {
 
     if (b != noButton) {
       if (b != highlighted_button) {
         drawButton(highlighted_button, false);
         drawButton(b, true);
         highlighted_button = b;
+      } else {
+        if (pad.time() - pad.lastDownTime(SCREEN_PAD) > holdTime) {
+          if (getButton(b) && getButton(b)->canBeScreensaver()) {
+            sound.beep();
+            clearScreen();
+            launchOnRelease = getButton(b);
+          }
+        }
       }
     } else {
       drawButton(highlighted_button, false);
       highlighted_button = noButton;
     }
-  } else {
-
-    if (pad.up(SCREEN_PAD)) {
+  } else if (pad.up(SCREEN_PAD)) {
       drawButton(highlighted_button, false);
 //      DEBUG_PARAM_LN("released on button", highlighted_button);
 
@@ -205,42 +216,28 @@ BritepadApp* LauncherApp::run(void) {
         } else {
           // todo handle screensavers
           if (launched->canBeScreensaver()) {
-
-            // toggle the enabledness of the screensaver, and launch it if we're enabling it
+            // toggle the enabledness of the screensaver
             launched->setEnabled(!launched->getEnabled());
-            if (launched->getEnabled()) {
-              exit = launched;
-            } else {
-              drawButton(b, false);
-              exit = STAY_IN_APP;
-            }
+            drawButton(b, !launched->getEnabled());
           } else {
             exit = launched;
           }
         }
         sound.click();
 
-      } else {
- // disable exiting by tapping on empty space to enable swiping to edge and back
- //      exit = DEFAULT_APP;
       }
       highlighted_button = noButton;
-    }
-  }
-
-  if (pad.down(LEFT_PAD)) {
-    if (currentScreen() > 0) {
-      current_screen--;
-      sound.swipe(DIRECTION_LEFT);
-      screen.pushFill(DIRECTION_LEFT, bgColor());
-      drawBars();
-      drawButtons();
-    } else {
-      sound.bump();
-    }
-  }
-
-  if (pad.down(RIGHT_PAD)) {
+    } else if (pad.down(LEFT_PAD)) {
+      if (currentScreen() > 0) {
+        current_screen--;
+        sound.swipe(DIRECTION_LEFT);
+        screen.pushFill(DIRECTION_LEFT, bgColor());
+        drawBars();
+        drawButtons();
+      } else {
+        sound.bump();
+      }
+  } else if (pad.down(RIGHT_PAD)) {
     if (currentScreen() < TOTAL_SCREENS - 1) {
       current_screen++;
       sound.swipe(DIRECTION_RIGHT);

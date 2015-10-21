@@ -16,7 +16,7 @@ uint32_t FreeRam(){ // for Teensy 3.0
     return stackTop - heapTop;
 }
 
-BritepadApp* InfoApp::run(void) {
+void InfoApp::run(void) {
 
   BritepadApp::run();
 
@@ -31,6 +31,4 @@ BritepadApp* InfoApp::run(void) {
   screen.drawTextF("Uptime: %d\n", (long)(clock.millis()/1000));
   screen.drawTextF("FPS: %d      ", 1000/(pad.time()-lastUpdate));
   lastUpdate = pad.time();
-
-  return STAY_IN_APP;
 };

@@ -4,7 +4,7 @@
 #include "BubblesApp.h"
 #include "Debug.h"
 
-BritepadApp* BubblesApp::run(void) {
+void BubblesApp::run(void) {
   ScreensaverApp::run();
   int r;
   if (pad.down()) {
@@ -36,6 +36,4 @@ BritepadApp* BubblesApp::run(void) {
   coord_t scatterY = random(40)-20;
   screen.fillCircle(lastX+scatterX, lastY+scatterY, r, currentColor);
   currentColor++;
-
-  return STAY_IN_APP;
 }

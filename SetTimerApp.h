@@ -12,7 +12,7 @@ class SetTimerApp : public BritepadApp {
     SetTimerApp();
 
     void begin(AppMode asMode);
-    BritepadApp* run(void);
+    void run(void);
     const char* name(void) { return name_str; };
 
     bool disablesScreensavers(void) { return true; }

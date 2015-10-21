@@ -15,15 +15,13 @@ class RebootApp : public BritepadApp {
 
     RebootApp(void) {};
 
-    BritepadApp* run(void) {
+    void run(void) {
 
       while (1) {
         // todo - make this teensyduino aware
         // todo - make this work
         CPU_RESTART
       };
-
-      return STAY_IN_APP;  // doesn't matter, actually, but apps that have no UI should return this
     }
 
     const char* name(void) { return "Reboot"; };

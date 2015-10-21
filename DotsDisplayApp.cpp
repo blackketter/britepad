@@ -5,7 +5,7 @@
 #include "Debug.h"
 
 
-BritepadApp* DotsDisplayApp::run(void) {
+void DotsDisplayApp::run(void) {
   ScreensaverApp::run();
 
   if (pad.touched(SCREEN_PAD)) {
@@ -21,6 +21,4 @@ BritepadApp* DotsDisplayApp::run(void) {
     dots.setDot(x, y, lastColor);
     dots.updateDot(x, y);
   }
-
-  return STAY_IN_APP;
 }

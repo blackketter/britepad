@@ -7,7 +7,7 @@
 class ThereminApp : public BritepadApp {
   public:
     const char* name(void) { return "Theremin"; };
-    BritepadApp* run(void);
+    void run(void);
     void end(BritepadApp* nextApp);
     virtual bool disablesScreensavers(void) { return true; }
 

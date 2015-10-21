@@ -7,7 +7,7 @@
 // Size of the color selection boxes and the paintbrush size
 #define PENRADIUS 10
 
-BritepadApp* PaintApp::run(void) {
+void PaintApp::run(void) {
   BritepadApp::run();
 
   // show feedback on touch panels
@@ -71,6 +71,5 @@ BritepadApp* PaintApp::run(void) {
 //            clearScreen();
 //            screen.fillCircle(pad.x(), pad.y(), PENRADIUS*2, ~currentColor);
 
-  return STAY_IN_APP;  // never exit
 }
 

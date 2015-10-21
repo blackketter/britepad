@@ -26,7 +26,7 @@ void StopwatchApp::redrawButtons(void) {
   pauseButton.draw();
 }
 
-BritepadApp* StopwatchApp::run(void) {
+void StopwatchApp::run(void) {
 
   if (pad.down(BOTTOM_PAD)) {
     sound.click();
@@ -64,8 +64,6 @@ BritepadApp* StopwatchApp::run(void) {
   }
 
   drawTime();
-
-  return STAY_IN_APP;
 }
 
 void StopwatchApp::drawTime(void) {

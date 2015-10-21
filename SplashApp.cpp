@@ -27,9 +27,9 @@ void SplashApp::begin(AppMode asMode) {
 }
 
 
-BritepadApp* SplashApp::run(void) {
+void SplashApp::run(void) {
   if (clock.millis() - firstRun > splashDuration) {
-    return SCREENSAVER_APP;
+    britepad.setNextApp(SCREENSAVER_APP, SCREENSAVER);
   }
 
   int weight = 18;
@@ -56,13 +56,11 @@ BritepadApp* SplashApp::run(void) {
 
 //    screen.drawLine(midwidth-3*weight, midheight-yoffset, midwidth-2*weight, midheight-yoffset, screen.red);
 //    screen.drawLine(midwidth, midheight+yoffset, midwidth+weight, midheight+yoffset, screen.red);
-  } else if (drawindex == totalsteps+1) {
+  } else if (drawindex >= totalsteps+1) {
 //    drawLogo(currColor);
   }
 
   if (drawindex <= totalsteps+1) {
     drawindex++;
   }
-
-  return STAY_IN_APP;
 }

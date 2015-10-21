@@ -18,7 +18,7 @@ class LauncherApp : public BritepadApp {
     LauncherApp(void);
     void begin(AppMode asMode);
     void end(BritepadApp* newApp);
-    BritepadApp* run(void);
+    void run(void);
     BritepadApp* exitsTo(void) { return DEFAULT_APP; }
     const char* name(void) { return "Launcher"; };
 
@@ -67,7 +67,7 @@ class LauncherApp : public BritepadApp {
     int highlighted_button = noButton;
 
     time_t lastRun = 0;
-    static const millis_t holdTime = 1000;
+    static const millis_t holdTime = 500;
     BritepadApp* launchOnRelease = nullptr;
 };
 #endif

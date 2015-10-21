@@ -9,7 +9,7 @@ void KeyboardApp::begin(AppMode asMode) {
   kbd.draw();
 }
 
-BritepadApp* KeyboardApp::run(void) {
+void KeyboardApp::run(void) {
   kbd.track();
   uint8_t d = kbd.down();
   uint8_t u = kbd.up();
@@ -19,6 +19,4 @@ BritepadApp* KeyboardApp::run(void) {
   if (u) {
     DEBUG_PARAM_LN("keyboard up", (char)u);
   }
-
-  return STAY_IN_APP;
 }

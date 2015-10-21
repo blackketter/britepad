@@ -7,7 +7,7 @@
 class GestureApp : public BritepadApp {
   public:
 
-    BritepadApp* run(void);
+    void run(void);
 
     bool disablesScreensavers(void) { return true; };
 

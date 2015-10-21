@@ -89,7 +89,7 @@ LauncherApp::LauncherApp(void) {
 }
 
 void LauncherApp::begin(AppMode asMode) {
-
+  BritepadApp::begin(asMode);
   // this should wake up the host, which is great for entering passwords
   // but might have some side effects
   Keyboard.press(KEY_LEFT_SHIFT);
@@ -166,17 +166,16 @@ BritepadApp* LauncherApp::getButton(int i) {
   }
 };
 
-BritepadApp* LauncherApp::run(void) {
+void LauncherApp::run(void) {
 
   lastRun = clock.now();
 
-  BritepadApp* exit = STAY_IN_APP;  // by default, don't exit
-
   int b = buttonHit(pad.x(),pad.y());
 
+  // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
     if (pad.up(SCREEN_PAD)) {
-      exit = launchOnRelease;
+      britepad.setNextApp(launchOnRelease, SCREENSAVER);
       launchOnRelease = nullptr;
     }
   } else if (pad.touched(SCREEN_PAD)) {
@@ -206,7 +205,7 @@ BritepadApp* LauncherApp::run(void) {
       if (highlighted_button != noButton) {
         BritepadApp* launched = apps[currentScreen()][b];
         if (launched->isPopup()) {
-          exit = launched->run();
+          launched->run();
           if (!launched->isInvisible()) {
             clearScreen();
             drawButtons();
@@ -218,9 +217,9 @@ BritepadApp* LauncherApp::run(void) {
           if (launched->canBeScreensaver()) {
             // toggle the enabledness of the screensaver
             launched->setEnabled(!launched->getEnabled());
-            drawButton(b, !launched->getEnabled());
+            drawButton(b);
           } else {
-            exit = launched;
+            britepad.setNextApp(launched);
           }
         }
         sound.click();
@@ -248,8 +247,6 @@ BritepadApp* LauncherApp::run(void) {
       sound.bump();
     }
   }
-
-  return exit;
 }
 
 int LauncherApp::currentScreen(void) {

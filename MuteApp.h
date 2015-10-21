@@ -14,14 +14,13 @@ class MuteApp : public BritepadApp {
       sound.setMute(mutestate);
     };
 
-    BritepadApp* run(void) {
+    void run(void) {
       sound.setMute(!sound.getMute());
       if (!sound.getMute()) {
         sound.beep();
       }
       uint8_t mutestate = sound.getMute();
       prefs.write(id(), sizeof(mutestate), &mutestate);
-      return STAY_IN_APP;
     }
 
     const char* name(void) { return sound.getMute() ? "Pad Muted" : "Mute Pad"; };

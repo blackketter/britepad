@@ -39,6 +39,7 @@ void SetClockApp::drawButtons() {
 }
 
 void SetClockApp::begin(AppMode asMode) {
+  BritepadApp::begin(asMode);
   lastTime = 0;
   clearScreen();
   setDate = false;
@@ -70,7 +71,7 @@ void SetClockApp::end(BritepadApp* nextApp) {
   clock.endSetClock();
 }
 
-BritepadApp* SetClockApp::run(void) {
+void SetClockApp::run(void) {
 
   hasRun = true;
   time_t adj = 0;
@@ -106,8 +107,6 @@ BritepadApp* SetClockApp::run(void) {
   }
 
   drawClock();
-
-  return STAY_IN_APP;
 }
 
 

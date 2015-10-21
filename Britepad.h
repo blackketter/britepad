@@ -14,6 +14,10 @@ class Britepad {
     void begin(void);
     void idle(void);
 
+    void setNextApp(BritepadApp* app, AppMode mode = INTERACTIVE) { nextApp = app; nextAppMode = mode; };
+    BritepadApp* getNextApp(void) { return nextApp; }
+    AppMode getNextAppMode(void) { return nextAppMode; }
+
     void addApp(BritepadApp* newApp);
     int appsAdded(void) { return appCount; };
     BritepadApp* getApp(int appIndex);
@@ -41,8 +45,9 @@ class Britepad {
 
     BritepadApp* apps[maxApps];
 
-    BritepadApp* currApp;
-    BritepadApp* switchApp;
+    BritepadApp* currApp = nullptr;
+    BritepadApp* nextApp = nullptr;
+    AppMode nextAppMode = INTERACTIVE;
 };
 
 #endif

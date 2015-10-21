@@ -99,23 +99,25 @@ BritepadApp* Britepad::getApp(int appIndex) {
 void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
 
-  if (newApp == 0) {
-    // just STAY_IN_APP
+  if (newApp == BritepadApp::STAY_IN_APP) {
     return;
   } else if (newApp == BritepadApp::DEFAULT_APP) {
     newApp = randomApp(MOUSE);
     asMode = MOUSE;
+  } else if (newApp == BritepadApp::SCREENSAVER_APP) {
+    newApp = randomApp(SCREENSAVER);
+    asMode = SCREENSAVER;
   } else if (newApp == BritepadApp::BACK_APP) {
     newApp = getApp(LauncherApp::ID);
     asMode = INTERACTIVE;
   }
 
-  if (asMode == SCREENSAVER) {
-    screensaverStartedTime = pad.time();
-  }
 
   if (newApp == currApp) {
     if (currApp->getAppMode() != asMode) {
+      DEBUG_PARAM_LN("begin asmode", asMode);
+      DEBUG_PARAM_LN("curr app mode", currApp->getAppMode());
+
       currApp->begin(asMode);
     }
     return;
@@ -129,6 +131,9 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   if (currApp) {
     currApp->drawBars();
     currApp->begin(asMode);
+    if (asMode == SCREENSAVER) {
+      screensaverStartedTime = pad.time();
+    }
   }
 }
 
@@ -172,8 +177,6 @@ void Britepad::begin(void) {
 
 void Britepad::idle(void) {
 
-  AppMode asMode = INTERACTIVE;
-
   pad.update();
 
   if (pad.down(TOP_PAD)) {
@@ -181,20 +184,18 @@ void Britepad::idle(void) {
     BritepadApp* nextApp = currApp->exitsTo();
 
     if (nextApp == BritepadApp::BACK_APP) {
-      switchApp = getApp(LauncherApp::ID);
+      setNextApp(getApp(LauncherApp::ID));
       sound.swipe(DIRECTION_DOWN);
     } else if (nextApp == BritepadApp::DEFAULT_APP) {
       BritepadApp* wants = wantsToBeScreensaver();
       if (wants) {
-        switchApp = wants;
-        asMode = SCREENSAVER;
+        setNextApp(wants, SCREENSAVER);
       } else {
-        switchApp = randomApp(MOUSE);
-        asMode = MOUSE;
+        setNextApp(randomApp(MOUSE), MOUSE);
       }
       sound.swipe(DIRECTION_UP);
     } else {
-      switchApp = nextApp;
+      setNextApp(nextApp);
     }
 
   } else if (currApp->isAppMode(SCREENSAVER) && (pad.down(SCREEN_PAD) || (pad.down(ANY_PAD) && !currApp->canBeInteractive()))) {
@@ -202,45 +203,34 @@ void Britepad::idle(void) {
     if (currApp->canBeMouse()) {
       currApp->begin(MOUSE);
     } else {
-      switchApp = randomApp(MOUSE);
+      setNextApp(randomApp(MOUSE), MOUSE);
     }
-    asMode = MOUSE;
 
   } else if (pad.up(PROXIMITY_SENSOR) &&
              getApp(ClockApp::ID) &&  (getApp(ClockApp::ID))->getEnabled() && !currApp->isID(ClockApp::ID) &&
              currApp->isAppMode(SCREENSAVER) &&
              (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay))
   {
-    switchApp = getApp(ClockApp::ID);
-    asMode = SCREENSAVER;
+    setNextApp(getApp(ClockApp::ID), SCREENSAVER);
     DEBUG_LN("Proximity detected: showing clock");
 
   } else if (!currApp->disablesScreensavers()) {
     // let's check to see if we should run a screensaver
-
-    // has the previous app asked to go right to screensaver?
-    if (switchApp == BritepadApp::SCREENSAVER_APP) {
-      asMode = SCREENSAVER;
-
-    // is it time to switch to another screensaver?
-    } else if (currApp->isAppMode(SCREENSAVER) && (pad.time() - screensaverStartedTime) > screensaverSwitchInterval) {
-      asMode = SCREENSAVER;
+   if (currApp->isAppMode(SCREENSAVER) && (pad.time() - screensaverStartedTime) > screensaverSwitchInterval) {
+      setNextApp(randomApp(SCREENSAVER), SCREENSAVER);
 
     // is it time for the screensaver to kick in?
     } else if (!currApp->isAppMode(SCREENSAVER) && (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay)) {
-      asMode = SCREENSAVER;
+      setNextApp(randomApp(SCREENSAVER), SCREENSAVER);
     }
-
-    if (asMode == SCREENSAVER) {
-      switchApp = randomApp(asMode);
-    }
-
   }
 
-  setApp(switchApp, asMode);
+  setApp(getNextApp(), getNextAppMode());
+
+  setNextApp(BritepadApp::STAY_IN_APP);
 
   if (currApp) {
-    switchApp = currApp->run();
+    currApp->run();
   } else {
     DEBUG_LN("currApp nil!");
   }

@@ -5,7 +5,7 @@
 
 class BubblesApp : public ScreensaverApp {
   public:
-    BritepadApp* run(void);
+    void run(void);
     const char* name(void) { return "Bubbles"; };
 
     appid_t id() { return ID; };

@@ -5,7 +5,7 @@
 
 class BinaryClockApp : public ClockApp {
   public:
-    void redraw(void);
+    void update(void);
 
     const char* name(void) { return "Binary"; };
     appid_t id() { return ID; };

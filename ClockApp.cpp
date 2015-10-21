@@ -4,14 +4,13 @@
 #include "ClockApp.h"
 #include "Debug.h"
 
-BritepadApp* ClockApp::run(void) {
+void ClockApp::run(void) {
   millis_t mt = clock.millis();
 
   if (mt - lastUpdate > updateInterval()) {
     update();
     lastUpdate = mt;
   }
-  return STAY_IN_APP;
 }
 
 void ClockApp::update(void) {

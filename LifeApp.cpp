@@ -30,7 +30,7 @@ void LifeApp::begin(AppMode asMode) {
   }
 };
 
-BritepadApp* LifeApp::run() {
+void LifeApp::run() {
   BritepadApp::run();
 
   switch (getAppMode()) {
@@ -54,8 +54,6 @@ BritepadApp* LifeApp::run() {
     default:
       break;
   }
-
-  return STAY_IN_APP;
 }
 
 void LifeApp::iterate(void) {

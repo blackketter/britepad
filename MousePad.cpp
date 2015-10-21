@@ -63,13 +63,10 @@ void MousePad::run(void) {
 
   // bottom panel
   if (pad.down(BOTTOM_PAD)) {
-    if (!mouseLock) {
-      mouseLock = true;
-      Mouse.press();
-    } else {
-      mouseLock = false;
-      Mouse.release();
-    }
+    Mouse.press();
+    sound.click();
+  } else if (pad.up(BOTTOM_PAD)) {
+    Mouse.release();
     sound.click();
   }
 
@@ -199,17 +196,13 @@ void MousePad::run(void) {
           scrollMode = true;
 //          DEBUG_LN("scrollMode on");
         } else {
-          if (!mouseLock) {
-            if (Mouse.isPressed()) {
-              Mouse.release();
-  //            DEBUG_LN("mouse release in order to press after touch up");
-              // todo: notify mouse up
-            }
-            Mouse.press();
-            sound.click();
-  //          DEBUG_LN("mouse press after touch up");
-            // todo: notify mouse down
+          if (Mouse.isPressed()) {
+            Mouse.release();
+            // todo: notify mouse up
           }
+          Mouse.press();
+          sound.click();
+          // todo: notify mouse down
         }
       }
 
@@ -217,7 +210,7 @@ void MousePad::run(void) {
       if (pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_TAP_UP_DUR) {
         bool releaseDrag = pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_RELEASE_DRAG_DUR;
         bool noDrag = pad.time() - pad.lastDownTime(SCREEN_PAD) < MOUSE_DRAG_DUR;
-        if (!mouseLock && (noDrag || releaseDrag)) {
+        if (noDrag || releaseDrag) {
           if (Mouse.isPressed()) {
             if (releaseDrag) {
               sound.click();

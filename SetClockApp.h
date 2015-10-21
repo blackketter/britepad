@@ -8,7 +8,7 @@ class SetClockApp : public BritepadApp {
   public:
     void begin(AppMode asMode);
     void end(BritepadApp* nextApp);
-    BritepadApp* run(void);
+    void run(void);
     const char* name(void) { return "Set Clock"; };
 
     bool disablesScreensavers(void) { return true; };

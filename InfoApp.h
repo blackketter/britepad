@@ -4,7 +4,7 @@
 
 class InfoApp : public BritepadApp {
   public:
-    BritepadApp* run(void);
+    void run(void);
     const char* name(void) { return "Info"; };
     bool displaysStatusBar(void) { return true; }
     bool canBeInteractive() { return true; }

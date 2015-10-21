@@ -6,7 +6,7 @@
 class FadeDotsApp : public DotsDisplayApp {
   public:
     void begin(AppMode asMode);
-    BritepadApp* run(void);
+    void run(void);
 
     const char* name(void) { return "Fade Dots"; };
     static constexpr appid_t ID = "fade";

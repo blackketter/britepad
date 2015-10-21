@@ -6,7 +6,7 @@
 class LifeApp : public DotsDisplayApp {
   public:
     void begin(AppMode asMode);
-    BritepadApp* run(void);
+    void run(void);
 
     bool canBeScreensaver() { return true; }
     bool canBeInteractive() { return true; }

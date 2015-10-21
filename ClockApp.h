@@ -7,7 +7,7 @@
 
 class ClockApp : public ScreensaverApp {
   public:
-    BritepadApp* run(void);
+    void run(void);
     virtual void update(void);
     virtual millis_t updateInterval() { return 1000; }
 

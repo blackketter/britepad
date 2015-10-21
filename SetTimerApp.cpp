@@ -12,12 +12,11 @@ SetTimerApp::SetTimerApp() : BritepadApp() {
 
 }
 
-BritepadApp* SetTimerApp::run(void) {
-  BritepadApp* whendone = STAY_IN_APP;
+void SetTimerApp::run(void) {
 
   if (!edit) {
     timer_app.setTime(timer_duration);
-    whendone = &timer_app;
+    britepad.setNextApp(&timer_app);
   } else {
     stime_t adj = 0;
     if (button[0].down()) { adj = 60; }
@@ -28,7 +27,7 @@ BritepadApp* SetTimerApp::run(void) {
 
     if (button[4].down()) {
       timer_app.setTime(timer_duration);
-      whendone = &timer_app;
+      britepad.setNextApp(&timer_app);
     }
 
     if (adj) {
@@ -40,7 +39,6 @@ BritepadApp* SetTimerApp::run(void) {
       drawTime();
     }
   }
-  return whendone;
 };
 
 
@@ -66,6 +64,8 @@ void SetTimerApp::drawButtons() {
 }
 
 void SetTimerApp::begin(AppMode asMode) {
+  BritepadApp::begin(asMode);
+
   if (edit) {
     clearScreen();
 

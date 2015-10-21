@@ -10,7 +10,7 @@ class KeyApp : public BritepadApp {
     KeyApp(const char* name, const char* keys, color_t color = screen.blue) { nameStr = name; keyStr = keys; button_color = color; };
     KeyApp(const char* name, uint8_t key, color_t color = screen.blue ) { nameStr = name; mediaKey = key; button_color = color; }
 
-    BritepadApp* run(void);
+    void run(void);
     const char* name(void) { return nameStr; };
     bool isPopup(void) { return true; };
     bool isInvisible(void);

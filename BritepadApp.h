@@ -15,7 +15,12 @@ class BritepadApp {
     BritepadApp();
     virtual void begin(AppMode asMode);  // initialize app state and draw first screen
     virtual void end(BritepadApp* nextApp); // called after final run(), lets app clean up and tells it what the next app may be
-    virtual BritepadApp* run(void) { if (isAppMode(MOUSE)) { mouse.run(); } return STAY_IN_APP;};  // run current app state repeatedly, returns pointer to next app to run (or one of the constants below)
+
+    virtual void run(void) { if (isAppMode(MOUSE)) { mouse.run(); } };  // run current app state repeatedly, returns pointer to next app to run (or one of the constants below)
+    static BritepadApp* STAY_IN_APP;
+    static BritepadApp* DEFAULT_APP; // typically the MouseApp, but might be a timer when it's running
+    static BritepadApp* BACK_APP;  // return to launcher
+    static BritepadApp* SCREENSAVER_APP; // go to a screensaver
 
     virtual const char* name(void) = 0;
     virtual appid_t id(void) = 0;
@@ -60,10 +65,6 @@ class BritepadApp {
     virtual color_t infoBarFGColor(void) { return screen.luminance(infoBarBGColor()) > 127 ? screen.grey : screen.lightgrey; }  // info text is faded, by default
     virtual const char* infoBarText(void) { return nullptr; }
 
-    static BritepadApp* STAY_IN_APP;
-    static BritepadApp* DEFAULT_APP; // typically the MouseApp, but might be a timer when it's running
-    static BritepadApp* BACK_APP;  // return to launcher
-    static BritepadApp* SCREENSAVER_APP; // go to a screensaver
 
   protected:
     bool enabled = true;

@@ -5,7 +5,7 @@
 #include <usb_keyboard.h>
 
 
-BritepadApp* KeyApp::run(void) {
+void KeyApp::run(void) {
 
   switch (mediaKey) {
     case 0:
@@ -40,10 +40,9 @@ BritepadApp* KeyApp::run(void) {
     draw();
   }
 
-  if (isInvisible())
-    return STAY_IN_APP;
-  else
-    return DEFAULT_APP;
+  if (!isInvisible()) {
+    britepad.setNextApp(DEFAULT_APP);
+  }
 }
 
 bool KeyApp::isInvisible(void) {

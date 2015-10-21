@@ -2,7 +2,7 @@
 #include "ThereminApp.h"
 #include "Debug.h"
 
-BritepadApp* ThereminApp::run(void) {
+void ThereminApp::run(void) {
   long octave = 6;
   uint8_t prox = pad.getProximityDistance();
   DEBUG_PARAM_LN("prox", prox);
@@ -27,8 +27,6 @@ BritepadApp* ThereminApp::run(void) {
   if (pad.up(SCREEN_PAD)) {
     sound.tone(0,0);
   }
-
-  return STAY_IN_APP;
 }
 
 void ThereminApp::end(BritepadApp* nextApp) {

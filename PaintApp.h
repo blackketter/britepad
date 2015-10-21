@@ -5,7 +5,7 @@
 
 class PaintApp : public BritepadApp {
   public:
-    BritepadApp* run(void);
+    void run(void);
 
     bool canBeMouse() { return true; }
     bool canBeInteractive() { return true; }

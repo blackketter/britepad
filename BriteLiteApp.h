@@ -4,7 +4,7 @@ class BriteLiteApp : public DotsDisplayApp {
 
   public:
     void begin(AppMode asMode) { ScreensaverApp::begin(asMode); dots.init(16,14, BritepadAppScratchPad); };
-    BritepadApp* run(void);
+    void run(void);
 
     static constexpr appid_t ID = "lite";
     appid_t id() { return ID; };

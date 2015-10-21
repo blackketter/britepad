@@ -67,10 +67,10 @@ void BreakoutApp::newGame(void) {
   }
 }
 
-BritepadApp* BreakoutApp::run(void) {
+void BreakoutApp::run(void) {
   millis_t millisNow = clock.millis();
   if (lastDraw/millisPerFrame == millisNow/millisPerFrame && !pad.down(ANY_PAD)) {
-    return STAY_IN_APP;
+    return;
   }
 
    if (dx == 0 && dy == 0) {
@@ -78,7 +78,7 @@ BritepadApp* BreakoutApp::run(void) {
       if (pad.down(ANY_PAD)) {
         newGame();
       } else {
-        return STAY_IN_APP;
+        return;
       }
    }
 
@@ -211,7 +211,7 @@ BritepadApp* BreakoutApp::run(void) {
     paddlex=newpaddlex;
   }
 
-  return STAY_IN_APP;
+  return;
 }
 
 void BreakoutApp::end(BritepadApp* nextApp) {

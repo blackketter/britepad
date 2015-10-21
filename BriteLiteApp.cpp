@@ -4,7 +4,7 @@
 #include "BriteLiteApp.h"
 #include "Debug.h"
 
-BritepadApp* BriteLiteApp::run(void) {
+void BriteLiteApp::run(void) {
   ScreensaverApp::run();
   if (pad.touched(SCREEN_PAD)) {
     int x, y;
@@ -43,7 +43,6 @@ BritepadApp* BriteLiteApp::run(void) {
   dots.setDot(cursor_x, cursor_y, lastColor++ | 0x8000);
   dots.updateDot(cursor_x, cursor_y);
   }
-  return STAY_IN_APP;
 }
 
 

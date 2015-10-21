@@ -1,6 +1,6 @@
 #include "FadeDotsApp.h"
 
-BritepadApp* FadeDotsApp::run() {
+void FadeDotsApp::run() {
   ScreensaverApp::run();
   if (pad.touched(SCREEN_PAD)) {
     int x, y;
@@ -14,7 +14,6 @@ BritepadApp* FadeDotsApp::run() {
   int y= random(dots.getDotsHigh());
   dots.setDot(x,y, dots.getDot(x,y)+1);
   dots.updateDot(x,y);
-  return STAY_IN_APP;
 }
 
 

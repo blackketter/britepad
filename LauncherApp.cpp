@@ -10,6 +10,7 @@
 #include "BriteLiteApp.h"
 #include "BritepadApp.h"
 #include "BubblesApp.h"
+#include "CalculatorApp.h"
 #include "ClockApp.h"
 #include "DotsDisplayApp.h"
 #include "FadeDotsApp.h"
@@ -57,6 +58,7 @@ LauncherApp::LauncherApp(void) {
   setButton(KEYS_SCREEN, 8,  new KeyApp("Mute", KEY_MEDIA_MUTE, screen.blue));
 
   setButton(KEYS_SCREEN, 5,  new KeyboardApp);
+  setButton(KEYS_SCREEN, 6,  new CalculatorApp);
 
   setButton(KEYS_SCREEN, 1,  new KeyApp("<<", KEY_MEDIA_PREV_TRACK, screen.orange));
   setButton(KEYS_SCREEN, 2,  new KeyApp("||", KEY_MEDIA_PLAY_PAUSE, screen.orange));

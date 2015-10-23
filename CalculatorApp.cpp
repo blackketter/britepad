@@ -18,6 +18,7 @@ enum keys {
   hex_d,
   hex_e,
   hex_f,
+
   decimal,
   enter,
   clear,
@@ -36,18 +37,34 @@ enum keys {
   hidden
 };
 
+const uint8_t backspaceIcon[] = {
+ 16, 11,
+ 0b00000111, 0b11111111,
+ 0b00001111, 0b11111111,
+ 0b00011100, 0b00000011,
+ 0b00111001, 0b10110011,
+ 0b01110001, 0b10110011,
+ 0b11100000, 0b01000011,
+ 0b01110001, 0b10110011,
+ 0b00111001, 0b10110111,
+ 0b00011100, 0b00000011,
+ 0b00001111, 0b11111111,
+ 0b00000111, 0b11111111,
+};
+
 void CalculatorApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);
-
-  coord_t xorig = screen.clipLeft() + 1;
-  coord_t yorig = screen.clipTop() + displayHeight + 1;
-  coord_t xspacing = screen.clipWidth()/keyColumns;
-  coord_t yspacing = (screen.clipHeight()-displayHeight)/keyRows;
-  coord_t w = xspacing - 1;
-  coord_t h =  yspacing - 1;
+  coord_t gap = 1;
+  coord_t xorig = screen.clipLeft() + gap;
+  coord_t yorig = screen.clipTop() + displayHeight + gap;
+  coord_t xspacing = (screen.clipWidth()-gap)/keyColumns;
+  coord_t yspacing = (screen.clipHeight()-displayHeight-gap)/keyRows;
+  coord_t w = xspacing - gap;
+  coord_t h =  yspacing - gap;
   color_t bg = screen.yellow;
   font_t f = Arial_12_Bold;
   bool highlight = false;
+
 // top row
   coord_t x = xorig;
   coord_t y = yorig;
@@ -116,7 +133,7 @@ void CalculatorApp::begin(AppMode asMode) {
   c = 0;
 
   button[m][r][c].setID(backspace);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"BS",f);
+  button[m][r][c++].init(x,y,w,h,bg,highlight,nullptr,f,screen.black,backspaceIcon);
   x += xspacing;
 
   button[m][r][c].setID(one);
@@ -136,7 +153,7 @@ void CalculatorApp::begin(AppMode asMode) {
   x += xspacing;
 
   button[m][r][c].setID(swap);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"<->",f);
+  button[m][r][c++].init(x,y,w,h,bg,highlight,"x<>y",Arial_10_Bold);
   x += xspacing;
 
 // fourth row
@@ -146,7 +163,7 @@ void CalculatorApp::begin(AppMode asMode) {
   c = 0;
 
   button[m][r][c].setID(clear);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"C",f);
+  button[m][r][c++].init(x,y,w,h,bg,highlight,"clear",f);
   x += xspacing;
 
   button[m][r][c].setID(decimal);
@@ -260,6 +277,9 @@ void CalculatorApp::handleKey(uint8_t keyPressed) {
     case changeBase:
       keyBase();
       break;
+    case send:
+      keySend();
+      break;
     default:
       break;
   }
@@ -328,7 +348,10 @@ void CalculatorApp::keyBase() {
 }
 
 void CalculatorApp::keyPercent() {
-  sound.beep();
+  acceptText();
+  double fractional = pop();
+  double whole = top();
+  push(fractional*whole/100);
 }
 
 void CalculatorApp::keyBackspace() {
@@ -362,6 +385,7 @@ void CalculatorApp::keySend() {
     delay(50);
   }
 }
+
 void CalculatorApp::keyEnter() {
   if (strlen(topText) == 0) {
     push(top());
@@ -413,7 +437,7 @@ void CalculatorApp::keyDecimal() {
 void CalculatorApp::drawDisplay() {
   screen.fillRect(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), displayHeight, screen.lightgrey);
   screen.setTextColor(screen.black);
-  screen.setFont(Arial_28_Bold);
+  screen.setFont(Arial_28);
 
   char number[20*3];
   char* printNumber = number;

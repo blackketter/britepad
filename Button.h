@@ -71,5 +71,14 @@ class RoundButton : public Button {
     virtual void drawbg();
 
 };
+
+class RoundedButton : public Button {
+  public:
+    void setRadius(coord_t r) { radius = r; }
+  protected:
+    virtual void drawbg();
+    uint8_t radius = 8;
+};
+
 #endif
 

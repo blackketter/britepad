@@ -124,3 +124,7 @@ void RoundButton::drawbg(void) {
   screen.fillCircle( xpos+width/2, ypos+height/2, r, fillColor());
 };
 
+void RoundedButton::drawbg(void) {
+  screen.fillRoundRect(xpos, ypos, width, height, radius, fillColor());
+}
+

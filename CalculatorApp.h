@@ -40,10 +40,11 @@ class CalculatorApp : public BritepadApp {
     Button button[keyMaps][keyRows][keyColumns];
 
     void handleKey(uint8_t keyPressed);
+    void acceptText();
+
     void keyDigit(uint8_t digit);
     void keyClear();
     void keyEnter();
-    void acceptText();
     void keyDecimal();
     void keyEE();
     void keyBackspace();

@@ -43,10 +43,10 @@ const uint8_t backspaceIcon[] = {
  0b00001111, 0b11111111,
  0b00011100, 0b00000011,
  0b00111001, 0b10110011,
- 0b01110001, 0b10110011,
- 0b11100000, 0b01000011,
- 0b01110001, 0b10110011,
- 0b00111001, 0b10110111,
+ 0b01110001, 0b11110011,
+ 0b11100000, 0b11100011,
+ 0b01110001, 0b11110011,
+ 0b00111001, 0b10110011,
  0b00011100, 0b00000011,
  0b00001111, 0b11111111,
  0b00000111, 0b11111111,
@@ -77,23 +77,23 @@ void CalculatorApp::begin(AppMode asMode) {
   x += xspacing;
 
   button[m][r][c].setID(seven);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"7",f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"7",f);
   x += xspacing;
 
   button[m][r][c].setID(eight);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"8",f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"8",f);
   x += xspacing;
 
   button[m][r][c].setID(nine);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"9",f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"9",f);
   x += xspacing;
 
   button[m][r][c].setID(divide);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"/",f);
+  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"/",f);
   x += xspacing;
 
   button[m][r][c].setID(inverse);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"1/x",f);
+  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"1/x",f);
   x += xspacing;
 
 // second row
@@ -107,23 +107,23 @@ void CalculatorApp::begin(AppMode asMode) {
   x += xspacing;
 
   button[m][r][c].setID(four);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"4",f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"4",f);
   x += xspacing;
 
   button[m][r][c].setID(five);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"5",f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"5",f);
   x += xspacing;
 
   button[m][r][c].setID(six);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"6",f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"6",f);
   x += xspacing;
 
   button[m][r][c].setID(multiply);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"x",f);
+  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"x",f);
   x += xspacing;
 
   button[m][r][c].setID(percent);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"%",f);
+  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"%",f);
   x += xspacing;
 
 // third row
@@ -133,23 +133,23 @@ void CalculatorApp::begin(AppMode asMode) {
   c = 0;
 
   button[m][r][c].setID(backspace);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,nullptr,f,screen.black,backspaceIcon);
+  button[m][r][c++].init(x,y,w,h,screen.red,highlight,nullptr,f,screen.black,backspaceIcon);
   x += xspacing;
 
   button[m][r][c].setID(one);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"1",f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"1",f);
   x += xspacing;
 
   button[m][r][c].setID(two);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"2",f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"2",f);
   x += xspacing;
 
   button[m][r][c].setID(three);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"3",f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"3",f);
   x += xspacing;
 
   button[m][r][c].setID(add);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"+",f);
+  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"+",f);
   x += xspacing;
 
   button[m][r][c].setID(swap);
@@ -163,23 +163,23 @@ void CalculatorApp::begin(AppMode asMode) {
   c = 0;
 
   button[m][r][c].setID(clear);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"clear",f);
+  button[m][r][c++].init(x,y,w,h,screen.red,highlight,"clear",f);
   x += xspacing;
 
   button[m][r][c].setID(decimal);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,".",f);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,".",f);
   x += xspacing;
 
   button[m][r][c].setID(zero);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"0",f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"0",f);
   x += xspacing;
 
   button[m][r][c].setID(ee);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"E",f);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"E",f);
   x += xspacing;
 
   button[m][r][c].setID(subtract);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"-",f);
+  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"-",f);
   x += xspacing;
 
   button[m][r][c].setID(enter);
@@ -435,16 +435,24 @@ void CalculatorApp::keyDecimal() {
 }
 
 void CalculatorApp::drawDisplay() {
-  screen.fillRect(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), displayHeight, screen.lightgrey);
+  screen.fillRect(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), displayHeight, screen.lightergrey);
   screen.setTextColor(screen.black);
-  screen.setFont(Arial_28);
 
   char number[20*3];
-  char* printNumber = number;
+  char* printNumber;
   if (strlen(topText)) {
     printNumber = topText;
   } else {
     sprintf(number, "%.12G", top(0));
+    printNumber = number;
+  }
+
+  if (strlen(printNumber) < 11) {
+    screen.setFont(Arial_28);
+  } else if (strlen(number) < 15) {
+    screen.setFont(Arial_20);
+  } else {
+    screen.setFont(Arial_16);
   }
 
   coord_t w = screen.measureTextWidth(printNumber);
@@ -452,9 +460,16 @@ void CalculatorApp::drawDisplay() {
   screen.setCursor(screen.clipRight()-w, screen.clipTop() + displayHeight/2 - screen.measureTextHeight(printNumber)/2);
   screen.drawText(printNumber);
 
-  screen.setFont(Arial_9_Bold);
+  coord_t topWidth = screen.measureTextWidth(printNumber);
 
   sprintf(number, "%.12G\n%.12G\n%.12G", top(3), top(2), top(1));
+
+  screen.setFont(Arial_9_Bold);
+
+  // if it doesn't fit, shrink it down
+  if ((screen.measureTextWidth(number) + topWidth)>(screen.clipWidth()-10)) {
+    screen.setFont(Arial_8);
+  }
 
   screen.setCursor(screen.clipLeft() + 5, screen.clipTop()+displayHeight/2-screen.measureTextHeight(number)/2);
   screen.drawText(number);

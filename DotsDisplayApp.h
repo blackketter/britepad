@@ -7,7 +7,7 @@
 
 class DotsDisplayApp : public ScreensaverApp {
   public:
-    void begin(AppMode asMode) { ScreensaverApp::begin(asMode); dots.init(16,12, BritepadAppScratchPad); };
+    void begin(AppMode asMode) { ScreensaverApp::begin(asMode); dots.init(16,12, (color_t*)dotData); };
     void run(void);
 
     bool canBeMouse(void) { return true; };
@@ -17,6 +17,7 @@ class DotsDisplayApp : public ScreensaverApp {
     static constexpr appid_t ID = "dots";
 
   protected:
+    color_t dotData[16][12];
     DotMatrix dots;
     color_t lastColor;
 };

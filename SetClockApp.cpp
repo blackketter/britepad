@@ -1,19 +1,29 @@
 #include "BritepadShared.h"
 #include "SetClockApp.h"
 #include "TimerApp.h"
-#include "Clock.h"
 #include "Debug.h"
 
-void SetClockApp::drawClock(void) {
-  time_t t = clock.now();
+enum {
+  hr1_up,
+  min10_up,
+  min1_up,
+  hr1_down,
+  min10_down,
+  min1_down,
+  am_pm,
+  mode_set
+};
 
-  if (lastTime != t) {
+void SetClockApp::drawTime(void) {
+  millis_t t = clock.millis();
+
+  if (lastDraw/1000 != t/1000) {
     screen.setTextColor(screen.white, bgColor());
     if (setDate) {
       char textDate[2+1+2+1+4+1];
 
       screen.setFont(Arial_40_Bold);
-      sprintf(textDate, "%d-%02d-%02d", clock.year(), clock.month(), clock.day());
+      sprintf(textDate, "%d-%02d-%02d", theTime->year(), theTime->month(), theTime->day());
       screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(textDate)/2,
                        screen.clipMidHeight() - screen.measureTextHeight(textDate)/2);
       screen.drawText(textDate);
@@ -21,15 +31,16 @@ void SetClockApp::drawClock(void) {
       char textTime[6];
 
       screen.setFont(Arial_72_Bold);
-      sprintf(textTime," %2d:%02d ", clock.hourFormat12(), clock.minute());
+      sprintf(textTime," %2d:%02d ", theTime->hourFormat12(), theTime->minute());
       screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(textTime)/2,
                        screen.clipMidHeight() - screen.measureTextHeight(textTime)/2);
       screen.drawText(textTime);
-      button[6].setTitle(clock.isAM() ? "am" : "pm");
+      button[am_pm].setTitle(theTime->isAM() ? "am" : "pm");
+      button[am_pm].draw();
     }
   }
 
-  lastTime = t;
+  lastDraw = t;
 }
 
 void SetClockApp::drawButtons() {
@@ -40,7 +51,7 @@ void SetClockApp::drawButtons() {
 
 void SetClockApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);
-  lastTime = 0;
+  lastDraw = 0;
   clearScreen();
   setDate = false;
 
@@ -53,60 +64,69 @@ void SetClockApp::begin(AppMode asMode) {
   int x3 =  x2+90;
   int x4 =  x3+60;
 
-  button[0].init(x2, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
-  button[1].init(x3, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
-  button[2].init(x4, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
-  button[3].init(x2, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
-  button[4].init(x3, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
-  button[5].init(x4, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
-  button[6].init(x1, ytop, buttonradius,screen.red, false, clock.isAM() ? "am" : "pm", Arial_18_Bold, screen.white);
-  button[7].init(x1, ybottom, buttonradius, screen.red, false, "Date", Arial_12_Bold, screen.white);
+  button[hr1_up].init(x2, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
+  button[min10_up].init(x3, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
+  button[min1_up].init(x4, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
+  button[hr1_down].init(x2, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
+  button[min10_down].init(x3, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
+  button[min1_down].init(x4, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
 
-  drawClock();
+  button[mode_set].init(x1, ytop, buttonradius, modeButtonColor(), false, modeButtonText(), modeButtonFont(), screen.white);
+  button[am_pm].init(x1, ybottom, buttonradius,screen.red, false, theTime->isAM() ? "am" : "pm", Arial_18_Bold, screen.white);
+
+  drawTime();
   drawButtons();
-  clock.beginSetClock();
+  theTime->beginSetTime();
 }
 
 void SetClockApp::end(BritepadApp* nextApp) {
-  clock.endSetClock();
+  theTime->endSetTime();
+}
+
+void SetClockApp::modeButtonPressed() {
+    setDate = !setDate;
+    button[am_pm].setVisible(!setDate);
+    clearScreen();
+    drawButtons();
 }
 
 void SetClockApp::run(void) {
 
   hasRun = true;
-  time_t adj = 0;
+  stime_t adj = 0;
   bool redraw = false;
-  if (button[0].down()) { adj = setDate ? clock.secsPerYear : clock.secsPerHour; }
-  if (button[3].down()) { adj = setDate ? -clock.secsPerYear : -clock.secsPerHour; }
+  if (button[hr1_up].down()) { adj = setDate ? clock.secsPerYear : clock.secsPerHour; }
+  if (button[hr1_down].down()) { adj = setDate ? -clock.secsPerYear : -clock.secsPerHour; }
 
-  if (button[1].down()) { adj = setDate ? clock.daysInMonth(clock.month())*clock.secsPerDay : 60*10; }
-  if (button[4].down()) { adj = setDate ? -clock.daysInMonth(clock.month() == 1 ? 12 : clock.month()-1) * clock.secsPerDay : -60*10; }
+  if (button[min10_up].down()) { adj = setDate ? clock.daysInMonth(clock.month())*clock.secsPerDay : 60*10; }
+  if (button[min10_down].down()) { adj = setDate ? -clock.daysInMonth(clock.month() == 1 ? 12 : clock.month()-1) * clock.secsPerDay : -60*10; }
 
-  if (button[2].down()) { adj = setDate ? clock.secsPerDay : 60; }
-  if (button[5].down()) { adj = setDate ? -clock.secsPerDay : -60; }
+  if (button[min1_up].down()) { adj = setDate ? clock.secsPerDay : 60; }
+  if (button[min1_down].down()) { adj = setDate ? -clock.secsPerDay : -60; }
 
-  if (button[6].down()) { adj = setDate ? : (clock.isAM() ? 12*60*60 : -12*60*60); }
-  if (button[7].down()) {
-    setDate = !setDate;
-    button[6].setVisible(!setDate);
-    clearScreen();
-    drawButtons();
+  if (button[am_pm].down()) { adj = setDate ? : (theTime->isAM() ? 12*60*60 : -12*60*60); }
+  if (button[mode_set].down()) {
+    modeButtonPressed();
+    button[mode_set].setTitle(modeButtonText());
+    button[mode_set].setColor(modeButtonColor());
+    button[mode_set].setTitleFont(modeButtonFont());
+    button[mode_set].draw();
     redraw = true;
   }
 
   if (adj) { redraw = true; }
 
   if (redraw) {
-    clock.adjust(adj);
-    lastTime = 0;  // force a redraw of the text
+    adjust(adj);
+    lastDraw = 0;  // force a redraw of the text
     // reset the seconds if we've adjusted the time
-    if (abs(adj) < clock.secsPerDay) {
-      clock.adjust(-clock.now()%60);
+    if ((time_t)abs(adj) < clock.secsPerDay) {
+      resetSecs();
     }
     // todo: cancel alarms that may be running
   }
 
-  drawClock();
+  drawTime();
 }
 
 

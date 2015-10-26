@@ -166,7 +166,9 @@ void Britepad::begin(void) {
   int count=0;
   BritepadApp* anApp = getApp(count++);
   while (anApp) {
+    DEBUG_LN(count);
     DEBUG_LN(anApp->name());
+    DEBUG_LN((unsigned long)anApp);
     anApp = getApp(count++);
   }
   screen.fillScreen(screen.black);

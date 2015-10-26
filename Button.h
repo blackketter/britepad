@@ -24,9 +24,10 @@ class Button {
     virtual bool up(void);
     virtual bool hold(void);
 
-    virtual void setColor(color_t newColor) {  colored = newColor; draw(); }
-    virtual void setTitle(const char* newTitle) { titleStr = newTitle; draw(); }
-    virtual void setIcon(uint8_t* iconptr) { icon = iconptr; draw(); }
+    virtual void setColor(color_t newColor) {  colored = newColor; }
+    virtual void setTitle(const char* newTitle) { titleStr = newTitle; }
+    virtual void setTitleFont(font_t newFont) { titleFont = newFont; }
+    virtual void setIcon(uint8_t* iconptr) { icon = iconptr; }
     // todo: make setting the visibility cause a redraw or erase
     virtual void setVisible(bool visibility) { visible = visibility; }
 

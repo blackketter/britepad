@@ -8,6 +8,7 @@ class CalculatorApp : public BritepadApp {
     virtual void begin(AppMode asMode);
     virtual void run();
     virtual bool disablesScreensavers() { return true; }
+    BritepadApp* exitsTo(void) { return DEFAULT_APP; }
 
     const char* name(void) { return "Calculator"; };
     appid_t id() { return ID; };

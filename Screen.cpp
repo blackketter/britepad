@@ -8,6 +8,50 @@ void Screen::backlight(uint8_t brightness) {
   analogWrite(BACKLIGHT_PIN, brightness);
 }
 
+// todo - make ends of lines square (or round)
+void Screen::drawLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color) {
+  if (width == 1) {
+    ILI9341_t3::drawLine(x0, y0, x1, y1, color);
+  } else if (width < 1) {
+    return;
+  } else if (x1 == x0) {
+    if (y1>y0) {
+      fillRect(x0, y0, width, y1-y0+width, color);
+    } else {
+      fillRect(x1, y1, width, y0-y1+width, color);
+    }
+  } else if (y0 == y1) {
+    if (x1>x0) {
+      fillRect(x0, y0, x1-x0+width, width, color);
+    } else {
+      fillRect(x1, y1, x0-x1+width, width, color);
+    }
+  } else {
+    coord_t dx;
+    coord_t dy;
+    if (abs(x0-x1) < abs(y0-y1)) {
+      dx=1;
+      dy=0;
+    } else {
+      dx = 0;
+      dy = 1;
+    }
+
+    x0 -= dx*width/2;
+    x1 -= dx*width/2;
+    y0 -= dy*width/2;
+    y1 -= dy*width/2;
+
+    for (int i = 0; i < width; i++) {
+      ILI9341_t3::drawLine(x0, y0, x1, y1, color);
+      x0+=dx;
+      x1+=dx;
+      y0+=dy;
+      y1+=dy;
+    }
+  }
+};
+
 void Screen::drawText(const char* text) {
 
     coord_t origx = cursor_x;

@@ -46,11 +46,13 @@ void StopwatchApp::run(void) {
         pause();
         pauseButton.setColor(screen.green);
         pauseButton.setTitle("Resume");
+        pauseButton.draw();
       } else {
         // unpause
         resume();
         pauseButton.setColor(screen.red);
         pauseButton.setTitle("Pause");
+        pauseButton.draw();
       }
       redrawTime();
     }

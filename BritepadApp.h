@@ -4,10 +4,6 @@
 #include "BritepadShared.h"
 #include "Debug.h"
 
-// todo move this into the base object
-#define BritepadAppScratchPadSize (16768L)
-extern uint8_t BritepadAppScratchPad[];
-
 class Britepad;
 
 class BritepadApp {

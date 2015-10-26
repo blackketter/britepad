@@ -4,19 +4,33 @@
 #include "BritepadApp.h"
 #include "BritepadShared.h"
 #include "Button.h"
+#include "Clock.h"
+
 class SetClockApp : public BritepadApp {
   public:
+    SetClockApp() { theTime = &clock; };
+
     void begin(AppMode asMode);
     void end(BritepadApp* nextApp);
     void run(void);
-    const char* name(void) { return "Set Clock"; };
-
     bool disablesScreensavers(void) { return true; };
     bool wantsToBeScreensaver(void) { return !hasRun && !clock.hasBeenSet(); };
     bool displaysClock(void) { return true; };
 
+    const char* name(void) { return "Set Clock"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "sclk";
+
+
+  protected:
+    Time* theTime;
+
+    virtual color_t modeButtonColor() { return screen.red; };
+    virtual font_t modeButtonFont() { return Arial_12_Bold; };
+    virtual const char* modeButtonText() { return setDate ? "Time" : "Date"; };
+    virtual void modeButtonPressed();
+
+    virtual void adjust(stime_t delta) { theTime->adjust(delta); };
 
   private:
     static const int buttoncount = 8;
@@ -24,10 +38,10 @@ class SetClockApp : public BritepadApp {
     static const int nobutton = -1;
 
     RoundButton button[buttoncount];
-    void drawClock(void);
-    void drawButton(int i, color_t color);
+    void drawTime(void);
     void drawButtons(void);
-    time_t lastTime = 0;
+    void resetSecs() { adjust(-theTime->get()%60); };
+    millis_t lastDraw = 0;
     bool hasRun = false;
     bool setDate = false;
 

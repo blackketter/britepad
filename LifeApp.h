@@ -26,6 +26,10 @@ class LifeApp : public DotsDisplayApp {
     millis_t nextRun = 0;
     bool reseed = true;
     int ruleset = 0;
+    static const int DOTSWIDE = 32;
+    static const int DOTSHIGH = 24;
+
+    color_t dotData[DOTSWIDE][DOTSHIGH];
 };
 
 #endif

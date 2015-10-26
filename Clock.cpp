@@ -4,7 +4,65 @@
 #include "Sound.h"
 #include "Debug.h"
 
-// todo - deal with 32bit millis wraparound (every 12 days!)
+
+uint8_t Time::hourFormat12() {
+  return ::hourFormat12(get());
+}
+
+uint8_t Time::minute() {
+  return ::minute(get());
+}
+
+uint8_t Time::second() {
+  return ::second(get());
+}
+
+uint16_t Time::year() {
+  return ::year(get());
+}
+
+uint8_t Time::month() {
+  return ::month(get());
+}
+
+uint8_t Time::day() {
+  return ::day(get());
+}
+
+uint8_t Time::weekday() {
+  return ::weekday(get());
+}
+
+bool Time::isAM() {
+  return ::isAM(get());
+}
+
+void Time::shortTime(char * timeStr) {
+  sprintf(timeStr, "%d:%02d %s", hourFormat12(), minute(), isAM() ? "am":"pm");
+};
+
+static const uint8_t monthDays[]={31,28,31,30,31,30,31,31,30,31,30,31}; // API starts months from 1, this array starts from 0
+static const char* dayStrings[] = { "", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+static const char* monthStrings[] = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+
+uint8_t Time::daysInMonth(uint8_t m) {
+  // todo: make this work for leap years
+  return monthDays[m-1]; // m is 1 based, the array is zero based
+}
+
+void Time::longDate(char* dateStr) {
+  sprintf(dateStr, "%s, %s %d, %d", dayStrings[weekday()], monthStrings[month()], day(), year());
+}
+
+void Time::shortDate(char* dateStr) {
+  sprintf(dateStr, "%d-%02d-%02d", year(), month(), day());
+}
+
+
+// real time clock methods
+time_t Clock::now() {
+  return ::now();
+}
 
 time_t getRTCTime()
 {
@@ -21,11 +79,13 @@ Clock::Clock(void) {
       ::setTime(16,20,0,1,1,2015);
     } else {
 //      DEBUG_LN("RTC has set the system time");
-      set = true;
+      doneSet = true;
     }
 }
 
-
+void Clock::set(time_t newTime) {
+  ::setTime(newTime);
+}
 
 void chimeCallback(void* data) {
   ((Clock*)data)->chimerCallback();
@@ -66,7 +126,7 @@ void Clock::adjust(stime_t adjustment) {
   // force a resync
   setSyncProvider(getRTCTime);
 
-  set = true;
+  doneSet = true;
 
   resetChime();
   DEBUG_PARAM_LN("after:", ::now());
@@ -81,61 +141,4 @@ millis_t Clock::millis() {
   }
   lastMillis = nowMillis;
   return nowMillis + millisOffset;
-}
-
-time_t Clock::now() {
-  return ::now();
-}
-
-uint8_t Clock::hourFormat12() {
-  return ::hourFormat12();
-}
-
-uint8_t Clock::minute() {
-  return ::minute();
-}
-
-uint8_t Clock::second() {
-  return ::second();
-}
-
-uint16_t Clock::year() {
-  return ::year();
-}
-
-uint8_t Clock::month() {
-  return ::month();
-}
-
-uint8_t Clock::day() {
-  return ::day();
-}
-
-uint8_t Clock::weekday() {
-  return ::weekday();
-}
-
-bool Clock::isAM() {
-  return ::isAM();
-}
-
-void Clock::shortTime(char * timeStr) {
-  sprintf(timeStr, "%d:%02d %s", hourFormat12(), minute(), isAM() ? "am":"pm");
-};
-
-static const uint8_t monthDays[]={31,28,31,30,31,30,31,31,30,31,30,31}; // API starts months from 1, this array starts from 0
-static const char* dayStrings[] = { "", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
-static const char* monthStrings[] = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-
-uint8_t Clock::daysInMonth(uint8_t m) {
-  // todo: make this work for leap years
-  return monthDays[m-1]; // m is 1 based, the array is zero based
-}
-
-void Clock::longDate(char* dateStr) {
-  sprintf(dateStr, "%s, %s %d, %d", dayStrings[weekday()], monthStrings[month()], day(), year());
-}
-
-void Clock::shortDate(char* dateStr) {
-  sprintf(dateStr, "%d-%02d-%02d", year(), month(), day());
 }

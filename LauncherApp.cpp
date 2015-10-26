@@ -4,6 +4,7 @@
 #include "Debug.h"
 
 // apps are included here
+#include "AlarmApp.h"
 #include "AnalogClockApp.h"
 #include "BinaryClockApp.h"
 #include "BreakoutApp.h"
@@ -23,6 +24,7 @@
 #include "PaintApp.h"
 #include "PassApp.h"
 #include "RebootApp.h"
+#include "SetAlarmApp.h"
 #include "SetClockApp.h"
 #include "SetTimerApp.h"
 #include "SplashApp.h"
@@ -49,8 +51,9 @@ LauncherApp::LauncherApp(void) {
   setButton(SCREENSAVERS_SCREEN, 7,  new FadeDotsApp);
   setButton(SCREENSAVERS_SCREEN, 8,  new AnalogClockApp);
 
-  setButton(SETTINGS_SCREEN, 8,  new SetClockApp);
-  setButton(SETTINGS_SCREEN, 9,  new MuteApp);
+  setButton(SETTINGS_SCREEN, 8,   new SetClockApp);
+  setButton(SETTINGS_SCREEN, 9,   new MuteApp);
+  setButton(SETTINGS_SCREEN, 10,  new SetAlarmApp);
 
 // middle screen has quick buttons
   setButton(KEYS_SCREEN, 0,  new KeyApp("Vol+", KEY_MEDIA_VOLUME_INC, screen.bluegreen));
@@ -88,6 +91,9 @@ LauncherApp::LauncherApp(void) {
   setButton(APPS_SCREEN, 3,  new GestureApp);
   setButton(APPS_SCREEN, 10, new InfoApp);
 //  setButton(APPS_SCREEN, 11,  new RebootApp);  // todo: doesn't work yet
+
+  // this gets created, but has no button
+  new AlarmApp;
 }
 
 void LauncherApp::begin(AppMode asMode) {

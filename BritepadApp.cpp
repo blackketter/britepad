@@ -1,8 +1,6 @@
 #include "BritepadApp.h"
 #include "font_Arial.h"
 
-uint8_t BritepadAppScratchPad[BritepadAppScratchPadSize];
-
 BritepadApp* BritepadApp::STAY_IN_APP = (BritepadApp*)0;
 BritepadApp* BritepadApp::DEFAULT_APP = (BritepadApp*)1;
 BritepadApp* BritepadApp::BACK_APP = (BritepadApp*)2;

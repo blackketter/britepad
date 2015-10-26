@@ -16,8 +16,3 @@ void FadeDotsApp::run() {
   dots.updateDot(x,y);
 }
 
-
-void FadeDotsApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
-  dots.init(16,12,BritepadAppScratchPad);
-};

@@ -2,24 +2,23 @@
 #define _Clock_
 
 #include "Timer.h"
+#include "Debug.h"
 
-class Clock {
+class Time {
   public:
-    Clock(void);
-    void adjust(stime_t adjustment); // signed time
-    bool hasBeenSet() { return set && !setting; }
+    Time() {};
+    virtual time_t get() { return curTime; };
 
-    void beginSetClock(void) { setting = true; chimeTimer.cancel(); };
-    void endSetClock(void) { setting = false; resetChime(); } ;
+    virtual void set(time_t newTime) { curTime = newTime; }
+    virtual void adjust(stime_t adjustment) { curTime += adjustment; } // signed time
+    virtual bool isTime(time_t newTime) { return newTime == curTime; }
 
-    void chimerCallback(void);
+    virtual void beginSetTime() {};
+    virtual void endSetTime() {};
 
     void shortTime(char* timeStr);
     void longDate(char* dateStr);
     void shortDate(char* dateStr);
-
-    millis_t millis();  // remember, millis_t is now signed 64-bits
-    time_t now();
 
     bool isAM();
     uint8_t hourFormat12();
@@ -36,13 +35,44 @@ class Clock {
     const time_t secsPerDay = 60*60*24;
     const time_t secsPerYear = 60*60*24*365;
 
+  protected:
+    time_t curTime = 0;
+
+};
+
+// can only be set to a time of day, i.e. [0, secsPerDay)
+class DayTime : public Time {
+  public:
+    virtual void set(time_t newTime) {  Time::set(newTime % secsPerDay); }
+    virtual void adjust(stime_t adjustment)  { if (adjustment < 0) { adjustment = secsPerDay-((-adjustment)%secsPerDay); } set(adjustment+curTime); };
+    virtual bool isTime(time_t newTime) { return curTime == (newTime % secsPerDay); }
+};
+
+class Clock : public Time {
+
+  public:
+    Clock(void);
+    millis_t millis();  // remember, millis_t is now signed 64-bits
+    time_t now();
+
+    virtual void set(time_t newTime);
+    virtual time_t get() { return now(); };
+    virtual void adjust(stime_t adjustment); // signed time
+
+    virtual bool hasBeenSet() { return doneSet && !setting; }
+    virtual void beginSetTime(void) { setting = true; chimeTimer.cancel(); };
+    virtual void endSetTime(void) { setting = false; resetChime(); } ;
+
+    void chimerCallback(void);
+
   private:
+
     void resetChime(void);
     Timer chimeTimer;
     int chimesRemaining = 0;
-    bool set = false;
-    bool setting = false;
     static const millis_t chimeInterval = 500;
+    bool doneSet = false;
+    bool setting = false;
     millis_t lastMillis;
     millis_t millisOffset = 0;
 };

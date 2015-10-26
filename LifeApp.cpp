@@ -1,6 +1,4 @@
 #include "LifeApp.h"
-#define DOTSWIDE (32)
-#define DOTSHIGH (24)
 
 #define MILLIS_PER_FRAME (100)
 #define MILLIS_DELAY (1000)
@@ -23,7 +21,7 @@ void LifeApp::begin(AppMode asMode) {
 
   ScreensaverApp::begin(asMode);
 
-  dots.init(DOTSWIDE,DOTSHIGH,BritepadAppScratchPad);
+  dots.init(DOTSWIDE,DOTSHIGH,(color_t*)dotData);
 
   if (asMode == SCREENSAVER) {
     seed();

@@ -89,11 +89,11 @@ void CalculatorApp::begin(AppMode asMode) {
   x += xspacing;
 
   button[m][r][c].setID(divide);
-  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"/",f);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"/",f);
   x += xspacing;
 
   button[m][r][c].setID(inverse);
-  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"1/x",f);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"1/x",f);
   x += xspacing;
 
 // second row
@@ -119,11 +119,11 @@ void CalculatorApp::begin(AppMode asMode) {
   x += xspacing;
 
   button[m][r][c].setID(multiply);
-  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"x",f);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"x",f);
   x += xspacing;
 
   button[m][r][c].setID(percent);
-  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"%",f);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"%",f);
   x += xspacing;
 
 // third row
@@ -149,7 +149,7 @@ void CalculatorApp::begin(AppMode asMode) {
   x += xspacing;
 
   button[m][r][c].setID(add);
-  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"+",f);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"+",f);
   x += xspacing;
 
   button[m][r][c].setID(swap);
@@ -166,20 +166,20 @@ void CalculatorApp::begin(AppMode asMode) {
   button[m][r][c++].init(x,y,w,h,screen.red,highlight,"clear",f);
   x += xspacing;
 
-  button[m][r][c].setID(decimal);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,".",f);
-  x += xspacing;
-
   button[m][r][c].setID(zero);
   button[m][r][c++].init(x,y,w,h,screen.green,highlight,"0",f);
   x += xspacing;
 
+  button[m][r][c].setID(decimal);
+  button[m][r][c++].init(x,y,w,h,screen.midgreen,highlight,".",f);
+  x += xspacing;
+
   button[m][r][c].setID(ee);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"E",f);
+  button[m][r][c++].init(x,y,w,h,screen.midgreen,highlight,"E",f);
   x += xspacing;
 
   button[m][r][c].setID(subtract);
-  button[m][r][c++].init(x,y,w,h,screen.blue,highlight,"-",f);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"-",f);
   x += xspacing;
 
   button[m][r][c].setID(enter);

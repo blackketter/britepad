@@ -51,8 +51,8 @@ void TimerApp::drawTime(void) {
     screen.drawText(textTime);
 
     if (alarm_sounded && isAppMode(SCREENSAVER)) {
-      time_t past = clock.now() - alarm_sounded;
-      sprintf(textTime, "%2d:%02d", past / 60, past % 60);
+      long past = clock.now() - alarm_sounded;
+      sprintf(textTime, "%2d:%02d", (int)(past / 60), (int)(past % 60));
       screen.setFont(Arial_20_Bold);
       screen.setTextColor(screen.red, bgColor());
       screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(textTime)/2,

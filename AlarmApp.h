@@ -11,10 +11,11 @@ class AlarmApp : public BritepadApp {
 
     void run(void);
     bool wantsToBeScreensaver() { return alarmSounding(); }
-    void end(BritepadApp* nextApp) { BritepadApp::end(nextApp); setAlarmEnabled(false); }
+    void end(BritepadApp* nextApp) { BritepadApp::end(nextApp); setAlarmEnabled(false); alarmSounded = false;}
 
     void setAlarmTime(time_t newTime);
     time_t getAlarmTime() { return alarmTime.get(); };
+    bool isAlarmTime();
 
     void setAlarmEnabled(bool alarmOn);
     bool getAlarmEnabled() { return alarmEnabled; }
@@ -30,7 +31,7 @@ class AlarmApp : public BritepadApp {
     color_t currentColor = screen.red;
     DayTime alarmTime;
     bool alarmEnabled = false;
-
+    bool alarmSounded = false;
     void saveSettings();
     const int alarmDur = 60;  // show the time for a while after the alarm goes off
     const int beepInterval = 500;  // in millis

@@ -4,13 +4,17 @@
 
 
 bool AlarmApp::alarmSounding() {
-  return (alarmEnabled && ((clock.now()%clock.secsPerDay)/60 == alarmTime.get()/60));
+  return (alarmSounded || (alarmEnabled && isAlarmTime()));
 };
 
 struct alarmSettings {
   time_t time;
   bool enabled;
 };
+
+bool AlarmApp::isAlarmTime(void) {
+  return ((clock.now()%clock.secsPerDay)/60 == alarmTime.get()/60);
+}
 
 void AlarmApp::saveSettings() {
   alarmSettings settings;
@@ -42,10 +46,13 @@ AlarmApp::AlarmApp() {
 
 void AlarmApp::run(void) {
   if (clock.millis() - lastUpdate > beepInterval) {
+    alarmSounded = true;
+    if (isAlarmTime()) {
+      sound.beep();
+    }
+
     char textTime[6];
-
     screen.setFont(Arial_72_Bold);
-
     screen.setTextColor(currentColor, bgColor());
     sprintf(textTime, "%d:%02d", alarmTime.hourFormat12(), alarmTime.minute());
     coord_t w = screen.measureTextWidth(textTime);
@@ -60,7 +67,7 @@ void AlarmApp::run(void) {
       currentColor = screen.black;
     }
 
-    sound.beep();
+
     lastUpdate = clock.millis();
   }
 };

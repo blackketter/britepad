@@ -22,7 +22,7 @@ void TimerApp::drawTime(void) {
   }
 
   millis_t now = clock.millis();
-  if (lastDrawMillis/1000 != now/1000) {
+  if (lastDrawMillis/redrawInterval != now/redrawInterval) {
     lastDrawMillis = now;
 
     char textTime[6];
@@ -36,8 +36,10 @@ void TimerApp::drawTime(void) {
     coord_t width = screen.measureTextWidth(textTime);
 
     if (alarm_sounded) {
-      if ((now/1000) % 2) {
+      if ((now/redrawInterval) % 2) {
         textColor = screen.red;
+      } else {
+        textColor = screen.black;
       }
     }
 
@@ -48,6 +50,15 @@ void TimerApp::drawTime(void) {
 
     screen.drawText(textTime);
 
+    if (alarm_sounded && isAppMode(SCREENSAVER)) {
+      time_t past = clock.now() - alarm_sounded;
+      sprintf(textTime, "%2d:%02d", past / 60, past % 60);
+      screen.setFont(Arial_20_Bold);
+      screen.setTextColor(screen.red, bgColor());
+      screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(textTime)/2,
+                     screen.clipTop() + screen.clipHeight()/6 - screen.measureTextHeight(textTime)/2);
+      screen.drawText(textTime);
+    }
     last_width = width;
   }
 
@@ -65,7 +76,10 @@ void TimerApp::setTime(time_t t) {
 };
 
 void TimerApp::alarm(void) {
-  alarm_sounded = clock.now();
+  if (!alarm_sounded) {
+    alarm_sounded = clock.now();
+  }
+
   if (beeps) {
     sound.beep();
     mytimer.setMillis(beepInterval, (timerCallback_t)alarmcallback, (void*)this);

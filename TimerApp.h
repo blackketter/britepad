@@ -33,10 +33,10 @@ class TimerApp : public StopwatchApp {
 
     virtual void drawTime(void);
 
-    const int alarmDur = 60;  // show the time for a while after the alarm goes off
+    const time_t alarmDur = 60;  // show the time for a while after the alarm goes off
     const int totalBeeps = 10;
-    const int beepInterval = 500;  // in millis
-
+    const millis_t beepInterval = 500;  // in millis
+    const millis_t redrawInterval = 500;
 
     coord_t last_width;
     Timer mytimer;

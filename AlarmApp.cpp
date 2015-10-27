@@ -1,33 +1,47 @@
 #include "AlarmApp.h"
 #include "Debug.h"
-
+#include "Preferences.h"
 
 
 bool AlarmApp::alarmSounding() {
-  DEBUG_PARAM_LN("alarmsounding: alarm enabled", alarmEnabled);
-  DEBUG_PARAM_LN("alarm sounding now", clock.now()%clock.secsPerDay/60);
-  DEBUG_PARAM_LN("alarm sounding alarmtime", alarmTime.get()/60);
-  DEBUG_PARAM_LN("this alarmapp", (unsigned long)this);
-
   return (alarmEnabled && ((clock.now()%clock.secsPerDay)/60 == alarmTime.get()/60));
 };
+
+struct alarmSettings {
+  time_t time;
+  bool enabled;
+};
+
+void AlarmApp::saveSettings() {
+  alarmSettings settings;
+  settings.enabled = alarmEnabled;
+  settings.time = alarmTime.get();
+  prefs.write(id(), sizeof(alarmSettings), (uint8_t*)&settings);
+}
 
 void AlarmApp::setAlarmTime(time_t newTime) {
   DEBUG_PARAM_LN("setalarmtime", newTime);
   alarmTime.set(newTime);
-
+  saveSettings();
 }
 
-// todo save time to prefs
-// todo load saved time
-AlarmApp::AlarmApp() {
+void AlarmApp::setAlarmEnabled(bool alarmOn) {
+  alarmEnabled = alarmOn;
+  saveSettings();
+}
 
+
+AlarmApp::AlarmApp() {
+      alarmSettings settings;
+      if (prefs.read(id(), sizeof(alarmSettings), (uint8_t*)&settings)) {
+        alarmTime.set(settings.time);
+        alarmEnabled = settings.enabled;
+      }
 };
 
 
 void AlarmApp::run(void) {
   if (clock.millis() - lastUpdate > beepInterval) {
-    DEBUG_LN("alarmapp::run");
     char textTime[6];
 
     screen.setFont(Arial_72_Bold);

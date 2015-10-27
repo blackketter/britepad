@@ -1,4 +1,6 @@
 #include "BritepadApp.h"
+#include "AlarmApp.h"
+#include "Icon.h"
 #include "font_Arial.h"
 
 BritepadApp* BritepadApp::STAY_IN_APP = (BritepadApp*)0;
@@ -15,6 +17,18 @@ void BritepadApp::resetClipRect(void) {
   coord_t bottom = displaysInfoBar() ? screen.height()-statusBarHeight : screen.height();
   screen.setClipRect(0, top, screen.width(), bottom);
 }
+
+const uint8_t bellIcon[] = {
+  8,8,
+  0b00011000,
+  0b00111100,
+  0b01100110,
+  0b01100110,
+  0b01100110,
+  0b11111111,
+  0b11111111,
+  0b00011000
+};
 
 void BritepadApp::drawStatusBar(bool update) {
   if (displaysStatusBar()) {
@@ -37,7 +51,8 @@ void BritepadApp::drawStatusBar(bool update) {
     if (!displaysClock()) {
       // draw title
       screen.setFont(Arial_8_Bold);
-      screen.setTextColor(screen.mix(statusBarFGColor(), statusBarBGColor()), statusBarBGColor());
+      color_t textColor = screen.mix(statusBarFGColor(), statusBarBGColor());
+      screen.setTextColor(textColor, statusBarBGColor());
       char shortTime[20];
       clock.shortTime(shortTime);
       char shortTimeSpaced[100];
@@ -45,6 +60,11 @@ void BritepadApp::drawStatusBar(bool update) {
       screen.setCursor( (screen.clipRight() - screen.measureTextWidth(shortTimeSpaced) - 2),
                         (statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
+
+      AlarmApp* alarm = (AlarmApp*)britepad.getApp(AlarmApp::ID);
+      if (alarm && alarm->getAlarmEnabled()) {
+        Icon(bellIcon).draw( screen.clipRight() - screen.measureTextWidth(shortTimeSpaced) - 10, 4, textColor) ;
+      }
 
       clock.shortDate(shortTime);
       sprintf(shortTimeSpaced,"  %s ", shortTime);

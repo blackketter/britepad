@@ -8,11 +8,11 @@
 class DotsDisplayApp : public ScreensaverApp {
   public:
     void begin(AppMode asMode) { ScreensaverApp::begin(asMode); dots.init(16,12, (color_t*)dotData); };
-    void run(void);
+    void run();
 
-    bool canBeMouse(void) { return true; };
+    bool canBeMouse() { return true; };
 
-    const char* name(void) { return "Dots"; };
+    const char* name() { return "Dots"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "dots";
 

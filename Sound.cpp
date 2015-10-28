@@ -49,10 +49,10 @@ AudioConnection          patchCord9(mixer1, 0, mixer2, 0);
 AudioConnection          patchCord10(mixer2, dac1);
 
 
-Sound::Sound(void) {
+Sound::Sound() {
 }
 
-void Sound::begin(void) {
+void Sound::begin() {
   AudioMemory(16);
 
   // since we have 4 inputs, we need to cut them down to avoid clipping
@@ -79,7 +79,7 @@ int Sound::freeSynth() {
 }
 
 
-void Sound::click(void) {
+void Sound::click() {
   int beeper = freeSynth();
   if (beeper != NO_SYNTH) {
     waveforms[beeper]->begin(1.0, 100, WAVEFORM_PULSE);
@@ -111,7 +111,7 @@ void Sound::beep(millis_t ms, float freq)
   }
 }
 
-void Sound::bump(void) {
+void Sound::bump() {
 //  DEBUG_LN("bump");
   beep(1, 300);
 }

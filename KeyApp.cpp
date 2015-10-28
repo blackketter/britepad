@@ -5,7 +5,7 @@
 #include <usb_keyboard.h>
 
 
-void KeyApp::run(void) {
+void KeyApp::run() {
 
   switch (mediaKey) {
     case 0:
@@ -45,16 +45,16 @@ void KeyApp::run(void) {
   }
 }
 
-bool KeyApp::isInvisible(void) {
+bool KeyApp::isInvisible() {
   // keyapps that just send one key don't show feedback
   return (mediaKey != 0);
 }
 
-color_t KeyApp::buttonColor(void) {
+color_t KeyApp::buttonColor() {
   return button_color;
 }
 
-void KeyApp::draw(void) {
+void KeyApp::draw() {
   clearScreen();
   screen.setFont(Arial_20_Bold);
   screen.setTextColor(screen.yellow);

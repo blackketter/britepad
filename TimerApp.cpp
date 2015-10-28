@@ -13,7 +13,7 @@ void TimerApp::end(BritepadApp* nextApp) {
   }
 }
 
-void TimerApp::drawTime(void) {
+void TimerApp::drawTime() {
 
   int delta = mytimer.remainingSecs();
 
@@ -75,7 +75,7 @@ void TimerApp::setTime(time_t t) {
   mytimer.setSecs(t, (timerCallback_t)alarmcallback, (void*)this);
 };
 
-void TimerApp::alarm(void) {
+void TimerApp::alarm() {
   if (!alarm_sounded) {
     alarm_sounded = clock.now();
   }
@@ -89,7 +89,7 @@ void TimerApp::alarm(void) {
   }
 }
 
-void TimerApp::reset(void) {
+void TimerApp::reset() {
   beeps = 0;
   mytimer.cancel();
   setTime(timer_dur);

@@ -11,10 +11,10 @@ class SetAlarmApp : public SetClockApp {
     void begin(AppMode asMode);
 
 
-    bool wantsToBeScreensaver(void) { return false; };
-    bool displaysClock(void) { return false; };
+    bool wantsToBeScreensaver() { return false; };
+    bool displaysClock() { return false; };
 
-    const char* name(void) { return "Set Alarm"; };
+    const char* name() { return "Set Alarm"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "salm";
 

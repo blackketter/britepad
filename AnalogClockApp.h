@@ -8,10 +8,10 @@
 class AnalogClockApp : public ClockApp {
   public:
     virtual void begin(AppMode asMode);
-    virtual void update(void);
+    virtual void update();
     virtual millis_t updateInterval() { return 100; }
 
-    const char* name(void) { return "Analog"; };
+    const char* name() { return "Analog"; };
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "anal";

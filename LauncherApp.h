@@ -15,18 +15,18 @@ enum ScreenNames {
 
 class LauncherApp : public BritepadApp {
   public:
-    LauncherApp(void);
+    LauncherApp();
     void begin(AppMode asMode);
     void end(BritepadApp* newApp);
-    void run(void);
-    BritepadApp* exitsTo(void) { return DEFAULT_APP; }
-    const char* name(void) { return "Launcher"; };
+    void run();
+    BritepadApp* exitsTo() { return DEFAULT_APP; }
+    const char* name() { return "Launcher"; };
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "laun";
 
-    const char* statusBarTitle(void);
-    const char* infoBarText(void);
+    const char* statusBarTitle();
+    const char* infoBarText();
 
   private:
     const static int noButton = -1;
@@ -38,9 +38,9 @@ class LauncherApp : public BritepadApp {
 
     int buttonHit(int x, int y);
     void drawButton(int i, bool highlighted = false);
-    void drawButtons(void);
-    int currentScreen(void);
-    color_t bgColor(void);
+    void drawButtons();
+    int currentScreen();
+    color_t bgColor();
     void setButton(int screen, int i, BritepadApp* b);
     BritepadApp* getButton(int i);
 

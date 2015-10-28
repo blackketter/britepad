@@ -32,7 +32,7 @@ Britepad britepad = Britepad();
 Preferences prefs = Preferences();
 MousePad mouse = MousePad();
 
-void setup(void) {
+void setup() {
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(500);

@@ -4,7 +4,7 @@
 #include "ClockApp.h"
 #include "Debug.h"
 
-void ClockApp::run(void) {
+void ClockApp::run() {
   millis_t mt = clock.millis();
 
   if (mt - lastUpdate > updateInterval()) {
@@ -13,7 +13,7 @@ void ClockApp::run(void) {
   }
 }
 
-void ClockApp::update(void) {
+void ClockApp::update() {
     char textTime[6];
 
     screen.setFont(Arial_72_Bold);

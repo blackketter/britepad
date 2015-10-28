@@ -29,8 +29,8 @@ class TouchPad {
 
   public:
     TouchPad(coord_t w, coord_t h);
-    void begin(void);
-    void update(void);
+    void begin();
+    void update();
     bool touched(int pad = SCREEN_PAD);  // is the pad being touched?
     bool changed(int pad = SCREEN_PAD);  // has the pad touch state changed since the last update?
     bool down(int pad = SCREEN_PAD);     // has the pad been touched since the last update?
@@ -38,17 +38,17 @@ class TouchPad {
     millis_t lastDownTime(int pad = SCREEN_PAD); // last time the pad was down
     millis_t lastUpTime(int pad = SCREEN_PAD);   // last time the pad was released
     millis_t lastTouchedTime(int pad = SCREEN_PAD); // last time the pad was touched
-    coord_t  lastDownX(void);
-    coord_t  lastDownY(void);
-    coord_t  x(void) { return curr.x; };
-    coord_t  y(void) { return curr.y; };
-    millis_t  time(void) { return curr.time; };
-    coord_t  deltax(void) { return (curr.x - last.x); };
-    coord_t  deltay(void) { return (curr.y - last.y); };
-    uint16_t getAmbientLight(void) { return ambientLight;};
+    coord_t  lastDownX();
+    coord_t  lastDownY();
+    coord_t  x() { return curr.x; };
+    coord_t  y() { return curr.y; };
+    millis_t  time() { return curr.time; };
+    coord_t  deltax() { return (curr.x - last.x); };
+    coord_t  deltay() { return (curr.y - last.y); };
+    uint16_t getAmbientLight() { return ambientLight;};
 
-    uint8_t getProximityMax(void) { return proximityMax; };
-    uint8_t getProximityDistance(void);
+    uint8_t getProximityMax() { return proximityMax; };
+    uint8_t getProximityDistance();
 
     coord_t getHeight() { return width; };
     coord_t getWidth() { return height; };
@@ -68,7 +68,7 @@ class TouchPad {
     coord_t  lastDownYPos;
     static const uint8_t proximityThreshold = 100;
     static const uint8_t proximityMax = 255;
-    bool getProximityPresent(void);
+    bool getProximityPresent();
 
     static const int maxHistory = 256;
     static const millis_t minHistoryInterval = 5;
@@ -77,8 +77,8 @@ class TouchPad {
     int historyCount = 0;
 
 
-    void initAPDS(void);
-    void updateAPDS(void);
+    void initAPDS();
+    void updateAPDS();
     millis_t lastAPDSupdate = 0;
     millis_t APSDupdateInterval = 100;
 

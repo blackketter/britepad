@@ -33,7 +33,7 @@
 
 LauncherApp theLauncherApp;
 
-LauncherApp::LauncherApp(void) {
+LauncherApp::LauncherApp() {
   for (int s = 0; s < TOTAL_SCREENS; s++) {
     for (int i = 0; i < buttons_per_screen; i++) {
       setButton(s, i,nil);
@@ -117,7 +117,7 @@ void LauncherApp::end(BritepadApp* nextApp) {
   screen.pushFill(DIRECTION_UP, nextApp->bgColor());
 }
 
-void LauncherApp::drawButtons(void) {
+void LauncherApp::drawButtons() {
 
   for (int i = 0; i < buttons_per_screen; i++) {
     if (getButton(i)) {
@@ -174,7 +174,7 @@ BritepadApp* LauncherApp::getButton(int i) {
   }
 };
 
-void LauncherApp::run(void) {
+void LauncherApp::run() {
 
   lastRun = clock.now();
 
@@ -257,7 +257,7 @@ void LauncherApp::run(void) {
   }
 }
 
-int LauncherApp::currentScreen(void) {
+int LauncherApp::currentScreen() {
   // if we haven't run in a while, reset to the middle screen
   if (clock.now() - lastRun > resetScreenTimeout) {
     current_screen = KEYS_SCREEN;
@@ -266,14 +266,14 @@ int LauncherApp::currentScreen(void) {
   return current_screen;
 }
 
-color_t LauncherApp::bgColor(void) {
+color_t LauncherApp::bgColor() {
   return screenColor[currentScreen()];
 }
 
-const char* LauncherApp::infoBarText(void) {
+const char* LauncherApp::infoBarText() {
   return currentScreen() == SCREENSAVERS_SCREEN ? "Press and hold to test" : nullptr;
 }
 
-const char* LauncherApp::statusBarTitle(void) {
+const char* LauncherApp::statusBarTitle() {
   return screenNames[currentScreen()];
 }

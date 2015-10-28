@@ -4,11 +4,11 @@ class BriteLiteApp : public DotsDisplayApp {
 
   public:
     void begin(AppMode asMode) { ScreensaverApp::begin(asMode); dots.init(16,14, (color_t*)dotData); };
-    void run(void);
+    void run();
 
     static constexpr appid_t ID = "lite";
     appid_t id() { return ID; };
-    const char* name(void) { return "LiteBrite"; };
+    const char* name() { return "LiteBrite"; };
 
 
 

@@ -5,12 +5,12 @@
 
 class PaintApp : public BritepadApp {
   public:
-    void run(void);
+    void run();
 
     bool canBeMouse() { return true; }
     bool canBeInteractive() { return true; }
 
-    const char* name(void) { return "Paint"; };
+    const char* name() { return "Paint"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "pain";
 

@@ -80,7 +80,7 @@ time_t getRTCTime()
   return Teensy3Clock.get();
 }
 
-Clock::Clock(void) {
+Clock::Clock() {
     // todo - if the clock has NEVER been set, then set it to a reasonable time
 
     setSyncProvider(getRTCTime);
@@ -102,7 +102,7 @@ void chimeCallback(void* data) {
   ((Clock*)data)->chimerCallback();
 }
 
-void Clock::resetChime(void) {
+void Clock::resetChime() {
   DEBUG_LN("Calling reset chime");
   if (hasBeenSet()) {
     DEBUG_PARAM_LN("resetting chime timer time", hourFormat12());
@@ -120,7 +120,7 @@ void Clock::resetChime(void) {
 }
 
 
-void Clock::chimerCallback(void) {
+void Clock::chimerCallback() {
   if (chimesRemaining == 0) {
     resetChime();
   } else {

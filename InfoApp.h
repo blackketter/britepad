@@ -4,12 +4,12 @@
 
 class InfoApp : public BritepadApp {
   public:
-    void run(void);
-    const char* name(void) { return "Info"; };
-    bool displaysStatusBar(void) { return true; }
+    void run();
+    const char* name() { return "Info"; };
+    bool displaysStatusBar() { return true; }
     bool canBeInteractive() { return true; }
     bool disablesScreensavers() { return true; }
-    BritepadApp* exitsTo(void) { return DEFAULT_APP; }
+    BritepadApp* exitsTo() { return DEFAULT_APP; }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "info";

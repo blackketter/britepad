@@ -5,7 +5,7 @@
 
 class MousePad {
   public:
-    MousePad(void) {  Mouse.begin(); };
+    MousePad() {  Mouse.begin(); };
     void begin();
     void run();
     void end();

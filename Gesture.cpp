@@ -23,7 +23,7 @@ uint16_t Gesture::compare(const Gesture& to) {
   return dist;
 }
 
-bool Gesture::capture(void) {
+bool Gesture::capture() {
   reset();
   if (draw) {
     screen.fillScreen(screen.black);

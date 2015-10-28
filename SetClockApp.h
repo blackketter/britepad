@@ -12,12 +12,12 @@ class SetClockApp : public BritepadApp {
 
     void begin(AppMode asMode);
     void end(BritepadApp* nextApp);
-    void run(void);
-    bool disablesScreensavers(void) { return true; };
-    bool wantsToBeScreensaver(void) { return !hasRun && !clock.hasBeenSet(); };
-    bool displaysClock(void) { return true; };
+    void run();
+    bool disablesScreensavers() { return true; };
+    bool wantsToBeScreensaver() { return !hasRun && !clock.hasBeenSet(); };
+    bool displaysClock() { return true; };
 
-    const char* name(void) { return "Set Clock"; };
+    const char* name() { return "Set Clock"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "sclk";
 
@@ -38,8 +38,8 @@ class SetClockApp : public BritepadApp {
     static const int nobutton = -1;
 
     RoundButton button[buttoncount];
-    void drawTime(void);
-    void drawButtons(void);
+    void drawTime();
+    void drawButtons();
     void resetSecs() { adjust(-theTime->get()%60); };
     millis_t lastDraw = 0;
     bool hasRun = false;

@@ -12,10 +12,10 @@ class SetTimerApp : public BritepadApp {
     SetTimerApp();
 
     void begin(AppMode asMode);
-    void run(void);
-    const char* name(void) { return name_str; };
+    void run();
+    const char* name() { return name_str; };
 
-    bool disablesScreensavers(void) { return true; }
+    bool disablesScreensavers() { return true; }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stmr";

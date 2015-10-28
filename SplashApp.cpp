@@ -27,7 +27,7 @@ void SplashApp::begin(AppMode asMode) {
 }
 
 
-void SplashApp::run(void) {
+void SplashApp::run() {
   if (clock.millis() - firstRun > splashDuration) {
     britepad.setNextApp(SCREENSAVER_APP, SCREENSAVER);
   }

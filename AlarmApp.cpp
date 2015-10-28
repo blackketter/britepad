@@ -12,7 +12,7 @@ struct alarmSettings {
   bool enabled;
 };
 
-bool AlarmApp::isAlarmTime(void) {
+bool AlarmApp::isAlarmTime() {
   return (clock.now()/60 == nextAlarm.get()/60);
 }
 
@@ -39,7 +39,7 @@ void timerCallback(void* data) {
   ((AlarmApp*)data)->beep();
 }
 
-void AlarmApp::beep(void) {
+void AlarmApp::beep() {
   if (isAlarmTime()) {
     sound.beep();
     beepTimer.setMillis(beepInterval, (timerCallback_t)timerCallback, (void*)this);
@@ -63,7 +63,7 @@ AlarmApp::AlarmApp() {
 };
 
 
-void AlarmApp::run(void) {
+void AlarmApp::run() {
   if (clock.millis() - lastUpdate > beepInterval) {
     alarmSounded = true;
 

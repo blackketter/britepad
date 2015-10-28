@@ -7,7 +7,7 @@
 // preferences are saved:
 //   tag string (zero terminated), length byte, data bytes (of length given before)
 
-Preferences::Preferences(void) {
+Preferences::Preferences() {
   // todo - only read in the bytes that have been used
   for (size_t i = 0; i < sizeof(prefsData); i++) {
     prefsData[i] = EEPROM.read(i);
@@ -125,7 +125,7 @@ size_t Preferences::findTag(appid_t tag) {
   return 0;
 }
 
-void Preferences::saveOut(void) {
+void Preferences::saveOut() {
   // this is brute force:
   // todo - only write out the bytes that have changed
   for (size_t i = 0; i < sizeof(prefsData); i++) {
@@ -151,7 +151,7 @@ size_t Preferences::writeTag(size_t offset, appid_t tag, uint8_t size, const uin
     return offset;
 }
 
-void Preferences::resetPrefs(void) {
+void Preferences::resetPrefs() {
     // initial version tag is missing, clear out prefs
     size_t offset = 0;
     // write a version tag & 1 byte version

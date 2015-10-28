@@ -9,33 +9,33 @@ typedef bool (*timerCallback_t)(void*);
 
 class Timer {
   public:
-    Timer(void) {};
+    Timer() {};
 
     void setSecs(time_t setTime, timerCallback_t callback = nil, void* callbackData = nil, bool repeat = false);
     void setMillis(millis_t millisDur, timerCallback_t callback = nil, void* callbackData = nil, bool repeat = false);
 
     void setClockTime(time_t clockTimeSet, timerCallback_t callback = nil, void* callbackData = nil);
 
-    time_t remainingSecs(void);  // seconds from now (works on both kinds of timer)
-    long remainingMillis(void);  // millis from now (works on both kinds of timer)
+    time_t remainingSecs();  // seconds from now (works on both kinds of timer)
+    long remainingMillis();  // millis from now (works on both kinds of timer)
 
-    time_t timeInSecs(void);   // clock time of timer (works on both kinds of timer)
-    long timeInMillis(void);   // millis() time of timer (works on both kinds of timer)
+    time_t timeInSecs();   // clock time of timer (works on both kinds of timer)
+    long timeInMillis();   // millis() time of timer (works on both kinds of timer)
 
-    time_t durationSecs(void);  // how far out was the timer when it was initially set?
-    long durationMillis(void);
+    time_t durationSecs();  // how far out was the timer when it was initially set?
+    long durationMillis();
 
 
-    void cancel(void);         // cancel timer including callback
+    void cancel();         // cancel timer including callback
 
-    void pause(void);          // pause timer
-    void resume(void);         // resume timer
-    bool isPaused(void);       // is paused
-    bool isRunning(void);        // is the timer running?  (i.e. is not paused and is set)
-    bool hasPassed(void);         // is the timer in the past
-    bool isReset(void) { return ((millisTime == 0) && (clockTime == 0)); }
+    void pause();          // pause timer
+    void resume();         // resume timer
+    bool isPaused();       // is paused
+    bool isRunning();        // is the timer running?  (i.e. is not paused and is set)
+    bool hasPassed();         // is the timer in the past
+    bool isReset() { return ((millisTime == 0) && (clockTime == 0)); }
 
-    static void idle(void);    // idle so callbacks get a chance to run
+    static void idle();    // idle so callbacks get a chance to run
 
   private:
     Timer* next = nil;
@@ -51,7 +51,7 @@ class Timer {
     void* cbd = nil;
 
     void insert(timerCallback_t callback, void* callbackData);
-    void remove(void);
+    void remove();
 
     static Timer* first;
 

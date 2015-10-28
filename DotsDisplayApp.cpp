@@ -5,7 +5,7 @@
 #include "Debug.h"
 
 
-void DotsDisplayApp::run(void) {
+void DotsDisplayApp::run() {
   ScreensaverApp::run();
 
   if (pad.touched(SCREEN_PAD)) {

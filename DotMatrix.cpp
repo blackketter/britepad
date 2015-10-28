@@ -28,7 +28,7 @@ void DotMatrix::init(int w, int h, color_t* mem) {
 }
 
 
-void DotMatrix::clear(void) {
+void DotMatrix::clear() {
     memset(dots, 0, dots_wide*dots_high*sizeof(color_t));
     screen.fillScreen(bgColor);
 }

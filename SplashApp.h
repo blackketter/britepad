@@ -6,9 +6,9 @@
 class SplashApp : public ScreensaverApp {
   public:
     void begin(AppMode asMode);
-    void run(void);
-    const char* name(void) { return "Splash"; };
-    bool displaysStatusBar(void) { return false; };
+    void run();
+    const char* name() { return "Splash"; };
+    bool displaysStatusBar() { return false; };
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "spla";

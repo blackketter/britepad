@@ -18,11 +18,11 @@ class Button {
     virtual void init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nil, font_t f = Arial_9_Bold, color_t titleColor = screen.black, const uint8_t* iconData = nullptr);
     virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nil, font_t f = Arial_9_Bold, color_t titleColor = screen.black, const uint8_t* iconData = nullptr);
 
-    virtual void draw(void);
+    virtual void draw();
 
-    virtual bool down(void);
-    virtual bool up(void);
-    virtual bool hold(void);
+    virtual bool down();
+    virtual bool up();
+    virtual bool hold();
 
     virtual void setColor(color_t newColor) {  colored = newColor; }
     virtual void setTitle(const char* newTitle) { titleStr = newTitle; }
@@ -44,7 +44,7 @@ class Button {
     virtual color_t fillColor();
 
 
-    virtual bool getHighlighted(void) { return highlighted; };
+    virtual bool getHighlighted() { return highlighted; };
     virtual void setHighlighted(bool highlight) { highlighted = highlight; highlightedTime = pad.time(); draw(); };
 
     const char* titleStr;

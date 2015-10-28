@@ -2,7 +2,7 @@
 #include "ThereminApp.h"
 #include "Debug.h"
 
-void ThereminApp::run(void) {
+void ThereminApp::run() {
   long octave = 6;
   uint8_t prox = pad.getProximityDistance();
   DEBUG_PARAM_LN("prox", prox);

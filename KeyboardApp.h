@@ -6,13 +6,13 @@
 
 class KeyboardApp : public BritepadApp {
   public:
-    void run(void);
+    void run();
     void begin(AppMode asMode);
-    const char* name(void) { return "Keyboard"; };
-    bool displaysStatusBar(void) { return true; }
+    const char* name() { return "Keyboard"; };
+    bool displaysStatusBar() { return true; }
     bool canBeInteractive() { return true; }
     bool disablesScreensavers() { return true; }
-    BritepadApp* exitsTo(void) { return DEFAULT_APP; }
+    BritepadApp* exitsTo() { return DEFAULT_APP; }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "keyb";

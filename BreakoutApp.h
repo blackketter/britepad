@@ -6,9 +6,9 @@
 
 class BreakoutApp : public BritepadApp {
   public:
-    const char* name(void) { return "Breakout"; };
-    bool disablesScreensavers(void) { return dx || dy || (pad.time() - pad.lastTouchedTime(ANY_PAD)) > timeoutMillis; }
-    void run(void);
+    const char* name() { return "Breakout"; };
+    bool disablesScreensavers() { return dx || dy || (pad.time() - pad.lastTouchedTime(ANY_PAD)) > timeoutMillis; }
+    void run();
     void begin(AppMode asMode);
     void end(BritepadApp* nextApp);
 
@@ -16,7 +16,7 @@ class BreakoutApp : public BritepadApp {
     static constexpr appid_t ID = "bkou";
 
   private:
-    void newGame(void);
+    void newGame();
     bool hit(coord_t x, coord_t y);
 
     coord_t ballx, bally;

@@ -58,7 +58,7 @@ void AnalogClockApp::dotpos(uint16_t theta, coord_t r, coord_t& x, coord_t& y) {
   y = center_y - ((long)r*cos16(theta))/32768L;
 }
 
-void AnalogClockApp::update(void) {
+void AnalogClockApp::update() {
     coord_t x, y;
     uint16_t hr_theta, min_theta, sec_theta, millis_theta;
 

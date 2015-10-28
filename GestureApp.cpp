@@ -14,7 +14,7 @@ void GestureApp::drawDigit(int digit, color_t color) {
   }
 }
 
-void GestureApp::run(void) {
+void GestureApp::run() {
   BritepadApp::run();
 
   if (learndigit < 0) {

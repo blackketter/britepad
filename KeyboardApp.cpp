@@ -9,7 +9,7 @@ void KeyboardApp::begin(AppMode asMode) {
   kbd.draw();
 }
 
-void KeyboardApp::run(void) {
+void KeyboardApp::run() {
   kbd.track();
   uint8_t d = kbd.down();
   uint8_t u = kbd.up();

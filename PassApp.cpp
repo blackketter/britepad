@@ -1,7 +1,7 @@
 #include "BritepadShared.h"
 #include "PassApp.h"
 
-void PassApp::draw(void) {
+void PassApp::draw() {
 
   clearScreen();
 

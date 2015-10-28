@@ -14,7 +14,7 @@ void StopwatchApp::begin(AppMode asMode) {
   redrawTime();
 }
 
-void StopwatchApp::redrawButtons(void) {
+void StopwatchApp::redrawButtons() {
   coord_t radius = screen.clipWidth()/10;
   coord_t y = isAppMode(SCREENSAVER) ? screen.clipTop()+screen.clipHeight()+radius/2 :screen.clipTop()+screen.clipHeight()/4*3;
 
@@ -26,7 +26,7 @@ void StopwatchApp::redrawButtons(void) {
   pauseButton.draw();
 }
 
-void StopwatchApp::run(void) {
+void StopwatchApp::run() {
 
   if (pad.down(BOTTOM_PAD)) {
     sound.click();
@@ -68,7 +68,7 @@ void StopwatchApp::run(void) {
   drawTime();
 }
 
-void StopwatchApp::drawTime(void) {
+void StopwatchApp::drawTime() {
   millis_t nowMillis = clock.millis();
 
   if (lastDrawMillis/100 != nowMillis/100) {

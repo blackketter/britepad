@@ -16,7 +16,7 @@ uint32_t FreeRam(){ // for Teensy 3.0
     return stackTop - heapTop;
 }
 
-void InfoApp::run(void) {
+void InfoApp::run() {
 
   BritepadApp::run();
 

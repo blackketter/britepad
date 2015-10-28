@@ -6,9 +6,9 @@
 class FadeDotsApp : public DotsDisplayApp {
   public:
     void begin(AppMode asMode)  { ScreensaverApp::begin(asMode); dots.init(16,12,(color_t*)dotData); };
-    void run(void);
+    void run();
 
-    const char* name(void) { return "Fade Dots"; };
+    const char* name() { return "Fade Dots"; };
     static constexpr appid_t ID = "fade";
     appid_t id() { return ID; };
   protected:

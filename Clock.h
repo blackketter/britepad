@@ -53,7 +53,7 @@ class DayTime : public Time {
 class Clock : public Time {
 
   public:
-    Clock(void);
+    Clock();
     millis_t millis();  // remember, millis_t is now signed 64-bits
     time_t now();
 
@@ -62,14 +62,14 @@ class Clock : public Time {
     virtual void adjust(stime_t adjustment); // signed time
 
     virtual bool hasBeenSet() { return doneSet && !setting; }
-    virtual void beginSetTime(void) { setting = true; chimeTimer.cancel(); };
-    virtual void endSetTime(void) { setting = false; resetChime(); } ;
+    virtual void beginSetTime() { setting = true; chimeTimer.cancel(); };
+    virtual void endSetTime() { setting = false; resetChime(); } ;
 
-    void chimerCallback(void);
+    void chimerCallback();
 
   private:
 
-    void resetChime(void);
+    void resetChime();
     Timer chimeTimer;
     int chimesRemaining = 0;
     static const millis_t chimeInterval = 500;

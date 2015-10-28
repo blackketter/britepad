@@ -7,8 +7,8 @@ class DotMatrix {
 
   public:
     virtual void init(int dotsWide, int dotsHigh, color_t* mem);
-    virtual void redraw(void); // redraws every dot, can be slow
-    virtual void clear(void);  // clears out dots (to bgColor) and erases screen
+    virtual void redraw(); // redraws every dot, can be slow
+    virtual void clear();  // clears out dots (to bgColor) and erases screen
 
     int getDotsWide() { return dots_wide; }
     int getDotsHigh() { return dots_high; }

@@ -4,7 +4,7 @@
 #include "BriteLiteApp.h"
 #include "Debug.h"
 
-void BriteLiteApp::run(void) {
+void BriteLiteApp::run() {
   ScreensaverApp::run();
   if (pad.touched(SCREEN_PAD)) {
     int x, y;

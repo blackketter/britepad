@@ -12,7 +12,7 @@ SetTimerApp::SetTimerApp() : BritepadApp() {
 
 }
 
-void SetTimerApp::run(void) {
+void SetTimerApp::run() {
 
   if (!edit) {
     timer_app.setTime(timer_duration);
@@ -42,7 +42,7 @@ void SetTimerApp::run(void) {
 };
 
 
-void SetTimerApp::drawTime(void) {
+void SetTimerApp::drawTime() {
 
     char timeStr[100];
 

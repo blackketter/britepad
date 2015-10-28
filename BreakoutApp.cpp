@@ -38,7 +38,7 @@ bool BreakoutApp::hit(coord_t x, coord_t y) {
   }
 }
 
-void BreakoutApp::newGame(void) {
+void BreakoutApp::newGame() {
 
   clearScreen();
 
@@ -67,7 +67,7 @@ void BreakoutApp::newGame(void) {
   }
 }
 
-void BreakoutApp::run(void) {
+void BreakoutApp::run() {
   millis_t millisNow = clock.millis();
   if (lastDraw/millisPerFrame == millisNow/millisPerFrame && !pad.down(ANY_PAD)) {
     return;

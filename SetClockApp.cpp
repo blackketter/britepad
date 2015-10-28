@@ -14,7 +14,7 @@ enum {
   mode_set
 };
 
-void SetClockApp::drawTime(void) {
+void SetClockApp::drawTime() {
   millis_t t = clock.millis();
 
   if (lastDraw/1000 != t/1000) {
@@ -90,7 +90,7 @@ void SetClockApp::modeButtonPressed() {
     drawButtons();
 }
 
-void SetClockApp::run(void) {
+void SetClockApp::run() {
 
   hasRun = true;
   stime_t adj = 0;

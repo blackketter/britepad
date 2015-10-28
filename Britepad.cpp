@@ -13,7 +13,7 @@
 
 #define PROXIMITY_DEAD_TIME (1000)
 
-Britepad::Britepad(void) {
+Britepad::Britepad() {
 
 }
 
@@ -151,12 +151,12 @@ void statusBarCallback(void* data) {
     ((Britepad*)data)->updateStatusBar();
 }
 
-void Britepad::updateStatusBar(void) {
+void Britepad::updateStatusBar() {
   // updates the clock in the status bar
   currApp->drawStatusBar(true);
 }
 
-void Britepad::begin(void) {
+void Britepad::begin() {
 
   // the launcher owns the apps and has created a splash app
   setApp(getApp(SplashApp::ID), SCREENSAVER);
@@ -177,7 +177,7 @@ void Britepad::begin(void) {
   statusBarUpdateTimer.setMillis(1000, (timerCallback_t)statusBarCallback, (void*)this, true);
 }
 
-void Britepad::idle(void) {
+void Britepad::idle() {
 
   pad.update();
 

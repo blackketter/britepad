@@ -22,7 +22,7 @@ void MousePad::end() {
   Keyboard.releaseAll();
 }
 
-void MousePad::run(void) {
+void MousePad::run() {
 
   // todo: make these sounds more descriptive
   if (pad.down(RIGHT_PAD)) { sound.click(); }

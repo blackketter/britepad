@@ -6,12 +6,12 @@
 
 class StopwatchApp : public BritepadApp {
   public:
-    void run(void);
+    void run();
     void begin(AppMode asMode);
-    const char* name(void) { return "Stopwatch"; };
-    bool displaysStatusBar(void) { return true; }
-    bool wantsToBeScreensaver(void) { return !isReset(); }
-    bool disablesScreensavers(void) { return isAppMode(INTERACTIVE) && wantsToBeScreensaver(); }
+    const char* name() { return "Stopwatch"; };
+    bool displaysStatusBar() { return true; }
+    bool wantsToBeScreensaver() { return !isReset(); }
+    bool disablesScreensavers() { return isAppMode(INTERACTIVE) && wantsToBeScreensaver(); }
     bool canBeInteractive() { return true; }
 
     appid_t id() { return ID; };
@@ -19,13 +19,13 @@ class StopwatchApp : public BritepadApp {
 
   private:
     virtual bool isPaused() { return startMillis < 0; };
-    virtual void pause(void) { startMillis = -(clock.millis() - startMillis); }
-    virtual void resume(void) { startMillis = clock.millis() + startMillis; }
-    virtual void reset(void) { startMillis = -1; }
-    virtual bool isReset(void) { return (startMillis == -1); }
-    virtual void drawTime(void);
+    virtual void pause() { startMillis = -(clock.millis() - startMillis); }
+    virtual void resume() { startMillis = clock.millis() + startMillis; }
+    virtual void reset() { startMillis = -1; }
+    virtual bool isReset() { return (startMillis == -1); }
+    virtual void drawTime();
 
-    void redrawTime(void) { lastDrawMillis = 0; };
+    void redrawTime() { lastDrawMillis = 0; };
 
     void redrawButtons();
     long startMillis = -1;  // start out paused at zero(ish)

@@ -7,11 +7,11 @@
 class GestureApp : public BritepadApp {
   public:
 
-    void run(void);
+    void run();
 
-    bool disablesScreensavers(void) { return true; };
+    bool disablesScreensavers() { return true; };
 
-    const char* name(void) { return "Gesture"; };
+    const char* name() { return "Gesture"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "gest";
 

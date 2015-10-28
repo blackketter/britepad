@@ -24,7 +24,7 @@ void Timer::setMillis(millis_t millisDuration, timerCallback_t callback, void* c
   millisTime = clock.millis() + millisDur;
 }
 
-long Timer::remainingMillis(void) {
+long Timer::remainingMillis() {
   long remainingMillis = 0;
   if (millisTime) {
     if (isPaused()) {
@@ -39,7 +39,7 @@ long Timer::remainingMillis(void) {
   return remainingMillis;
 }
 
-time_t Timer::remainingSecs(void) {
+time_t Timer::remainingSecs() {
   long remainingSecs = 0;
   if (millisTime) {
     return remainingMillis()/1000;
@@ -53,22 +53,22 @@ time_t Timer::remainingSecs(void) {
   return remainingSecs;
 }
 
-time_t Timer::timeInSecs(void) {
+time_t Timer::timeInSecs() {
   return clock.now()+remainingSecs();
 }
 
-long Timer::timeInMillis(void) {
+long Timer::timeInMillis() {
   return clock.millis()+remainingMillis();
 }
 
-time_t Timer::durationSecs(void) {
+time_t Timer::durationSecs() {
   if (millisDur) {
     return millisDur/1000;
   } else {
     return 0;
   }
 }
-long Timer::durationMillis(void) {
+long Timer::durationMillis() {
   if (millisDur) {
     return millisDur;
   } else {
@@ -76,7 +76,7 @@ long Timer::durationMillis(void) {
   }
 }
 
-bool Timer::hasPassed(void) {
+bool Timer::hasPassed() {
 
   if (isPaused()) { return false; }
 
@@ -92,11 +92,11 @@ bool Timer::hasPassed(void) {
   return false;
 }
 
-bool Timer::isRunning(void) {
+bool Timer::isRunning() {
   return (millisTime > 0) || (clockTime > 0);
 }
 
-void Timer::cancel(void) {
+void Timer::cancel() {
   millisTime = 0;
   clockTime = 0;
   millisDur = 0;
@@ -104,7 +104,7 @@ void Timer::cancel(void) {
   remove();
 }
 
-void Timer::pause(void) {
+void Timer::pause() {
 
   if (isPaused()) {
     return;
@@ -117,7 +117,7 @@ void Timer::pause(void) {
   }
 }
 
-void Timer::resume(void) {
+void Timer::resume() {
   if (!isPaused()) {
     return;
   }
@@ -128,11 +128,11 @@ void Timer::resume(void) {
   }
 }
 
-bool Timer::isPaused(void) {
+bool Timer::isPaused() {
   return (millisTime < 0) || (clockTime < 0);
 }
 
-void Timer::idle(void) {
+void Timer::idle() {
   Timer* t = first;
 
   while (t) {
@@ -176,7 +176,7 @@ void Timer::insert(timerCallback_t callback, void* callbackData) {
   }
 }
 
-void Timer::remove(void) {
+void Timer::remove() {
   if (cb) {
     Timer* t = first;
 

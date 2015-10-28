@@ -6,10 +6,10 @@
 
 class ThereminApp : public BritepadApp {
   public:
-    const char* name(void) { return "Theremin"; };
-    void run(void);
+    const char* name() { return "Theremin"; };
+    void run();
     void end(BritepadApp* nextApp);
-    virtual bool disablesScreensavers(void) { return true; }
+    virtual bool disablesScreensavers() { return true; }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "thrm";

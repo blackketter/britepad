@@ -9,26 +9,26 @@ class LauncherApp;
 
 class Britepad {
   public:
-    Britepad(void);
+    Britepad();
 
-    void begin(void);
-    void idle(void);
+    void begin();
+    void idle();
 
     void setNextApp(BritepadApp* app, AppMode mode = INTERACTIVE) { nextApp = app; nextAppMode = mode; };
-    BritepadApp* getNextApp(void) { return nextApp; }
-    AppMode getNextAppMode(void) { return nextAppMode; }
+    BritepadApp* getNextApp() { return nextApp; }
+    AppMode getNextAppMode() { return nextAppMode; }
 
     void addApp(BritepadApp* newApp);
-    int appsAdded(void) { return appCount; };
+    int appsAdded() { return appCount; };
     BritepadApp* getApp(int appIndex);
     BritepadApp* getApp(appid_t appID);
     BritepadApp* currentApp() { return currApp; }
-    void updateStatusBar(void);
+    void updateStatusBar();
 
   private:
     void setApp(BritepadApp* newApp, AppMode asMode);  // sets the current app
 
-    BritepadApp* wantsToBeScreensaver(void);
+    BritepadApp* wantsToBeScreensaver();
     BritepadApp* randomApp(AppMode m);
 
 

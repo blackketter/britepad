@@ -5,9 +5,9 @@
 
 class BinaryClockApp : public ClockApp {
   public:
-    void update(void);
+    void update();
 
-    const char* name(void) { return "Binary"; };
+    const char* name() { return "Binary"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "binc";
 

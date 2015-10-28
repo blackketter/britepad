@@ -5,13 +5,13 @@
 
 class BubblesApp : public ScreensaverApp {
   public:
-    void run(void);
-    const char* name(void) { return "Bubbles"; };
+    void run();
+    const char* name() { return "Bubbles"; };
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "bubb";
 
-    bool canBeMouse(void) { return true; }
+    bool canBeMouse() { return true; }
 
   private:
     int currentColor = screen.red;

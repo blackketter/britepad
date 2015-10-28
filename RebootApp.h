@@ -13,9 +13,9 @@ class RebootApp : public BritepadApp {
 
   public:
 
-    RebootApp(void) {};
+    RebootApp() {};
 
-    void run(void) {
+    void run() {
 
       while (1) {
         // todo - make this teensyduino aware
@@ -24,9 +24,9 @@ class RebootApp : public BritepadApp {
       };
     }
 
-    const char* name(void) { return "Reboot"; };
+    const char* name() { return "Reboot"; };
 
-    bool isInvisible(void) { return true; };
+    bool isInvisible() { return true; };
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "boot";

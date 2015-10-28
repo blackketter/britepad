@@ -69,7 +69,7 @@ void TouchKeyboard::track() {
   }
 };
 
-void TouchKeyboard::draw(void) {
+void TouchKeyboard::draw() {
   for (int r = 0; r < rows; r++) {
     for (int c = 0; c < keysInRow(r); c++) {
       DEBUG_PARAM_LN("button draw", c);
@@ -78,7 +78,7 @@ void TouchKeyboard::draw(void) {
   }
 }
 
-uint8_t TouchKeyboard::down(void) {
+uint8_t TouchKeyboard::down() {
   uint8_t keydown = 0;
   if (pad.down(SCREEN_PAD)) {
     keydown = hit(pad.x(), pad.y());
@@ -86,7 +86,7 @@ uint8_t TouchKeyboard::down(void) {
   return keydown;
 };
 
-uint8_t TouchKeyboard::up(void) {
+uint8_t TouchKeyboard::up() {
   uint8_t keyup = 0;
   if (pad.up(SCREEN_PAD)) {
     keyup = hit(pad.x(), pad.y());

@@ -8,11 +8,11 @@ BritepadApp* BritepadApp::DEFAULT_APP = (BritepadApp*)1;
 BritepadApp* BritepadApp::BACK_APP = (BritepadApp*)2;
 BritepadApp* BritepadApp::SCREENSAVER_APP = (BritepadApp*)3;
 
-BritepadApp::BritepadApp(void)  {
+BritepadApp::BritepadApp()  {
   britepad.addApp(this);
 }
 
-void BritepadApp::resetClipRect(void) {
+void BritepadApp::resetClipRect() {
   coord_t top = displaysStatusBar() ? statusBarHeight : 0;
   coord_t bottom = displaysInfoBar() ? screen.height()-statusBarHeight : screen.height();
   screen.setClipRect(0, top, screen.width(), bottom);

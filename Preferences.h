@@ -5,7 +5,7 @@
 
 class Preferences {
   public:
-    Preferences(void);
+    Preferences();
 
     void write(appid_t tag, uint8_t size, const uint8_t* data);
     uint8_t read(appid_t tag, uint8_t size, uint8_t* data);
@@ -14,8 +14,8 @@ class Preferences {
     static const size_t totalPrefsSize = 2048; // todo - we should be able to get this from EEPROM.h or the like
     uint8_t prefsData[totalPrefsSize];
 
-    void saveOut(void);
-    void resetPrefs(void);
+    void saveOut();
+    void resetPrefs();
 
     uint8_t version = 1;
     static constexpr appid_t versionTag = "vers";

@@ -1,6 +1,6 @@
 #include "BinaryClockApp.h"
 
-void BinaryClockApp::update(void) {
+void BinaryClockApp::update() {
     coord_t rowspace = screen.clipHeight()/9*2;
     coord_t colspace = screen.clipWidth()/15*2;
     coord_t r = min(rowspace,colspace)/4;

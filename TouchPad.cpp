@@ -44,7 +44,7 @@ TouchPad::TouchPad(coord_t w, coord_t h) {
 
 }
 
-void TouchPad::begin(void) {
+void TouchPad::begin() {
   if (! ctp.begin(40)) {  // pass in 'sensitivity' coefficient
     DEBUG_LN("Couldn't start FT6206 touchscreen controller");
     while (1);
@@ -133,7 +133,7 @@ void TouchPad::update() {
   }
  }
 
-bool TouchPad::getProximityPresent(void) {
+bool TouchPad::getProximityPresent() {
   if (proximity > proximityThreshold) {
 //    DEBUG_PARAM_LN("proximity", proximity);
     return true;
@@ -142,11 +142,11 @@ bool TouchPad::getProximityPresent(void) {
   }
 };
 
-uint8_t TouchPad::getProximityDistance(void) {
+uint8_t TouchPad::getProximityDistance() {
   return getProximityPresent() ? (long)(proximity - proximityThreshold) * proximityMax / (proximityMax -proximityThreshold) : 0;
 };
 
-void TouchPad::updateAPDS(void) {
+void TouchPad::updateAPDS() {
 
   if (curr.time / APSDupdateInterval != lastAPDSupdate / APSDupdateInterval) {
     lastAPDSupdate = curr.time;
@@ -197,7 +197,7 @@ void TouchPad::updateAPDS(void) {
   }
 }
 
-void TouchPad::initAPDS(void) {
+void TouchPad::initAPDS() {
 
 // initialize APDS9960 interrupt
   bool useAPDS9960Interrupts = false;
@@ -301,10 +301,10 @@ millis_t TouchPad::lastTouchedTime(int pad) {
   return touched(pad) ? time() : lastUpTime(pad);
 }
 
-coord_t TouchPad::lastDownX(void) {
+coord_t TouchPad::lastDownX() {
   return lastDownXPos;
 }
 
-coord_t TouchPad::lastDownY(void) {
+coord_t TouchPad::lastDownY() {
   return lastDownYPos;
 }

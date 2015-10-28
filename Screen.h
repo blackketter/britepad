@@ -55,14 +55,14 @@ class Screen : public ILI9341_t3 {
     color_t mix(color_t c1, color_t c2);
     uint8_t luminance(color_t);
 
-    inline coord_t clipTop(void) { return _clipy1; };
-    inline coord_t clipLeft(void) { return _clipx1; };
-    inline coord_t clipHeight(void) { return _clipy2 - _clipy1; };
-    inline coord_t clipWidth(void) { return _clipx2 - _clipx1; };
-    inline coord_t clipBottom(void) { return _clipy2; };
-    inline coord_t clipRight(void) { return _clipx2; };
-    inline coord_t clipMidHeight(void) { return clipTop() + clipHeight()/2; };
-    inline coord_t clipMidWidth(void) { return clipLeft() + clipWidth()/2; };
+    inline coord_t clipTop() { return _clipy1; };
+    inline coord_t clipLeft() { return _clipx1; };
+    inline coord_t clipHeight() { return _clipy2 - _clipy1; };
+    inline coord_t clipWidth() { return _clipx2 - _clipx1; };
+    inline coord_t clipBottom() { return _clipy2; };
+    inline coord_t clipRight() { return _clipx2; };
+    inline coord_t clipMidHeight() { return clipTop() + clipHeight()/2; };
+    inline coord_t clipMidWidth() { return clipLeft() + clipWidth()/2; };
 
     static const color_t black = ILI9341_BLACK;
     static const color_t white = ILI9341_WHITE;

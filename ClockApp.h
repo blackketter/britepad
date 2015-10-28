@@ -7,11 +7,11 @@
 
 class ClockApp : public ScreensaverApp {
   public:
-    void run(void);
-    virtual void update(void);
+    void run();
+    virtual void update();
     virtual millis_t updateInterval() { return 1000; }
 
-    const char* name(void) { return "Clock"; };
+    const char* name() { return "Clock"; };
 
     bool getEnabled() { return ScreensaverApp::getEnabled() && clock.hasBeenSet(); }
 

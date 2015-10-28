@@ -8,13 +8,13 @@
 class MuteApp : public BritepadApp {
 
   public:
-    MuteApp(void) {
+    MuteApp() {
       uint8_t mutestate;
       prefs.read(id(), sizeof(mutestate), &mutestate);
       sound.setMute(mutestate);
     };
 
-    void run(void) {
+    void run() {
       sound.setMute(!sound.getMute());
       if (!sound.getMute()) {
         sound.beep();
@@ -23,13 +23,13 @@ class MuteApp : public BritepadApp {
       prefs.write(id(), sizeof(mutestate), &mutestate);
     }
 
-    const char* name(void) { return sound.getMute() ? "Pad Muted" : "Mute Pad"; };
+    const char* name() { return sound.getMute() ? "Pad Muted" : "Mute Pad"; };
 
-    bool isPopup(void) { return true; };
+    bool isPopup() { return true; };
 
-    bool isInvisible(void) { return true; };
+    bool isInvisible() { return true; };
 
-    color_t buttonColor(void) { return sound.getMute() ? screen.darkblue : screen.blue; };
+    color_t buttonColor() { return sound.getMute() ? screen.darkblue : screen.blue; };
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "mute";

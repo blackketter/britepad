@@ -16,7 +16,7 @@ class Gesture {
     bool capture(); // captures from the global touchpad
     uint16_t compare(const Gesture &to);
     void addSample(float x, float y) { samples[sampleCount].x = x; samples[sampleCount].y = y; sampleCount++; }
-    uint8_t getSampleCount(void) { return sampleCount; }
+    uint8_t getSampleCount() { return sampleCount; }
     uint16_t compare(Gesture* to); // sum of distances of points.  0 is a perfect match
     int minSamplesRequired() { return 10; }  // seems like a reasonable number
     int minPathLength() { return 25; }

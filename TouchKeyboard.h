@@ -8,11 +8,11 @@ class TouchKeyboard {
   public:
     virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, font_t legendFont = Arial_9_Bold, color_t legendColor = screen.black);
 
-    virtual void track(void);
-    virtual void draw(void);
+    virtual void track();
+    virtual void draw();
 
-    virtual uint8_t down(void);  // returns value of key pressed down or 0 if none.  as side effect tracks keys and does redraw
-    virtual uint8_t up(void);
+    virtual uint8_t down();  // returns value of key pressed down or 0 if none.  as side effect tracks keys and does redraw
+    virtual uint8_t up();
 
   protected:
 

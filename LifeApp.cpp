@@ -54,7 +54,7 @@ void LifeApp::run() {
   }
 }
 
-void LifeApp::iterate(void) {
+void LifeApp::iterate() {
   if (pad.time() > nextRun) {
     nextRun = pad.time() + MILLIS_PER_FRAME;
 
@@ -132,13 +132,13 @@ void LifeApp::iterate(void) {
   }
 }
 
-void LifeApp::wipe(void) {
+void LifeApp::wipe() {
   dots.clear();
   generation = 0;
   ruleset = random(RULESETS);
 }
 
-void LifeApp::seed(void) {
+void LifeApp::seed() {
   wipe();
   for (int i = 0; i < SEEDS; i++) {
     dots.setDot(random(DOTSWIDE), random(DOTSHIGH), MINCOLOR);

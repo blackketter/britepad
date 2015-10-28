@@ -4,7 +4,7 @@
 #include "BubblesApp.h"
 #include "Debug.h"
 
-void BubblesApp::run(void) {
+void BubblesApp::run() {
   ScreensaverApp::run();
   int r;
   if (pad.down()) {

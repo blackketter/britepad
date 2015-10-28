@@ -23,12 +23,15 @@ void InfoApp::run(void) {
   screen.setTextColor(screen.white, screen.black);
   screen.setFont(Arial_16);
   screen.setCursor(screen.clipLeft() + screen.fontLineSpacing(), screen.clipTop()+screen.fontLineSpacing());
-  screen.drawTextF("X: %d Y: %d        \n", pad.x(), pad.y());
+  char string[100];
+  clock.longTime(string);
+  screen.drawTextF("%s\nX: %d Y: %d        \n", string, pad.x(), pad.y());
   screen.drawTextF("Points captured: %d        \n", pad.getHistoryCount());
   screen.drawTextF("Proximity: %d    \n", pad.getProximityDistance());
   screen.drawTextF("Ambient: %d         \n", pad.getAmbientLight());
   screen.drawTextF("Free ram: %d            \n", FreeRam());
   screen.drawTextF("Uptime: %d\n", (long)(clock.millis()/1000));
   screen.drawTextF("FPS: %d      ", 1000/(pad.time()-lastUpdate));
+
   lastUpdate = pad.time();
 };

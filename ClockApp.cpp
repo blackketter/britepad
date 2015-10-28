@@ -35,8 +35,11 @@ void ClockApp::update(void) {
 //  screen.drawText(textTime);
 
     screen.setFont(Arial_16);
-    screen.setCursor(screen.clipMidWidth()+w/2,screen.clipMidHeight() + h/2 - screen.measureTextHeight(textTime));
+    screen.setCursor(screen.clipMidWidth()+w/2,screen.clipMidHeight() - h/2);
     screen.drawText(clock.isAM() ? "am" : "pm");
+
+    screen.setCursor(screen.clipMidWidth()+w/2,screen.clipMidHeight() + h/2 - screen.measureTextHeight(textTime));
+    screen.drawTextF("%02d", clock.second());
 
     char longDate[100];
     clock.longDate(longDate);

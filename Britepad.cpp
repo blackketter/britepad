@@ -217,6 +217,15 @@ void Britepad::idle(void) {
     DEBUG_LN("Proximity detected: showing clock");
 
   } else if (!currApp->disablesScreensavers()) {
+
+   // check more often if somebody wants to be screensaver
+   if (lastCheckWantsToBeScreensaver/checkWantsToBeScreensaverInterval != pad.time()/checkWantsToBeScreensaverInterval) {
+      if (wantsToBeScreensaver()) {
+        setNextApp(randomApp(SCREENSAVER), SCREENSAVER);
+      }
+      lastCheckWantsToBeScreensaver = pad.time();
+   }
+
     // let's check to see if we should run a screensaver
    if (currApp->isAppMode(SCREENSAVER) && (pad.time() - screensaverStartedTime) > screensaverSwitchInterval) {
       setNextApp(randomApp(SCREENSAVER), SCREENSAVER);

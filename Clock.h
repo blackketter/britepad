@@ -17,6 +17,7 @@ class Time {
     virtual void endSetTime() {};
 
     void shortTime(char* timeStr);
+    void longTime(char* timeStr);
     void longDate(char* dateStr);
     void shortDate(char* dateStr);
 
@@ -46,6 +47,7 @@ class DayTime : public Time {
     virtual void set(time_t newTime) {  Time::set(newTime % secsPerDay); }
     virtual void adjust(stime_t adjustment)  { if (adjustment < 0) { adjustment = secsPerDay-((-adjustment)%secsPerDay); } set(adjustment+curTime); };
     virtual bool isTime(time_t newTime) { return curTime == (newTime % secsPerDay); }
+    virtual time_t nextOccurance();
 };
 
 class Clock : public Time {

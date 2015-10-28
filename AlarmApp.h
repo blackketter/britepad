@@ -9,27 +9,32 @@ class AlarmApp : public BritepadApp {
   public:
     AlarmApp();
 
-    void run(void);
+    void run();
     bool wantsToBeScreensaver() { return alarmSounding(); }
     void end(BritepadApp* nextApp) { BritepadApp::end(nextApp); setAlarmEnabled(false); alarmSounded = false;}
 
     void setAlarmTime(time_t newTime);
-    time_t getAlarmTime() { return alarmTime.get(); };
+    time_t getAlarmTime() { return nextAlarm.get(); };
     bool isAlarmTime();
 
     void setAlarmEnabled(bool alarmOn);
     bool getAlarmEnabled() { return alarmEnabled; }
 
     bool alarmSounding();
+    void beep();
 
-    const char* name(void) { return "Alarm"; };
+    const char* name() { return "Alarm"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "alrm";
 
   protected:
+
+    void updateTimer();
+
     millis_t lastUpdate = 0;
     color_t currentColor = screen.red;
-    DayTime alarmTime;
+    Time nextAlarm;
+    Timer beepTimer;
     bool alarmEnabled = false;
     bool alarmSounded = false;
     void saveSettings();

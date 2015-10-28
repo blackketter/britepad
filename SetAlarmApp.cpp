@@ -26,7 +26,7 @@ void SetAlarmApp::end(BritepadApp* nextApp) {
 
   AlarmApp* alarm = (AlarmApp*)britepad.getApp(AlarmApp::ID);
   if (alarm) {
-    alarm->setAlarmTime(alarmTime.get());
+    alarm->setAlarmTime(alarmTime.nextOccurance());
     alarm->setAlarmEnabled(alarmEnabled);
   }
 

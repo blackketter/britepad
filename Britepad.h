@@ -38,6 +38,9 @@ class Britepad {
     static const millis_t screensaverSwitchInterval = 30000;
     static const millis_t ambientUpdateInterval = 100;
 
+    static const millis_t checkWantsToBeScreensaverInterval = 1000;
+    millis_t lastCheckWantsToBeScreensaver = 0;
+
     Timer     backlightTimer;
     Timer     statusBarUpdateTimer;
 

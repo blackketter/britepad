@@ -41,6 +41,10 @@ void Time::shortTime(char * timeStr) {
   sprintf(timeStr, "%d:%02d %s", hourFormat12(), minute(), isAM() ? "am":"pm");
 };
 
+void Time::longTime(char * timeStr) {
+  sprintf(timeStr, "%d:%02d:%02d %s", hourFormat12(), minute(), second(), isAM() ? "am":"pm");
+};
+
 static const uint8_t monthDays[]={31,28,31,30,31,30,31,31,30,31,30,31}; // API starts months from 1, this array starts from 0
 static const char* dayStrings[] = { "", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
 static const char* monthStrings[] = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -58,6 +62,13 @@ void Time::shortDate(char* dateStr) {
   sprintf(dateStr, "%d-%02d-%02d", year(), month(), day());
 }
 
+time_t DayTime::nextOccurance() {
+  time_t nextup = (clock.now()/secsPerDay)*secsPerDay + curTime;
+  if (nextup < clock.now()) {
+    nextup+= secsPerDay;
+  }
+  return nextup;
+};
 
 // real time clock methods
 time_t Clock::now() {

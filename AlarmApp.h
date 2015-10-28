@@ -38,8 +38,8 @@ class AlarmApp : public BritepadApp {
     bool alarmEnabled = false;
     bool alarmSounded = false;
     void saveSettings();
-    const int alarmDur = 60;  // show the time for a while after the alarm goes off
-    const int beepInterval = 500;  // in millis
+    const time_t alarmDur = 60;  // show the time for a while after the alarm goes off
+    const millis_t beepInterval = 500;  // in millis
 };
 
 #endif

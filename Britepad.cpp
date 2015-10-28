@@ -219,10 +219,13 @@ void Britepad::idle() {
   } else if (!currApp->disablesScreensavers()) {
 
    // check more often if somebody wants to be screensaver
-   if (lastCheckWantsToBeScreensaver/checkWantsToBeScreensaverInterval != pad.time()/checkWantsToBeScreensaverInterval) {
-      if (wantsToBeScreensaver()) {
+   if (currApp->isAppMode(SCREENSAVER) &&
+       (lastCheckWantsToBeScreensaver/checkWantsToBeScreensaverInterval != pad.time()/checkWantsToBeScreensaverInterval) &&
+       !currApp->wantsToBeScreensaver() &&
+       wantsToBeScreensaver()) {
+
         setNextApp(randomApp(SCREENSAVER), SCREENSAVER);
-      }
+
       lastCheckWantsToBeScreensaver = pad.time();
    }
 

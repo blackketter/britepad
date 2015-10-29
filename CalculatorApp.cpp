@@ -37,6 +37,12 @@ enum keys {
   hidden
 };
 
+enum keyMaps {
+  standard_map,
+  hex_map
+};
+
+
 const uint8_t backspaceIcon[] = {
  16, 11,
  0b00000111, 0b11111111,
@@ -65,12 +71,13 @@ void CalculatorApp::begin(AppMode asMode) {
   font_t f = Arial_12_Bold;
   bool highlight = false;
 
+// button set 0
 // top row
   coord_t x = xorig;
   coord_t y = yorig;
   uint8_t r = 0;
   uint8_t c = 0;
-  uint8_t m = 0;
+  uint8_t m = standard_map;
 
   button[m][r][c].setID(shift);
   button[m][r][c++].init(x,y,w,h,bg,highlight,"...",f);
@@ -186,6 +193,129 @@ void CalculatorApp::begin(AppMode asMode) {
   button[m][r][c++].init(x,y,w,h,bg,highlight,"enter",f);
   x += xspacing;
 
+
+// button set 1
+// top row
+  x = xorig;
+  y = yorig;
+  r = 0;
+  c = 0;
+  m = hex_map;
+
+  button[m][r][c].setID(shift);
+  button[m][r][c++].init(x,y,w,h,bg,highlight,"...",f);
+  x += xspacing;
+
+  button[m][r][c].setID(seven);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"7",f);
+  x += xspacing;
+
+  button[m][r][c].setID(eight);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"8",f);
+  x += xspacing;
+
+  button[m][r][c].setID(nine);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"9",f);
+  x += xspacing;
+
+  button[m][r][c].setID(hex_a);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"a",f);
+  x += xspacing;
+
+  button[m][r][c].setID(add);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"+",f);
+  x += xspacing;
+
+// second row
+  x = xorig;
+  y += yspacing;
+  r++;
+  c = 0;
+
+  button[m][r][c].setID(changeBase);
+  button[m][r][c++].init(x,y,w,h,bg,highlight,"dec",f);
+  x += xspacing;
+
+  button[m][r][c].setID(four);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"4",f);
+  x += xspacing;
+
+  button[m][r][c].setID(five);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"5",f);
+  x += xspacing;
+
+  button[m][r][c].setID(six);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"6",f);
+  x += xspacing;
+
+  button[m][r][c].setID(hex_b);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"b",f);
+  x += xspacing;
+
+  button[m][r][c].setID(subtract);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"-",f);
+  x += xspacing;
+
+// third row
+  x = xorig;
+  y += yspacing;
+  r++;
+  c = 0;
+
+  button[m][r][c].setID(backspace);
+  button[m][r][c++].init(x,y,w,h,screen.red,highlight,nullptr,f,screen.black,backspaceIcon);
+  x += xspacing;
+
+  button[m][r][c].setID(one);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"1",f);
+  x += xspacing;
+
+  button[m][r][c].setID(two);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"2",f);
+  x += xspacing;
+
+  button[m][r][c].setID(three);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"3",f);
+  x += xspacing;
+
+  button[m][r][c].setID(hex_c);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"c",f);
+  x += xspacing;
+
+  button[m][r][c].setID(multiply);
+  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"x",Arial_10_Bold);
+  x += xspacing;
+
+// fourth row
+  x = xorig;
+  y += yspacing;
+  r++;
+  c = 0;
+
+  button[m][r][c].setID(clear);
+  button[m][r][c++].init(x,y,w,h,screen.red,highlight,"clear",f);
+  x += xspacing;
+
+  button[m][r][c].setID(zero);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"0",f);
+  x += xspacing;
+
+  button[m][r][c].setID(hex_f);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"f",f);
+  x += xspacing;
+
+  button[m][r][c].setID(hex_e);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"e",f);
+  x += xspacing;
+
+  button[m][r][c].setID(hex_d);
+  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"d",f);
+  x += xspacing;
+
+  button[m][r][c].setID(enter);
+  button[m][r][c++].init(x,y,w,h,bg,highlight,"enter",f);
+  x += xspacing;
+
   drawKeys();
   drawDisplay();
 }
@@ -289,7 +419,12 @@ void CalculatorApp::handleKey(uint8_t keyPressed) {
 void CalculatorApp::acceptText() {
   if (strlen(topText)) {
     pop();
-    push(strtod(topText, nullptr));
+    if (base == 10) {
+      push(strtod(topText, nullptr));
+    } else {
+      push(strtol(topText, nullptr, base));
+    }
+
     topText[0]=0;
   }
 }
@@ -344,7 +479,14 @@ void CalculatorApp::keyShift() {
 }
 
 void CalculatorApp::keyBase() {
-  sound.beep();
+  if (base == 10) {
+    setKeyMap(hex_map);
+    base = 16;
+  } else {
+    setKeyMap(standard_map);
+    base = 10;
+  }
+  drawDisplay();
 }
 
 void CalculatorApp::keyPercent() {
@@ -377,7 +519,8 @@ void CalculatorApp::keyClear() {
 void CalculatorApp::keySend() {
   acceptText();
   char textNum[100];
-  sprintf(textNum, "%.12G", top(0));
+  formatText(textNum, top(0));
+
   Keyboard.print(textNum);
   // todo: make this not blocking
   for (size_t i = 0; i < strlen(textNum); i++) {
@@ -399,11 +542,15 @@ void CalculatorApp::keyDigit(uint8_t digit) {
   if (len < maxTopText) {
     if (len == 0) {
       push(0);
+      if (base == 16) {
+        topText[len++]='0';
+        topText[len++]='x';
+      }
     }
     if (digit <= 9) {
       topText[len] = digit+'0';
     } else {
-      topText[len] = digit+'a';
+      topText[len] = digit-10+'a';
     }
     topText[len+1] = 0;
   } else {
@@ -438,12 +585,12 @@ void CalculatorApp::drawDisplay() {
   screen.fillRect(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), displayHeight, screen.lightergrey);
   screen.setTextColor(screen.black);
 
-  char number[20*3];
+  char number[100];
   char* printNumber;
   if (strlen(topText)) {
     printNumber = topText;
   } else {
-    sprintf(number, "%.12G", top(0));
+    formatText(number, top(0));
     printNumber = number;
   }
 
@@ -462,7 +609,10 @@ void CalculatorApp::drawDisplay() {
 
   coord_t topWidth = screen.measureTextWidth(printNumber);
 
-  sprintf(number, "%.12G\n%.12G\n%.12G", top(3), top(2), top(1));
+  char line1[100];
+  char line2[100];
+  char line3[100];
+  sprintf(number, "%s\n%s\n%s", formatText(line1, top(3)), formatText(line2, top(2)), formatText(line3, top(1)));
 
   screen.setFont(Arial_9_Bold);
 
@@ -473,4 +623,14 @@ void CalculatorApp::drawDisplay() {
 
   screen.setCursor(screen.clipLeft() + 5, screen.clipTop()+displayHeight/2-screen.measureTextHeight(number)/2);
   screen.drawText(number);
+}
+
+char* CalculatorApp::formatText(char* fstring, double value) {
+  if (base == 16) {
+    int intValue = value;
+    sprintf(fstring, "0x%x", (unsigned int)intValue);
+  } else {
+    sprintf(fstring, "%.12G", value);
+  }
+  return fstring;
 }

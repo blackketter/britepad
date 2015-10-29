@@ -28,13 +28,15 @@ class CalculatorApp : public BritepadApp {
 
     uint8_t base = 10;
 
-    void setKeyMap(uint8_t newMap);
+    void setKeyMap(uint8_t newMap) { curKeyMap = newMap; drawKeys(); }
 
     static const int keyColumns = 6;
     static const int keyRows = 4;
     static const int keys = keyRows*keyColumns;
-    static const uint8_t keyMaps = 1;
+    static const uint8_t keyMaps = 2;
     uint8_t curKeyMap = 0;
+
+    char* formatText(char* fstring, double value);
 
     void drawKeys();
     void drawDisplay();

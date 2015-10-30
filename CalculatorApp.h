@@ -18,8 +18,10 @@ class CalculatorApp : public BritepadApp {
     static const coord_t displayHeight = 48;
     static const int stackDepth = 4;
     double stack[stackDepth] = { 0,0,0,0 };
-    static const int maxTopText = 12;
-    char topText[maxTopText] = "";
+
+    static const int topTextSize = 13;
+    char topText[topTextSize] = "";
+    int maxTopText() {if (base == 16) { return 10; } else { return topTextSize-1; } };
 
     void push(double x) { for (int i = stackDepth - 1; i > 0; i--) { stack[i] = stack[i-1];} stack[0] = x; }
     double pop() { double popped = stack[0]; for (int i = 0; i < stackDepth-1; i++) { stack[i]=stack[i+1]; } stack[stackDepth-1] = 0; return popped; }

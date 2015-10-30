@@ -30,6 +30,7 @@
 #include "SplashApp.h"
 #include "StopwatchApp.h"
 #include "ThereminApp.h"
+#include "WordClockApp.h"
 
 LauncherApp theLauncherApp;
 
@@ -50,6 +51,7 @@ LauncherApp::LauncherApp() {
   setButton(SCREENSAVERS_SCREEN, 6,  new LifeApp);
   setButton(SCREENSAVERS_SCREEN, 7,  new FadeDotsApp);
   setButton(SCREENSAVERS_SCREEN, 8,  new AnalogClockApp);
+  setButton(SCREENSAVERS_SCREEN, 9,  new WordClockApp);
 
   setButton(SETTINGS_SCREEN, 8,   new SetClockApp);
   setButton(SETTINGS_SCREEN, 9,   new MuteApp);

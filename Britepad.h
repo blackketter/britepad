@@ -42,6 +42,7 @@ class Britepad {
     millis_t lastCheckWantsToBeScreensaver = 0;
 
     Timer     backlightTimer;
+
     Timer     statusBarUpdateTimer;
 
     millis_t screensaverStartedTime = 0;

@@ -139,11 +139,21 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
 
 void backlightCallback(void* data) {
-  // if we detect proximity, it's probably casting a shadow and we don't want to update
-  if (pad.time() - pad.lastTouchedTime(PROXIMITY_SENSOR) > PROXIMITY_DEAD_TIME) {
+  static uint8_t lastBacklight = 255;
+  // if we detect proximity or touch, it's probably casting a shadow and we don't want to update
+  millis_t lastTouch = min(pad.lastTouchedTime(ANY_PAD), pad.lastTouchedTime(PROXIMITY_SENSOR));
+  if (pad.time() - lastTouch > PROXIMITY_DEAD_TIME) {
     // any ambient light greater than 255 is full brightness, 1 is the minimums
     uint8_t light = max(1,min( pad.getAmbientLight(), 255));
-    screen.backlight(light);
+
+    // only ramp up/down one tick at a time
+    if (lastBacklight < light) {
+      lastBacklight++;
+    } else if (lastBacklight > light) {
+      lastBacklight--;
+    }
+
+    screen.backlight(lastBacklight);
   }
 }
 
@@ -166,9 +176,9 @@ void Britepad::begin() {
   int count=0;
   BritepadApp* anApp = getApp(count++);
   while (anApp) {
-    DEBUG_LN(count);
+//    DEBUG_LN(count);
     DEBUG_LN(anApp->name());
-    DEBUG_LN((unsigned long)anApp);
+//    DEBUG_LN((unsigned long)anApp);
     anApp = getApp(count++);
   }
   screen.fillScreen(screen.black);

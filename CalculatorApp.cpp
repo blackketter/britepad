@@ -110,7 +110,7 @@ void CalculatorApp::begin(AppMode asMode) {
   c = 0;
 
   button[m][r][c].setID(changeBase);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"base",f);
+  button[m][r][c++].init(x,y,w,h,bg,highlight,"hex",f);
   x += xspacing;
 
   button[m][r][c].setID(four);
@@ -422,7 +422,12 @@ void CalculatorApp::acceptText() {
     if (base == 10) {
       push(strtod(topText, nullptr));
     } else {
-      push(strtol(topText, nullptr, base));
+      long long top64 = strtol(topText, nullptr, base);
+      // try to do 2s compliment conversion of hex
+      if (top64 > 0x7ffffff) {
+        top64 =  top64 - 0x100000000;
+      }
+      push(top64);
     }
 
     topText[0]=0;
@@ -479,6 +484,7 @@ void CalculatorApp::keyShift() {
 }
 
 void CalculatorApp::keyBase() {
+  acceptText();
   if (base == 10) {
     setKeyMap(hex_map);
     base = 16;
@@ -539,7 +545,7 @@ void CalculatorApp::keyEnter() {
 
 void CalculatorApp::keyDigit(uint8_t digit) {
   int len = strlen(topText);
-  if (len < maxTopText) {
+  if (len < maxTopText()) {
     if (len == 0) {
       push(0);
       if (base == 16) {
@@ -560,7 +566,7 @@ void CalculatorApp::keyDigit(uint8_t digit) {
 
 void CalculatorApp::keyEE() {
   int len = strlen(topText);
-  if (len >= maxTopText || len < 1 || strchr(topText, 'e')) {
+  if (len >= maxTopText() || len < 1 || strchr(topText, 'e')) {
     sound.beep();
   } else {
     topText[len] = 'e';
@@ -570,7 +576,7 @@ void CalculatorApp::keyEE() {
 
 void CalculatorApp::keyDecimal() {
   int len = strlen(topText);
-  if (len >= maxTopText || strchr(topText, '.') || strchr(topText, 'e')) {
+  if (len >= maxTopText() || strchr(topText, '.') || strchr(topText, 'e')) {
     sound.beep();
   } else {
     if (len == 0) {

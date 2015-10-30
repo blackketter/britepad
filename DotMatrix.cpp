@@ -49,6 +49,11 @@ bool DotMatrix::hit(coord_t x, coord_t y, int* hitx, int* hity) {
     return false;
   }
 }
+
+void SquareMatrix::updateDot(int x, int y) {
+  screen.fillRect(screen.clipLeft()+x*dotspacing_w,screen.clipTop()+y*dotspacing_h,dotspacing_w,dotspacing_h,getDot(x,y));
+}
+
 // todo: add correct HexDotMatrix::hit()
 
 void HexDotMatrix::updateDot(int x, int y) {

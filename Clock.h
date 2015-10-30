@@ -23,12 +23,15 @@ class Time {
 
     bool isAM();
     uint8_t hourFormat12();
+    uint8_t hour();
     uint8_t minute();
     uint8_t second();
     uint16_t year();
     uint8_t month();
     uint8_t day();
     uint8_t weekday();
+    const char* weekdayString();
+    const char* monthString();
 
     uint8_t daysInMonth(uint8_t m);  // months 1 based
     const time_t secsPerMin = 60;

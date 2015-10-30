@@ -30,6 +30,11 @@ class DotMatrix {
 
 };
 
+class SquareMatrix : public DotMatrix {
+  public:
+    virtual void updateDot(int x, int y);
+};
+
 class HexDotMatrix : public DotMatrix {
   public:
     virtual void updateDot(int x, int y);

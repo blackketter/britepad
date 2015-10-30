@@ -6,15 +6,11 @@
 
 class WordClockApp : public ClockApp {
   public:
-
-    virtual millis_t updateInterval() { return 10000; }
-
     const char* name() { return "Words"; };
-
-    bool getEnabled() { return ScreensaverApp::getEnabled() && clock.hasBeenSet(); }
-
     appid_t id() { return ID; };
     static constexpr appid_t ID = "wclk";
+
+    virtual millis_t updateInterval() { return 10000; }
 
   protected:
     virtual void update();

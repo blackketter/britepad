@@ -52,21 +52,55 @@ void Screen::drawLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t wi
   }
 };
 
-void Screen::drawText(const char* text) {
+void Screen::drawText(const char* text, const char* wrapChars) {
 
-    coord_t origx = cursor_x;
+    if (!wrapChars) {
+      coord_t origx = cursor_x;
 
-    int i = 0;
-    while (text[i] != 0) {
-      write(text[i]);
+      int i = 0;
+      while (text[i] != 0) {
+        write(text[i]);
 
-      // don't wrap to the left, wrap to the original spot
-      if (wrap && text[i] == '\n') {
-        cursor_x = origx;
-        cursor_y += fontHeight() + fontLineSpacing();
+        // don't wrap to the left, wrap to the original spot
+        if (wrap && text[i] == '\n') {
+          cursor_x = origx;
+          cursor_y += fontHeight() + fontLineSpacing();
+        }
+        i++;
       }
-      i++;
+    } else {
+    int i = 0;
+
+    coord_t left = screen.getCursorX();
+    coord_t right = screen.clipRight();
+
+    while (text[i]) {
+      coord_t x = screen.getCursorX();
+      char curWord[20];
+      const char* curPos = text+i;
+
+      int j = 0;
+      const char* nextWord = curPos + strlen(curPos);
+      while (wrapChars[j]) {
+        const char* nextWrapChar = strchr(curPos, wrapChars[j]);
+        if (nextWrapChar) {
+          nextWord = min(nextWord, nextWrapChar);
+        }
+        j++;
+      }
+
+      int wordLen = nextWord - curPos + 1;
+
+      strncpy(curWord, curPos, wordLen);
+      curWord[wordLen] = 0;
+
+      if (x+screen.measureTextWidth(curWord) > right) {
+        screen.setCursor(left, getCursorY()+fontHeight()+fontLineSpacing());
+      }
+      screen.drawText(curWord);
+      i+=wordLen;
     }
+  }
 }
 
 coord_t Screen::measureTextWidth(const char* text) {
@@ -98,7 +132,7 @@ coord_t Screen::measureTextHeight(const char* text) {
 }
 
 void Screen::drawTextF(const char* format, ...) {
-  char foo[80];
+  char foo[500];
 
   va_list argptr;
   va_start(argptr, format);

@@ -21,10 +21,6 @@ void WordClockApp::update() {
     clearScreen();
     char words[500];
 
-    screen.setFont(Arial_20_Bold);
-
-    screen.setTextColor(currentColor++, bgColor());
-
 // It's about five twenty-six in the afternoon on Friday, January twenty-sixth, two-thousand and fifteen
     const char* wordsformat = "It's %s%s %s%s on %s, %s %s in the year two-thousand and %s.";
     const char* wordsformatpast = "It's %s%s minute%s past %s%s on %s, %s %s in the year two-thousand and %s.";
@@ -80,11 +76,11 @@ void WordClockApp::update() {
         break;
       }
 
-    int i = 0;
+    screen.setFont(Arial_20_Bold);
 
-    coord_t left = screen.clipLeft() + 8;
-    coord_t right = screen.clipRight() - 8;
-    screen.setCursor(left, screen.clipTop() + 12);
+    screen.setTextColor(currentColor++, bgColor());
+
+    screen.setCursor(screen.clipLeft() + 8, screen.clipTop() + 12);
     int hour = now.hour() == 0 ? 13 : now.hourFormat12();
 
     if (now.minute() < 15 && now.minute() > 0) {
@@ -102,38 +98,6 @@ void WordClockApp::update() {
       sprintf(words, wordsformat, about, hours[hour], minutes[now.minute()], timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
     }
 
-    while (words[i]) {
-      coord_t x = screen.getCursorX();
-      char curWord[20];
-      char* curPos = words+i;
-
-      char* nextSpace = strchr(curPos, ' ');
-      char* nextDash = strchr(curPos, '-');
-
-      char* next = nextSpace;
-      if (nextSpace && nextDash) {
-        next = min(nextSpace,nextDash);
-      } else if (nextDash) {
-        next = nextDash;
-      }
-
-      int wordLen = 0;
-
-      if (next == nullptr) {
-        wordLen = strlen(curPos);
-      } else {
-        wordLen = next - curPos + 1;
-      }
-
-      strncpy(curWord, curPos, wordLen);
-      curWord[wordLen] = 0;
-
-
-      if (x+screen.measureTextWidth(curWord) > right) {
-        screen.setCursor(left, screen.getCursorY()+screen.measureTextHeight(curWord)+screen.fontLineSpacing());
-      }
-      screen.drawText(curWord);
-      i+=wordLen;
-    }
+    screen.drawText(words, " -");
 }
 

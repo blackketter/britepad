@@ -41,7 +41,7 @@ class Screen : public ILI9341_t3 {
 
     void backlight(uint8_t brightness);
 
-    void drawText(const char* text);
+    void drawText(const char* text, const char* wrapChars = nullptr);
     void drawTextF(const char* format, ...);
     coord_t measureTextWidth(const char* text);
     coord_t measureTextHeight(const char* text);

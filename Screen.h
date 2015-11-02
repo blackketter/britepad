@@ -39,14 +39,17 @@ class Screen : public ILI9341_t3 {
       digitalWrite(21, LOW);   // set the backlight off
     };
 
-    void backlight(uint8_t brightness);
+    void setBacklight(uint8_t brightness);
+    uint8_t getBacklight();
 
     void drawText(const char* text, const char* wrapChars = nullptr);
+    const char* lineBreakChars = " -";
+
     void drawTextF(const char* format, ...);
     coord_t measureTextWidth(const char* text);
     coord_t measureTextHeight(const char* text);
 
-  	void drawLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color);
+  	void drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color);
 
     void pushFill(Direction dir, color_t color);
 
@@ -237,6 +240,7 @@ class Screen : public ILI9341_t3 {
 private:
     static const int BACKLIGHT_PIN = 21;
     static const long BACKLIGHT_FREQUENCY = 50000;
+    uint8_t backlightBrightness = 255;
 
 };
 

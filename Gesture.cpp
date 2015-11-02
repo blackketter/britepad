@@ -7,7 +7,7 @@ uint16_t Gesture::compare(const Gesture& to) {
   float dist = 0;
   for (int i = 0; i < getSampleCount(); i++) {
     if (draw) {
-      screen.drawLine(samples[i].x*screen.clipWidth()/2+screen.clipMidWidth(),
+      screen.drawWideLine(samples[i].x*screen.clipWidth()/2+screen.clipMidWidth(),
         samples[i].y*screen.clipHeight()/2+screen.clipMidHeight(),
         to.samples[i].x*screen.clipWidth()/2+screen.clipMidWidth(),
         to.samples[i].y*screen.clipHeight()/2+screen.clipMidHeight(), 4, draw);
@@ -39,7 +39,7 @@ bool Gesture::capture() {
   for (int i = 1; i < rawPointCount; i++) {
     pathLength += distance(rawPoints[i],rawPoints[i-1]);
    if (draw) {
-      screen.drawLine(rawPoints[i].x,rawPoints[i].y,rawPoints[i-1].x,rawPoints[i-1].y,8, screen.darkblue);
+      screen.drawWideLine(rawPoints[i].x,rawPoints[i].y,rawPoints[i-1].x,rawPoints[i-1].y,8, screen.darkblue);
  //     screen.fillCircle(rawPoints[i].x, rawPoints[i].y, 4, screen.blue);
     }
   }
@@ -83,7 +83,7 @@ bool Gesture::capture() {
   DEBUG_PARAM_LN("new samples", getSampleCount());
   if (draw) {
     for (int i = 1; i < getSampleCount(); i++) {
-      screen.drawLine(samples[i].x,samples[i].y,samples[i-1].x,samples[i-1].y,3,screen.darkred);
+      screen.drawWideLine(samples[i].x,samples[i].y,samples[i-1].x,samples[i-1].y,3,screen.darkred);
   //    screen.fillCircle(samples[i-1].x, samples[i-1].y, i == 1 ? 8 : 2, screen.red);
     }
   }
@@ -110,7 +110,7 @@ bool Gesture::capture() {
   DEBUG_PARAM_LN("theta", theta);
   if (draw) {
     for (int i = 1; i < getSampleCount(); i++) {
-      screen.drawLine(samples[i].x,samples[i].y,samples[i-1].x,samples[i-1].y,2,screen.darkgreen);
+      screen.drawWideLine(samples[i].x,samples[i].y,samples[i-1].x,samples[i-1].y,2,screen.darkgreen);
 //      screen.fillCircle(samples[i-1].x, samples[i-1].y, i == 1 ? 8 : 2, screen.green);
     }
   }

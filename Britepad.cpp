@@ -118,7 +118,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
       DEBUG_PARAM_LN("begin asmode", asMode);
       DEBUG_PARAM_LN("curr app mode", currApp->getAppMode());
 
-      currApp->begin(asMode);
+      currApp->setMode(asMode);
     }
     return;
   }
@@ -139,7 +139,8 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
 
 void backlightCallback(void* data) {
-  static uint8_t lastBacklight = 255;
+  uint8_t lastBacklight = screen.getBacklight();
+
   // if we detect proximity or touch, it's probably casting a shadow and we don't want to update
   millis_t lastTouch = min(pad.lastTouchedTime(ANY_PAD), pad.lastTouchedTime(PROXIMITY_SENSOR));
   if (pad.time() - lastTouch > PROXIMITY_DEAD_TIME) {
@@ -153,7 +154,7 @@ void backlightCallback(void* data) {
       lastBacklight--;
     }
 
-    screen.backlight(lastBacklight);
+    screen.setBacklight(lastBacklight);
   }
 }
 
@@ -182,7 +183,7 @@ void Britepad::begin() {
     anApp = getApp(count++);
   }
   screen.fillScreen(screen.black);
-  screen.backlight(screen.maxbrightness);
+  screen.setBacklight(screen.maxbrightness);
   backlightTimer.setMillis(ambientUpdateInterval, (timerCallback_t)backlightCallback, (void*)this, true);
   statusBarUpdateTimer.setMillis(1000, (timerCallback_t)statusBarCallback, (void*)this, true);
 }
@@ -213,7 +214,7 @@ void Britepad::idle() {
   } else if (currApp->isAppMode(SCREENSAVER) && (pad.down(SCREEN_PAD) || (pad.down(ANY_PAD) && !currApp->canBeInteractive()))) {
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
     if (currApp->canBeMouse()) {
-      currApp->begin(MOUSE);
+      currApp->setMode(MOUSE);
     } else {
       setNextApp(randomApp(MOUSE), MOUSE);
     }

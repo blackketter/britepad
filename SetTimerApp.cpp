@@ -16,7 +16,7 @@ void SetTimerApp::run() {
 
   if (!edit) {
     timer_app.setTime(timer_duration);
-    britepad.setNextApp(&timer_app);
+    setNextApp(&timer_app);
   } else {
     stime_t adj = 0;
     if (button[0].down()) { adj = 60; }
@@ -27,7 +27,7 @@ void SetTimerApp::run() {
 
     if (button[4].down()) {
       timer_app.setTime(timer_duration);
-      britepad.setNextApp(&timer_app);
+      setNextApp(&timer_app);
     }
 
     if (adj) {

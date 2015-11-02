@@ -61,7 +61,7 @@ void BritepadApp::drawStatusBar(bool update) {
                         (statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
 
-      AlarmApp* alarm = (AlarmApp*)britepad.getApp(AlarmApp::ID);
+      AlarmApp* alarm = (AlarmApp*)getApp(AlarmApp::ID);
       if (alarm && alarm->getAlarmEnabled()) {
         Icon(bellIcon).draw( screen.clipRight() - screen.measureTextWidth(shortTimeSpaced) - 10, 4, textColor) ;
       }
@@ -121,9 +121,7 @@ bool BritepadApp::canBeAppMode(AppMode b) {
       return false;
   }
 }
-
-void BritepadApp::begin(AppMode asMode) {
-
+void BritepadApp::setMode(AppMode asMode) {
   if (currAppMode != asMode) {
     if (currAppMode == MOUSE) {
       mouse.end();
@@ -134,10 +132,14 @@ void BritepadApp::begin(AppMode asMode) {
     }
   }
   currAppMode = asMode;
-  screen.fillScreen(bgColor());
+}
 
+void BritepadApp::begin(AppMode asMode) {
+  setMode(asMode);
+  screen.fillScreen(bgColor());
 };  // initialize app state and draw first screen
 
 void BritepadApp::end(BritepadApp* nextApp) {
+  releaseMem();
   currAppMode = INACTIVE;
 }

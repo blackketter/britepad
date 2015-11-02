@@ -41,7 +41,7 @@ void KeyApp::run() {
   }
 
   if (!isInvisible()) {
-    britepad.setNextApp(DEFAULT_APP);
+    exit();
   }
 }
 

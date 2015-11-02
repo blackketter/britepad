@@ -27,6 +27,7 @@
 #include "SetAlarmApp.h"
 #include "SetClockApp.h"
 #include "SetTimerApp.h"
+#include "StarfieldApp.h"
 #include "SplashApp.h"
 #include "StopwatchApp.h"
 #include "ThereminApp.h"
@@ -52,6 +53,8 @@ LauncherApp::LauncherApp() {
   setButton(SCREENSAVERS_SCREEN, 7,  new FadeDotsApp);
   setButton(SCREENSAVERS_SCREEN, 8,  new AnalogClockApp);
   setButton(SCREENSAVERS_SCREEN, 9,  new WordClockApp);
+  setButton(SCREENSAVERS_SCREEN, 10,  new StarfieldApp);
+
 
   setButton(SETTINGS_SCREEN, 8,   new SetClockApp);
   setButton(SETTINGS_SCREEN, 9,   new MuteApp);
@@ -185,7 +188,7 @@ void LauncherApp::run() {
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
     if (pad.up(SCREEN_PAD)) {
-      britepad.setNextApp(launchOnRelease, SCREENSAVER);
+      setNextApp(launchOnRelease, SCREENSAVER);
       launchOnRelease = nullptr;
     }
   } else if (pad.touched(SCREEN_PAD)) {
@@ -229,7 +232,7 @@ void LauncherApp::run() {
             launched->setEnabled(!launched->getEnabled());
             drawButton(b);
           } else {
-            britepad.setNextApp(launched);
+            setNextApp(launched);
           }
         }
         sound.click();

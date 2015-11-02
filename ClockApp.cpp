@@ -7,7 +7,7 @@
 void ClockApp::run() {
   millis_t mt = clock.millis();
 
-  if (mt - lastUpdate > updateInterval()) {
+  if (lastUpdate == 0 || mt - lastUpdate > updateInterval()) {
     update();
     lastUpdate = mt;
   }

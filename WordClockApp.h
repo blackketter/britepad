@@ -10,7 +10,7 @@ class WordClockApp : public ClockApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "wclk";
 
-    virtual millis_t updateInterval() { return 10000; }
+    virtual millis_t updateInterval() { return 23000; }
 
   protected:
     virtual void update();

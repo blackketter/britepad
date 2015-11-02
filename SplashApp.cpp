@@ -29,7 +29,7 @@ void SplashApp::begin(AppMode asMode) {
 
 void SplashApp::run() {
   if (clock.millis() - firstRun > splashDuration) {
-    britepad.setNextApp(SCREENSAVER_APP, SCREENSAVER);
+    setNextApp(SCREENSAVER_APP, SCREENSAVER);
   }
 
   int weight = 18;

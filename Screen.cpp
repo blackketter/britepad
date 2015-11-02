@@ -3,13 +3,18 @@
 #include "Screen.h"
 #include "Debug.h"
 
-void Screen::backlight(uint8_t brightness) {
+void Screen::setBacklight(uint8_t brightness) {
+  backlightBrightness = brightness;
   analogWriteFrequency(BACKLIGHT_PIN, BACKLIGHT_FREQUENCY);
   analogWrite(BACKLIGHT_PIN, brightness);
 }
 
+uint8_t Screen::getBacklight() {
+  return backlightBrightness;
+}
+
 // todo - make ends of lines square (or round)
-void Screen::drawLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color) {
+void Screen::drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color) {
   if (width == 1) {
     ILI9341_t3::drawLine(x0, y0, x1, y1, color);
   } else if (width < 1) {
@@ -73,8 +78,8 @@ void Screen::drawText(const char* text, const char* wrapChars) {
 
     coord_t left = screen.getCursorX();
     coord_t right = screen.clipRight();
-
-    while (text[i]) {
+    int textlen = strlen(text);
+    while (i < textlen) {
       coord_t x = screen.getCursorX();
       char curWord[20];
       const char* curPos = text+i;
@@ -97,6 +102,7 @@ void Screen::drawText(const char* text, const char* wrapChars) {
       if (x+screen.measureTextWidth(curWord) > right) {
         screen.setCursor(left, getCursorY()+fontHeight()+fontLineSpacing());
       }
+
       screen.drawText(curWord);
       i+=wordLen;
     }

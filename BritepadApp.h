@@ -13,6 +13,8 @@ class BritepadApp {
     virtual void end(BritepadApp* nextApp); // called after final run(), lets app clean up and tells it what the next app may be
 
     virtual void run() { if (isAppMode(MOUSE)) { mouse.run(); } };  // run current app state repeatedly, returns pointer to next app to run (or one of the constants below)
+    virtual void setMode(AppMode asMode);  // called automatically by begin() or when switching between modes
+
     static BritepadApp* STAY_IN_APP;
     static BritepadApp* DEFAULT_APP; // typically the MouseApp, but might be a timer when it's running
     static BritepadApp* BACK_APP;  // return to launcher
@@ -21,6 +23,7 @@ class BritepadApp {
     virtual const char* name() = 0;
     virtual appid_t id() = 0;
     bool isID(appid_t match);
+    BritepadApp* getApp(appid_t getID) { return britepad.getApp(getID); }
 
     virtual color_t buttonColor() { return screen.blue; }
 
@@ -37,6 +40,8 @@ class BritepadApp {
     AppMode getAppMode() { return currAppMode; }
     bool isAppMode(AppMode is) { return (is == getAppMode()); }
     bool canBeAppMode(AppMode b);
+    void setNextApp(BritepadApp* app, AppMode mode = INTERACTIVE) { britepad.setNextApp(app, mode); };
+    void exit() { setNextApp(DEFAULT_APP); };
 
     virtual bool canBeScreensaver() { return false; }
     virtual bool canBeInteractive() { return true; }
@@ -70,6 +75,8 @@ class BritepadApp {
 
     virtual void clearScreen() { screen.fillScreen(bgColor()); }
     void resetClipRect();  // resets clip rect to content area
+    virtual void releaseMem() {};  // release any memory temporarily allocated by the app.  called automatically by BritepadApp::end()
+
 
 };
 

@@ -1,7 +1,7 @@
 #include "WordClockApp.h"
 #include "Debug.h"
 
-const char* minutes[] = {
+static const char* minutes[] = {
 "","one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
 "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen",
 "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight", "twenty-nine",
@@ -9,22 +9,23 @@ const char* minutes[] = {
 "forty", "forty-one", "forty-two", "forty-three", "forty-four", "forty-five", "forty-six", "forty-seven", "forty-eight", "forty-nine",
 "fifty", "fifty-one", "fifty-two", "fifty-three", "fifty-four", "fifty-five", "fifty-six", "fifty-seven", "fifty-eight", "fifty-nine" };
 
-const char* days[] = {
+static const char* days[] = {
 "", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth",
 "eleventh", "twelfth", "thirteenth", "forteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "ninteenth", "twentieth",
 "twenty-first", "twenty-second", "twenty-third", "twenty-fourth", "twenty-fifth", "twenty-sixth", "twenty-seventh", "twenty-eighth", "twenty-ninth",
 "thirtieth", "thirty-first" };
 
-const char* hours[] = { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "noon", "midnight" };
+static const char* hours[] = { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "noon", "midnight" };
+
+// It's about five twenty-six in the afternoon on Friday, January twenty-sixth, two-thousand and fifteen
+static const char* wordsformat = "It's %s%s %s %son %s, %s %s, in the year two-thousand and %s.";
+static const char* wordsformatpast = "It's %s%s minute%s past %s %son %s, %s %s, in the year two-thousand and %s.";
+static const char* wordsformatto = "It's %s%s minute%s to %s %son %s, %s %s, in the year two-thousand and %s.";
+
 
 void WordClockApp::update() {
     clearScreen();
     char words[500];
-
-// It's about five twenty-six in the afternoon on Friday, January twenty-sixth, two-thousand and fifteen
-    const char* wordsformat = "It's %s%s %s%s on %s, %s %s in the year two-thousand and %s.";
-    const char* wordsformatpast = "It's %s%s minute%s past %s%s on %s, %s %s in the year two-thousand and %s.";
-    const char* wordsformatto = "It's %s%s minute%s to %s%s on %s, %s %s in the year two-thousand and %s.";
 
     const char* about;
     Time now;
@@ -57,22 +58,22 @@ void WordClockApp::update() {
       case 9:
       case 10:
       case 11:
-        timeofday = " in the morning";
+        timeofday = "in the morning ";
         break;
       case 13:
       case 14:
       case 15:
       case 16:
-        timeofday = " in the afternoon";
+        timeofday = "in the afternoon ";
         break;
       case 17:
       case 18:
       case 19:
       case 20:
-        timeofday = " in the evening";
+        timeofday = "in the evening ";
         break;
       default:
-        timeofday = " at night";
+        timeofday = "at night ";
         break;
       }
 
@@ -98,6 +99,6 @@ void WordClockApp::update() {
       sprintf(words, wordsformat, about, hours[hour], minutes[now.minute()], timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
     }
 
-    screen.drawText(words, " -");
+    screen.drawText(words, screen.lineBreakChars);
 }
 

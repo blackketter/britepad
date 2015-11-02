@@ -29,6 +29,7 @@ void InfoApp::run() {
   screen.drawTextF("Points captured: %d        \n", pad.getHistoryCount());
   screen.drawTextF("Proximity: %d    \n", pad.getProximityDistance());
   screen.drawTextF("Ambient: %d         \n", pad.getAmbientLight());
+  screen.drawTextF("Backlight: %d         \n", screen.getBacklight());
   screen.drawTextF("Free ram: %d            \n", FreeRam());
   screen.drawTextF("Uptime: %d\n", (long)(clock.millis()/1000));
   screen.drawTextF("FPS: %d      ", 1000/(pad.time()-lastUpdate));

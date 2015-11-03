@@ -115,10 +115,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
   if (newApp == currApp) {
     if (currApp->getAppMode() != asMode) {
-      DEBUG_PARAM_LN("begin asmode", asMode);
-      DEBUG_PARAM_LN("curr app mode", currApp->getAppMode());
-
-      currApp->setMode(asMode);
+       currApp->setMode(asMode);
     }
     return;
   }

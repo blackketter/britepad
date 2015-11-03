@@ -15,7 +15,7 @@ class Sound {
 
     void click();                           // plays a click sound
     void bump();                            // plays a bump sound
-    void swipe(Direction d);                    // plays a swipe sound
+    void swipe(direction_t d);                    // plays a swipe sound
 
     void tone(float freq, float volume = 1.0);  // plays a sine tone, set volume to zero to end, may fade in/out to avoid clicks
     void noise(float volume = 1.0);             // plays some white noise, may fade in/out to avoid clicks, set volume to zero to end

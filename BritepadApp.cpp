@@ -134,10 +134,11 @@ void BritepadApp::setMode(AppMode asMode) {
   currAppMode = asMode;
 }
 
+// initialize app state and clear screen
 void BritepadApp::begin(AppMode asMode) {
   setMode(asMode);
   screen.fillScreen(bgColor());
-};  // initialize app state and draw first screen
+};
 
 void BritepadApp::end(BritepadApp* nextApp) {
   releaseMem();

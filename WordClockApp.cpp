@@ -22,7 +22,6 @@ static const char* wordsformat = "It's %s%s %s %son %s, %s %s, in the year two-t
 static const char* wordsformatpast = "It's %s%s minute%s past %s %son %s, %s %s, in the year two-thousand and %s.";
 static const char* wordsformatto = "It's %s%s minute%s to %s %son %s, %s %s, in the year two-thousand and %s.";
 
-
 void WordClockApp::update() {
     clearScreen();
     char words[500];

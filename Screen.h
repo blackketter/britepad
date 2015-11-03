@@ -1,7 +1,7 @@
 #ifndef _SCREEN_
 #define _SCREEN_
 
-// get some shared typedefs, like Direction
+// get some shared typedefs, like direction_t
 #include "Types.h"
 
 #include <ILI9341_t3.h>
@@ -51,7 +51,7 @@ class Screen : public ILI9341_t3 {
 
   	void drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color);
 
-    void pushFill(Direction dir, color_t color);
+    void pushFill(direction_t dir, color_t color);
 
     color_t darken(color_t c);
     color_t brighten(color_t c, uint8_t offset = 64);

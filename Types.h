@@ -7,7 +7,7 @@
 #define nil (0)
 #endif
 
-enum Direction {
+enum direction_t {
   DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT
 };
 

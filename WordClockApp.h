@@ -18,5 +18,3 @@ class WordClockApp : public ClockApp {
  };
 
 #endif
-
-

@@ -7,8 +7,8 @@
 
 class AnalogClockApp : public ClockApp {
   public:
-    virtual void begin();
-    virtual void update();
+    void begin();
+    void update();
     virtual millis_t updateInterval() { return 100; }
 
     const char* name() { return "Analog"; };

@@ -15,16 +15,12 @@ static const char* days[] = {
 "twenty-first", "twenty-second", "twenty-third", "twenty-fourth", "twenty-fifth", "twenty-sixth", "twenty-seventh", "twenty-eighth", "twenty-ninth",
 "thirtieth", "thirty-first" };
 
-static const char* hours[] = { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "noon", "midnight" };
-
-// It's about five twenty-six in the afternoon on Friday, January twenty-sixth, two-thousand and fifteen
-static const char* wordsformat = "It's %s%s %s %son %s, %s %s, in the year two-thousand and %s.";
-static const char* wordsformatpast = "It's %s%s minute%s past %s %son %s, %s %s, in the year two-thousand and %s.";
-static const char* wordsformatto = "It's %s%s minute%s to %s %son %s, %s %s, in the year two-thousand and %s.";
+static const char* hours[] = { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve" };
 
 void WordClockApp::update() {
     clearScreen();
     char words[500];
+    const char* hour;
 
     const char* about;
     Time now;
@@ -40,10 +36,27 @@ void WordClockApp::update() {
     }
 
     const char* timeofday;
-    switch (now.hour()) {
+    int hournum = now.hour();
+
+    bool beforehour = now.minute() > 49 ||  now.minute() == 45;
+    if (beforehour) {
+      hournum++;
+    }
+
+    bool afterhour = now.minute() < 15 && now.minute() > 0;
+
+
+    switch (hournum) {
       case 0:
+        hour = "midnight";
+        timeofday = "";
+        break;
       case 12:
+        hour = "noon";
+        timeofday = "";
+        break;
       case 24:
+        hour = "midnight";
         timeofday = "";
         break;
       case 1:
@@ -57,45 +70,61 @@ void WordClockApp::update() {
       case 9:
       case 10:
       case 11:
+        hour = hours[hournum];
         timeofday = "in the morning ";
         break;
       case 13:
       case 14:
       case 15:
       case 16:
+        hour = hours[hournum-12];
         timeofday = "in the afternoon ";
         break;
       case 17:
       case 18:
       case 19:
       case 20:
+        hour = hours[hournum-12];
         timeofday = "in the evening ";
         break;
-      default:
+      default: // 21 and up
+        hour = hours[hournum-12];
         timeofday = "at night ";
         break;
       }
 
     screen.setFont(Arial_20_Bold);
-
     screen.setTextColor(currentColor++, bgColor());
-
     screen.setCursor(screen.clipLeft() + 8, screen.clipTop() + 12);
-    int hour = now.hour() == 0 ? 13 : now.hourFormat12();
 
-    if (now.minute() < 15 && now.minute() > 0) {
-      sprintf(words, wordsformatpast, about, minutes[now.minute()], (now.minute() == 1) ? "" : "s", hours[hour], timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
-    } else if (now.minute() > 44) {
-      int tohour = now.hourFormat12() + 1;
-      if (tohour > 12) {
-        tohour = 1;
-      }
-      if (now.hour() == 23) {
-        tohour = 13;
-      }
-      sprintf(words, wordsformatto, about, minutes[60-now.minute()], (now.minute() == 59) ? "" : "s", hours[tohour], timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+    if (now.minute() == 0) {
+      static const char* wordsonthehourformat = "It's %s%s %son %s, %s %s, two-thousand and %s.";
+      sprintf(words, wordsonthehourformat, about, hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+    } else if (now.minute() == 30) {
+      static const char* wordsformathalfpast = "It's %shalf past %s %son %s, %s %s, two-thousand and %s.";
+      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+    } else if (now.minute() == 15) {
+      static const char* wordsformathalfpast = "It's %squarter past %s %son %s, %s %s, two-thousand and %s.";
+      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+    } else if (now.minute() == 45) {
+      static const char* wordsformathalfpast = "It's %squarter to %s %son %s, %s %s, two-thousand and %s.";
+      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+    } else if (afterhour) {
+      static const char* wordsformatpast = "It's %s%s minute%s past %s %son %s, %s %s, two-thousand and %s.";
+      sprintf(words, wordsformatpast, about, minutes[now.minute()], (now.minute() == 1) ? "" : "s", hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+    } else if (beforehour) {
+      static const char* wordsformatto = "It's %s%s minute%s to %s %son %s, %s %s, two-thousand and %s.";
+      sprintf(words, wordsformatto, about, minutes[60-now.minute()], (now.minute() == 59) ? "" : "s", hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
     } else {
-      sprintf(words, wordsformat, about, hours[hour], minutes[now.minute()], timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+      static const char* wordsformat = "It's %s%s %s %son %s, %s %s, two-thousand and %s.";
+      if (hournum == 12) {
+         hour = "twelve";
+         timeofday = "in the afternoon ";
+      } else if (hournum == 0) {
+        hour = "twelve";
+        timeofday = "in the morning ";
+      }
+      sprintf(words, wordsformat, about, hour, minutes[now.minute()], timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
     }
 
     screen.drawText(words, screen.lineBreakChars);

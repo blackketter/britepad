@@ -7,7 +7,9 @@
 class StopwatchApp : public BritepadApp {
   public:
     void run();
-    void begin(AppMode asMode);
+    void begin();
+    void setAppMode(AppMode asMode);
+
     const char* name() { return "Stopwatch"; };
     bool displaysStatusBar() { return true; }
     bool wantsToBeScreensaver() { return !isReset(); }

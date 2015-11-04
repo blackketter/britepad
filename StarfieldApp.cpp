@@ -43,8 +43,8 @@ void StarfieldApp::setDirection(direction_t newDirection) {
   }
 }
 
-void StarfieldApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
+void StarfieldApp::begin() {
+  ScreensaverApp::begin();
   setDirection((direction_t)random(4));
 }
 

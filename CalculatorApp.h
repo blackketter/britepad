@@ -5,7 +5,7 @@
 
 class CalculatorApp : public BritepadApp {
   public:
-    virtual void begin(AppMode asMode);
+    virtual void begin();
     virtual void run();
     virtual bool disablesScreensavers() { return true; }
     BritepadApp* exitsTo() { return DEFAULT_APP; }

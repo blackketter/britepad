@@ -9,11 +9,11 @@ class Britepad;
 class BritepadApp {
   public:
     BritepadApp();
-    virtual void begin(AppMode asMode);  // initialize app state and draw first screen
+    virtual void begin();  // initialize app state and draw first screen
     virtual void end(BritepadApp* nextApp); // called after final run(), lets app clean up and tells it what the next app may be
 
     virtual void run() { if (isAppMode(MOUSE)) { mouse.run(); } };  // run current app state repeatedly, returns pointer to next app to run (or one of the constants below)
-    virtual void setMode(AppMode asMode);  // called automatically by begin() or when switching between modes
+    virtual void setAppMode(AppMode asMode);  // called automatically by begin() or when switching between modes
 
     static BritepadApp* STAY_IN_APP;
     static BritepadApp* DEFAULT_APP; // typically the MouseApp, but might be a timer when it's running

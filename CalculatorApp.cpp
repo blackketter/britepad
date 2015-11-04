@@ -58,8 +58,8 @@ const uint8_t backspaceIcon[] = {
  0b00000111, 0b11111111,
 };
 
-void CalculatorApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void CalculatorApp::begin() {
+  BritepadApp::begin();
   coord_t gap = 1;
   coord_t xorig = screen.clipLeft() + gap;
   coord_t yorig = screen.clipTop() + displayHeight + gap;

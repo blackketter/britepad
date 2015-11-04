@@ -6,7 +6,7 @@
 class StarfieldApp : public ScreensaverApp {
   public:
     void run();
-    void begin(AppMode asMode);
+    void begin();
 
     const char* name() { return "Stars"; };
 

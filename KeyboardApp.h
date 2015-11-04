@@ -7,7 +7,7 @@
 class KeyboardApp : public BritepadApp {
   public:
     void run();
-    void begin(AppMode asMode);
+    void begin();
     const char* name() { return "Keyboard"; };
     bool displaysStatusBar() { return true; }
     bool canBeInteractive() { return true; }

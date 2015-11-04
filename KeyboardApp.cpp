@@ -3,8 +3,8 @@
 #include "KeyboardApp.h"
 #include "Debug.h"
 
-void KeyboardApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void KeyboardApp::begin() {
+  BritepadApp::begin();
   kbd.init(screen.clipLeft(), screen.clipTop() + screen.clipHeight()/5, screen.clipWidth(), screen.clipHeight()*4/5,screen.cyan, Arial_14_Bold, screen.black);
   kbd.draw();
 }

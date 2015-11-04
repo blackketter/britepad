@@ -49,8 +49,8 @@ void SetClockApp::drawButtons() {
   }
 }
 
-void SetClockApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void SetClockApp::begin() {
+  BritepadApp::begin();
   lastDraw = 0;
   clearScreen();
   setDate = false;

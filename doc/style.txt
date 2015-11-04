@@ -15,7 +15,7 @@ Class names should be capitalized.
 
 Method, local variable and fields should have lower case initial caps
 
-Non-class types should end with _t
+Non-class types should be all lower case and end with _t
 
 Avoid long, long long, etc.  Use explicit length types (uint16_t) or, better yet, use data-specific types (color_t)
 

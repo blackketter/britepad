@@ -7,7 +7,7 @@
 
 class AnalogClockApp : public ClockApp {
   public:
-    virtual void begin(AppMode asMode);
+    virtual void begin();
     virtual void update();
     virtual millis_t updateInterval() { return 100; }
 

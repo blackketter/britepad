@@ -10,7 +10,7 @@ void SetAlarmApp::modeButtonPressed() {
   }
 };
 
-void SetAlarmApp::begin(AppMode asMode) {
+void SetAlarmApp::begin() {
 
   AlarmApp* alarm = (AlarmApp*)getApp(AlarmApp::ID);
   if (alarm) {
@@ -18,7 +18,7 @@ void SetAlarmApp::begin(AppMode asMode) {
     alarmEnabled = alarm->getAlarmEnabled();
   }
 
-  SetClockApp::begin(asMode);
+  SetClockApp::begin();
 }
 
 

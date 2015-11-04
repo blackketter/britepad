@@ -17,8 +17,8 @@ void drawLogo(color_t c) {
   screen.fillRect(midwidth, midheight, weight, ascender, c);
 }
 
-void SplashApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
+void SplashApp::begin() {
+  ScreensaverApp::begin();
   drawindex = 0;
   clearScreen();
   currColor = screen.red;

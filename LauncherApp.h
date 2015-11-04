@@ -16,7 +16,7 @@ enum ScreenNames {
 class LauncherApp : public BritepadApp {
   public:
     LauncherApp();
-    void begin(AppMode asMode);
+    void begin();
     void end(BritepadApp* newApp);
     void run();
     BritepadApp* exitsTo() { return DEFAULT_APP; }

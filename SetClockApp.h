@@ -10,7 +10,7 @@ class SetClockApp : public BritepadApp {
   public:
     SetClockApp() { theTime = &clock; };
 
-    void begin(AppMode asMode);
+    void begin();
     void end(BritepadApp* nextApp);
     void run();
     bool disablesScreensavers() { return true; };

@@ -63,8 +63,8 @@ void SetTimerApp::drawButtons() {
   }
 }
 
-void SetTimerApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void SetTimerApp::begin() {
+  BritepadApp::begin();
 
   if (edit) {
     clearScreen();

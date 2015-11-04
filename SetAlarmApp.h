@@ -8,7 +8,7 @@ class SetAlarmApp : public SetClockApp {
   public:
     SetAlarmApp() { theTime = &alarmTime; };
     void end(BritepadApp* nextApp);
-    void begin(AppMode asMode);
+    void begin();
 
 
     bool wantsToBeScreensaver() { return false; };

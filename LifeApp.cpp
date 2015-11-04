@@ -17,16 +17,21 @@
 //                                             conway,            maze,               mazectric
 const bool born[RULESETS][9] =    {{0,0,0,1,0,0,0,0,0},{0,0,0,1,0,0,0,0,0},{0,1,0,0,0,0,0,0}};
 const bool survive[RULESETS][9] = {{0,0,1,1,0,0,0,0,0},{0,1,1,1,1,1,0,0,0},{0,1,1,1,1,0,0,0}};
-void LifeApp::begin(AppMode asMode) {
+void LifeApp::begin() {
 
-  ScreensaverApp::begin(asMode);
+  ScreensaverApp::begin();
 
   dots.init(DOTSWIDE,DOTSHIGH,(color_t*)dotData);
 
-  if (asMode == SCREENSAVER) {
-    seed();
-  }
 };
+
+void LifeApp::setAppMode(AppMode asMode) {
+  DotsDisplayApp::setAppMode(asMode);
+
+  if (asMode == SCREENSAVER) {
+    reseed = true;
+  }
+}
 
 void LifeApp::run() {
   BritepadApp::run();

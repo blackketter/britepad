@@ -1,321 +1,31 @@
 #include "CalculatorApp.h"
 
 
-enum keys {
-  zero,
-  one,
-  two,
-  three,
-  four,
-  five,
-  six,
-  seven,
-  eight,
-  nine,
-  hex_a,
-  hex_b,
-  hex_c,
-  hex_d,
-  hex_e,
-  hex_f,
 
-  decimal,
-  enter,
-  clear,
-  backspace,
-  shift,
-  ee,
-  divide,
-  multiply,
-  add,
-  subtract,
-  inverse,
-  percent,
-  swap,
-  changeBase,
-  send,
-  hidden
-};
-
-enum keyMaps {
-  standard_map,
-  hex_map
-};
-
-
-const uint8_t backspaceIcon[] = {
- 16, 11,
- 0b00000111, 0b11111111,
- 0b00001111, 0b11111111,
- 0b00011100, 0b00000011,
- 0b00111001, 0b10110011,
- 0b01110001, 0b11110011,
- 0b11100000, 0b11100011,
- 0b01110001, 0b11110011,
- 0b00111001, 0b10110011,
- 0b00011100, 0b00000011,
- 0b00001111, 0b11111111,
- 0b00000111, 0b11111111,
-};
 
 void CalculatorApp::begin() {
   BritepadApp::begin();
+
   coord_t gap = 1;
   coord_t xorig = screen.clipLeft() + gap;
   coord_t yorig = screen.clipTop() + displayHeight + gap;
   coord_t xspacing = (screen.clipWidth()-gap)/keyColumns;
   coord_t yspacing = (screen.clipHeight()-displayHeight-gap)/keyRows;
   coord_t w = xspacing - gap;
-  coord_t h =  yspacing - gap;
-  color_t bg = screen.yellow;
-  font_t f = Arial_12_Bold;
-  bool highlight = false;
+  coord_t h = yspacing - gap;
 
-// button set 0
-// top row
-  coord_t x = xorig;
-  coord_t y = yorig;
-  uint8_t r = 0;
-  uint8_t c = 0;
-  uint8_t m = standard_map;
-
-  button[m][r][c].setID(shift);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"...",f);
-  x += xspacing;
-
-  button[m][r][c].setID(seven);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"7",f);
-  x += xspacing;
-
-  button[m][r][c].setID(eight);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"8",f);
-  x += xspacing;
-
-  button[m][r][c].setID(nine);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"9",f);
-  x += xspacing;
-
-  button[m][r][c].setID(divide);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"/",f);
-  x += xspacing;
-
-  button[m][r][c].setID(inverse);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"1/x",f);
-  x += xspacing;
-
-// second row
-  x = xorig;
-  y += yspacing;
-  r++;
-  c = 0;
-
-  button[m][r][c].setID(changeBase);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"hex",f);
-  x += xspacing;
-
-  button[m][r][c].setID(four);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"4",f);
-  x += xspacing;
-
-  button[m][r][c].setID(five);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"5",f);
-  x += xspacing;
-
-  button[m][r][c].setID(six);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"6",f);
-  x += xspacing;
-
-  button[m][r][c].setID(multiply);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"x",f);
-  x += xspacing;
-
-  button[m][r][c].setID(percent);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"%",f);
-  x += xspacing;
-
-// third row
-  x = xorig;
-  y += yspacing;
-  r++;
-  c = 0;
-
-  button[m][r][c].setID(backspace);
-  button[m][r][c++].init(x,y,w,h,screen.red,highlight,nullptr,f,screen.black,backspaceIcon);
-  x += xspacing;
-
-  button[m][r][c].setID(one);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"1",f);
-  x += xspacing;
-
-  button[m][r][c].setID(two);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"2",f);
-  x += xspacing;
-
-  button[m][r][c].setID(three);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"3",f);
-  x += xspacing;
-
-  button[m][r][c].setID(add);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"+",f);
-  x += xspacing;
-
-  button[m][r][c].setID(swap);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"x<>y",Arial_10_Bold);
-  x += xspacing;
-
-// fourth row
-  x = xorig;
-  y += yspacing;
-  r++;
-  c = 0;
-
-  button[m][r][c].setID(clear);
-  button[m][r][c++].init(x,y,w,h,screen.red,highlight,"clear",f);
-  x += xspacing;
-
-  button[m][r][c].setID(zero);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"0",f);
-  x += xspacing;
-
-  button[m][r][c].setID(decimal);
-  button[m][r][c++].init(x,y,w,h,screen.midgreen,highlight,".",f);
-  x += xspacing;
-
-  button[m][r][c].setID(ee);
-  button[m][r][c++].init(x,y,w,h,screen.midgreen,highlight,"E",f);
-  x += xspacing;
-
-  button[m][r][c].setID(subtract);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"-",f);
-  x += xspacing;
-
-  button[m][r][c].setID(enter);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"enter",f);
-  x += xspacing;
-
-
-// button set 1
-// top row
-  x = xorig;
-  y = yorig;
-  r = 0;
-  c = 0;
-  m = hex_map;
-
-  button[m][r][c].setID(shift);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"...",f);
-  x += xspacing;
-
-  button[m][r][c].setID(seven);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"7",f);
-  x += xspacing;
-
-  button[m][r][c].setID(eight);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"8",f);
-  x += xspacing;
-
-  button[m][r][c].setID(nine);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"9",f);
-  x += xspacing;
-
-  button[m][r][c].setID(hex_a);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"a",f);
-  x += xspacing;
-
-  button[m][r][c].setID(add);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"+",f);
-  x += xspacing;
-
-// second row
-  x = xorig;
-  y += yspacing;
-  r++;
-  c = 0;
-
-  button[m][r][c].setID(changeBase);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"dec",f);
-  x += xspacing;
-
-  button[m][r][c].setID(four);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"4",f);
-  x += xspacing;
-
-  button[m][r][c].setID(five);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"5",f);
-  x += xspacing;
-
-  button[m][r][c].setID(six);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"6",f);
-  x += xspacing;
-
-  button[m][r][c].setID(hex_b);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"b",f);
-  x += xspacing;
-
-  button[m][r][c].setID(subtract);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"-",f);
-  x += xspacing;
-
-// third row
-  x = xorig;
-  y += yspacing;
-  r++;
-  c = 0;
-
-  button[m][r][c].setID(backspace);
-  button[m][r][c++].init(x,y,w,h,screen.red,highlight,nullptr,f,screen.black,backspaceIcon);
-  x += xspacing;
-
-  button[m][r][c].setID(one);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"1",f);
-  x += xspacing;
-
-  button[m][r][c].setID(two);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"2",f);
-  x += xspacing;
-
-  button[m][r][c].setID(three);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"3",f);
-  x += xspacing;
-
-  button[m][r][c].setID(hex_c);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"c",f);
-  x += xspacing;
-
-  button[m][r][c].setID(multiply);
-  button[m][r][c++].init(x,y,w,h,screen.cyan,highlight,"x",Arial_10_Bold);
-  x += xspacing;
-
-// fourth row
-  x = xorig;
-  y += yspacing;
-  r++;
-  c = 0;
-
-  button[m][r][c].setID(clear);
-  button[m][r][c++].init(x,y,w,h,screen.red,highlight,"clear",f);
-  x += xspacing;
-
-  button[m][r][c].setID(zero);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"0",f);
-  x += xspacing;
-
-  button[m][r][c].setID(hex_f);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"f",f);
-  x += xspacing;
-
-  button[m][r][c].setID(hex_e);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"e",f);
-  x += xspacing;
-
-  button[m][r][c].setID(hex_d);
-  button[m][r][c++].init(x,y,w,h,screen.green,highlight,"d",f);
-  x += xspacing;
-
-  button[m][r][c].setID(enter);
-  button[m][r][c++].init(x,y,w,h,bg,highlight,"enter",f);
-  x += xspacing;
-
+  // lay out button according to how much space we have on the screen
+  for (int m = 0; m<keyMaps;m++) {
+    coord_t y = yorig;
+    for (int r = 0; r<keyRows;r++) {
+      coord_t x = xorig;
+      for (int c = 0; c<keyColumns;c++) {
+        button[m][r][c].setBounds(x,y,w,h);
+        x += xspacing;
+      }
+    y += yspacing;
+    }
+  }
   drawKeys();
   drawDisplay();
 }
@@ -410,6 +120,67 @@ void CalculatorApp::handleKey(uint8_t keyPressed) {
     case send:
       keySend();
       break;
+
+    case square_f:
+      keySquare();
+      break;
+    case cube_f:
+      keyCube();
+      break;
+    case pow_f:
+      keyPow();
+      break;
+    case exp_f:
+      keyExp();
+      break;
+    case pow10_f:
+      keyPow10();
+      break;
+    case sqrt_f:
+      keySqrt();
+      break;
+    case cubert_f:
+      keyCubert();
+      break;
+    case xroot_f:
+      keyXroot();
+      break;
+    case ln_f:
+      keyLn();
+      break;
+    case log10_f:
+      keyLog10();
+      break;
+    case sin_f:
+      keySin();
+      break;
+    case cos_f:
+      keyCos();
+      break;
+    case tan_f:
+      keyTan();
+      break;
+    case pi_f:
+      keyPi();
+      break;
+    case e_f:
+      keyE();
+      break;
+    case asin_f:
+      keyAsin();
+      break;
+    case acos_f:
+      keyAcos();
+      break;
+    case atan_f:
+      keyAtan();
+      break;
+    case logy_f:
+      keyLogy();
+      break;
+    case log2_f:
+      keyLog2();
+      break;
     default:
       break;
   }
@@ -478,9 +249,12 @@ void CalculatorApp::keySubtract() {
   push(pop()-value);
 }
 
-// todo: implement these
 void CalculatorApp::keyShift() {
-  sound.beep();
+  if (curKeyMap == sci_map) {
+    setKeyMap(basic_map);
+  } else {
+    setKeyMap(sci_map);
+  }
 }
 
 void CalculatorApp::keyBase() {
@@ -489,7 +263,7 @@ void CalculatorApp::keyBase() {
     setKeyMap(hex_map);
     base = 16;
   } else {
-    setKeyMap(standard_map);
+    setKeyMap(basic_map);
     base = 10;
   }
   drawDisplay();

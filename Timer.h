@@ -11,10 +11,10 @@ class Timer {
   public:
     Timer() {};
 
-    void setSecs(time_t setTime, timerCallback_t callback = nil, void* callbackData = nil, bool repeat = false);
-    void setMillis(millis_t millisDur, timerCallback_t callback = nil, void* callbackData = nil, bool repeat = false);
+    void setSecs(time_t setTime, timerCallback_t callback = nullptr, void* callbackData = nullptr, bool repeat = false);
+    void setMillis(millis_t millisDur, timerCallback_t callback = nullptr, void* callbackData = nullptr, bool repeat = false);
 
-    void setClockTime(time_t clockTimeSet, timerCallback_t callback = nil, void* callbackData = nil);
+    void setClockTime(time_t clockTimeSet, timerCallback_t callback = nullptr, void* callbackData = nullptr);
 
     time_t remainingSecs();  // seconds from now (works on both kinds of timer)
     long remainingMillis();  // millis from now (works on both kinds of timer)
@@ -38,8 +38,8 @@ class Timer {
     static void idle();    // idle so callbacks get a chance to run
 
   private:
-    Timer* next = nil;
-    Timer* prev = nil;
+    Timer* next = nullptr;
+    Timer* prev = nullptr;
 
     time_t clockTime = 0;
 
@@ -47,8 +47,8 @@ class Timer {
     unsigned long millisDur = 0;
     bool repeatTimer;
 
-    timerCallback_t cb = nil;
-    void* cbd = nil;
+    timerCallback_t cb = nullptr;
+    void* cbd = nullptr;
 
     void insert(timerCallback_t callback, void* callbackData);
     void remove();

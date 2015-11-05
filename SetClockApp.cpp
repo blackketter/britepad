@@ -123,7 +123,6 @@ void SetClockApp::run() {
     if ((time_t)abs(adj) < clock.secsPerDay) {
       resetSecs();
     }
-    // todo: cancel alarms that may be running
   }
 
   drawTime();

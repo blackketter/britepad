@@ -38,7 +38,7 @@ LauncherApp theLauncherApp;
 LauncherApp::LauncherApp() {
   for (int s = 0; s < TOTAL_SCREENS; s++) {
     for (int i = 0; i < buttons_per_screen; i++) {
-      setButton(s, i,nil);
+      setButton(s, i,nullptr);
     }
   }
 
@@ -175,7 +175,7 @@ BritepadApp* LauncherApp::getButton(int i) {
   if ((i >= 0) && (i < buttons_per_screen)) {
     return apps[currentScreen()][i];
   } else {
-    return nil;
+    return nullptr;
   }
 };
 
@@ -226,7 +226,6 @@ void LauncherApp::run() {
             drawButton(b, false);
           }
         } else {
-          // todo handle screensavers
           if (launched->canBeScreensaver()) {
             // toggle the enabledness of the screensaver
             launched->setEnabled(!launched->getEnabled());

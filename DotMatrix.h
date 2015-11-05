@@ -16,7 +16,7 @@ class DotMatrix {
     inline void setDot(int x, int y, color_t c) { dots[x*dots_high+y] = c; }
     inline color_t getDot(int x, int y) { return dots[x*dots_high+y]; }
 
-    virtual bool hit(coord_t x, coord_t y, int* hitx = nil, int* hity = nil);
+    virtual bool hit(coord_t x, coord_t y, int* hitx = nullptr, int* hity = nullptr);
     void setBGColor(color_t bg) { bgColor = bg; };
 
   protected:

@@ -29,7 +29,7 @@ BritepadApp* Britepad::getApp(appid_t appID) {
       nextapp = getApp(index++);
     }
   }
-  return nil;
+  return nullptr;
 }
 
 BritepadApp* Britepad::randomApp(AppMode m) {
@@ -69,7 +69,7 @@ BritepadApp* Britepad::randomApp(AppMode m) {
     nextapp = getApp(index++);
   }
 //  DEBUG_PARAM_LN("No random app avaialble for mode ", m);
-  return nil;
+  return nullptr;
 }
 
 BritepadApp* Britepad::wantsToBeScreensaver() {
@@ -80,7 +80,7 @@ BritepadApp* Britepad::wantsToBeScreensaver() {
       return nextapp;
     nextapp = getApp(count++);
   }
-  return nil;
+  return nullptr;
 }
 
 void Britepad::addApp(BritepadApp* app) {
@@ -92,7 +92,7 @@ void Britepad::addApp(BritepadApp* app) {
 }
 
 BritepadApp* Britepad::getApp(int appIndex) {
-  return (appIndex >= appCount) ? nil : apps[appIndex];
+  return (appIndex >= appCount) ? nullptr : apps[appIndex];
 }
 
 
@@ -255,7 +255,7 @@ void Britepad::idle() {
   if (currApp) {
     currApp->run();
   } else {
-    DEBUG_LN("currApp nil!");
+    DEBUG_LN("currApp nullptr!");
   }
 
   // make sure the Timers get a chance to call their callbacks

@@ -7,16 +7,22 @@
 class Button {
   public:
     Button() {};
-    Button(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nil, font_t f = Arial_9_Bold, color_t titleColor = screen.black, const uint8_t* iconData = nullptr) {
+    Button(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr) {
       init(x,y,w,h,color,highlight,title,f,titleColor,iconData);
     };
 
-    Button(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nil, font_t f = Arial_9_Bold, color_t titleColor = screen.black, const uint8_t* iconData = nullptr) {
+    Button(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr) {
      init(x,y,r,color,highlight,title,f,titleColor,iconData);
-    }
+    };
 
-    virtual void init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nil, font_t f = Arial_9_Bold, color_t titleColor = screen.black, const uint8_t* iconData = nullptr);
-    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nil, font_t f = Arial_9_Bold, color_t titleColor = screen.black, const uint8_t* iconData = nullptr);
+    // constructor for positioning later
+    Button(color_t color, const char* title, font_t f, color_t titleColor, icon_t iconData, uint8_t id) {
+      init(0,0,0,0,color,false,title,f,titleColor,iconData);
+      setID(id);
+    };
+
+    virtual void init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr);
+    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr);
 
     virtual void draw();
 
@@ -28,6 +34,8 @@ class Button {
     virtual void setTitle(const char* newTitle) { titleStr = newTitle; }
     virtual void setTitleFont(font_t newFont) { titleFont = newFont; }
     virtual void setIcon(uint8_t* iconptr) { icon = iconptr; }
+    virtual void setBounds(coord_t x, coord_t y, coord_t w, coord_t h) { xpos = x; ypos = y; width = w; height = h; }
+
     // todo: make setting the visibility cause a redraw or erase
     virtual void setVisible(bool visibility) { visible = visibility; }
 

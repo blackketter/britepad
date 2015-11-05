@@ -2,7 +2,7 @@
 #include "Debug.h"
 #include "Clock.h"
 
-Timer* Timer::first = nil;
+Timer* Timer::first = nullptr;
 
 void Timer::setClockTime(time_t clockTimeSet, timerCallback_t callback, void* callbackData) {
   cancel();
@@ -166,7 +166,7 @@ void Timer::insert(timerCallback_t callback, void* callbackData) {
   remove();
   if (callback) {
     next = first;
-    prev = nil;
+    prev = nullptr;
     if (first) {
       first->prev = this;
     }
@@ -180,7 +180,7 @@ void Timer::remove() {
   if (cb) {
     Timer* t = first;
 
-    while (t != nil) {
+    while (t != nullptr) {
       if (t == this) {
         if (this->prev) {
           prev->next = next;
@@ -190,16 +190,16 @@ void Timer::remove() {
         if (this->next) {
           next->prev = prev;
         }
-        t = nil;
+        t = nullptr;
       } else {
         t = t->next;
       }
     }
 
-    prev = nil;
-    next = nil;
-    cb = nil;
-    cbd = nil;
+    prev = nullptr;
+    next = nullptr;
+    cb = nullptr;
+    cbd = nullptr;
     repeatTimer = 0;
   }
 }

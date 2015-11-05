@@ -11,18 +11,18 @@
 class Icon {
 
 public:
-  Icon(const uint8_t* icondata) { data = icondata; };
+  Icon(icon_t icondata) { data = icondata; };
   Icon() {};
 
-  void setData(const uint8_t* icondata) { data = icondata; };
-  const uint8_t* getData() { return data; }
+  void setData(icon_t icondata) { data = icondata; };
+  icon_t getData() { return data; }
   coord_t width() { return data ? (coord_t)data[0] : 0; }
   coord_t height() { return data ? (coord_t)data[1] : 0; }
   void draw(coord_t x, coord_t y, color_t color = screen.white) { if (data) screen.drawBitmap(x, y, &data[2], width(), height(), color); }
   void draw(coord_t x, coord_t y, color_t fgcolor, color_t bgcolor) { if (data) screen.drawBitmap(x, y, &data[2], width(), height(), fgcolor, bgcolor); }
 
 private:
-  const uint8_t* data = nullptr;
+  icon_t data = nullptr;
 };
 
 #endif

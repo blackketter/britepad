@@ -4,9 +4,7 @@
 #define DEBUG_ON 1
 #include "Debug.h"
 
-// todo - fix flicker
 // todo - show score, have multiple lives
-// todo - adjust angle based on where on the paddle
 // todo - speed up over time
 // todo - make it run as a self-playing screensaver
 

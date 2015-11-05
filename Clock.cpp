@@ -93,8 +93,6 @@ time_t getRTCTime()
 }
 
 Clock::Clock() {
-    // todo - if the clock has NEVER been set, then set it to a reasonable time
-
     setSyncProvider(getRTCTime);
     if (timeStatus()!= timeSet || year() < 2015) {
 //      DEBUG_LN("Unable to sync with the RTC");

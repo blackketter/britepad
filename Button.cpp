@@ -1,11 +1,8 @@
 #include "Button.h"
 #include "Debug.h"
 
-void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, const uint8_t* iconData) {
-  xpos = x;
-  ypos = y;
-  width = w;
-  height = h;
+void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData) {
+  setBounds(x,y,w,h);
   colored = color;
   highlighted = highlight;
   titleStr = title;
@@ -105,7 +102,7 @@ void Button::drawTitle() {
   screen.drawText(drawStr);
 }
 
-void Button::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, const uint8_t* iconData) {
+void Button::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData) {
   xpos = x - r;
   ypos = y - r;
   width = r*2;

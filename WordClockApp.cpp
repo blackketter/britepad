@@ -84,10 +84,11 @@ void WordClockApp::update() {
       case 18:
       case 19:
       case 20:
+      case 21:
         hour = hours[hournum-12];
         timeofday = "in the evening ";
         break;
-      default: // 21 and up
+      default: // 22 and up
         hour = hours[hournum-12];
         timeofday = "at night ";
         break;

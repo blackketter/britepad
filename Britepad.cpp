@@ -145,11 +145,24 @@ void backlightCallback(void* data) {
     // any ambient light greater than 255 is full brightness, 1 is the minimums
     uint8_t light = max(1,min( pad.getAmbientLight(), 255));
 
-    // only ramp up/down one tick at a time
+    int delta;
+    const int downRate = 2;
+    const int upRate = 4;
+    // ramp down slow, ramp up fast
     if (lastBacklight < light) {
-      lastBacklight++;
+      if ((light - lastBacklight) > upRate) {
+        delta = upRate;
+      } else {
+        delta = 1;
+      }
+      lastBacklight += delta;
     } else if (lastBacklight > light) {
-      lastBacklight--;
+      if ((lastBacklight - light) > downRate) {
+        delta = downRate;
+      } else {
+        delta = 1;
+      }
+      lastBacklight -= delta;
     }
 
     screen.setBacklight(lastBacklight);

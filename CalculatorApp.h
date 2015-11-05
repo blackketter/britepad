@@ -2,6 +2,7 @@
 #define _CalculatorApp_
 #include "BritepadApp.h"
 #include "Button.h"
+#include "Icons.h"
 
 enum keys {
   zero,
@@ -64,21 +65,6 @@ enum keyMaps {
   basic_map,
   hex_map,
   sci_map
-};
-
-const uint8_t backspaceIcon[] = {
- 16, 11,
- 0b00000111, 0b11111111,
- 0b00001111, 0b11111111,
- 0b00011100, 0b00000011,
- 0b00111001, 0b10110011,
- 0b01110001, 0b11110011,
- 0b11100000, 0b11100011,
- 0b01110001, 0b11110011,
- 0b00111001, 0b10110011,
- 0b00011100, 0b00000011,
- 0b00001111, 0b11111111,
- 0b00000111, 0b11111111,
 };
 
 class CalculatorApp : public BritepadApp {

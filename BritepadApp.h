@@ -3,6 +3,7 @@
 
 #include "BritepadShared.h"
 #include "Debug.h"
+#include "Icon.h"
 
 class Britepad;
 
@@ -21,6 +22,7 @@ class BritepadApp {
     static BritepadApp* SCREENSAVER_APP; // go to a screensaver
 
     virtual const char* name() = 0;
+    virtual Icon getIcon() { return icon; };
     virtual appid_t id() = 0;
     bool isID(appid_t match);
     BritepadApp* getApp(appid_t getID) { return britepad.getApp(getID); }
@@ -70,6 +72,7 @@ class BritepadApp {
   protected:
     bool enabled = true;
     coord_t statusBarHeight = 16;
+    Icon icon;
 
     AppMode currAppMode = INACTIVE;
 

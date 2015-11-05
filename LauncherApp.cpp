@@ -2,6 +2,7 @@
 #include "LauncherApp.h"
 #include "ScreensaverApp.h"
 #include "Debug.h"
+#include "Icon.h"
 
 // apps are included here
 #include "AlarmApp.h"
@@ -61,16 +62,16 @@ LauncherApp::LauncherApp() {
   setButton(SETTINGS_SCREEN, 10,  new SetAlarmApp);
 
 // middle screen has quick buttons
-  setButton(KEYS_SCREEN, 0,  new KeyApp("Vol+", KEY_MEDIA_VOLUME_INC, screen.bluegreen));
-  setButton(KEYS_SCREEN, 4,  new KeyApp("Vol-", KEY_MEDIA_VOLUME_DEC, screen.bluegreen));
-  setButton(KEYS_SCREEN, 8,  new KeyApp("Mute", KEY_MEDIA_MUTE, screen.blue));
+  setButton(KEYS_SCREEN, 0,  new KeyApp(volPlusIcon, KEY_MEDIA_VOLUME_INC, screen.bluegreen));
+  setButton(KEYS_SCREEN, 4,  new KeyApp(volMinusIcon, KEY_MEDIA_VOLUME_DEC, screen.bluegreen));
+  setButton(KEYS_SCREEN, 8,  new KeyApp(muteIcon, KEY_MEDIA_MUTE, screen.blue));
 
   setButton(KEYS_SCREEN, 5,  new KeyboardApp);
   setButton(KEYS_SCREEN, 6,  new CalculatorApp);
 
-  setButton(KEYS_SCREEN, 1,  new KeyApp("<<", KEY_MEDIA_PREV_TRACK, screen.orange));
-  setButton(KEYS_SCREEN, 2,  new KeyApp("||", KEY_MEDIA_PLAY_PAUSE, screen.orange));
-  setButton(KEYS_SCREEN, 3,  new KeyApp(">>", KEY_MEDIA_NEXT_TRACK, screen.orange));
+  setButton(KEYS_SCREEN, 1,  new KeyApp(rewIcon, KEY_MEDIA_PREV_TRACK, screen.orange));
+  setButton(KEYS_SCREEN, 2,  new KeyApp(pauseIcon, KEY_MEDIA_PLAY_PAUSE, screen.orange));
+  setButton(KEYS_SCREEN, 3,  new KeyApp(ffIcon, KEY_MEDIA_NEXT_TRACK, screen.orange));
 
 // just for testing
 //  setButton(KEYS_SCREEN, 9,  new KeyApp("My Name", "Dean\nBlackketter"));
@@ -147,10 +148,17 @@ void LauncherApp::drawButton(int i, bool highlighted) {
   screen.fillCircle( x, y, radius,
     highlighted ? screen.mix(apps[currentScreen()][i]->buttonColor(), screen.black) : apps[currentScreen()][i]->buttonColor());
   const char* name = apps[currentScreen()][i]->name();
-  screen.setFont(Arial_9_Bold);
-  screen.setTextColor(screen.black);
-  screen.setCursor( x - screen.measureTextWidth(name) / 2, y - screen.measureTextHeight(name)/2);
-  screen.drawText(name);
+  if (name) {
+    screen.setFont(Arial_9_Bold);
+    screen.setTextColor(screen.black);
+    screen.setCursor( x - screen.measureTextWidth(name) / 2, y - screen.measureTextHeight(name)/2);
+    screen.drawText(name);
+  } else {
+    Icon icon = apps[currentScreen()][i]->getIcon();
+    if (icon.getData()) {
+      icon.draw(x - icon.width()/2, y - icon.height()/2, screen.black);
+    }
+  }
 }
 
 int LauncherApp::buttonHit(int x, int y) {

@@ -19,6 +19,5 @@ enum AppMode {
 typedef long long millis_t;
 typedef signed long stime_t; // signed time for relative time, deltas, adjustments, etc.
 typedef const char* appid_t;
-typedef const uint8_t* icon_t;
 
 #endif

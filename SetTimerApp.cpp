@@ -11,11 +11,18 @@ SetTimerApp::SetTimerApp(const char* name, time_t duration) : BritepadApp() {
 SetTimerApp::SetTimerApp() : BritepadApp() {
 
 }
+bool SetTimerApp::customTimerRunning() {
+  return (edit && timer_app.isRunning() && timer_app.getTime() == timer_duration);
+}
 
 void SetTimerApp::run() {
 
-  if (!edit) {
-    timer_app.setTime(timer_duration);
+  if (customTimerRunning()) {
+    setNextApp(&timer_app);
+  } else if (!edit) {
+    if (timer_app.getTime() != timer_duration) {
+      timer_app.setTime(timer_duration);
+    }
     setNextApp(&timer_app);
   } else {
     stime_t adj = 0;
@@ -66,7 +73,7 @@ void SetTimerApp::drawButtons() {
 void SetTimerApp::begin() {
   BritepadApp::begin();
 
-  if (edit) {
+  if (edit && !customTimerRunning()) {
     clearScreen();
 
     int ytop = screen.clipTop() + screen.clipHeight()/6;

@@ -18,13 +18,15 @@ class TimerApp : public StopwatchApp {
     static constexpr appid_t ID = "timr";
 
     void setTime(time_t t);
+    time_t getTime() { return timer_dur; }
+    time_t getTimeRemaining() { return mytimer.remainingSecs(); }
     void alarm();
+    virtual bool isRunning() { return mytimer.isRunning(); }  // are we counting down?
 
   private:
     time_t timerTime() { return timer_dur; };
 
     virtual bool isPaused() { return mytimer.isPaused(); };
-    virtual bool isRunning() { return mytimer.isRunning(); }  // are we counting down?
     virtual bool isReset() { return (mytimer.isReset() || (isPaused()  &&  (mytimer.remainingSecs() == timerTime()))); }
 
     virtual void pause() { mytimer.pause(); }

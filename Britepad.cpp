@@ -140,8 +140,8 @@ void backlightCallback(void* data) {
   uint8_t lastBacklight = screen.getBacklight();
 
   // if we detect proximity or touch, it's probably casting a shadow and we don't want to update
-  millis_t lastTouch = min(pad.lastTouchedTime(ANY_PAD), pad.lastTouchedTime(PROXIMITY_SENSOR));
-  if (pad.time() - lastTouch > PROXIMITY_DEAD_TIME) {
+  millis_t lastTouch = max(pad.lastTouchedTime(ANY_PAD), pad.lastTouchedTime(PROXIMITY_SENSOR));
+  if ((pad.time() - lastTouch) > PROXIMITY_DEAD_TIME) {
     // any ambient light greater than 255 is full brightness, 1 is the minimums
     uint8_t light = max(1,min( pad.getAmbientLight(), 255));
 

@@ -29,7 +29,7 @@ void SplashApp::begin() {
 
 void SplashApp::run() {
   if (clock.millis() - firstRun > splashDuration) {
-    setNextApp(SCREENSAVER_APP, SCREENSAVER);
+    launchApp(SCREENSAVER_APP, SCREENSAVER);
   }
 
   int weight = 18;

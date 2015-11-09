@@ -12,7 +12,7 @@ void SetAlarmApp::modeButtonPressed() {
 
 void SetAlarmApp::begin() {
 
-  AlarmApp* alarm = (AlarmApp*)getApp(AlarmApp::ID);
+  AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
   if (alarm) {
     alarmTime.set(alarm->getAlarmTime());
     alarmEnabled = alarm->getAlarmEnabled();
@@ -24,7 +24,7 @@ void SetAlarmApp::begin() {
 
 void SetAlarmApp::end(BritepadApp* nextApp) {
 
-  AlarmApp* alarm = (AlarmApp*)getApp(AlarmApp::ID);
+  AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
   if (alarm) {
     alarm->setAlarmTime(alarmTime.nextOccurance());
     alarm->setAlarmEnabled(alarmEnabled);

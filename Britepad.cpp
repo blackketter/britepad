@@ -13,21 +13,15 @@
 
 #define PROXIMITY_DEAD_TIME (1000)
 
-Britepad::Britepad() {
+BritepadApp* Britepad::getAppByID(appid_t appID) {
 
-}
-
-BritepadApp* Britepad::getApp(appid_t appID) {
-
-  int index = 0;
-  BritepadApp* nextapp = getApp(index++);
+  BritepadApp* nextapp = appList;
   while (nextapp) {
 
     if (nextapp->isID(appID)) {
       return nextapp;
-    } else {
-      nextapp = getApp(index++);
     }
+    nextapp = nextapp->getNextApp();
   }
   return nullptr;
 }
@@ -44,20 +38,18 @@ BritepadApp* Britepad::randomApp(AppMode m) {
 
   // count the enabled apps
   int count = 0;
-  int index = 0;
-  BritepadApp* nextapp = getApp(index++);
+  BritepadApp* nextapp = appList;
   while (nextapp) {
     if (nextapp->canBeAppMode(m) && ((nextapp)->getEnabled())) {
       count++;
     }
-    nextapp = getApp(index++);
+    nextapp = nextapp->getNextApp();
   }
 
   // pick a random one
   count = random(count);
 
-  index = 0;
-  nextapp = getApp(index++);
+  nextapp = appList;
   while (nextapp) {
     if (nextapp->canBeAppMode(m) && ((nextapp)->getEnabled())) {
       if (count == 0) {
@@ -66,35 +58,27 @@ BritepadApp* Britepad::randomApp(AppMode m) {
         count--;
       }
     }
-    nextapp = getApp(index++);
+    nextapp = nextapp->getNextApp();
   }
 //  DEBUG_PARAM_LN("No random app avaialble for mode ", m);
   return nullptr;
 }
 
 BritepadApp* Britepad::wantsToBeScreensaver() {
-  int count = 0;
-  BritepadApp* nextapp = getApp(count++);
+
+  BritepadApp* nextapp = appList;
   while (nextapp) {
     if (nextapp->wantsToBeScreensaver())
       return nextapp;
-    nextapp = getApp(count++);
+    nextapp = nextapp->getNextApp();
   }
   return nullptr;
 }
 
 void Britepad::addApp(BritepadApp* app) {
-  if (appCount < maxApps) {
-    apps[appCount++] = app;
-  } else {
-    DEBUG_LN("TOO MANY APPS!");
-  }
+  app->setNextApp(appList);
+  appList = app;
 }
-
-BritepadApp* Britepad::getApp(int appIndex) {
-  return (appIndex >= appCount) ? nullptr : apps[appIndex];
-}
-
 
 void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
@@ -108,7 +92,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     newApp = randomApp(SCREENSAVER);
     asMode = SCREENSAVER;
   } else if (newApp == BritepadApp::BACK_APP) {
-    newApp = getApp(LauncherApp::ID);
+    newApp = getAppByID(LauncherApp::ID);
     asMode = INTERACTIVE;
   }
 
@@ -180,19 +164,20 @@ void Britepad::updateStatusBar() {
 
 void Britepad::begin() {
 
-  // the launcher owns the apps and has created a splash app
-  setApp(getApp(SplashApp::ID), SCREENSAVER);
+  // assumes that the splashapp has been created and added to list
+  setApp(getAppByID(SplashApp::ID), SCREENSAVER);
 
 // show the apps that have been loaded
-  DEBUG_PARAM_LN("app count", appsAdded());
-  int count=0;
-  BritepadApp* anApp = getApp(count++);
-  while (anApp) {
-//    DEBUG_LN(count);
+  BritepadApp* anApp = appList;
+  int count = 1;
+  while (anApp != nullptr) {
+    DEBUG_LN(count);
     DEBUG_LN(anApp->name());
 //    DEBUG_LN((unsigned long)anApp);
-    anApp = getApp(count++);
+    anApp = anApp->getNextApp();
+    count++;
   }
+
   screen.fillScreen(screen.black);
   screen.setBacklight(screen.maxbrightness);
   backlightTimer.setMillis(ambientUpdateInterval, (timerCallback_t)backlightCallback, (void*)this, true);
@@ -208,18 +193,18 @@ void Britepad::idle() {
     BritepadApp* nextApp = currApp->exitsTo();
 
     if (nextApp == BritepadApp::BACK_APP) {
-      setNextApp(getApp(LauncherApp::ID));
+      launchApp(getAppByID(LauncherApp::ID));
       sound.swipe(DIRECTION_DOWN);
-    } else if (nextApp == BritepadApp::DEFAULT_APP) {
+    } else if (launchedAppPtr == BritepadApp::DEFAULT_APP) {
       BritepadApp* wants = wantsToBeScreensaver();
       if (wants) {
-        setNextApp(wants, SCREENSAVER);
+        launchApp(wants, SCREENSAVER);
       } else {
-        setNextApp(randomApp(MOUSE), MOUSE);
+        launchApp(randomApp(MOUSE), MOUSE);
       }
       sound.swipe(DIRECTION_UP);
     } else {
-      setNextApp(nextApp);
+      launchApp(launchedAppPtr);
     }
 
   } else if (currApp->isAppMode(SCREENSAVER) && (pad.down(SCREEN_PAD) || (pad.down(ANY_PAD) && !currApp->canBeInteractive()))) {
@@ -227,15 +212,15 @@ void Britepad::idle() {
     if (currApp->canBeMouse()) {
       currApp->setAppMode(MOUSE);
     } else {
-      setNextApp(randomApp(MOUSE), MOUSE);
+      launchApp(randomApp(MOUSE), MOUSE);
     }
 
   } else if (pad.up(PROXIMITY_SENSOR) &&
-             getApp(ClockApp::ID) &&  (getApp(ClockApp::ID))->getEnabled() && !currApp->isID(ClockApp::ID) &&
+             getAppByID(ClockApp::ID) &&  (getAppByID(ClockApp::ID))->getEnabled() && !currApp->isID(ClockApp::ID) &&
              currApp->isAppMode(SCREENSAVER) &&
              (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay))
   {
-    setNextApp(getApp(ClockApp::ID), SCREENSAVER);
+    launchApp(getAppByID(ClockApp::ID), SCREENSAVER);
     DEBUG_LN("Proximity detected: showing clock");
 
   } else if (!currApp->disablesScreensavers()) {
@@ -246,24 +231,24 @@ void Britepad::idle() {
        !currApp->wantsToBeScreensaver() &&
        wantsToBeScreensaver()) {
 
-        setNextApp(randomApp(SCREENSAVER), SCREENSAVER);
+        launchApp(randomApp(SCREENSAVER), SCREENSAVER);
 
       lastCheckWantsToBeScreensaver = pad.time();
    }
 
     // let's check to see if we should run a screensaver
    if (currApp->isAppMode(SCREENSAVER) && (pad.time() - screensaverStartedTime) > screensaverSwitchInterval) {
-      setNextApp(randomApp(SCREENSAVER), SCREENSAVER);
+      launchApp(randomApp(SCREENSAVER), SCREENSAVER);
 
     // is it time for the screensaver to kick in?
     } else if (!currApp->isAppMode(SCREENSAVER) && (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay)) {
-      setNextApp(randomApp(SCREENSAVER), SCREENSAVER);
+      launchApp(randomApp(SCREENSAVER), SCREENSAVER);
     }
   }
 
-  setApp(getNextApp(), getNextAppMode());
+  setApp(getLaunchedApp(), getLaunchedAppMode());
 
-  setNextApp(BritepadApp::STAY_IN_APP);
+  launchApp(BritepadApp::STAY_IN_APP);
 
   if (currApp) {
     currApp->run();

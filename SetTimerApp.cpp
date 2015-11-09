@@ -18,12 +18,12 @@ bool SetTimerApp::customTimerRunning() {
 void SetTimerApp::run() {
 
   if (customTimerRunning()) {
-    setNextApp(&timer_app);
+    launchApp(&timer_app);
   } else if (!edit) {
     if (timer_app.getTime() != timer_duration) {
       timer_app.setTime(timer_duration);
     }
-    setNextApp(&timer_app);
+    launchApp(&timer_app);
   } else {
     stime_t adj = 0;
     if (button[0].down()) { adj = 60; }
@@ -34,7 +34,7 @@ void SetTimerApp::run() {
 
     if (button[4].down()) {
       timer_app.setTime(timer_duration);
-      setNextApp(&timer_app);
+      launchApp(&timer_app);
     }
 
     if (adj) {

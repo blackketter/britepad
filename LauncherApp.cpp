@@ -96,7 +96,7 @@ LauncherApp::LauncherApp() {
   setButton(APPS_SCREEN, 2,  new PaintApp);
   setButton(APPS_SCREEN, 3,  new GestureApp);
   setButton(APPS_SCREEN, 10, new InfoApp);
-//  setButton(APPS_SCREEN, 11,  new RebootApp);  // todo: doesn't work yet
+  setButton(APPS_SCREEN, 11,  new RebootApp);  // todo: doesn't work yet
 
   // this gets created, but has no button
   new AlarmApp;
@@ -196,7 +196,7 @@ void LauncherApp::run() {
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
     if (pad.up(SCREEN_PAD)) {
-      setNextApp(launchOnRelease, SCREENSAVER);
+      launchApp(launchOnRelease, SCREENSAVER);
       launchOnRelease = nullptr;
     }
   } else if (pad.touched(SCREEN_PAD)) {
@@ -239,7 +239,7 @@ void LauncherApp::run() {
             launched->setEnabled(!launched->getEnabled());
             drawButton(b);
           } else {
-            setNextApp(launched);
+            launchApp(launched);
           }
         }
         sound.click();

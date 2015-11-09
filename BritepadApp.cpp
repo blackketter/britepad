@@ -61,7 +61,7 @@ void BritepadApp::drawStatusBar(bool update) {
                         (statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
 
-      AlarmApp* alarm = (AlarmApp*)getApp(AlarmApp::ID);
+      AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
       if (alarm && alarm->getAlarmEnabled()) {
         Icon(bellIcon).draw( screen.clipRight() - screen.measureTextWidth(shortTimeSpaced) - 10, 4, textColor) ;
       }

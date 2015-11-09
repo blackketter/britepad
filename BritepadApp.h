@@ -25,7 +25,7 @@ class BritepadApp {
     virtual Icon getIcon() { return icon; };
     virtual appid_t id() = 0;
     bool isID(appid_t match);
-    BritepadApp* getApp(appid_t getID) { return britepad.getApp(getID); }
+    BritepadApp* getAppByID(appid_t getID) { return britepad.getAppByID(getID); }
 
     virtual color_t buttonColor() { return screen.blue; }
 
@@ -42,8 +42,8 @@ class BritepadApp {
     AppMode getAppMode() { return currAppMode; }
     bool isAppMode(AppMode is) { return (is == getAppMode()); }
     bool canBeAppMode(AppMode b);
-    void setNextApp(BritepadApp* app, AppMode mode = INTERACTIVE) { britepad.setNextApp(app, mode); };
-    void exit() { setNextApp(DEFAULT_APP); };
+    void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE) { britepad.launchApp(app, mode); };
+    void exit() { launchApp(DEFAULT_APP); };
 
     virtual bool canBeScreensaver() { return false; }
     virtual bool canBeInteractive() { return true; }
@@ -68,6 +68,10 @@ class BritepadApp {
     virtual color_t infoBarFGColor() { return screen.luminance(infoBarBGColor()) > 127 ? screen.grey : screen.lightgrey; }  // info text is faded, by default
     virtual const char* infoBarText() { return nullptr; }
 
+    BritepadApp* getNextApp() {  return nextApp; };
+    BritepadApp* getPrevApp() {  return prevApp; };
+    void setNextApp(BritepadApp* app) {  nextApp = app; };
+    void setPrevApp(BritepadApp* app) {  prevApp = app; };
 
   protected:
     bool enabled = true;
@@ -80,7 +84,9 @@ class BritepadApp {
     void resetClipRect();  // resets clip rect to content area
     virtual void releaseMem() {};  // release any memory temporarily allocated by the app.  called automatically by BritepadApp::end()
 
-
+  private:
+    BritepadApp* nextApp = nullptr;
+    BritepadApp* prevApp = nullptr;
 };
 
 #endif

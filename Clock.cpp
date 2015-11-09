@@ -1,8 +1,8 @@
-#include <Time.h>
 #include "BritepadShared.h"
 #include "Clock.h"
 #include "Sound.h"
 #include "Debug.h"
+#include "TimeLib.h"
 
 
 uint8_t Time::hourFormat12() {

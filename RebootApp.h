@@ -20,6 +20,7 @@ class RebootApp : public BritepadApp {
       while (1) {
         // todo - make this teensyduino aware
         // todo - make this work
+        delay(100);
         CPU_RESTART
       };
     }

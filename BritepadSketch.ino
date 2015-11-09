@@ -1,20 +1,5 @@
 /* britepad sketch*/
 
-// these have to be here to satisfy the Arduino build system
-#include <ILI9341_t3.h>
-#include <SPI.h>       // this is needed for display
-#include <Wire.h>      // this is needed for FT6206
-#include <Adafruit_FT6206.h>
-#include <SparkFun_APDS9960.h>
-#include <usb_keyboard.h>
-#include <FastLED.h>
-#include <Time.h>
-#include <Audio.h>
-#include <SD.h>
-#include <SerialFlash.h>
-#include <EEPROM.h>
-#include <font_ArialBold.h>
-
 #include "BritepadShared.h"
 
 #define DEBUG_ON 1

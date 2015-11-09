@@ -26,7 +26,6 @@ void LifeApp::setAppMode(AppMode asMode) {
 }
 
 void LifeApp::run() {
-  DEBUG_LN("Life:run");
   BritepadApp::run();
   switch (getAppMode()) {
     case MOUSE:

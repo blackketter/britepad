@@ -37,11 +37,13 @@ class DotMatrix : public Widget {
 
 class SquareMatrix : public DotMatrix {
   public:
+    SquareMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dotsWide, int dotsHigh) : DotMatrix(x, y, w, h, dotsWide, dotsHigh) {};
     virtual void updateDot(int x, int y);
 };
 
 class HexDotMatrix : public DotMatrix {
   public:
+    HexDotMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dotsWide, int dotsHigh) : DotMatrix(x, y, w, h, dotsWide, dotsHigh) {};
     virtual void updateDot(int x, int y);
 };
 

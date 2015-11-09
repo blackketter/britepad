@@ -6,7 +6,7 @@
 
 void BriteLiteApp::begin() {
   if (!dots) {
-    dots = new HexMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), getDotsWide(), getDotsHigh());
+    dots = new HexDotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), getDotsWide(), getDotsHigh());
   }
   DotsDisplayApp::begin();
 }

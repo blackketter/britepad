@@ -5,7 +5,6 @@
 
 class LifeApp : public DotsDisplayApp {
   public:
-    void begin();
     void run();
 
     void setAppMode(AppMode asMode);
@@ -18,6 +17,10 @@ class LifeApp : public DotsDisplayApp {
     static constexpr appid_t ID = "life";
     appid_t id() { return ID; };
 
+  protected:
+    int getDotsWide() { return 32; }
+    int getDotsHigh() { return 24; }
+
   private:
     void seed();
     void wipe();
@@ -28,10 +31,6 @@ class LifeApp : public DotsDisplayApp {
     millis_t nextRun = 0;
     bool reseed = true;
     int ruleset = 0;
-    static const int DOTSWIDE = 32;
-    static const int DOTSHIGH = 24;
-
-    color_t dotData[DOTSWIDE][DOTSHIGH];
 };
 
 #endif

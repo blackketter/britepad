@@ -115,11 +115,14 @@ void LauncherApp::begin() {
     current_screen = 2;
   }
 
+  sound.swipe(DIRECTION_DOWN);
   screen.pushFill(DIRECTION_DOWN, bgColor());
+
   drawButtons();
 }
 
 void LauncherApp::end(BritepadApp* nextApp) {
+  sound.swipe(DIRECTION_UP);
   screen.pushFill(DIRECTION_UP, nextApp->bgColor());
 }
 

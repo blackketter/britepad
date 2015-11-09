@@ -3,10 +3,7 @@
 
 void TouchKeyboard::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, font_t legendFont, color_t legendColor)
 {
-  xpos = x;
-  ypos = y;
-  width = w;
-  height = h;
+  setBounds(x,y,w,h);
   colored = color;
   legendF = legendFont;
   legendC = legendColor;
@@ -50,7 +47,7 @@ uint8_t TouchKeyboard::key(int row, int col) {
   return rowStr[col];
 };
 
-uint8_t TouchKeyboard::hit(coord_t x, coord_t y) {
+uint8_t TouchKeyboard::key(coord_t x, coord_t y) {
   for (int r = 0; r < rows; r++) {
     for (int c = 0; c < keysInRow(r); c++) {
       if (buttons[r][c].hit(x,y)) {
@@ -81,7 +78,7 @@ void TouchKeyboard::draw() {
 uint8_t TouchKeyboard::down() {
   uint8_t keydown = 0;
   if (pad.down(SCREEN_PAD)) {
-    keydown = hit(pad.x(), pad.y());
+    keydown = key(pad.x(), pad.y());
   }
   return keydown;
 };
@@ -89,7 +86,7 @@ uint8_t TouchKeyboard::down() {
 uint8_t TouchKeyboard::up() {
   uint8_t keyup = 0;
   if (pad.up(SCREEN_PAD)) {
-    keyup = hit(pad.x(), pad.y());
+    keyup = key(pad.x(), pad.y());
     if (keyup) { sound.click(); }
   }
   return keyup;

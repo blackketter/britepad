@@ -3,8 +3,9 @@
 
 #include "BritepadShared.h"
 #include "Button.h"
+#include "Widget.h"
 
-class TouchKeyboard {
+class TouchKeyboard : public Widget {
   public:
     virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, font_t legendFont = Arial_9_Bold, color_t legendColor = screen.black);
 
@@ -17,7 +18,7 @@ class TouchKeyboard {
   protected:
 
 
-    virtual uint8_t hit(coord_t x, coord_t y);
+    virtual uint8_t key(coord_t x, coord_t y);
     virtual uint8_t key(int row, int col);
     virtual int keysInRow(int rowNum);
     virtual void initButtons();
@@ -25,10 +26,6 @@ class TouchKeyboard {
 
     font_t legendF;
     color_t legendC;
-    coord_t xpos;
-    coord_t ypos;
-    coord_t width;
-    coord_t height;
 
     color_t colored;
 

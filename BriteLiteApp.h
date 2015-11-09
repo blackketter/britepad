@@ -3,18 +3,18 @@
 class BriteLiteApp : public DotsDisplayApp {
 
   public:
-    void begin() { ScreensaverApp::begin(); dots.init(16,14, (color_t*)dotData); };
     void run();
+    void begin();
 
     static constexpr appid_t ID = "lite";
     appid_t id() { return ID; };
     const char* name() { return "LiteBrite"; };
 
-
+  protected:
+    int getDotsWide() { return 16; }
+    int getDotsHigh() { return 14; }
 
   private:
-    color_t dotData[16][14];
-    HexDotMatrix dots;
     int cursor_x;
     int cursor_y;
 };

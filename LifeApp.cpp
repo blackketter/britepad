@@ -17,14 +17,6 @@
 //                                             conway,            maze,               mazectric
 const bool born[RULESETS][9] =    {{0,0,0,1,0,0,0,0,0},{0,0,0,1,0,0,0,0,0},{0,1,0,0,0,0,0,0}};
 const bool survive[RULESETS][9] = {{0,0,1,1,0,0,0,0,0},{0,1,1,1,1,1,0,0,0},{0,1,1,1,1,0,0,0}};
-void LifeApp::begin() {
-
-  ScreensaverApp::begin();
-
-  dots.init(DOTSWIDE,DOTSHIGH,(color_t*)dotData);
-
-};
-
 void LifeApp::setAppMode(AppMode asMode) {
   DotsDisplayApp::setAppMode(asMode);
 
@@ -34,8 +26,8 @@ void LifeApp::setAppMode(AppMode asMode) {
 }
 
 void LifeApp::run() {
+  DEBUG_LN("Life:run");
   BritepadApp::run();
-
   switch (getAppMode()) {
     case MOUSE:
     case INTERACTIVE:
@@ -44,9 +36,9 @@ void LifeApp::run() {
       }
       if (pad.touched(SCREEN_PAD)) {
         int x, y;
-        if (dots.hit(pad.x(), pad.y(), &x, &y)) {
-          dots.setDot(x,y, MAXCOLOR);
-          dots.updateDot(x,y);
+        if (dots->hit(pad.x(), pad.y(), &x, &y)) {
+          dots->setDot(x,y, MAXCOLOR);
+          dots->updateDot(x,y);
           nextRun = pad.time() + MILLIS_DELAY;
         }
       }
@@ -68,10 +60,10 @@ void LifeApp::iterate() {
       reseed = false;
     }
 
-    bool nextgen[DOTSWIDE][DOTSHIGH];
+    bool nextgen[getDotsWide()][getDotsHigh()];
 
-    for (int x = 0; x < DOTSWIDE; x++) {
-      for (int y = 0; y < DOTSHIGH; y++) {
+    for (int x = 0; x < getDotsWide(); x++) {
+      for (int y = 0; y < getDotsHigh(); y++) {
         int neighbors = 0;
         for (int x1 = x - 1; x1 <= x+1; x1++) {
           for (int y1 = y - 1; y1 <= y+1; y1++) {
@@ -79,15 +71,15 @@ void LifeApp::iterate() {
               !(x1 == x && y1 == y) &&
               (x1 >= 0) &&
               (y1 >= 0) &&
-              (x1 < DOTSWIDE) &&
-              (y1 < DOTSHIGH) &&
-              dots.getDot(x1,y1) ) {
+              (x1 < getDotsWide()) &&
+              (y1 < getDotsHigh()) &&
+              dots->getDot(x1,y1) ) {
                 neighbors++;
             }
           }
         }
 
-        color_t curr = dots.getDot(x,y);
+        color_t curr = dots->getDot(x,y);
         if (!curr) {
           // birth
           nextgen[x][y] = born[ruleset][neighbors];
@@ -97,10 +89,10 @@ void LifeApp::iterate() {
       }
     }
     int population = 0;
-    for (int x = 0; x < DOTSWIDE; x++) {
-      for (int y = 0; y < DOTSHIGH; y++) {
+    for (int x = 0; x < getDotsWide(); x++) {
+      for (int y = 0; y < getDotsHigh(); y++) {
         color_t newColor;
-        color_t oldColor = dots.getDot(x,y);
+        color_t oldColor = dots->getDot(x,y);
         if (nextgen[x][y]) {
           if (oldColor < MAXCOLOR) {
             newColor = oldColor + COLORINC;
@@ -112,8 +104,8 @@ void LifeApp::iterate() {
         }
 
         if (newColor != oldColor) {
-          dots.setDot(x,y, newColor);
-          dots.updateDot(x,y);
+          dots->setDot(x,y, newColor);
+          dots->updateDot(x,y);
         }
         if (nextgen[x][y]) {
           population++;
@@ -138,7 +130,7 @@ void LifeApp::iterate() {
 }
 
 void LifeApp::wipe() {
-  dots.clear();
+  dots->clear();
   generation = 0;
   ruleset = random(RULESETS);
 }
@@ -146,6 +138,6 @@ void LifeApp::wipe() {
 void LifeApp::seed() {
   wipe();
   for (int i = 0; i < SEEDS; i++) {
-    dots.setDot(random(DOTSWIDE), random(DOTSHIGH), MINCOLOR);
+    dots->setDot(random(getDotsWide()), random(getDotsHigh()), MINCOLOR);
   }
 }

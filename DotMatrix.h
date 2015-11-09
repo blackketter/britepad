@@ -2,16 +2,20 @@
 #define _DotMatrix_
 
 #include "Screen.h"
+#include "Widget.h"
 
-class DotMatrix {
+class DotMatrix : public Widget {
 
   public:
-    virtual void init(int dotsWide, int dotsHigh, color_t* mem);
-    virtual void redraw(); // redraws every dot, can be slow
+    DotMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dotsWide, int dotsHigh);
+    virtual ~DotMatrix() { if (dots) { delete dots; } }
+
+    virtual void draw(); // redraws every dot, can be slow
     virtual void clear();  // clears out dots (to bgColor) and erases screen
 
-    int getDotsWide() { return dots_wide; }
-    int getDotsHigh() { return dots_high; }
+    virtual int getDotsWide() { return dots_wide; }
+    virtual int getDotsHigh() { return dots_high; }
+
     virtual void updateDot(int x, int y);
     inline void setDot(int x, int y, color_t c) { dots[x*dots_high+y] = c; }
     inline color_t getDot(int x, int y) { return dots[x*dots_high+y]; }
@@ -20,12 +24,13 @@ class DotMatrix {
     void setBGColor(color_t bg) { bgColor = bg; };
 
   protected:
+    int dot_fill = 80; // dot size in matrix cell, percent
     int dots_wide = 0;
     int dots_high = 0;
     int dotspacing_w;
     int dotspacing_h;
     int r;
-    color_t* dots = 0;
+    color_t* dots = nullptr;
     color_t bgColor = screen.black;
 
 };

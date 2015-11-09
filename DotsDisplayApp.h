@@ -4,10 +4,13 @@
 #include "ScreensaverApp.h"
 #include "BritepadShared.h"
 #include "DotMatrix.h"
+#include "Screen.h"
 
 class DotsDisplayApp : public ScreensaverApp {
   public:
-    void begin() { ScreensaverApp::begin(); dots.init(16,12, (color_t*)dotData); };
+    void begin();
+    void releaseMem();
+
     void run();
 
     bool canBeMouse() { return true; };
@@ -17,8 +20,9 @@ class DotsDisplayApp : public ScreensaverApp {
     static constexpr appid_t ID = "dots";
 
   protected:
-    color_t dotData[16][12];
-    DotMatrix dots;
+    virtual int getDotsWide() { return 16; }
+    virtual int getDotsHigh() { return 12; }
+    DotMatrix* dots = nullptr;
     color_t lastColor;
 };
 

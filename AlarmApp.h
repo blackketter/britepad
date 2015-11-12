@@ -11,7 +11,7 @@ class AlarmApp : public BritepadApp {
 
     void run();
     bool wantsToBeScreensaver() { return alarmSounding(); }
-    void end(BritepadApp* nextApp) { BritepadApp::end(nextApp); setAlarmEnabled(false); alarmSounded = false;}
+    void end() { BritepadApp::end(); setAlarmEnabled(false); alarmSounded = false;}
 
     void setAlarmTime(time_t newTime);
     time_t getAlarmTime() { return nextAlarm.get(); };

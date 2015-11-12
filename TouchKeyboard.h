@@ -29,7 +29,15 @@ class TouchKeyboard : public Widget {
 
     color_t colored;
 
-    uint8_t currSet = 0;
+    enum KeySet {
+      LOWER_SET,
+      UPPER_SET,
+      NUMBER_SET,
+      PUNCT_SET
+    };
+
+    void setKeySet(KeySet newSet);
+    KeySet currSet = LOWER_SET;
 
     static const uint8_t keysets = 4;
     static const uint8_t rows = 4;

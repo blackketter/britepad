@@ -2,52 +2,25 @@
 
 
 
-
 void CalculatorApp::begin() {
   BritepadApp::begin();
-
-  coord_t gap = 1;
-  coord_t xorig = screen.clipLeft() + gap;
-  coord_t yorig = screen.clipTop() + displayHeight + gap;
-  coord_t xspacing = (screen.clipWidth()-gap)/keyColumns;
-  coord_t yspacing = (screen.clipHeight()-displayHeight-gap)/keyRows;
-  coord_t w = xspacing - gap;
-  coord_t h = yspacing - gap;
-
-  // lay out button according to how much space we have on the screen
-  for (int m = 0; m<keyMaps;m++) {
-    coord_t y = yorig;
-    for (int r = 0; r<keyRows;r++) {
-      coord_t x = xorig;
-      for (int c = 0; c<keyColumns;c++) {
-        button[m][r][c].setBounds(x,y,w,h);
-        x += xspacing;
-      }
-    y += yspacing;
-    }
-  }
-  drawKeys();
   drawDisplay();
+  if (!buttons) {
+    buttons = new ButtonMatrix(screen.clipLeft(),(coord_t)(screen.clipTop()+displayHeight),screen.clipWidth(),(coord_t)(screen.clipHeight()-displayHeight),keyRows,keyColumns,keyMaps,(ButtonConfig*)keyConfig);
+  }
+  buttons->draw();
 }
 
-void CalculatorApp::drawKeys() {
-  for (int m = 0; m < keyMaps; m++) {
-    for (int r = 0; r < keyRows; r++) {
-      for (int c = 0; c < keyColumns; c++) {
-        button[m][r][c].setVisible(curKeyMap == m && button[m][r][c].getID() != hidden);
-        button[m][r][c].draw();
-      }
-    }
-  }
+void CalculatorApp::end() {
+  BritepadApp::end();
+  delete buttons;
+  buttons = nullptr;
 }
 
 void CalculatorApp::run() {
-  for (int r = 0; r < keyRows; r++) {
-    for (int c = 0; c < keyColumns; c++) {
-      if (button[curKeyMap][r][c].down()) {
-        handleKey(button[curKeyMap][r][c].getID());
-      }
-    }
+  Button* hit = buttons->down();
+  if (hit) {
+    handleKey((keys)hit->getID());
   }
 
   if (pad.down(SCREEN_PAD) && pad.y() < screen.clipTop()+displayHeight) {
@@ -55,7 +28,10 @@ void CalculatorApp::run() {
   }
 }
 
-void CalculatorApp::handleKey(uint8_t keyPressed) {
+void CalculatorApp::handleKey(keys keyPressed) {
+
+  keyMap origKeyMap = (keyMap)buttons->getMap();
+
   switch (keyPressed) {
     case zero:
     case one:
@@ -120,7 +96,6 @@ void CalculatorApp::handleKey(uint8_t keyPressed) {
     case send:
       keySend();
       break;
-
     case square_f:
       keySquare();
       break;
@@ -180,20 +155,26 @@ void CalculatorApp::handleKey(uint8_t keyPressed) {
       break;
     case log2_f:
       keyLog2();
+      buttons->setMap(basic_map);
       break;
     default:
       break;
   }
+
+  if (origKeyMap == sci_map && buttons->getMap() == sci_map) {
+    buttons->setMap(basic_map);
+  }
+
   drawDisplay();
 }
 
 void CalculatorApp::acceptText() {
   if (strlen(topText)) {
     pop();
-    if (base == 10) {
+    if (getBase() == 10) {
       push(strtod(topText, nullptr));
     } else {
-      long long top64 = strtol(topText, nullptr, base);
+      long long top64 = strtol(topText, nullptr, getBase());
       // try to do 2s compliment conversion of hex
       if (top64 > 0x7ffffff) {
         top64 =  top64 - 0x100000000;
@@ -250,21 +231,21 @@ void CalculatorApp::keySubtract() {
 }
 
 void CalculatorApp::keyShift() {
-  if (curKeyMap == sci_map) {
-    setKeyMap(basic_map);
+  if (buttons->getMap() == sci_map) {
+    buttons->setMap(basic_map);
   } else {
-    setKeyMap(sci_map);
+    buttons->setMap(sci_map);
   }
 }
 
 void CalculatorApp::keyBase() {
   acceptText();
-  if (base == 10) {
-    setKeyMap(hex_map);
-    base = 16;
+  if (getBase() == 10) {
+    buttons->setMap(hex_map);
+    setBase(16);
   } else {
-    setKeyMap(basic_map);
-    base = 10;
+    buttons->setMap(basic_map);
+    setBase(10);
   }
   drawDisplay();
 }
@@ -322,7 +303,7 @@ void CalculatorApp::keyDigit(uint8_t digit) {
   if (len < maxTopText()) {
     if (len == 0) {
       push(0);
-      if (base == 16) {
+      if (getBase() == 16) {
         topText[len++]='0';
         topText[len++]='x';
       }
@@ -406,7 +387,8 @@ void CalculatorApp::drawDisplay() {
 }
 
 char* CalculatorApp::formatText(char* fstring, double value) {
-  if (base == 16) {
+
+  if (getBase() == 16) {
     int intValue = value;
     sprintf(fstring, "0x%x", (unsigned int)intValue);
   } else {

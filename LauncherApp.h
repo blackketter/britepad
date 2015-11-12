@@ -17,7 +17,7 @@ class LauncherApp : public BritepadApp {
   public:
     LauncherApp();
     void begin();
-    void end(BritepadApp* newApp);
+    void end();
     void run();
     BritepadApp* exitsTo() { return DEFAULT_APP; }
     const char* name() { return "Launcher"; };

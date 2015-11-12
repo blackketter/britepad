@@ -13,12 +13,12 @@ void DotsDisplayApp::begin() {
   ScreensaverApp::begin();
 };
 
-void DotsDisplayApp::releaseMem() {
-  if (dots) {
+void DotsDisplayApp::end() {
+   if (dots) {
     delete dots;
     dots = nullptr;
-  } else {
   }
+  ScreensaverApp::end();
 }
 
 void DotsDisplayApp::run() {

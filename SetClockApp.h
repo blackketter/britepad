@@ -11,7 +11,7 @@ class SetClockApp : public BritepadApp {
     SetClockApp() { theTime = &clock; };
 
     void begin();
-    void end(BritepadApp* nextApp);
+    void end();
     void run();
     bool disablesScreensavers() { return true; };
     bool wantsToBeScreensaver() { return !hasRun && !clock.hasBeenSet(); };

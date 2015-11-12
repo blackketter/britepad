@@ -3,13 +3,22 @@
 #include "BritepadShared.h"
 
 #define DEBUG_ON 1
+#if 0
+#include "ILI9341_t3.h"
 #include "Debug.h"
+#include "FastLED.h"
+#include "TimeLib.h"
+#include "EEPROM.h"
+#include "Audio.h"
+#include "SPI.h"
+#include "SD.h"
+#include "SerialFlash.h"
+#include "Wire.h"
+#include "Adafruit_FT6206.h"
+#include <SparkFun_APDS9960.h>
+#endif
 
-#define TFT_CS 10
-#define TFT_DC 9
-
-
-Screen screen = Screen(TFT_CS, TFT_DC);
+Screen screen = Screen();
 TouchPad pad = TouchPad(screen.width(), screen.height());
 Sound sound = Sound();
 Clock clock = Clock();

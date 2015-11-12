@@ -22,6 +22,7 @@
 #include "KeyboardApp.h"
 #include "LifeApp.h"
 #include "MuteApp.h"
+#include "NumericKeypadApp.h"
 #include "PaintApp.h"
 #include "PassApp.h"
 #include "RebootApp.h"
@@ -68,6 +69,7 @@ LauncherApp::LauncherApp() {
 
   setButton(KEYS_SCREEN, 5,  new KeyboardApp);
   setButton(KEYS_SCREEN, 6,  new CalculatorApp);
+  setButton(KEYS_SCREEN, 7,  new NumericKeypadApp);
 
   setButton(KEYS_SCREEN, 1,  new KeyApp(rewIcon, KEY_MEDIA_PREV_TRACK, screen.orange));
   setButton(KEYS_SCREEN, 2,  new KeyApp(pauseIcon, KEY_MEDIA_PLAY_PAUSE, screen.orange));
@@ -115,15 +117,21 @@ void LauncherApp::begin() {
     current_screen = 2;
   }
 
-  sound.swipe(DIRECTION_DOWN);
+  if (pad.down(TOP_PAD)) {
+    sound.swipe(DIRECTION_DOWN);
+  }
+
   screen.pushFill(DIRECTION_DOWN, bgColor());
 
   drawButtons();
 }
 
-void LauncherApp::end(BritepadApp* nextApp) {
-  sound.swipe(DIRECTION_UP);
-  screen.pushFill(DIRECTION_UP, nextApp->bgColor());
+void LauncherApp::end() {
+  if (pad.down(TOP_PAD)) {
+    sound.swipe(DIRECTION_UP);
+  }
+
+  screen.pushFill(DIRECTION_UP, britepad.getLaunchedApp()->bgColor());
 }
 
 void LauncherApp::drawButtons() {

@@ -4,7 +4,7 @@
 #include "StarfieldApp.h"
 #include "Debug.h"
 
-void StarfieldApp::releaseMem() {
+void StarfieldApp::end() {
   if (stars) {
     delete [] stars;
     stars = nullptr;
@@ -14,6 +14,7 @@ void StarfieldApp::releaseMem() {
     delete [] distance;
     distance = nullptr;
   }
+  ScreensaverApp::end();
 }
 
 void StarfieldApp::setDirection(direction_t newDirection) {
@@ -22,7 +23,6 @@ void StarfieldApp::setDirection(direction_t newDirection) {
   }
 
   direction = newDirection;
-  releaseMem();
 
   if (newDirection == DIRECTION_UP || newDirection == DIRECTION_DOWN) {
     starCount = screen.clipWidth();
@@ -32,6 +32,9 @@ void StarfieldApp::setDirection(direction_t newDirection) {
     starRange = screen.clipWidth();
   }
 
+  // reallocate the distance and stars arrays becasue the size may have changed
+  if (stars) {  delete [] stars; }
+  if (distance) { delete [] distance; }
   stars = new coord_t[starCount];
   distance = new uint8_t[starCount];
 

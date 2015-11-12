@@ -10,8 +10,8 @@ class Britepad;
 class BritepadApp {
   public:
     BritepadApp();
-    virtual void begin();  // initialize app state and draw first screen
-    virtual void end(BritepadApp* nextApp); // called after final run(), lets app clean up and tells it what the next app may be
+    virtual void begin();  // initialize app state and draw first screen, allocate any memory needed while running
+    virtual void end(); // called after final run(), lets app clean up, releasing any memory temporarily allocated for runs
 
     virtual void run() { if (isAppMode(MOUSE)) { mouse.run(); } };  // run current app state repeatedly, returns pointer to next app to run (or one of the constants below)
     virtual void setAppMode(AppMode asMode);  // called automatically by begin() or when switching between modes
@@ -82,7 +82,6 @@ class BritepadApp {
 
     virtual void clearScreen() { screen.fillScreen(bgColor()); }
     void resetClipRect();  // resets clip rect to content area
-    virtual void releaseMem() {};  // release any memory temporarily allocated by the app.  called automatically by BritepadApp::end()
 
   private:
     BritepadApp* nextApp = nullptr;

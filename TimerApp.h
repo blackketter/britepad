@@ -9,11 +9,12 @@
 class TimerApp : public StopwatchApp {
   public:
     void begin() { StopwatchApp::begin(); beeps = 10; }  // always start as a screensaver
-    void end(BritepadApp* nextApp);
+    void end();
+
     bool wantsToBeScreensaver() { return isRunning() || !isReset(); }
     bool disablesScreensavers() { return false; }
-    const char* name() { return "Timer"; };
 
+    const char* name() { return "Timer"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "timr";
 

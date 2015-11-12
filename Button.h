@@ -12,12 +12,17 @@ class Button : public Widget {
       init(x,y,w,h,color,highlight,title,f,titleColor,iconData);
     };
 
+    Button(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData, widgetid_t id) {
+      init(x,y,w,h,color,highlight,title,f,titleColor,iconData);
+      setID(id);
+    };
+
     Button(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr) {
      init(x,y,r,color,highlight,title,f,titleColor,iconData);
     };
 
     // constructor for positioning later
-    Button(color_t color, const char* title, font_t f, color_t titleColor, icon_t iconData, uint8_t id) {
+    Button(color_t color, const char* title, font_t f, color_t titleColor, icon_t iconData, widgetid_t id) {
       init(0,0,0,0,color,false,title,f,titleColor,iconData);
       setID(id);
     };
@@ -35,7 +40,6 @@ class Button : public Widget {
     virtual void setIcon(uint8_t* iconptr) { icon = iconptr; }
 
 
-    virtual void setID(uint8_t newid) { id = newid; };
     virtual uint8_t getID() { return id; }
     virtual void track();
 
@@ -62,7 +66,6 @@ class Button : public Widget {
     color_t colored;
     bool highlighted;
     millis_t highlightedTime;
-    uint8_t id;
     static const millis_t holdTime = 1000;
 };
 

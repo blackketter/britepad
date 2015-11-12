@@ -22,7 +22,7 @@ void SetAlarmApp::begin() {
 }
 
 
-void SetAlarmApp::end(BritepadApp* nextApp) {
+void SetAlarmApp::end() {
 
   AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
   if (alarm) {
@@ -30,5 +30,5 @@ void SetAlarmApp::end(BritepadApp* nextApp) {
     alarm->setAlarmEnabled(alarmEnabled);
   }
 
-  SetClockApp::end(nextApp);
+  SetClockApp::end();
 }

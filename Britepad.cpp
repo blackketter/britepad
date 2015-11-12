@@ -81,8 +81,6 @@ void Britepad::addApp(BritepadApp* app) {
 }
 
 void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
-
-
   if (newApp == BritepadApp::STAY_IN_APP) {
     return;
   } else if (newApp == BritepadApp::DEFAULT_APP) {
@@ -96,6 +94,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     asMode = INTERACTIVE;
   }
 
+  launchedAppPtr = newApp;
 
   if (newApp == currApp) {
     if (currApp->getAppMode() != asMode) {
@@ -104,19 +103,15 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     return;
   }
 
-  if (newApp == nullptr) {
-    DEBUG_LN("New app is null!");
-  }
-
   if (currApp) {
-    DEBUG_PARAM_LN("Ending App", currApp->name());
-    currApp->end(newApp);
+//    DEBUG_PARAM_LN("Ending App", currApp->name());
+    currApp->end();
   }
 
   currApp = newApp;
 
   if (currApp) {
-    DEBUG_PARAM_LN("Starting App", currApp->name());
+//    DEBUG_PARAM_LN("Starting App", currApp->name());
     currApp->drawBars();
     currApp->begin();
     currApp->setAppMode(asMode);
@@ -196,10 +191,13 @@ void Britepad::idle() {
   pad.update();
 
   if (pad.down(TOP_PAD)) {
-
-    BritepadApp* nextApp = currApp->exitsTo();
-    launchApp(nextApp);
-
+    DEBUG_LN("Toppad down");
+    if (currApp) {
+      BritepadApp* nextApp = currApp->exitsTo();
+      launchApp(nextApp);
+    } else {
+      DEBUG_LN("No currapp!");
+    }
   } else if (currApp->isAppMode(SCREENSAVER) && (pad.down(SCREEN_PAD) || (pad.down(ANY_PAD) && !currApp->canBeInteractive()))) {
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
     if (currApp->canBeMouse()) {

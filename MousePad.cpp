@@ -1,6 +1,7 @@
 #include "BritepadShared.h"
 #include "MousePad.h"
 #include "Debug.h"
+#include "usb_mouse.h"
 
 // Mouse parameters
 //  move maximum number of points

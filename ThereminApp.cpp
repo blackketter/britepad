@@ -5,7 +5,6 @@
 void ThereminApp::run() {
   long octave = 6;
   uint8_t prox = pad.getProximityDistance();
-  DEBUG_PARAM_LN("prox", prox);
 
   if (pad.down(SCREEN_PAD)) {
     // clear screen and draw matrix
@@ -17,8 +16,12 @@ void ThereminApp::run() {
   } else if (prox) {
     if (lastProx != prox) {
       lastProx = prox;
-      sound.tone( (float)prox / 255 * octave * sound.MIDDLE_C_FREQ, 1.0);
+      float pitch = (1.0 + (float)prox / 255.0) * octave * sound.MIDDLE_C_FREQ;
+      pitch = (pitch+lastPitch*9.0)/10.0;
+      DEBUG_PARAM_LN("pitch", pitch);
+      sound.tone( pitch, 1.0);
       screen.fillRect(screen.clipLeft() +(long)prox * screen.clipWidth() * 19/20 / pad.getProximityMax(), screen.clipTop(), screen.clipWidth()/20, screen.clipHeight(), currColor++);
+      lastPitch = pitch;
     }
   } else if (lastProx) {
     sound.tone(0,0);
@@ -29,8 +32,8 @@ void ThereminApp::run() {
   }
 }
 
-void ThereminApp::end(BritepadApp* nextApp) {
-  BritepadApp::end(nextApp);
+void ThereminApp::end() {
+  BritepadApp::end();
   sound.tone(0,0);  // stop the tone
 }
 

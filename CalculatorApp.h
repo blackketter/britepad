@@ -2,75 +2,16 @@
 #define _CalculatorApp_
 #include "BritepadApp.h"
 #include "Button.h"
+#include "ButtonMatrix.h"
 #include "Icons.h"
 
-enum keys {
-  zero,
-  one,
-  two,
-  three,
-  four,
-  five,
-  six,
-  seven,
-  eight,
-  nine,
-  hex_a,
-  hex_b,
-  hex_c,
-  hex_d,
-  hex_e,
-  hex_f,
-
-  decimal,
-  enter,
-  clear,
-  backspace,
-  shift,
-  ee,
-  divide,
-  multiply,
-  add,
-  subtract,
-  inverse,
-  percent,
-  swap,
-  changeBase,
-  send,
-  hidden,
-
-  square_f,
-  cube_f,
-  pow_f,
-  exp_f,
-  pow10_f,
-  sqrt_f,
-  cubert_f,
-  xroot_f,
-  ln_f,
-  log10_f,
-  sin_f,
-  cos_f,
-  tan_f,
-  pi_f,
-  e_f,
-  asin_f,
-  acos_f,
-  atan_f,
-  logy_f,
-  log2_f
-};
-
-enum keyMaps {
-  basic_map,
-  hex_map,
-  sci_map
-};
 
 class CalculatorApp : public BritepadApp {
   public:
-    virtual void begin();
-    virtual void run();
+    void begin();
+    void end();
+    void run();
+
     virtual bool disablesScreensavers() { return true; }
     BritepadApp* exitsTo() { return DEFAULT_APP; }
 
@@ -79,6 +20,68 @@ class CalculatorApp : public BritepadApp {
     static constexpr appid_t ID = "calc";
 
   private:
+    enum keys {
+      zero,
+      one,
+      two,
+      three,
+      four,
+      five,
+      six,
+      seven,
+      eight,
+      nine,
+      hex_a,
+      hex_b,
+      hex_c,
+      hex_d,
+      hex_e,
+      hex_f,
+
+      decimal,
+      enter,
+      clear,
+      backspace,
+      shift,
+      ee,
+      divide,
+      multiply,
+      add,
+      subtract,
+      inverse,
+      percent,
+      swap,
+      changeBase,
+      send,
+
+      square_f,
+      cube_f,
+      pow_f,
+      exp_f,
+      pow10_f,
+      sqrt_f,
+      cubert_f,
+      xroot_f,
+      ln_f,
+      log10_f,
+      sin_f,
+      cos_f,
+      tan_f,
+      pi_f,
+      e_f,
+      asin_f,
+      acos_f,
+      atan_f,
+      logy_f,
+      log2_f
+    };
+
+    enum keyMap {
+      basic_map,
+      hex_map,
+      sci_map
+    };
+
     static const coord_t displayHeight = 48;
     static const int stackDepth = 4;
     double stack[stackDepth] = { 0,0,0,0 };
@@ -93,129 +96,19 @@ class CalculatorApp : public BritepadApp {
     void clearStack() { for (int i = 0; i < stackDepth; i++) { stack[i] = 0; }}
 
     uint8_t base = 10;
+    uint8_t getBase() { return base; };
+    void setBase(uint8_t newBase) { base = newBase; };
 
-    void setKeyMap(uint8_t newMap) { curKeyMap = newMap; drawKeys(); }
-
-    static const uint8_t keyMaps = 3;
+    static const int keyMaps = 3;
     static const int keyColumns = 6;
     static const int keyRows = 4;
-    static const int keys = keyRows*keyColumns;
-
-    uint8_t curKeyMap = 0;
 
     char* formatText(char* fstring, double value);
 
-    void drawKeys();
     void drawDisplay();
-//    Button button[keyMaps][keyRows][keyColumns];
+    ButtonMatrix* buttons = nullptr;
 
-    Button button[keyMaps][keyRows][keyColumns] =
-      {
-        { // Basic calc map
-          {
-            Button(screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift),
-            Button(screen.green, "7", Arial_12_Bold, screen.black, nullptr, seven),
-            Button(screen.green, "8", Arial_12_Bold, screen.black, nullptr, eight),
-            Button(screen.green, "9", Arial_12_Bold, screen.black, nullptr, nine),
-            Button(screen.cyan, "/", Arial_12_Bold, screen.black, nullptr, divide),
-            Button(screen.cyan, "1/x", Arial_12_Bold, screen.black, nullptr, inverse),
-          },
-          {
-            Button(screen.yellow, "hex", Arial_12_Bold, screen.black, nullptr, changeBase),
-            Button(screen.green, "4", Arial_12_Bold, screen.black, nullptr, four),
-            Button(screen.green, "5", Arial_12_Bold, screen.black, nullptr, five),
-            Button(screen.green, "6", Arial_12_Bold, screen.black, nullptr, six),
-            Button(screen.cyan, "x", Arial_12_Bold, screen.black, nullptr, multiply),
-            Button(screen.cyan, "%", Arial_12_Bold, screen.black, nullptr, percent),
-          },
-          {
-            Button(screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace),
-            Button(screen.green, "1", Arial_12_Bold, screen.black, nullptr, one),
-            Button(screen.green, "2", Arial_12_Bold, screen.black, nullptr, two),
-            Button(screen.green, "3", Arial_12_Bold, screen.black, nullptr, three),
-            Button(screen.cyan, "+", Arial_12_Bold, screen.black, nullptr, add),
-            Button(screen.yellow, "x<>y", Arial_12_Bold, screen.black, nullptr, swap),
-          },
-          {
-            Button(screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear),
-            Button(screen.green, "0", Arial_12_Bold, screen.black, nullptr, zero),
-            Button(screen.green, ".", Arial_12_Bold, screen.black, nullptr, decimal),
-            Button(screen.green, "E", Arial_12_Bold, screen.black, nullptr, ee),
-            Button(screen.cyan, "-", Arial_12_Bold, screen.black, nullptr, subtract),
-            Button(screen.yellow, "enter", Arial_12_Bold, screen.black, nullptr, enter),
-          },
-        },
-        { // Hex calc map
-          {
-            Button(screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift),
-            Button(screen.green, "7", Arial_12_Bold, screen.black, nullptr, seven),
-            Button(screen.green, "8", Arial_12_Bold, screen.black, nullptr, eight),
-            Button(screen.green, "9", Arial_12_Bold, screen.black, nullptr, nine),
-            Button(screen.green, "a", Arial_12_Bold, screen.black, nullptr, hex_a),
-            Button(screen.cyan, "+", Arial_12_Bold, screen.black, nullptr, add),
-          },
-          {
-            Button(screen.yellow, "dec", Arial_12_Bold, screen.black, nullptr, changeBase),
-            Button(screen.green, "4", Arial_12_Bold, screen.black, nullptr, four),
-            Button(screen.green, "5", Arial_12_Bold, screen.black, nullptr, five),
-            Button(screen.green, "6", Arial_12_Bold, screen.black, nullptr, six),
-            Button(screen.green, "b", Arial_12_Bold, screen.black, nullptr, hex_b),
-            Button(screen.cyan, "-", Arial_12_Bold, screen.black, nullptr, subtract),
-          },
-          {
-            Button(screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace),
-            Button(screen.green, "1", Arial_12_Bold, screen.black, nullptr, one),
-            Button(screen.green, "2", Arial_12_Bold, screen.black, nullptr, two),
-            Button(screen.green, "3", Arial_12_Bold, screen.black, nullptr, three),
-            Button(screen.green, "c", Arial_12_Bold, screen.black, nullptr, hex_c),
-            Button(screen.cyan, "x", Arial_12_Bold, screen.black, nullptr, multiply),
-          },
-          {
-            Button(screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear),
-            Button(screen.green, "0", Arial_12_Bold, screen.black, nullptr, zero),
-            Button(screen.green, "f", Arial_12_Bold, screen.black, nullptr, hex_f),
-            Button(screen.green, "e", Arial_12_Bold, screen.black, nullptr, hex_e),
-            Button(screen.green, "d", Arial_12_Bold, screen.black, nullptr, hex_d),
-            Button(screen.yellow, "enter", Arial_12_Bold, screen.black, nullptr, enter),
-          },
-        },
-        { // Sci calc map
-          {
-            Button(screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift),
-            Button(screen.cyan, "x^2", Arial_12_Bold, screen.black, nullptr, square_f),
-            Button(screen.cyan, "x^3", Arial_12_Bold, screen.black, nullptr, cube_f),
-            Button(screen.cyan, "x^y", Arial_12_Bold, screen.black, nullptr, pow_f),
-            Button(screen.cyan, "e^x", Arial_12_Bold, screen.black, nullptr, exp_f),
-            Button(screen.cyan, "10^x", Arial_12_Bold, screen.black, nullptr, pow10_f),
-          },
-          {
-            Button(screen.yellow, "hex", Arial_12_Bold, screen.black, nullptr, changeBase),
-            Button(screen.cyan, "sqrt", Arial_12_Bold, screen.black, nullptr, sqrt_f),
-            Button(screen.cyan, "cubert", Arial_12_Bold, screen.black, nullptr, cubert_f),
-            Button(screen.cyan, "xroot", Arial_12_Bold, screen.black, nullptr, xroot_f),
-            Button(screen.cyan, "ln", Arial_12_Bold, screen.black, nullptr, ln_f),
-            Button(screen.cyan, "log10", Arial_12_Bold, screen.black, nullptr, log10_f),
-          },
-          {
-            Button(screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace),
-            Button(screen.cyan, "sin", Arial_12_Bold, screen.black, nullptr, sin_f),
-            Button(screen.cyan, "cos", Arial_12_Bold, screen.black, nullptr, cos_f),
-            Button(screen.cyan, "tan", Arial_12_Bold, screen.black, nullptr, tan_f),
-            Button(screen.cyan, "pi", Arial_12_Bold, screen.black, nullptr, pi_f),
-            Button(screen.cyan, "e", Arial_12_Bold, screen.black, nullptr, e_f),
-          },
-          {
-            Button(screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear),
-            Button(screen.green, "asin", Arial_12_Bold, screen.black, nullptr, asin_f),
-            Button(screen.green, "acos", Arial_12_Bold, screen.black, nullptr, acos_f),
-            Button(screen.green, "atan", Arial_12_Bold, screen.black, nullptr, atan_f),
-            Button(screen.green, "logy", Arial_12_Bold, screen.black, nullptr, logy_f),
-            Button(screen.yellow, "log2", Arial_12_Bold, screen.black, nullptr, log2_f),
-          },
-        }
-      };
-
-    void handleKey(uint8_t keyPressed);
+    void handleKey(keys keyPressed);
     void acceptText();
 
     void keyDigit(uint8_t digit);
@@ -255,7 +148,113 @@ class CalculatorApp : public BritepadApp {
     void keyAtan() { acceptText(); push(atan(pop())); };
     void keyLogy() { acceptText(); keySwap(); push(log(pop())/log(pop())); };
     void keyLog2() { acceptText(); push(log(pop())/log(2.0)); };
-  };
+
+    ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] =
+{
+        { // Basic calc map
+          {
+            {screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift},
+            {screen.green, "7", Arial_12_Bold, screen.black, nullptr, seven},
+            {screen.green, "8", Arial_12_Bold, screen.black, nullptr, eight},
+            {screen.green, "9", Arial_12_Bold, screen.black, nullptr, nine},
+            {screen.cyan, "/", Arial_12_Bold, screen.black, nullptr, divide},
+            {screen.cyan, "1/x", Arial_12_Bold, screen.black, nullptr, inverse},
+          },
+          {
+            {screen.yellow, "hex", Arial_12_Bold, screen.black, nullptr, changeBase},
+            {screen.green, "4", Arial_12_Bold, screen.black, nullptr, four},
+            {screen.green, "5", Arial_12_Bold, screen.black, nullptr, five},
+            {screen.green, "6", Arial_12_Bold, screen.black, nullptr, six},
+            {screen.cyan, "x", Arial_12_Bold, screen.black, nullptr, multiply},
+            {screen.cyan, "%", Arial_12_Bold, screen.black, nullptr, percent},
+          },
+          {
+            {screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace},
+            {screen.green, "1", Arial_12_Bold, screen.black, nullptr, one},
+            {screen.green, "2", Arial_12_Bold, screen.black, nullptr, two},
+            {screen.green, "3", Arial_12_Bold, screen.black, nullptr, three},
+            {screen.cyan, "+", Arial_12_Bold, screen.black, nullptr, add},
+            {screen.yellow, "x<>y", Arial_12_Bold, screen.black, nullptr, swap},
+          },
+          {
+            {screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear},
+            {screen.green, "0", Arial_12_Bold, screen.black, nullptr, zero},
+            {screen.green, ".", Arial_12_Bold, screen.black, nullptr, decimal},
+            {screen.green, "E", Arial_12_Bold, screen.black, nullptr, ee},
+            {screen.cyan, "-", Arial_12_Bold, screen.black, nullptr, subtract},
+            {screen.yellow, "enter", Arial_12_Bold, screen.black, nullptr, enter},
+          },
+        },
+        { // Hex calc map
+          {
+            {screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift},
+            {screen.green, "7", Arial_12_Bold, screen.black, nullptr, seven},
+            {screen.green, "8", Arial_12_Bold, screen.black, nullptr, eight},
+            {screen.green, "9", Arial_12_Bold, screen.black, nullptr, nine},
+            {screen.green, "a", Arial_12_Bold, screen.black, nullptr, hex_a},
+            {screen.cyan, "+", Arial_12_Bold, screen.black, nullptr, add},
+          },
+          {
+            {screen.yellow, "dec", Arial_12_Bold, screen.black, nullptr, changeBase},
+            {screen.green, "4", Arial_12_Bold, screen.black, nullptr, four},
+            {screen.green, "5", Arial_12_Bold, screen.black, nullptr, five},
+            {screen.green, "6", Arial_12_Bold, screen.black, nullptr, six},
+            {screen.green, "b", Arial_12_Bold, screen.black, nullptr, hex_b},
+            {screen.cyan, "-", Arial_12_Bold, screen.black, nullptr, subtract},
+          },
+          {
+            {screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace},
+            {screen.green, "1", Arial_12_Bold, screen.black, nullptr, one},
+            {screen.green, "2", Arial_12_Bold, screen.black, nullptr, two},
+            {screen.green, "3", Arial_12_Bold, screen.black, nullptr, three},
+            {screen.green, "c", Arial_12_Bold, screen.black, nullptr, hex_c},
+            {screen.cyan, "x", Arial_12_Bold, screen.black, nullptr, multiply},
+          },
+          {
+            {screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear},
+            {screen.green, "0", Arial_12_Bold, screen.black, nullptr, zero},
+            {screen.green, "f", Arial_12_Bold, screen.black, nullptr, hex_f},
+            {screen.green, "e", Arial_12_Bold, screen.black, nullptr, hex_e},
+            {screen.green, "d", Arial_12_Bold, screen.black, nullptr, hex_d},
+            {screen.yellow, "enter", Arial_12_Bold, screen.black, nullptr, enter},
+          },
+        },
+        { // Sci calc map
+          {
+            {screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift},
+            {screen.cyan, "x^2", Arial_12_Bold, screen.black, nullptr, square_f},
+            {screen.cyan, "x^3", Arial_12_Bold, screen.black, nullptr, cube_f},
+            {screen.cyan, "x^y", Arial_12_Bold, screen.black, nullptr, pow_f},
+            {screen.cyan, "e^x", Arial_12_Bold, screen.black, nullptr, exp_f},
+            {screen.cyan, "10^x", Arial_12_Bold, screen.black, nullptr, pow10_f},
+          },
+          {
+            {screen.yellow, "hex", Arial_12_Bold, screen.black, nullptr, changeBase},
+            {screen.cyan, "sqrt", Arial_12_Bold, screen.black, nullptr, sqrt_f},
+            {screen.cyan, "cubert", Arial_12_Bold, screen.black, nullptr, cubert_f},
+            {screen.cyan, "xroot", Arial_12_Bold, screen.black, nullptr, xroot_f},
+            {screen.cyan, "ln", Arial_12_Bold, screen.black, nullptr, ln_f},
+            {screen.cyan, "log10", Arial_12_Bold, screen.black, nullptr, log10_f},
+          },
+          {
+            {screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace},
+            {screen.cyan, "sin", Arial_12_Bold, screen.black, nullptr, sin_f},
+            {screen.cyan, "cos", Arial_12_Bold, screen.black, nullptr, cos_f},
+            {screen.cyan, "tan", Arial_12_Bold, screen.black, nullptr, tan_f},
+            {screen.cyan, "pi", Arial_12_Bold, screen.black, nullptr, pi_f},
+            {screen.cyan, "e", Arial_12_Bold, screen.black, nullptr, e_f},
+          },
+          {
+            {screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear},
+            {screen.green, "asin", Arial_12_Bold, screen.black, nullptr, asin_f},
+            {screen.green, "acos", Arial_12_Bold, screen.black, nullptr, acos_f},
+            {screen.green, "atan", Arial_12_Bold, screen.black, nullptr, atan_f},
+            {screen.green, "logy", Arial_12_Bold, screen.black, nullptr, logy_f},
+            {screen.yellow, "log2", Arial_12_Bold, screen.black, nullptr, log2_f},
+          },
+        }
+      };
+};
 
 #endif
 

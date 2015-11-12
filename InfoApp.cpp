@@ -1,4 +1,5 @@
 #include "InfoApp.h"
+#include "EthernetClient.h"
 
 uint32_t FreeRam(){ // for Teensy 3.0
     uint32_t stackTop;
@@ -19,8 +20,9 @@ uint32_t FreeRam(){ // for Teensy 3.0
 void InfoApp::run() {
 
   BritepadApp::run();
+  EthernetClient test;
 
-  screen.setTextColor(screen.white, screen.black);
+  screen.setTextColor(screen.white, bgColor());
   screen.setFont(Arial_16);
   screen.setCursor(screen.clipLeft() + screen.fontLineSpacing(), screen.clipTop()+screen.fontLineSpacing());
   char string[100];

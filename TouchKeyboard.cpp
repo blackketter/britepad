@@ -1,4 +1,5 @@
 #include "TouchKeyboard.h"
+#include "Icons.h"
 #include "Debug.h"
 
 void TouchKeyboard::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, font_t legendFont, color_t legendColor)
@@ -7,9 +8,7 @@ void TouchKeyboard::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t colo
   colored = color;
   legendF = legendFont;
   legendC = legendColor;
-
-  initButtons();
-  draw();
+  setKeySet(LOWER_SET);
 }
 
 //////////////////////////////////////////////////////
@@ -31,8 +30,17 @@ void TouchKeyboard::initButtons() {
       char* keyStr = (char*)((uint32_t)key);
       coord_t keyX = xpos + buttonDistance/2 + buttonDistance*c;
       keyX += r % 2 ? buttonDistance/2 : 0;  // every other line is offset by half the distance to nest them together
+      icon_t icon = nullptr;
       DEBUG_PARAM_LN("button init", key);
-      buttons[r][c].init(keyX,keyY,radius,colored,false,keyStr,legendF,legendC);
+      switch (key) {
+        case SHIFTDOWN_KEY:
+        case SHIFTUP_KEY:
+          icon = shiftIcon;
+          break;
+        default:
+          icon = nullptr;
+      }
+      buttons[r][c].init(keyX,keyY,radius,colored,false,keyStr,legendF,legendC,icon);
     }
   }
 };
@@ -79,17 +87,42 @@ uint8_t TouchKeyboard::down() {
   uint8_t keydown = 0;
   if (pad.down(SCREEN_PAD)) {
     keydown = key(pad.x(), pad.y());
+    if (keydown) { sound.click(); }
   }
   return keydown;
 };
 
+void TouchKeyboard::setKeySet(KeySet newSet) {
+  currSet = newSet;
+  initButtons();
+  draw();
+}
+
 uint8_t TouchKeyboard::up() {
   uint8_t keyup = 0;
+  bool reload = false;
   if (pad.up(SCREEN_PAD)) {
     keyup = key(pad.x(), pad.y());
     if (keyup) { sound.click(); }
+    switch (keyup) {
+      case SHIFTUP_KEY:
+        setKeySet(UPPER_SET);
+        currSet = UPPER_SET;
+        initButtons();
+        draw();
+        break;
+      case SHIFTDOWN_KEY:
+        currSet = LOWER_SET;
+        initButtons();
+        draw();
+        break;
+      default:
+        return keyup;
+        break;
+    }
+
   }
-  return keyup;
+  return 0;
 };
 
 

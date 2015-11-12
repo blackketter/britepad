@@ -9,9 +9,8 @@
 class DotsDisplayApp : public ScreensaverApp {
   public:
     void begin();
-    void releaseMem();
-
     void run();
+    void end();
 
     bool canBeMouse() { return true; };
 

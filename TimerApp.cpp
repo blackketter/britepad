@@ -5,11 +5,12 @@
 #include "Debug.h"
 #include "Clock.h"
 
-void TimerApp::end(BritepadApp* nextApp) {
+void TimerApp::end() {
   // don't bother coming back as a screensaver if the alarm has sounded
   if (alarm_sounded) {
     mytimer.cancel();
     beeps = 0;
+    alarm_sounded = 0;
   }
 }
 

@@ -139,7 +139,6 @@ void BritepadApp::begin() {
   clearScreen();
 };
 
-void BritepadApp::end(BritepadApp* nextApp) {
-  releaseMem();
+void BritepadApp::end() {
   currAppMode = INACTIVE;
 }

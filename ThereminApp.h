@@ -6,16 +6,18 @@
 
 class ThereminApp : public BritepadApp {
   public:
-    const char* name() { return "Theremin"; };
     void run();
-    void end(BritepadApp* nextApp);
+    void end();
     virtual bool disablesScreensavers() { return true; }
 
+    const char* name() { return "Theremin"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "thrm";
+
   private:
     uint8_t lastProx;
     color_t currColor = 0;
+    float lastPitch = 0.0;
 };
 
 #endif

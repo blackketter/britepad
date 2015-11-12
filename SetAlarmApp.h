@@ -7,7 +7,7 @@
 class SetAlarmApp : public SetClockApp {
   public:
     SetAlarmApp() { theTime = &alarmTime; };
-    void end(BritepadApp* nextApp);
+    void end();
     void begin();
 
 

@@ -79,7 +79,7 @@ void SetClockApp::begin() {
   theTime->beginSetTime();
 }
 
-void SetClockApp::end(BritepadApp* nextApp) {
+void SetClockApp::end() {
   theTime->endSetTime();
 }
 

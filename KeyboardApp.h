@@ -12,7 +12,6 @@ class KeyboardApp : public BritepadApp {
     bool displaysStatusBar() { return true; }
     bool canBeInteractive() { return true; }
     bool disablesScreensavers() { return true; }
-    BritepadApp* exitsTo() { return DEFAULT_APP; }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "keyb";

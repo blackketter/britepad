@@ -159,7 +159,7 @@ void TouchPad::updateAPDS() {
       ambientLight = 0;
       DEBUG_LN("error reading ambient light");
     }
-
+#if 0
     if (apds.readRedLight(light)) {
       redLight = light;
     } else {
@@ -180,6 +180,10 @@ void TouchPad::updateAPDS() {
       blueLight = 0;
       DEBUG_LN("error reading blue light");
     }
+    DEBUG_PARAM_LN("Red", redLight);
+    DEBUG_PARAM_LN("Green", greenLight);
+    DEBUG_PARAM_LN("Blue", blueLight);
+#endif
 
     uint8_t prox;
     if (apds.readProximity(prox)) {

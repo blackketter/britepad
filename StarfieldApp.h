@@ -7,6 +7,7 @@ class StarfieldApp : public ScreensaverApp {
   public:
     void run();
     void begin();
+    void end();
 
     const char* name() { return "Stars"; };
 
@@ -16,7 +17,6 @@ class StarfieldApp : public ScreensaverApp {
     bool canBeMouse() { return true; }
 
   protected:
-   void releaseMem();
 
   private:
     coord_t* stars = nullptr;

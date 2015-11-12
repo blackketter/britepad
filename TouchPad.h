@@ -56,7 +56,6 @@ class TouchPad {
     int getHistoryCount() { return historyCount; }
     point_t* getHistory() { return history; }
 
-
   private:
     coord_t height;
     coord_t width;
@@ -83,9 +82,6 @@ class TouchPad {
     millis_t APSDupdateInterval = 100;
 
     uint16_t ambientLight;
-    uint16_t redLight;
-    uint16_t greenLight;
-    uint16_t blueLight;
     uint8_t proximity;
     int gesture;
 

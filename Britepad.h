@@ -19,10 +19,10 @@ class Britepad {
     BritepadApp* getAppByID(appid_t appID);
 
     void updateStatusBar();
-
-  private:
     BritepadApp* getLaunchedApp() { return launchedAppPtr; }
     AppMode getLaunchedAppMode() { return launchedAppMode; }
+
+  private:
 
     BritepadApp* currApp = nullptr;
     BritepadApp* launchedAppPtr = nullptr;

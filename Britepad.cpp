@@ -191,7 +191,7 @@ void Britepad::idle() {
   pad.update();
 
   if (pad.down(TOP_PAD)) {
-    DEBUG_LN("Toppad down");
+//    DEBUG_LN("Toppad down");
     if (currApp) {
       BritepadApp* nextApp = currApp->exitsTo();
       launchApp(nextApp);

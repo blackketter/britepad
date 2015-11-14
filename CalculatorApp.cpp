@@ -155,8 +155,7 @@ void CalculatorApp::handleKey(keys keyPressed) {
       break;
     case log2_f:
       keyLog2();
-      buttons->setMap(basic_map);
-      break;
+       break;
     default:
       break;
   }

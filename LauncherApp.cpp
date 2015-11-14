@@ -29,6 +29,7 @@
 #include "SetAlarmApp.h"
 #include "SetClockApp.h"
 #include "SetTimerApp.h"
+#include "SparkleApp.h"
 #include "StarfieldApp.h"
 #include "SplashApp.h"
 #include "StopwatchApp.h"
@@ -97,6 +98,7 @@ LauncherApp::LauncherApp() {
   setButton(APPS_SCREEN, 1,  new ThereminApp);
   setButton(APPS_SCREEN, 2,  new PaintApp);
   setButton(APPS_SCREEN, 3,  new GestureApp);
+  setButton(APPS_SCREEN, 4,  new SparkleApp);
   setButton(APPS_SCREEN, 10, new InfoApp);
   setButton(APPS_SCREEN, 11,  new RebootApp);  // todo: doesn't work yet
 

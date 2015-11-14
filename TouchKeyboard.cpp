@@ -77,7 +77,7 @@ void TouchKeyboard::track() {
 void TouchKeyboard::draw() {
   for (int r = 0; r < rows; r++) {
     for (int c = 0; c < keysInRow(r); c++) {
-      DEBUG_PARAM_LN("button draw", c);
+//      DEBUG_PARAM_LN("button draw", c);
       buttons[r][c].draw();
     }
   }

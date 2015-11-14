@@ -15,6 +15,7 @@
 #define B8(x) (((x)&0x001f)<<3)
 
 #define C32to16(x) (color_t)((((x)&0x00f80000)>>8)+(((x)&0x0000fc00)>>5)+(((x)&0x000000f8)>>3))
+#define grey8toC16(x) ((color_t)(((x>>3)<<11)+((x>>2)<<5)+(x>>3)))
 
 typedef uint16_t color_t;
 typedef int16_t coord_t;

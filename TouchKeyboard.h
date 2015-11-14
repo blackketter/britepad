@@ -108,35 +108,6 @@ class TouchKeyboard : public Widget {
 
 };
 
-class CalculatorKeyboard : public TouchKeyboard {
-
-  protected:
-    static const uint8_t keysets = 4;
-    static const uint8_t rows = 4;
-    static const uint8_t maxKeysPerRow = 6;
-
-    point_t keycoord[rows][maxKeysPerRow];
-    uint8_t keyStatus[rows][maxKeysPerRow];
-
-    const char* keys[keysets][rows] = {
-      // basic 4-function
-      {
-      },
-
-      // scientific
-      {
-      },
-
-      // inv scientific
-      {
-      },
-
-      // computer
-      {
-      }
-    };
-};
-
 #endif
 
 

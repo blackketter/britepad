@@ -16,6 +16,7 @@ class PaintApp : public BritepadApp {
 
   private:
     int currentColor = screen.red;
+    static const coord_t penRadius = 10;
 };
 
 #endif

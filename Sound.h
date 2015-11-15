@@ -1,5 +1,5 @@
-#ifndef _SOUND_
-#define _SOUND_
+#ifndef _Sound_
+#define _Sound_
 
 #include "Types.h"
 

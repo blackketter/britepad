@@ -1,5 +1,5 @@
-#ifndef _PAINTAPP_
-#define _PAINTAPP_
+#ifndef _PaintApp_
+#define _PaintApp_
 
 #include "BritepadApp.h"
 

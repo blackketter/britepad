@@ -13,7 +13,7 @@ class StopwatchApp : public BritepadApp {
     const char* name() { return "Stopwatch"; };
     bool displaysStatusBar() { return true; }
     bool wantsToBeScreensaver() { return !isReset(); }
-    bool disablesScreensavers() { return isAppMode(INTERACTIVE) && wantsToBeScreensaver(); }
+    bool disablesScreensavers() { return isAppMode(INTERACTIVE_MODE) && wantsToBeScreensaver(); }
     bool canBeInteractive() { return true; }
 
     appid_t id() { return ID; };

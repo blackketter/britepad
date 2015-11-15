@@ -209,7 +209,7 @@ void LauncherApp::run() {
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
     if (pad.up(SCREEN_PAD)) {
-      launchApp(launchOnRelease, SCREENSAVER);
+      launchApp(launchOnRelease, SCREENSAVER_MODE);
       launchOnRelease = nullptr;
     }
   } else if (pad.touched(SCREEN_PAD)) {
@@ -249,7 +249,7 @@ void LauncherApp::run() {
         } else {
           if (launched->canBeScreensaver()) {
             // toggle the enabledness of the screensaver
-            launched->setEnabled(!launched->getEnabled());
+            launched->setEnabled(!launched->getEnabled(SCREENSAVER_MODE), SCREENSAVER_MODE);
             drawButton(b);
           } else {
             launchApp(launched);
@@ -296,7 +296,13 @@ color_t LauncherApp::bgColor() {
 }
 
 const char* LauncherApp::infoBarText() {
-  return currentScreen() == SCREENSAVERS_SCREEN ? "Press and hold to test" : nullptr;
+  switch (currentScreen()) {
+    case SCREENSAVERS_SCREEN:
+    case MICE_SCREEN:
+      return "Press and hold to test";
+    default:
+      return nullptr;
+  }
 }
 
 const char* LauncherApp::statusBarTitle() {

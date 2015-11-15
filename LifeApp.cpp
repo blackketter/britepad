@@ -20,7 +20,7 @@ const bool survive[RULESETS][9] = {{0,0,1,1,0,0,0,0,0},{0,1,1,1,1,1,0,0,0},{0,1,
 void LifeApp::setAppMode(AppMode asMode) {
   DotsDisplayApp::setAppMode(asMode);
 
-  if (asMode == SCREENSAVER) {
+  if (asMode == SCREENSAVER_MODE) {
     reseed = true;
   }
 }
@@ -28,8 +28,8 @@ void LifeApp::setAppMode(AppMode asMode) {
 void LifeApp::run() {
   BritepadApp::run();
   switch (getAppMode()) {
-    case MOUSE:
-    case INTERACTIVE:
+    case MOUSE_MODE:
+    case INTERACTIVE_MODE:
       if (pad.down(SCREEN_PAD) && generation) {
         wipe();
       }
@@ -42,7 +42,7 @@ void LifeApp::run() {
         }
       }
       // fall through
-    case SCREENSAVER:
+    case SCREENSAVER_MODE:
       iterate();
       break;
     default:

@@ -8,7 +8,6 @@ void ButtonMatrix::init(coord_t x, coord_t y, coord_t width, coord_t height, int
   buttonMaps = maps;
   buttons = new Button*[totalButtons()];
 
-  coord_t gap = 1;
   coord_t xorig = x + gap;
   coord_t yorig = y + gap;
   coord_t xspacing = (width-gap)/columns;
@@ -23,7 +22,8 @@ void ButtonMatrix::init(coord_t x, coord_t y, coord_t width, coord_t height, int
       coord_t b_x = xorig;
       for (int c = 0; c<buttonColumns;c++) {
         int i = index(r,c,m);
-        buttons[i] = new Button(b_x, b_y, b_w, b_h, configuration[i].bgColor, false, configuration[i].labelText, configuration[i].labelFont, configuration[i].labelColor, configuration[i].icon, configuration[i].id);
+        buttons[i] = newButton();
+        buttons[i]->init(b_x, b_y, b_w, b_h, configuration[i].bgColor, false, configuration[i].labelText, configuration[i].labelFont, configuration[i].labelColor, configuration[i].icon, configuration[i].id);
         b_x += xspacing;
       }
     b_y += yspacing;

@@ -1,5 +1,5 @@
-#ifndef _TOUCHPAD_
-#define _TOUCHPAD_
+#ifndef _TouchPad_
+#define _TouchPad_
 
 #include "Types.h"
 

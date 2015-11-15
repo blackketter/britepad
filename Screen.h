@@ -1,5 +1,5 @@
-#ifndef _SCREEN_
-#define _SCREEN_
+#ifndef _Screen_
+#define _Screen_
 
 // get some shared typedefs, like direction_t
 #include "Types.h"
@@ -15,7 +15,8 @@
 #define B8(x) (((x)&0x001f)<<3)
 
 #define C32to16(x) (color_t)((((x)&0x00f80000)>>8)+(((x)&0x0000fc00)>>5)+(((x)&0x000000f8)>>3))
-#define grey8toC16(x) ((color_t)(((x>>3)<<11)+((x>>2)<<5)+(x>>3)))
+#define RGBtoC16(r,g,b) ((color_t)((((r)>>3)<<11)+(((g)>>2)<<5)+((b)>>3)))
+#define grey8toC16(x) RGBtoC16((x),(x),(x))
 
 typedef uint16_t color_t;
 typedef int16_t coord_t;
@@ -97,6 +98,16 @@ class Screen : public ILI9341_t3 {
     static const color_t darkerblue =  0x0008; // 0, 0, .25
     static const color_t darkergrey = 0x2104; // 0.125, .125, .125
     static const color_t darkeryellow = 0x2100; // 0.125, .125, 0
+
+    static const color_t grey10 = grey8toC16((255L*10)/100);
+    static const color_t grey20 = grey8toC16((255L*20)/100);
+    static const color_t grey30 = grey8toC16((255L*30)/100);
+    static const color_t grey40 = grey8toC16((255L*40)/100);
+    static const color_t grey50 = grey8toC16((255L*50)/100);
+    static const color_t grey60 = grey8toC16((255L*60)/100);
+    static const color_t grey70 = grey8toC16((255L*70)/100);
+    static const color_t grey80 = grey8toC16((255L*80)/100);
+    static const color_t grey90 = grey8toC16((255L*90)/100);
 
     static const color_t midgreen = darkgreen + darkergreen;
     static const color_t AliceBlue = C32to16(HTMLColor::AliceBlue);

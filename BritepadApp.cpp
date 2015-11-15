@@ -109,13 +109,13 @@ bool BritepadApp::isID(appid_t match) {
 
 bool BritepadApp::canBeAppMode(AppMode b) {
   switch (b) {
-    case SCREENSAVER:
+    case SCREENSAVER_MODE:
       return canBeScreensaver();
-    case MOUSE:
+    case MOUSE_MODE:
       return canBeMouse();
-    case INTERACTIVE:
+    case INTERACTIVE_MODE:
       return canBeInteractive();
-    case INACTIVE:
+    case INACTIVE_MODE:
       return true;
     default:
       return false;
@@ -123,11 +123,11 @@ bool BritepadApp::canBeAppMode(AppMode b) {
 }
 void BritepadApp::setAppMode(AppMode asMode) {
   if (currAppMode != asMode) {
-    if (currAppMode == MOUSE) {
+    if (currAppMode == MOUSE_MODE) {
       mouse.end();
     }
 
-    if (asMode == MOUSE) {
+    if (asMode == MOUSE_MODE) {
       mouse.begin();
     }
   }
@@ -140,5 +140,5 @@ void BritepadApp::begin() {
 };
 
 void BritepadApp::end() {
-  currAppMode = INACTIVE;
+  currAppMode = INACTIVE_MODE;
 }

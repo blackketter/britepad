@@ -13,7 +13,7 @@ class BritepadApp {
     virtual void begin();  // initialize app state and draw first screen, allocate any memory needed while running
     virtual void end(); // called after final run(), lets app clean up, releasing any memory temporarily allocated for runs
 
-    virtual void run() { if (isAppMode(MOUSE)) { mouse.run(); } };  // run current app state repeatedly, returns pointer to next app to run (or one of the constants below)
+    virtual void run() { if (isAppMode(MOUSE_MODE)) { mouse.run(); } };  // run current app state repeatedly, returns pointer to next app to run (or one of the constants below)
     virtual void setAppMode(AppMode asMode);  // called automatically by begin() or when switching between modes
 
     static BritepadApp* STAY_IN_APP;
@@ -36,13 +36,13 @@ class BritepadApp {
     virtual BritepadApp* exitsTo() { return BACK_APP; }  // when exiting the app, typically by the TOP_PAD, where should it go by default (BACK_APP is to LauncherApp, DEFAULT_APP is to a mouse capable app)
     virtual bool displaysClock() { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
 
-    virtual bool getEnabled() { return enabled; }
-    virtual void setEnabled(bool e) { enabled = e; }
+    virtual bool getEnabled(AppMode asMode = ANY_MODE) { readPrefs(); return (bool)(enabled & asMode); }
+    virtual void setEnabled(bool e, AppMode asMode = ANY_MODE) { if (e) { enabled = (AppMode)(asMode | enabled); } else { enabled = (AppMode)(enabled ^ asMode); }  writePrefs(); }
 
     AppMode getAppMode() { return currAppMode; }
     bool isAppMode(AppMode is) { return (is == getAppMode()); }
     bool canBeAppMode(AppMode b);
-    void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE) { britepad.launchApp(app, mode); };
+    void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { britepad.launchApp(app, mode); };
     void exit() { launchApp(DEFAULT_APP); };
 
     virtual bool canBeScreensaver() { return false; }
@@ -74,14 +74,19 @@ class BritepadApp {
     void setPrevApp(BritepadApp* app) {  prevApp = app; };
 
   protected:
-    bool enabled = true;
+    AppMode enabled = ANY_MODE;  // apps are always enabled by default
     coord_t statusBarHeight = 16;
     Icon icon;
 
-    AppMode currAppMode = INACTIVE;
+    AppMode currAppMode = INACTIVE_MODE;
+
+    virtual bool hasPrefs() { return canBeScreensaver() | canBeMouse(); } // mice and screensavers have prefs
 
     virtual void clearScreen() { screen.fillScreen(bgColor()); }
     void resetClipRect();  // resets clip rect to content area
+
+    virtual void writePrefs() {  if (hasPrefs()) { uint8_t pref = (uint8_t)enabled; prefs.write(id(), sizeof(pref), (uint8_t*)&pref); } };
+    virtual void readPrefs() { if (hasPrefs()) { uint8_t pref; prefs.read(id(),  sizeof(pref), (uint8_t*)&pref); enabled = (AppMode)pref;} };
 
   private:
     BritepadApp* nextApp = nullptr;

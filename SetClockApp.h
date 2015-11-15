@@ -1,5 +1,5 @@
-#ifndef _SETCLOCKAPP_
-#define _SETCLOCKAPP_
+#ifndef _SetClockApp_
+#define _SetClockApp_
 
 #include "BritepadApp.h"
 #include "BritepadShared.h"

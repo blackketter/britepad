@@ -19,7 +19,7 @@ void BriteLiteApp::run() {
       dots->setDot(x,y, lastColor++ | 0x8000);
       dots->updateDot(x,y);
     }
-  } else if (isAppMode(SCREENSAVER)) {
+  } else if (isAppMode(SCREENSAVER_MODE)) {
   switch (random(8)) {
     case 0:
       cursor_x++;

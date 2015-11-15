@@ -4,9 +4,6 @@
 #include "Debug.h"
 #include "Sound.h"
 
-// Size of the color selection boxes and the paintbrush size
-#define PENRADIUS 10
-
 void PaintApp::run() {
   BritepadApp::run();
 

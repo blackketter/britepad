@@ -1,8 +1,9 @@
 #include "Button.h"
 #include "Debug.h"
 
-void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData) {
+void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData, widgetid_t id) {
   setBounds(x,y,w,h);
+
   colored = color;
   highlighted = highlight;
   titleStr = title;
@@ -10,6 +11,7 @@ void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool
   titleCol = titleColor;
   visible = true;
   icon.setData(iconData);
+  setID(id);
 };
 
 bool Button::down() {
@@ -117,7 +119,7 @@ void Button::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight,
 }
 
 void RoundButton::drawbg() {
-  coord_t r = min(width/2, height/2);
+  coord_t r = (min(width, height)-1)/2;  // round down radius from diameter (fillCircle circles have diameter 2r+1)
   screen.fillCircle( xpos+width/2, ypos+height/2, r, fillColor());
 };
 

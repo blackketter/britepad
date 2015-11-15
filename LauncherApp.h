@@ -42,6 +42,7 @@ class LauncherApp : public BritepadApp {
     void drawButtons();
     int currentScreen();
     color_t bgColor();
+    AppMode screenMode(int theScreen);
     void setButton(int screen, int i, BritepadApp* b);
     BritepadApp* getButton(int i);
 

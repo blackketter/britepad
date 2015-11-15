@@ -102,8 +102,20 @@ LauncherApp::LauncherApp() {
   setButton(APPS_SCREEN, 10, new InfoApp);
   setButton(APPS_SCREEN, 11,  new RebootApp);  // todo: doesn't work yet
 
+
+  // add mice apps to mice app settings screen
+  BritepadApp* iterApp = britepad.getNextApp();
+  unsigned int i = 0;
+  while (iterApp) {
+    if (iterApp->canBeMouse()) {
+      setButton(MICE_SCREEN, i++, iterApp);
+    }
+    iterApp = britepad.getNextApp(iterApp);
+  }
+
   // this gets created, but has no button
   new AlarmApp;
+
 }
 
 void LauncherApp::begin() {
@@ -158,16 +170,33 @@ void LauncherApp::drawButton(int i, bool highlighted) {
 
   const int radius = min(hsize,vsize) / 2 - 2;
 
-  screen.fillCircle( x, y, radius,
-    highlighted ? screen.mix(apps[currentScreen()][i]->buttonColor(), screen.black) : apps[currentScreen()][i]->buttonColor());
-  const char* name = apps[currentScreen()][i]->name();
+  BritepadApp* app = getButton(i);
+
+  bool disabled = !app->getEnabled(screenMode(currentScreen()));
+  highlighted = disabled | highlighted;
+
+  color_t color;
+  switch (currentScreen()) {
+    case MICE_SCREEN:
+      color = screen.green;
+      break;
+    case SCREENSAVERS_SCREEN:
+      color = screen.yellow;
+      break;
+    default:
+      color = app->buttonColor();
+      break;
+  }
+
+  screen.fillCircle( x, y, radius, highlighted ? screen.mix(color, screen.black) : color);
+  const char* name = app->name();
   if (name) {
     screen.setFont(Arial_9_Bold);
     screen.setTextColor(screen.black);
     screen.setCursor( x - screen.measureTextWidth(name) / 2, y - screen.measureTextHeight(name)/2);
     screen.drawText(name);
   } else {
-    Icon icon = apps[currentScreen()][i]->getIcon();
+    Icon icon = app->getIcon();
     if (icon.getData()) {
       icon.draw(x - icon.width()/2, y - icon.height()/2, screen.black);
     }
@@ -189,7 +218,11 @@ int LauncherApp::buttonHit(int x, int y) {
 
 void LauncherApp::setButton(int screen, int i, BritepadApp* b)
 {
-  apps[screen][i] = b;
+  if (screen < TOTAL_SCREENS && i < buttons_per_screen) {
+    apps[screen][i] = b;
+  } else {
+    DEBUG_LN("setButton out of bounds");
+  }
 };
 
 BritepadApp* LauncherApp::getButton(int i) {
@@ -200,6 +233,21 @@ BritepadApp* LauncherApp::getButton(int i) {
   }
 };
 
+AppMode LauncherApp::screenMode(int theScreen) {
+  AppMode launchMode;
+  switch (current_screen) {
+    case MICE_SCREEN:
+      launchMode = MOUSE_MODE;
+      break;
+    case SCREENSAVERS_SCREEN:
+      launchMode = SCREENSAVER_MODE;
+      break;
+    default:
+      launchMode = INTERACTIVE_MODE;
+  }
+  return launchMode;
+}
+
 void LauncherApp::run() {
 
   lastRun = clock.now();
@@ -209,7 +257,7 @@ void LauncherApp::run() {
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
     if (pad.up(SCREEN_PAD)) {
-      launchApp(launchOnRelease, SCREENSAVER_MODE);
+      launchApp(launchOnRelease, screenMode(current_screen));
       launchOnRelease = nullptr;
     }
   } else if (pad.touched(SCREEN_PAD)) {
@@ -221,7 +269,7 @@ void LauncherApp::run() {
         highlighted_button = b;
       } else {
         if (pad.time() - pad.lastDownTime(SCREEN_PAD) > holdTime) {
-          if (getButton(b) && getButton(b)->canBeScreensaver()) {
+          if (getButton(b)) {
             sound.beep();
             clearScreen();
             launchOnRelease = getButton(b);
@@ -247,12 +295,12 @@ void LauncherApp::run() {
             drawButton(b, false);
           }
         } else {
-          if (launched->canBeScreensaver()) {
-            // toggle the enabledness of the screensaver
-            launched->setEnabled(!launched->getEnabled(SCREENSAVER_MODE), SCREENSAVER_MODE);
-            drawButton(b);
-          } else {
+          AppMode whichMode = screenMode(current_screen);
+          if (whichMode == INTERACTIVE_MODE) {
             launchApp(launched);
+          } else {
+            launched->setEnabled(!launched->getEnabled(whichMode), whichMode);
+            drawButton(b);
           }
         }
         sound.click();

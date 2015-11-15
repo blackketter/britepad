@@ -6,7 +6,7 @@
 
 class ScreensaverApp : public BritepadApp {
   public:
-    virtual color_t buttonColor() { return (getEnabled(SCREENSAVER_MODE) ? screen.yellow : screen.darkyellow); };
+    virtual color_t buttonColor() { return screen.yellow; };
 
     // by default, no status bars
     virtual bool displaysStatusBar() { return false; }

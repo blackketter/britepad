@@ -12,7 +12,6 @@ class SetAlarmApp : public SetClockApp {
 
 
     bool wantsToBeScreensaver() { return false; };
-    bool disablesScreensavers() { return false; }
     bool displaysClock() { return false; };
 
     const char* name() { return "Set Alarm"; };

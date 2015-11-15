@@ -24,8 +24,8 @@ void Timer::setMillis(millis_t millisDuration, timerCallback_t callback, void* c
   millisTime = clock.millis() + millisDur;
 }
 
-long Timer::remainingMillis() {
-  long remainingMillis = 0;
+millis_t Timer::remainingMillis() {
+  millis_t remainingMillis = 0;
   if (millisTime) {
     if (isPaused()) {
       return -millisTime;
@@ -40,7 +40,7 @@ long Timer::remainingMillis() {
 }
 
 time_t Timer::remainingSecs() {
-  long remainingSecs = 0;
+  millis_t remainingSecs = 0;
   if (millisTime) {
     return remainingMillis()/1000;
   } else if (clockTime) {
@@ -57,7 +57,7 @@ time_t Timer::timeInSecs() {
   return clock.now()+remainingSecs();
 }
 
-long Timer::timeInMillis() {
+millis_t Timer::timeInMillis() {
   return clock.millis()+remainingMillis();
 }
 
@@ -68,7 +68,7 @@ time_t Timer::durationSecs() {
     return 0;
   }
 }
-long Timer::durationMillis() {
+millis_t Timer::durationMillis() {
   if (millisDur) {
     return millisDur;
   } else {
@@ -81,7 +81,7 @@ bool Timer::hasPassed() {
   if (isPaused()) { return false; }
 
   if (millisTime) {
-    if (clock.millis() >= (unsigned long)millisTime) {
+    if (clock.millis() >= millisTime) {
       return true;
     }
   } else if (clockTime) {

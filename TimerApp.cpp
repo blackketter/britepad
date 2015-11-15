@@ -26,7 +26,7 @@ void TimerApp::drawTime() {
   if (lastDrawMillis/redrawInterval != now/redrawInterval) {
     lastDrawMillis = now;
 
-    char textTime[6];
+    char textTime[100];
 
     int displaytime = alarm_sounded ? timer_dur : delta;
     color_t textColor = screen.white;
@@ -37,10 +37,10 @@ void TimerApp::drawTime() {
     coord_t width = screen.measureTextWidth(textTime);
 
     if (alarm_sounded) {
-      if ((now/redrawInterval) % 2) {
+      if ((now/redrawInterval) % 2 || (displaytime == 0)) {
         textColor = screen.red;
       } else {
-        textColor = screen.black;
+        textColor = screen.grey10;
       }
     }
 

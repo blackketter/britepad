@@ -4,6 +4,8 @@
 
 #include "Debug.h"
 
+// todo: handle error condition when prefs are too big
+
 // preferences are saved:
 //   tag string (zero terminated), length byte, data bytes (of length given before)
 

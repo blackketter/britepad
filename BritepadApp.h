@@ -37,7 +37,14 @@ class BritepadApp {
     virtual bool displaysClock() { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
 
     virtual bool getEnabled(AppMode asMode = ANY_MODE) { readPrefs(); return (bool)(enabled & asMode); }
-    virtual void setEnabled(bool e, AppMode asMode = ANY_MODE) { if (e) { enabled = (AppMode)(asMode | enabled); } else { enabled = (AppMode)(enabled ^ asMode); }  writePrefs(); }
+    virtual void setEnabled(bool e, AppMode asMode = ANY_MODE) {
+      if (e) {
+        enabled = (AppMode)(enabled | asMode);
+      } else {
+        enabled = (AppMode)(enabled & (~asMode));
+      }
+      writePrefs();
+    }
 
     AppMode getAppMode() { return currAppMode; }
     bool isAppMode(AppMode is) { return (is == getAppMode()); }

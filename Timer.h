@@ -17,13 +17,13 @@ class Timer {
     void setClockTime(time_t clockTimeSet, timerCallback_t callback = nullptr, void* callbackData = nullptr);
 
     time_t remainingSecs();  // seconds from now (works on both kinds of timer)
-    long remainingMillis();  // millis from now (works on both kinds of timer)
+    millis_t remainingMillis();  // millis from now (works on both kinds of timer)
 
     time_t timeInSecs();   // clock time of timer (works on both kinds of timer)
-    long timeInMillis();   // millis() time of timer (works on both kinds of timer)
+    millis_t timeInMillis();   // millis() time of timer (works on both kinds of timer)
 
     time_t durationSecs();  // how far out was the timer when it was initially set?
-    long durationMillis();
+    millis_t durationMillis();
 
 
     void cancel();         // cancel timer including callback
@@ -43,8 +43,8 @@ class Timer {
 
     time_t clockTime = 0;
 
-    long millisTime = 0;
-    unsigned long millisDur = 0;
+    millis_t millisTime = 0;
+    millis_t millisDur = 0;
     bool repeatTimer;
 
     timerCallback_t cb = nullptr;

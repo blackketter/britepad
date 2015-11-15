@@ -12,12 +12,12 @@ class Britepad {
     void begin();
     void idle();
 
-    void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { launchedAppPtr = app; launchedAppMode = mode; };
+    void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { launchedAppPtr = app; launchedAppMode = mode; }
     BritepadApp* currentApp() { return currApp; }
 
     void addApp(BritepadApp* newApp);
     BritepadApp* getAppByID(appid_t appID);
-
+    BritepadApp* getNextApp(BritepadApp* anApp = nullptr);
     void updateStatusBar();
     BritepadApp* getLaunchedApp() { return launchedAppPtr; }
     AppMode getLaunchedAppMode() { return launchedAppMode; }

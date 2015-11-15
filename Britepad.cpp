@@ -76,8 +76,19 @@ BritepadApp* Britepad::wantsToBeScreensaver() {
 }
 
 void Britepad::addApp(BritepadApp* app) {
+  if (appList) {
+    appList->setPrevApp(app);
+  }
   app->setNextApp(appList);
   appList = app;
+}
+
+BritepadApp* Britepad::getNextApp(BritepadApp* anApp) {
+  if (anApp) {
+    return anApp->getNextApp();
+  } else {
+    return appList;
+  }
 }
 
 void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
@@ -94,7 +105,12 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     asMode = INTERACTIVE_MODE;
   }
 
-  launchedAppPtr = newApp;
+  if (newApp) {
+    launchedAppPtr = newApp;
+  } else {
+    DEBUG_LN("Can't switch to null newApp");
+    return;
+  }
 
   if (newApp == currApp) {
     if (currApp->getAppMode() != asMode) {

@@ -23,12 +23,11 @@ class TimerApp : public StopwatchApp {
     time_t getTimeRemaining() { return mytimer.remainingSecs(); }
     void alarm();
     virtual bool isRunning() { return mytimer.isRunning(); }  // are we counting down?
+    virtual bool isPaused() { return mytimer.isPaused(); };
+    virtual bool isReset() { return (mytimer.isReset() || (isPaused()  &&  (mytimer.remainingSecs() == timerTime()))); }
 
   private:
     time_t timerTime() { return timer_dur; };
-
-    virtual bool isPaused() { return mytimer.isPaused(); };
-    virtual bool isReset() { return (mytimer.isReset() || (isPaused()  &&  (mytimer.remainingSecs() == timerTime()))); }
 
     virtual void pause() { mytimer.pause(); }
     virtual void resume() { mytimer.resume(); }

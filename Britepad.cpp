@@ -94,7 +94,7 @@ BritepadApp* Britepad::getNextApp(BritepadApp* anApp) {
 void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   if (newApp == BritepadApp::STAY_IN_APP) {
     return;
-  } else if (newApp == BritepadApp::DEFAULT_APP) {
+  } else if (newApp == BritepadApp::MOUSE_APP) {
     newApp = randomApp(MOUSE_MODE);
     asMode = MOUSE_MODE;
   } else if (newApp == BritepadApp::SCREENSAVER_APP) {
@@ -183,6 +183,7 @@ void Britepad::updateStatusBar() {
 void Britepad::begin() {
 
   // assumes that the splashapp has been created and added to list
+  launchApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
   setApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
 
 // show the apps that have been loaded
@@ -214,12 +215,13 @@ void Britepad::idle() {
     } else {
       DEBUG_LN("No currapp!");
     }
-  } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.down(SCREEN_PAD) || (pad.down(ANY_PAD) && !currApp->canBeInteractive()))) {
+  } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.down(SCREEN_PAD) || ((pad.down(ANY_PAD) && !currApp->canBeInteractive())))) {
+    DEBUG_LN("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
-    if (currApp->canBeMouse()) {
+    if (currApp->canBeMouse() && currApp->getEnabled(MOUSE_MODE)) {
       currApp->setAppMode(MOUSE_MODE);
     } else {
-      launchApp(BritepadApp::DEFAULT_APP, MOUSE_MODE);
+      launchApp(BritepadApp::MOUSE_APP, MOUSE_MODE);
     }
 
   } else if (pad.up(PROXIMITY_SENSOR) &&

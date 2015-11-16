@@ -15,10 +15,14 @@ class SparkleApp : public BritepadApp {
     const char* name() { return "Sparkle"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "spkl";
+
   private:
-    static const int pointCount = 200;
+    void drawSparkle(int i, color_t c);
+    static const int pointCount = 100;
     point_t points[pointCount];
     int currPoint = 0;
+    static const int spread = 60;
+    static const int radius = 4;
 };
 
 #endif

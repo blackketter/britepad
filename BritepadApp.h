@@ -17,7 +17,7 @@ class BritepadApp {
     virtual void setAppMode(AppMode asMode);  // called automatically by begin() or when switching between modes
 
     static BritepadApp* STAY_IN_APP;
-    static BritepadApp* DEFAULT_APP; // typically the MouseApp, but might be a timer when it's running
+    static BritepadApp* MOUSE_APP; // typically the MouseApp, but might be a timer when it's running
     static BritepadApp* BACK_APP;  // return to launcher
     static BritepadApp* SCREENSAVER_APP; // go to a screensaver
 
@@ -33,7 +33,7 @@ class BritepadApp {
 
     virtual bool disablesScreensavers() { return false; }
     virtual bool wantsToBeScreensaver() { return false; }  // return true if you want to be switched to as the screensaver (canBeScreensaver() doesn't have to be true)
-    virtual BritepadApp* exitsTo() { return BACK_APP; }  // when exiting the app, typically by the TOP_PAD, where should it go by default (BACK_APP is to LauncherApp, DEFAULT_APP is to a mouse capable app)
+    virtual BritepadApp* exitsTo() { return BACK_APP; }  // when exiting the app, typically by the TOP_PAD, where should it go by default (BACK_APP is to LauncherApp, MOUSE_APP is to a mouse capable app)
     virtual bool displaysClock() { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
 
     virtual bool getEnabled(AppMode asMode = ANY_MODE) { readPrefs(); return (bool)(enabled & asMode); }
@@ -50,7 +50,7 @@ class BritepadApp {
     bool isAppMode(AppMode is) { return (is == getAppMode()); }
     bool canBeAppMode(AppMode b);
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { britepad.launchApp(app, mode); };
-    void exit() { launchApp(DEFAULT_APP); };
+    void exit() { launchApp(MOUSE_APP); };
 
     virtual bool canBeScreensaver() { return false; }
     virtual bool canBeInteractive() { return true; }

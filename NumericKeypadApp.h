@@ -13,7 +13,7 @@ class NumericKeypadApp : public BritepadApp {
     void run();
 
     virtual bool disablesScreensavers() { return true; }
-    BritepadApp* exitsTo() { return DEFAULT_APP; }
+    BritepadApp* exitsTo() { return MOUSE_APP; }
 
     const char* name() { return "Keypad"; };
     appid_t id() { return ID; };

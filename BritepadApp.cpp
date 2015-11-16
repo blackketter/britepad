@@ -4,7 +4,7 @@
 #include "font_Arial.h"
 
 BritepadApp* BritepadApp::STAY_IN_APP = (BritepadApp*)0;
-BritepadApp* BritepadApp::DEFAULT_APP = (BritepadApp*)1;
+BritepadApp* BritepadApp::MOUSE_APP = (BritepadApp*)1;
 BritepadApp* BritepadApp::BACK_APP = (BritepadApp*)2;
 BritepadApp* BritepadApp::SCREENSAVER_APP = (BritepadApp*)3;
 

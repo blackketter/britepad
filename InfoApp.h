@@ -9,7 +9,7 @@ class InfoApp : public BritepadApp {
     bool displaysStatusBar() { return true; }
     bool canBeInteractive() { return true; }
     bool disablesScreensavers() { return true; }
-    BritepadApp* exitsTo() { return DEFAULT_APP; }
+    BritepadApp* exitsTo() { return MOUSE_APP; }
     color_t bgColor() { return screen.blue; }
 
     const char* name() { return "Info"; };

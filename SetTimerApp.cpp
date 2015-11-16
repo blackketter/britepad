@@ -20,7 +20,7 @@ void SetTimerApp::run() {
   if (customTimerRunning()) {
     launchApp(&timer_app);
   } else if (!edit) {
-    if (timer_app.getTime() != timer_duration || !timer_app.isRunning()) {
+    if (timer_app.getTime() != timer_duration || timer_app.isReset()) {
       timer_app.setTime(timer_duration);
     }
     launchApp(&timer_app);

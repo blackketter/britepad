@@ -69,7 +69,7 @@ void Screen::drawText(const char* text, const char* wrapChars) {
         // don't wrap to the left, wrap to the original spot
         if (wrap && text[i] == '\n') {
           cursor_x = origx;
-          cursor_y += fontHeight() + fontLineSpacing();
+          cursor_y += fontLineSpace();
         }
         i++;
       }
@@ -100,7 +100,7 @@ void Screen::drawText(const char* text, const char* wrapChars) {
       curWord[wordLen] = 0;
 
       if (x+screen.measureTextWidth(curWord) > right) {
-        screen.setCursor(left, getCursorY()+fontHeight()+fontLineSpacing());
+        screen.setCursor(left, getCursorY()+fontLineSpace());
       }
 
       screen.drawText(curWord);
@@ -134,7 +134,7 @@ coord_t Screen::measureTextHeight(const char* text) {
       lines++;
     }
   }
-  return (lines * fontHeight() + (lines-1)*fontLineSpacing());
+  return ((lines-1) * fontLineSpace() + fontCapHeight());
 }
 
 void Screen::drawTextF(const char* format, ...) {

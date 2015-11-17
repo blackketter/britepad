@@ -14,6 +14,7 @@
 #include "BubblesApp.h"
 #include "CalculatorApp.h"
 #include "ClockApp.h"
+#include "CountdownApp.h"
 #include "DotsDisplayApp.h"
 #include "FadeDotsApp.h"
 #include "GestureApp.h"
@@ -57,6 +58,8 @@ LauncherApp::LauncherApp() {
   setButton(SCREENSAVERS_SCREEN, 8,  new AnalogClockApp);
   setButton(SCREENSAVERS_SCREEN, 9,  new WordClockApp);
   setButton(SCREENSAVERS_SCREEN, 10,  new StarfieldApp);
+  setButton(SCREENSAVERS_SCREEN, 11,  new CountdownApp);
+
 
 
   setButton(SETTINGS_SCREEN, 8,   new SetClockApp);
@@ -270,7 +273,7 @@ void LauncherApp::run() {
       } else {
         if (pad.time() - pad.lastDownTime(SCREEN_PAD) > holdTime) {
           if (getButton(b)) {
-            sound.beep();
+            sound.click();
             clearScreen();
             launchOnRelease = getButton(b);
           }

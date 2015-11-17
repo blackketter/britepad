@@ -24,7 +24,7 @@ void InfoApp::run() {
 
   screen.setTextColor(screen.white, bgColor());
   screen.setFont(Arial_16);
-  screen.setCursor(screen.clipLeft() + screen.fontLineSpacing(), screen.clipTop()+screen.fontLineSpacing());
+  screen.setCursor(screen.clipLeft() + screen.fontGap(), screen.clipTop()+screen.fontGap());
   char string[100];
   clock.longTime(string);
   screen.drawTextF("%s\nX: %d Y: %d        \n", string, pad.x(), pad.y());

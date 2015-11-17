@@ -32,7 +32,7 @@ class SetClockApp : public BritepadApp {
 
     virtual void adjust(stime_t delta) { theTime->adjust(delta); };
 
-  private:
+  protected:
     static const int buttoncount = 8;
     static const int buttonradius = 24;
     static const int nobutton = -1;

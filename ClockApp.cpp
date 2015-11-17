@@ -27,13 +27,18 @@ void ClockApp::update() {
     sprintf(textTime, "%d:%02d", clock.hourFormat12(), clock.minute());
     coord_t w = screen.measureTextWidth(textTime);
     coord_t h = screen.measureTextHeight(textTime);
-    screen.setCursor(screen.clipMidWidth() - w/2,
-                     screen.clipMidHeight() - h/2);
+    coord_t x = screen.clipMidWidth() - w/2;
+    coord_t y = screen.clipMidHeight() - h/2;
+    screen.setCursor(x,y);
+
     if (w != lastWidth) {
       clearScreen();
       lastWidth = w;
     }
+    rect_t clip = { x,y,screen.measureTextWidth(textTime),(coord_t)(screen.measureTextHeight(textTime)+2)};
+    screen.pushClipRect(&clip);
     screen.drawText(textTime);
+    screen.pushClipRect(&clip);
 
 //  screen.setFont(Arial_20);
 //  sprintf(textTime, "%02d", clock.second());

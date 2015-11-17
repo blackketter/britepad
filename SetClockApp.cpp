@@ -32,9 +32,18 @@ void SetClockApp::drawTime() {
 
       screen.setFont(Arial_72_Bold);
       sprintf(textTime," %2d:%02d ", theTime->hourFormat12(), theTime->minute());
-      screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(textTime)/2,
-                       screen.clipMidHeight() - screen.measureTextHeight(textTime)/2);
+
+      coord_t x = screen.clipMidWidth() - screen.measureTextWidth(textTime)/2;
+      coord_t y = screen.clipMidHeight() - screen.measureTextHeight(textTime)/2;
+
+      screen.setCursor(x,y);
+
+      // big fonts have large blank space around them.  clip that out.
+      rect_t clip = { x,y,screen.measureTextWidth(textTime),screen.measureTextHeight(textTime)+2};
+      screen.pushClipRect(&clip);
       screen.drawText(textTime);
+      screen.pushClipRect(&clip);
+
       button[am_pm].setTitle(theTime->isAM() ? "am" : "pm");
       button[am_pm].draw();
     }

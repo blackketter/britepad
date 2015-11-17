@@ -26,6 +26,13 @@ typedef struct point_t {
   coord_t y;
 } point_t;
 
+typedef struct rect_t {
+  coord_t x;
+  coord_t y;
+  coord_t w;
+  coord_t h;
+} rect_t;
+
 typedef ILI9341_t3_font_t font_t;
 
 class Screen : public ILI9341_t3 {
@@ -71,6 +78,9 @@ class Screen : public ILI9341_t3 {
     inline coord_t clipRight() { return _clipx2; };
     inline coord_t clipMidHeight() { return clipTop() + clipHeight()/2; };
     inline coord_t clipMidWidth() { return clipLeft() + clipWidth()/2; };
+
+    // this pushClipRect sets the cliprect to the passed rect _AND_ saves the old clip rect back into it.  call setClipRect(r) again to reset.
+    inline void pushClipRect(rect_t* r) { rect_t t; t.x = clipLeft(); t.y = clipTop(); t.h = clipHeight(); t.w = clipWidth(); setClipRect((int16_t)(r->x),(int16_t)(r->y),(int16_t)(r->x+r->w),(int16_t)(r->y+r->h)); r->y = t.y; r->x = t.x; r->h = t.h; r->w = t.w; };
 
     static const color_t black = ILI9341_BLACK;
     static const color_t white = ILI9341_WHITE;

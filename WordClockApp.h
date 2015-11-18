@@ -6,6 +6,9 @@
 
 class WordClockApp : public ClockApp {
   public:
+    void run();
+    void end();
+
     const char* name() { return "Words"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "wclk";
@@ -15,6 +18,7 @@ class WordClockApp : public ClockApp {
 
   protected:
     virtual void update();
+    uint16_t scrollPos = 0;
  };
 
 #endif

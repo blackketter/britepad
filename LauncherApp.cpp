@@ -122,7 +122,9 @@ LauncherApp::LauncherApp() {
 }
 
 void LauncherApp::begin() {
-  BritepadApp::begin();
+  // do not do the default behaviour, we'll clear the screen ourselves
+  //BritepadApp::begin();
+
   // this should wake up the host, which is great for entering passwords
   // but might have some side effects
   Keyboard.press(KEY_LEFT_SHIFT);

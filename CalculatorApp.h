@@ -12,7 +12,6 @@ class CalculatorApp : public BritepadApp {
     void end();
     void run();
 
-    virtual bool disablesScreensavers() { return true; }
     BritepadApp* exitsTo() { return MOUSE_APP; }
 
     const char* name() { return "Calculator"; };
@@ -118,6 +117,7 @@ class CalculatorApp : public BritepadApp {
     void keyEE();
     void keyBackspace();
     void keyShift();
+
     void keyDivide();
     void keyMultiply();
     void keySubtract();
@@ -127,27 +127,26 @@ class CalculatorApp : public BritepadApp {
     void keyPercent();
     void keyBase();
     void keySend();
-
-    void keySquare() { acceptText(); double x = pop(); push(x*x); };
-    void keyCube() { acceptText(); double x = pop(); push(x*x*x); };
-    void keyPow()  { acceptText(); keySwap(); push(pow(pop(),pop())); };
-    void keyExp()  { acceptText(); push(pow(pop(),M_E)); };
-    void keyPow10(){ acceptText(); push(pow(10,pop())); };
-    void keySqrt() { acceptText(); push(sqrt(pop())); };
-    void keyCubert(){acceptText(); push(pow(pop(),1.0/3.0)); };
-    void keyXroot(){ acceptText(); keySwap(); push(pow(pop(),1.0/pop())); };
-    void keyLn()   { acceptText(); push(log(pop())/log(M_E)); };
-    void keyLog10(){ acceptText(); push(log(pop())/log(10.0)); };
-    void keySin()  { acceptText(); push(sin(pop())); };
-    void keyCos()  { acceptText(); push(cos(pop())); };
-    void keyTan()  { acceptText(); push(tan(pop())); };
-    void keyPi()   { acceptText(); push(M_PI); };
-    void keyE()    { acceptText(); push(M_E); };
-    void keyAsin() { acceptText(); push(asin(pop())); };
-    void keyAcos() { acceptText(); push(acos(pop())); };
-    void keyAtan() { acceptText(); push(atan(pop())); };
-    void keyLogy() { acceptText(); keySwap(); push(log(pop())/log(pop())); };
-    void keyLog2() { acceptText(); push(log(pop())/log(2.0)); };
+    void keySquare() { double x = pop(); push(x*x); };
+    void keyCube() { double x = pop(); push(x*x*x); };
+    void keyPow()  { keySwap(); push(pow(pop(),pop())); };
+    void keyExp()  { push(pow(pop(),M_E)); };
+    void keyPow10(){ push(pow(10,pop())); };
+    void keySqrt() { push(sqrt(pop())); };
+    void keyCubert(){push(pow(pop(),1.0/3.0)); };
+    void keyXroot(){ keySwap(); push(pow(pop(),1.0/pop())); };
+    void keyLn()   { push(log(pop())/log(M_E)); };
+    void keyLog10(){ push(log(pop())/log(10.0)); };
+    void keySin()  { push(sin(pop())); };
+    void keyCos()  { push(cos(pop())); };
+    void keyTan()  { push(tan(pop())); };
+    void keyPi()   { push(M_PI); };
+    void keyE()    { push(M_E); };
+    void keyAsin() { push(asin(pop())); };
+    void keyAcos() { push(acos(pop())); };
+    void keyAtan() { push(atan(pop())); };
+    void keyLogy() { keySwap(); push(log(pop())/log(pop())); };
+    void keyLog2() { push(log(pop())/log(2.0)); };
 
     ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] =
 {

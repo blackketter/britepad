@@ -147,9 +147,11 @@ void Screen::drawTextF(const char* format, ...) {
   drawText(foo);
 }
 
+// note: this does the whole screen, not just the clip area
 void Screen::pushFill(direction_t dir, color_t color) {
   const coord_t stepSize = 4;
-
+  rect_t r;
+  getScreenBounds(&r);
   switch(dir) {
     case DIRECTION_UP:
       for (coord_t i = height() - stepSize; i >= 0; i -= stepSize) {
@@ -164,16 +166,22 @@ void Screen::pushFill(direction_t dir, color_t color) {
       }
       break;
     case DIRECTION_LEFT:
+      pushClipRect(&r);
       for (coord_t i = 0; i < width(); i += stepSize) {
-        fillRect(i, 0, stepSize, height(), color);
+        fillRect(width()-stepSize-i, 0, stepSize, height(), color);
+        screen.setScroll(i+stepSize);
         delay(1);
       }
+      pushClipRect(&r);
       break;
     case DIRECTION_RIGHT:
-      for (coord_t i = width() - stepSize; i >= 0; i -= stepSize) {
+      pushClipRect(&r);
+      for (coord_t i = 0; i < width(); i+= stepSize) {
         fillRect(i, 0, stepSize, height(), color);
+        screen.setScroll(width()-stepSize-i);
         delay(1);
       }
+      pushClipRect(&r);
       break;
     default:
       break;

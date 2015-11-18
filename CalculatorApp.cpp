@@ -69,95 +69,100 @@ void CalculatorApp::handleKey(keys keyPressed) {
     case ee:
       keyEE();
       break;
-    case divide:
-      keyDivide();
-      break;
-    case multiply:
-      keyMultiply();
-      break;
-    case add:
-      keyAdd();
-      break;
-    case subtract:
-      keySubtract();
-      break;
-    case inverse:
-      keyInverse();
-      break;
-    case percent:
-      keyPercent();
-      break;
-    case swap:
-      keySwap();
-      break;
-    case changeBase:
-      keyBase();
-      break;
-    case send:
-      keySend();
-      break;
-    case square_f:
-      keySquare();
-      break;
-    case cube_f:
-      keyCube();
-      break;
-    case pow_f:
-      keyPow();
-      break;
-    case exp_f:
-      keyExp();
-      break;
-    case pow10_f:
-      keyPow10();
-      break;
-    case sqrt_f:
-      keySqrt();
-      break;
-    case cubert_f:
-      keyCubert();
-      break;
-    case xroot_f:
-      keyXroot();
-      break;
-    case ln_f:
-      keyLn();
-      break;
-    case log10_f:
-      keyLog10();
-      break;
-    case sin_f:
-      keySin();
-      break;
-    case cos_f:
-      keyCos();
-      break;
-    case tan_f:
-      keyTan();
-      break;
-    case pi_f:
-      keyPi();
-      break;
-    case e_f:
-      keyE();
-      break;
-    case asin_f:
-      keyAsin();
-      break;
-    case acos_f:
-      keyAcos();
-      break;
-    case atan_f:
-      keyAtan();
-      break;
-    case logy_f:
-      keyLogy();
-      break;
-    case log2_f:
-      keyLog2();
-       break;
     default:
-      break;
+      // the following are functions that accept the current input string
+      acceptText();
+      switch (keyPressed) {
+      case divide:
+        keyDivide();
+        break;
+      case multiply:
+        keyMultiply();
+        break;
+      case add:
+        keyAdd();
+        break;
+      case subtract:
+        keySubtract();
+        break;
+      case inverse:
+        keyInverse();
+        break;
+      case percent:
+        keyPercent();
+        break;
+      case swap:
+        keySwap();
+        break;
+      case changeBase:
+        keyBase();
+        break;
+      case send:
+        keySend();
+        break;
+      case square_f:
+        keySquare();
+        break;
+      case cube_f:
+        keyCube();
+        break;
+      case pow_f:
+        keyPow();
+        break;
+      case exp_f:
+        keyExp();
+        break;
+      case pow10_f:
+        keyPow10();
+        break;
+      case sqrt_f:
+        keySqrt();
+        break;
+      case cubert_f:
+        keyCubert();
+        break;
+      case xroot_f:
+        keyXroot();
+        break;
+      case ln_f:
+        keyLn();
+        break;
+      case log10_f:
+        keyLog10();
+        break;
+      case sin_f:
+        keySin();
+        break;
+      case cos_f:
+        keyCos();
+        break;
+      case tan_f:
+        keyTan();
+        break;
+      case pi_f:
+        keyPi();
+        break;
+      case e_f:
+        keyE();
+        break;
+      case asin_f:
+        keyAsin();
+        break;
+      case acos_f:
+        keyAcos();
+        break;
+      case atan_f:
+        keyAtan();
+        break;
+      case logy_f:
+        keyLogy();
+        break;
+      case log2_f:
+        keyLog2();
+         break;
+      default:
+        break;
+    }
   }
 
   if (origKeyMap == sci_map && buttons->getMap() == sci_map) {
@@ -186,7 +191,6 @@ void CalculatorApp::acceptText() {
 }
 
 void CalculatorApp::keySwap() {
-  acceptText();
   double a = pop();
   double b = pop();
   push(a);
@@ -194,7 +198,6 @@ void CalculatorApp::keySwap() {
 }
 
 void CalculatorApp::keyInverse() {
-  acceptText();
   if (top() == 0) {
     sound.beep();
   } else {
@@ -203,7 +206,6 @@ void CalculatorApp::keyInverse() {
 }
 
 void CalculatorApp::keyDivide() {
-  acceptText();
   if (top() == 0) {
     sound.beep();
   } else {
@@ -214,17 +216,14 @@ void CalculatorApp::keyDivide() {
 }
 
 void CalculatorApp::keyAdd() {
-  acceptText();
   push(pop()+pop());
 }
 
 void CalculatorApp::keyMultiply() {
-  acceptText();
   push(pop()*pop());
 }
 
 void CalculatorApp::keySubtract() {
-  acceptText();
   double value = pop();
   push(pop()-value);
 }
@@ -238,7 +237,6 @@ void CalculatorApp::keyShift() {
 }
 
 void CalculatorApp::keyBase() {
-  acceptText();
   if (getBase() == 10) {
     buttons->setMap(hex_map);
     setBase(16);
@@ -250,7 +248,6 @@ void CalculatorApp::keyBase() {
 }
 
 void CalculatorApp::keyPercent() {
-  acceptText();
   double fractional = pop();
   double whole = top();
   push(fractional*whole/100);
@@ -277,7 +274,6 @@ void CalculatorApp::keyClear() {
 }
 
 void CalculatorApp::keySend() {
-  acceptText();
   char textNum[100];
   formatText(textNum, top(0));
 

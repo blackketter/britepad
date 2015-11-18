@@ -17,6 +17,25 @@ static const char* days[] = {
 
 static const char* hours[] = { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve" };
 
+void WordClockApp::run() {
+  millis_t mt = clock.millis();
+
+  if (lastUpdate == 0 || mt - lastUpdate > updateInterval()) {
+    update();
+    lastUpdate = mt;
+  } else if (0){
+    screen.setScroll(scrollPos+=1);
+    if (scrollPos >= screen.width()) {
+      scrollPos = 0;
+    }
+  }
+}
+
+void WordClockApp::end() {
+  screen.setScroll(0);
+  ClockApp::end();
+}
+
 void WordClockApp::update() {
     clearScreen();
     char words[500];

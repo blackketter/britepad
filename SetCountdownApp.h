@@ -10,7 +10,7 @@ class SetCountdownApp : public SetClockApp {
     void end();
     void begin();
 
-
+    BritepadApp* exitsTo();
     bool wantsToBeScreensaver() { return false; };
     bool displaysClock() { return false; };
 

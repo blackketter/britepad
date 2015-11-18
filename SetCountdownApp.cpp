@@ -3,6 +3,10 @@
 
 #include "Debug.h"
 
+BritepadApp* SetCountdownApp::exitsTo() {
+  return getAppByID(CountdownApp::ID);
+}
+
 void SetCountdownApp::begin() {
 
   CountdownApp* countdownApp = (CountdownApp*)getAppByID(CountdownApp::ID);

@@ -17,8 +17,8 @@ void CountdownApp::redraw() {
 
 void CountdownApp::begin() {
   if (prefs.read(id(), sizeof(countdownTime), (uint8_t*)&countdownTime)) {
-    DEBUG_PARAM_LN("Read CountownTime", countdownTime.get());
   }
+
   if (countdownTime.get() == 0) {
     countdownTime.set(clock.now());
   }
@@ -56,9 +56,9 @@ void CountdownApp::run() {
     delta = abs(delta);
 
     int days = delta/(60*60*24);
-    int hours = (delta/60*60) % 60;
+    int hours = (delta/(60*60)) % 24;
     int mins = (delta/60) % 60;
-    int secs = delta%60;
+    int secs = delta % 60;
 
     char textTime[100];
 
@@ -79,7 +79,7 @@ void CountdownApp::run() {
     screen.setCursor(screen.clipMidWidth() - w/2, y);
     screen.drawText(textTime);
 
-    sprintf(textTime, "    %s    ", past ? "ago" : "until");
+    sprintf(textTime, "    %s    ", past ? "ago..." : "until...");
     w = screen.measureTextWidth(textTime);
     y += screen.fontLineSpace();
     screen.setCursor(screen.clipMidWidth() - w/2, y);

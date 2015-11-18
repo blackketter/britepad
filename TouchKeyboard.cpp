@@ -100,7 +100,7 @@ void TouchKeyboard::setKeySet(KeySet newSet) {
 
 uint8_t TouchKeyboard::up() {
   uint8_t keyup = 0;
-  bool reload = false;
+
   if (pad.up(SCREEN_PAD)) {
     keyup = key(pad.x(), pad.y());
     if (keyup) { sound.click(); }

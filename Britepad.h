@@ -23,7 +23,6 @@ class Britepad {
     AppMode getLaunchedAppMode() { return launchedAppMode; }
 
   private:
-
     BritepadApp* currApp = nullptr;
     BritepadApp* launchedAppPtr = nullptr;
     AppMode launchedAppMode = INTERACTIVE_MODE;
@@ -33,7 +32,7 @@ class Britepad {
     BritepadApp* wantsToBeScreensaver();
     BritepadApp* randomApp(AppMode m);
 
-    static const millis_t screensaverDelay = 5000;
+    static const millis_t screensaverDelay = 10000;
     static const millis_t screensaverSwitchInterval = 30000;
     static const millis_t ambientUpdateInterval = 100;
 

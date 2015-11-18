@@ -13,6 +13,7 @@ class CountdownApp : public ScreensaverApp {
     void setAppMode(AppMode asMode);
 
     virtual bool canBeInteractive() { return true; }
+    virtual bool displaysStatusBar() { return true; }
 
     const char* name() { return "T-Minus"; };
     appid_t id() { return ID; };

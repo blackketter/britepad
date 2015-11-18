@@ -39,7 +39,7 @@ void SetClockApp::drawTime() {
       screen.setCursor(x,y);
 
       // big fonts have large blank space around them.  clip that out.
-      rect_t clip = { x,y,screen.measureTextWidth(textTime),screen.measureTextHeight(textTime)+2};
+      rect_t clip = { x,y,screen.measureTextWidth(textTime),(coord_t)(screen.measureTextHeight(textTime)+2)};
       screen.pushClipRect(&clip);
       screen.drawText(textTime);
       screen.pushClipRect(&clip);

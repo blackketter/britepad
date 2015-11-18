@@ -121,6 +121,7 @@ bool BritepadApp::canBeAppMode(AppMode b) {
       return false;
   }
 }
+
 void BritepadApp::setAppMode(AppMode asMode) {
   if (currAppMode != asMode) {
     if (currAppMode == MOUSE_MODE) {

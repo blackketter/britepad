@@ -3,6 +3,7 @@
 #include "ScreensaverApp.h"
 #include "Debug.h"
 #include "Icon.h"
+#include "Passwords.h"
 
 // apps are included here
 #include "AlarmApp.h"
@@ -85,8 +86,8 @@ LauncherApp::LauncherApp() {
 // i never use this
 //  setButton(KEYS_SCREEN, 7,  new KeyApp("Eject", KEY_MEDIA_EJECT));
 
-  setButton(KEYS_SCREEN, 10, new PassApp("iCloud", "Bu77cracks!\n") );
-  setButton(KEYS_SCREEN, 11, new PassApp("Pass", "ch@db1ldr3n\n") );
+  setButton(KEYS_SCREEN, 10, new PassApp(PASSWORD_APP_NAME_1, PASSWORD_APP_PASS_1) );
+  setButton(KEYS_SCREEN, 11, new PassApp(PASSWORD_APP_NAME_2, PASSWORD_APP_PASS_2) );
 
 // right screen has useful apps
   setButton(TIMERS_SCREEN, 0, new SetTimerApp("10 sec", 10));

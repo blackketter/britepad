@@ -54,12 +54,7 @@ class Screen : public ILI9341_t3 {
     void setBacklight(uint8_t brightness);
     uint8_t getBacklight();
 
-    void drawText(const char* text, const char* wrapChars = nullptr);
-    const char* lineBreakChars = " -";
-
     void drawTextF(const char* format, ...);
-    coord_t measureTextWidth(const char* text);
-    coord_t measureTextHeight(const char* text);
 
   	void drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color);
 

@@ -14,6 +14,7 @@
 #include "BritepadApp.h"
 #include "BubblesApp.h"
 #include "CalculatorApp.h"
+#include "ChromaClockApp.h"
 #include "ClockApp.h"
 #include "CountdownApp.h"
 #include "DotsDisplayApp.h"
@@ -49,7 +50,7 @@ LauncherApp::LauncherApp() {
 
 // left screen contains screensavers and settings
   setButton(SCREENSAVERS_SCREEN, 0,  new BubblesApp);
-  setButton(SCREENSAVERS_SCREEN, 1,  new SplashApp);
+  setButton(SCREENSAVERS_SCREEN, 1,  new ChromaClockApp);
   setButton(SCREENSAVERS_SCREEN, 2,  new DotsDisplayApp);
   setButton(SCREENSAVERS_SCREEN, 3,  new ClockApp);
   setButton(SCREENSAVERS_SCREEN, 4,  new BriteLiteApp);
@@ -86,8 +87,8 @@ LauncherApp::LauncherApp() {
 // i never use this
 //  setButton(KEYS_SCREEN, 7,  new KeyApp("Eject", KEY_MEDIA_EJECT));
 
-  setButton(KEYS_SCREEN, 10, new PassApp(PASSWORD_APP_NAME_1, PASSWORD_APP_PASS_1) );
-  setButton(KEYS_SCREEN, 11, new PassApp(PASSWORD_APP_NAME_2, PASSWORD_APP_PASS_2) );
+  setButton(KEYS_SCREEN, 10, new PassApp(PASSWORD_APP_NAME_2, PASSWORD_APP_PASS_2) );
+  setButton(KEYS_SCREEN, 11, new PassApp(PASSWORD_APP_NAME_1, PASSWORD_APP_PASS_1) );
 
 // right screen has useful apps
   setButton(TIMERS_SCREEN, 0, new SetTimerApp("10 sec", 10));

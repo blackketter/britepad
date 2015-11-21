@@ -16,6 +16,9 @@ class AnalogClockApp : public ClockApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "anal";
 
+  protected:
+    void dotpos(uint16_t theta, coord_t r, coord_t& x, coord_t& y);
+
   private:
 
     const color_t sec_bg = screen.darkred;
@@ -26,7 +29,6 @@ class AnalogClockApp : public ClockApp {
     const color_t hr_fg = screen.green;
     const color_t center_bg = screen.yellow;
 
-    void dotpos(uint16_t theta, coord_t r, coord_t& x, coord_t& y);
     coord_t last_min_x;
     coord_t last_min_y;
     coord_t last_hr_x;

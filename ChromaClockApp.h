@@ -16,7 +16,7 @@ class ChromaClockApp : public AnalogClockApp {
 
   private:
     void drawSlice(int index, color_t c, coord_t r);
-    const int slices = 120;
+    const int slices = 60;
 };
 
 #endif

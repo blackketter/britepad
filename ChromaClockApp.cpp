@@ -28,9 +28,9 @@ void ChromaClockApp::update() {
     r[i] = screen.clipHeight()/2;
   }
 
-  int h = (int)(clock.hourFormat12() - 1) * slices / 12;
+  int h = (int)(clock.hourFormat12()) * slices / 12;
 
-  for (int i = h-5; i<=h+5; i++) {
+  for (int i = h-2; i<=h+2; i++) {
     int ic = i;
     if (ic < 0) { ic+=slices; }
     if (ic >= slices) { ic -= slices; }
@@ -41,7 +41,7 @@ void ChromaClockApp::update() {
 
   int m = (int)clock.minute() * slices / 60;
 
-  for (int i = h-1; i<=h+1; i++) {
+  for (int i = m; i<=m; i++) {
     int ic = i;
     if (ic < 0) { ic+=slices; }
     if (ic >= slices) { ic -= slices; }

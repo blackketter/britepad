@@ -16,14 +16,22 @@ void CountdownApp::redraw() {
 }
 
 void CountdownApp::begin() {
-  if (prefs.read(id(), sizeof(countdownTime), (uint8_t*)&countdownTime)) {
+  if (prefs.read(countdownTimePrefStr, sizeof(countdownTime), (uint8_t*)&countdownTime)) {
+    DEBUG_PARAM_LN("Countdown time of", countdownTime.get());
+  } else {
+    DEBUG_LN("No countdown pref found");
   }
 
   if (countdownTime.get() == 0) {
+    DEBUG_LN("Countdown Time zero, resetting to now.");
     countdownTime.set(clock.now());
   }
 };
 
+void CountdownApp::setTime(time_t newTime) {
+  countdownTime.set(newTime);
+  prefs.write(countdownTimePrefStr, sizeof(countdownTime), (uint8_t*)&countdownTime);
+}
 
 void CountdownApp::run() {
 

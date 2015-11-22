@@ -20,13 +20,15 @@ class CountdownApp : public ScreensaverApp {
     static constexpr appid_t ID = "cntd";
 
     time_t getTime() { return countdownTime.get(); }
-    void setTime(time_t newTime) { countdownTime.set(newTime);   prefs.write(id(), sizeof(countdownTime), (uint8_t*)&countdownTime); }
+    void setTime(time_t newTime);
 
   protected:
     void redraw();
     // todo: allocate this when needed, free it when it exits
     SetCountdownApp setApp;
     RoundButton setButton;
+    const char* countdownTimePrefStr = "cntt";
+
     Time countdownTime;
     millis_t lastDrawMillis = 0;
 };

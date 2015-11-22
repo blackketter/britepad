@@ -138,6 +138,7 @@ void Preferences::saveOut() {
     DEBUG_LN(dumper);
 #endif
   }
+  DEBUG_PARAM_LN("Wrote out prefs of size", findTag(endTag) + tagSize(findTag(endTag)));
 }
 
 size_t Preferences::writeTag(size_t offset, appid_t tag, uint8_t size, const uint8_t* data) {

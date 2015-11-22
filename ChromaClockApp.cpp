@@ -24,7 +24,7 @@ void ChromaClockApp::update() {
   color_t c[slices];
 
   for (int i = 0; i < slices; i++) {
-    c[i] = screen.black;
+    c[i] = screen.grey10;
     r[i] = screen.clipHeight()/2;
   }
 

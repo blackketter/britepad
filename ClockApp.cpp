@@ -35,7 +35,7 @@ void ClockApp::update() {
       clearScreen();
       lastWidth = w;
     }
-    rect_t clip = { x,y,screen.measureTextWidth(textTime),(coord_t)(screen.measureTextHeight(textTime)+2)};
+    rect_t clip = { x,y,(coord_t)screen.measureTextWidth(textTime),(coord_t)(screen.measureTextHeight(textTime)+2)};
     screen.pushClipRect(&clip);
     screen.drawText(textTime);
     screen.pushClipRect(&clip);

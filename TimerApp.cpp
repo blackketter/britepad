@@ -49,7 +49,10 @@ void TimerApp::drawTime() {
     screen.setCursor(screen.clipMidWidth() - width/2,
                      screen.clipTop() + screen.clipHeight()/(isAppMode(SCREENSAVER_MODE) ? 2 : 3) - screen.measureTextHeight(textTime)/2);
 
+    rect_t clip = { screen.getCursorX(), screen.getCursorY(),(coord_t)screen.measureTextWidth(textTime),(coord_t)(screen.measureTextHeight(textTime)+2)};
+    screen.pushClipRect(&clip);
     screen.drawText(textTime);
+    screen.pushClipRect(&clip);
 
     if (alarm_sounded && isAppMode(SCREENSAVER_MODE)) {
       long past = clock.now() - alarm_sounded;

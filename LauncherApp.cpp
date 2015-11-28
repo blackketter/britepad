@@ -33,6 +33,7 @@
 #include "SetClockApp.h"
 #include "SetTimerApp.h"
 #include "SparkleApp.h"
+#include "SpiroApp.h"
 #include "StarfieldApp.h"
 #include "SplashApp.h"
 #include "StopwatchApp.h"
@@ -51,7 +52,8 @@ LauncherApp::LauncherApp() {
 // left screen contains screensavers and settings
   setButton(SCREENSAVERS_SCREEN, 0,  new BubblesApp);
   setButton(SCREENSAVERS_SCREEN, 1,  new ChromaClockApp);
-  setButton(SCREENSAVERS_SCREEN, 2,  new DotsDisplayApp);
+//  setButton(SCREENSAVERS_SCREEN, 2,  new DotsDisplayApp);
+  setButton(SCREENSAVERS_SCREEN, 2,  new SpiroApp);
   setButton(SCREENSAVERS_SCREEN, 3,  new ClockApp);
   setButton(SCREENSAVERS_SCREEN, 4,  new BriteLiteApp);
   setButton(SCREENSAVERS_SCREEN, 5,  new BinaryClockApp);

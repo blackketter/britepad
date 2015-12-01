@@ -9,7 +9,7 @@ class SplashApp : public ScreensaverApp {
     void run();
     const char* name() { return "Splash"; };
     bool displaysStatusBar() { return false; };
-
+    bool getEnabled(AppMode asMode) { return false; }  // this only runs at boot time, explicitly
     appid_t id() { return ID; };
     static constexpr appid_t ID = "spla";
 

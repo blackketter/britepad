@@ -128,7 +128,7 @@ void TouchPad::update() {
         lastHistoryTime = curr.time;
       }
     } else {
-      DEBUG_LN("Exceeded history size");
+//      DEBUG_LN("Exceeded history size");
     }
   }
  }

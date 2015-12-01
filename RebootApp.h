@@ -18,8 +18,6 @@ class RebootApp : public BritepadApp {
     void run() {
 
       while (1) {
-        // todo - make this teensyduino aware
-        // todo - make this work
         delay(100);
         CPU_RESTART
       };
@@ -34,6 +32,24 @@ class RebootApp : public BritepadApp {
 
 };
 
+class ResetApp : public RebootApp {
+  public:
+
+    void run() {
+      prefs.resetPrefs();
+      // reset the clock to 0
+      clock.set(0);
+      RebootApp::run();
+    }
+
+    const char* name() { return "Reset"; };
+
+    bool isInvisible() { return true; };
+
+    appid_t id() { return ID; };
+    static constexpr appid_t ID = "rset";
+
+};
 #endif
 
 

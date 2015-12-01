@@ -12,6 +12,8 @@ class ClockApp : public ScreensaverApp {
     virtual void update();
     virtual millis_t updateInterval() { return 1000; }
 
+    bool displaysClock() { return true; };
+
     const char* name() { return "Clock"; };
 
     bool getEnabled(AppMode asMode) { return ScreensaverApp::getEnabled(asMode) && clock.hasBeenSet(); }

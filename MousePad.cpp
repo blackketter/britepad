@@ -138,37 +138,63 @@ void MousePad::run() {
           }
         }
       } else if (!pad.down(SCREEN_PAD)) {
+        if (isAbsolute()) {
+          Mouse.screenSize(screen_h, screen_v, isMac);
 
-        // otherwise we move the mouse, if this isn't a down transition
-        // scale up movement
-        int deltax = pad.deltax() * 2;
-        int deltay = pad.deltay() * 2;
-        // accelerate
-        if (abs(deltax) > 20 || abs(deltay) > 20) {
-          deltax *= 4;
-          deltay *= 4;
-        } else if (abs(deltax) > 10 || abs(deltay) > 10) {
-          deltax *= 3;
-          deltay *= 3;
-        } else if (abs(deltax) > 5 || abs(deltay) > 5) {
-          deltax *= 2;
-          deltay *= 2;
-        }
+          // scale down the pad position to put a dead margin (in percent) around the edge
+          uint16_t leftedge = (uint32_t)pad.getWidth() * absMargin / 100;
+          uint16_t rightedge = pad.getWidth() - leftedge;
+          uint16_t width = rightedge - leftedge;
 
-        if (abs(deltax) > MOUSE_MAX_MOVE) {
-          deltax = deltax > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
-        }
+          uint16_t topedge = (uint32_t)pad.getHeight() * absMargin / 100;
+          uint16_t bottomedge = pad.getHeight() - topedge;
+          uint16_t height = bottomedge - topedge;
 
-        if (abs(deltay) > MOUSE_MAX_MOVE) {
-          deltay = deltay > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
-        }
-        Mouse.move(deltax, deltay);
-        // todo: notify mouse move deltax/deltay
+          int16_t x,y;
+
+          x = (int32_t)(pad.x() - leftedge) * screen_h / width;
+          y = (int32_t)(pad.y() - topedge) * screen_v / height;
+
+          if (x < 0) { x = 0; }
+          if (x >= screen_h) { x = screen_h - 1; }
+
+          if (y < 0) { y = 0; }
+          if (y >= screen_v) { y = screen_v - 1; }
+
+          DEBUGF("pad.x: %d, pad.y: %d, x: %d, y: %d\n", pad.x(), pad.y(), x, y);
+          Mouse.moveTo(x, y);
+        } else {
+          // otherwise we move the mouse, if this isn't a down transition
+          // scale up movement
+          int deltax = pad.deltax() * 2;
+          int deltay = pad.deltay() * 2;
+          // accelerate
+          if (abs(deltax) > 20 || abs(deltay) > 20) {
+            deltax *= 4;
+            deltay *= 4;
+          } else if (abs(deltax) > 10 || abs(deltay) > 10) {
+            deltax *= 3;
+            deltay *= 3;
+          } else if (abs(deltax) > 5 || abs(deltay) > 5) {
+            deltax *= 2;
+            deltay *= 2;
+          }
+
+          if (abs(deltax) > MOUSE_MAX_MOVE) {
+            deltax = deltax > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
+          }
+
+          if (abs(deltay) > MOUSE_MAX_MOVE) {
+            deltay = deltay > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
+          }
+          Mouse.move(deltax, deltay);
+          // todo: notify mouse move deltax/deltay
 #if DEBUG_TRACKING
-        // Print out the mouse movements
-        DEBUG("<move:"); DEBUG(deltax);
-        DEBUG(", "); DEBUG(deltay);     DEBUG(">");
+          // Print out the mouse movements
+          DEBUG("<move:"); DEBUG(deltax);
+          DEBUG(", "); DEBUG(deltay);     DEBUG(">");
 #endif
+        }
       }
     }
 

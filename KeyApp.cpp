@@ -7,9 +7,17 @@
 
 void KeyApp::run() {
 
+  const char* slowstr = keyStr;
+
   switch (mediaKey) {
     case 0:
-      Keyboard.print(keyStr);
+      // type it slower, as some apps can't keep up. TODO: make this configurable
+      while (*slowstr != 0) {
+        Keyboard.write(*slowstr);
+        slowstr++;
+//  added delay to try to make the login screen from a cold boot on mac work.  it does not.  todo: fix it
+//        delay(50);
+      }
       break;
     case KEY_MEDIA_VOLUME_INC:
     case KEY_MEDIA_VOLUME_DEC:

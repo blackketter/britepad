@@ -48,7 +48,7 @@ void BritepadApp::drawStatusBar(bool update) {
     }
 
     // only include the clock if the app doesn't already draw a clock
-    if (!displaysClock()) {
+    if (!displaysClock() && clock.hasBeenSet()) {
       // draw title
       screen.setFont(Arial_8_Bold);
       color_t textColor = screen.mix(statusBarFGColor(), statusBarBGColor());

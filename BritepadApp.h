@@ -93,7 +93,7 @@ class BritepadApp {
     void resetClipRect();  // resets clip rect to content area
 
     virtual void writePrefs() {  if (hasPrefs()) { uint8_t pref = (uint8_t)enabled; prefs.write(id(), sizeof(pref), (uint8_t*)&pref); } };
-    virtual void readPrefs() { if (hasPrefs()) { uint8_t pref; prefs.read(id(),  sizeof(pref), (uint8_t*)&pref); enabled = (AppMode)pref;} };
+    virtual void readPrefs() { if (hasPrefs()) { uint8_t pref = (uint8_t)ANY_MODE; prefs.read(id(),  sizeof(pref), (uint8_t*)&pref); enabled = (AppMode)pref;} };
 
   private:
     BritepadApp* nextApp = nullptr;

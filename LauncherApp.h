@@ -5,6 +5,7 @@
 #include "BritepadApp.h"
 
 enum ScreenNames {
+  DEBUG_SCREEN,
   MICE_SCREEN,
   SCREENSAVERS_SCREEN,
   SETTINGS_SCREEN,
@@ -49,21 +50,23 @@ class LauncherApp : public BritepadApp {
     BritepadApp* apps[TOTAL_SCREENS][buttons_per_screen];
 
     const char* screenNames[TOTAL_SCREENS] = {
+        "Debug",
         "Mice",
         "Screensavers",
         "Settings",
         "Keys",
         "Timers",
-        "Apps"
+        "Apps",
       };
 
     const color_t screenColor[TOTAL_SCREENS] = {
+        screen.lightgrey,
         screen.black,
         screen.darkerred,
         screen.darkeryellow,
         screen.darkergreen,
         screen.darkerblue,
-        screen.darkergrey
+        screen.darkergrey,
     };
 
     int current_screen = 1;

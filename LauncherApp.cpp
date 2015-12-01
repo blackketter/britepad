@@ -37,6 +37,7 @@
 #include "StarfieldApp.h"
 #include "SplashApp.h"
 #include "StopwatchApp.h"
+#include "TabletApp.h"
 #include "ThereminApp.h"
 #include "WordClockApp.h"
 
@@ -106,8 +107,12 @@ LauncherApp::LauncherApp() {
   setButton(APPS_SCREEN, 2,  new PaintApp);
   setButton(APPS_SCREEN, 3,  new GestureApp);
   setButton(APPS_SCREEN, 4,  new SparkleApp);
-  setButton(APPS_SCREEN, 10, new InfoApp);
-  setButton(APPS_SCREEN, 11,  new RebootApp);  // todo: doesn't work yet
+  setButton(APPS_SCREEN, 5,  new TabletApp);
+
+
+  setButton(DEBUG_SCREEN, 9,  new InfoApp);
+  setButton(DEBUG_SCREEN, 10, new ResetApp);
+  setButton(DEBUG_SCREEN, 11, new RebootApp);
 
 
   // add mice apps to mice app settings screen

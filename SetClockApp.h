@@ -13,8 +13,8 @@ class SetClockApp : public BritepadApp {
     void begin();
     void end();
     void run();
+
     bool disablesScreensavers() { return true; };
-    bool wantsToBeScreensaver() { return !hasRun && !clock.hasBeenSet(); };
     bool displaysClock() { return true; };
 
     const char* name() { return "Set Clock"; };
@@ -32,7 +32,6 @@ class SetClockApp : public BritepadApp {
 
     virtual void adjust(stime_t delta) { theTime->adjust(delta); };
 
-  protected:
     static const int buttoncount = 8;
     static const int buttonradius = 24;
     static const int nobutton = -1;

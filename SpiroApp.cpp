@@ -12,7 +12,7 @@ void SpiroApp::reset() {
   r = random(random(20))+1;
   d = random(random(20))+1;
   scale = (float)(screen.clipHeight())/2/(abs(R-r)+d);
-  scale = scale*(random(10)+1)/10;  // randomly smaller by a factor of 0.1-1.0
+  scale = scale*(random(4)+7)/10;  // randomly smaller by a factor of 0.3-1.0
   center.x = screen.clipMidWidth();
   center.y = screen.clipMidHeight();
   currColor = screen.brighten(random(65536));
@@ -41,7 +41,6 @@ void SpiroApp::run() {
 
   lastP = p;
 
-  theta += dTheta;
 
   if (theta > endTheta) {
     iters++;
@@ -51,5 +50,6 @@ void SpiroApp::run() {
     }
     reset();
   }
+  theta += dTheta;
 }
 

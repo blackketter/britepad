@@ -105,6 +105,7 @@ Clock::Clock() {
 }
 
 void Clock::set(time_t newTime) {
+  Teensy3Clock.set(newTime);
   ::setTime(newTime);
 }
 

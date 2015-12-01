@@ -108,8 +108,9 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   if (newApp) {
     launchedAppPtr = newApp;
   } else {
-    DEBUG_LN("Can't switch to null newApp");
-    return;
+    DEBUG_LN("Can't switch to null newApp, returning to launcher");
+    newApp = getAppByID(LauncherApp::ID);
+    asMode = INTERACTIVE_MODE;
   }
 
   if (newApp == currApp) {

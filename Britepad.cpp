@@ -28,12 +28,10 @@ BritepadApp* Britepad::getAppByID(appid_t appID) {
 
 BritepadApp* Britepad::randomApp(AppMode m) {
 
-  if (m == SCREENSAVER_MODE) {
-    // if an app wants to be a screensaver, then give it a chance
-    BritepadApp* wants = wantsToBeScreensaver();
-    if (wants) {
-      return wants;
-    }
+  // if an app wants to be this mode, then give it a chance
+  BritepadApp* wants = wantsToBe(m);
+  if (wants) {
+    return wants;
   }
 
   // count the enabled apps
@@ -64,11 +62,11 @@ BritepadApp* Britepad::randomApp(AppMode m) {
   return nullptr;
 }
 
-BritepadApp* Britepad::wantsToBeScreensaver() {
+BritepadApp* Britepad::wantsToBe(AppMode m) {
 
   BritepadApp* nextapp = appList;
   while (nextapp) {
-    if (nextapp->wantsToBeScreensaver())
+    if (nextapp->wantsToBe(m))
       return nextapp;
     nextapp = nextapp->getNextApp();
   }
@@ -238,8 +236,8 @@ void Britepad::idle() {
    // check more often if somebody wants to be screensaver
    if (currApp->isAppMode(SCREENSAVER_MODE) &&
        (lastCheckWantsToBeScreensaver/checkWantsToBeScreensaverInterval != pad.time()/checkWantsToBeScreensaverInterval) &&
-       !currApp->wantsToBeScreensaver() &&
-       wantsToBeScreensaver()) {
+       !currApp->wantsToBe(SCREENSAVER_MODE) &&
+       wantsToBe(SCREENSAVER_MODE)) {
 
       launchApp(BritepadApp::SCREENSAVER_APP, SCREENSAVER_MODE);
 

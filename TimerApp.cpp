@@ -33,7 +33,7 @@ void TimerApp::drawTime() {
 
     sprintf(textTime, " %d:%02d ", displaytime/60, displaytime%60);
 
-    screen.setFont(isAppMode(SCREENSAVER_MODE) ? Arial_72_Bold : Arial_72_Bold);
+    screen.setFont(Arial_72_Bold);
     coord_t width = screen.measureTextWidth(textTime);
 
     if (alarm_sounded) {
@@ -47,14 +47,14 @@ void TimerApp::drawTime() {
     screen.setTextColor(textColor, bgColor());
 
     screen.setCursor(screen.clipMidWidth() - width/2,
-                     screen.clipTop() + screen.clipHeight()/(isAppMode(SCREENSAVER_MODE) ? 2 : 3) - screen.measureTextHeight(textTime)/2);
+                     screen.clipTop() + screen.clipHeight()/(isAppMode(INTERACTIVE_MODE) ? 3 : 2) - screen.measureTextHeight(textTime)/2);
 
     rect_t clip = { screen.getCursorX(), screen.getCursorY(),(coord_t)screen.measureTextWidth(textTime),(coord_t)(screen.measureTextHeight(textTime)+2)};
     screen.pushClipRect(&clip);
     screen.drawText(textTime);
     screen.pushClipRect(&clip);
 
-    if (alarm_sounded && isAppMode(SCREENSAVER_MODE)) {
+    if (alarm_sounded && !isAppMode(INTERACTIVE_MODE)) {
       long past = clock.now() - alarm_sounded;
       sprintf(textTime, "%2d:%02d", (int)(past / 60), (int)(past % 60));
       screen.setFont(Arial_20_Bold);

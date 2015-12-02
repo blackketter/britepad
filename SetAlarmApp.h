@@ -10,8 +10,6 @@ class SetAlarmApp : public SetClockApp {
     void end();
     void begin();
 
-
-    bool wantsToBeScreensaver() { return false; };
     bool displaysClock() { return false; };
 
     const char* name() { return "Set Alarm"; };

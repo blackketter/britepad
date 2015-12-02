@@ -32,7 +32,7 @@ class BritepadApp {
     virtual bool isCurrentApp() { return britepad.currentApp() == this; };
 
     virtual bool disablesScreensavers() { return false; }
-    virtual bool wantsToBeScreensaver() { return false; }  // return true if you want to be switched to as the screensaver (canBeScreensaver() doesn't have to be true)
+    virtual bool wantsToBe(AppMode m) { return false; }  // return true if you want to be switched to as the specified mode (canBeMODENAME() doesn't have to be true)
     virtual BritepadApp* exitsTo() { return BACK_APP; }  // when exiting the app, typically by the TOP_PAD, where should it go by default (BACK_APP is to LauncherApp, MOUSE_APP is to a mouse capable app)
     virtual bool displaysClock() { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
 

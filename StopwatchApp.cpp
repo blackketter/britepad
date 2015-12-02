@@ -21,7 +21,7 @@ void StopwatchApp::setAppMode(AppMode asMode) {
 
 void StopwatchApp::redrawButtons() {
   coord_t radius = screen.clipWidth()/10;
-  coord_t y = isAppMode(SCREENSAVER_MODE) ? screen.clipTop()+screen.clipHeight()+radius/2 :screen.clipTop()+screen.clipHeight()/4*3;
+  coord_t y = isAppMode(INTERACTIVE_MODE) ? screen.clipTop()+screen.clipHeight()/4*3 : screen.clipTop()+screen.clipHeight()+radius/2 ;
 
   resetButton.init(radius*3, y, radius, screen.blue, false,"Reset");
 
@@ -33,12 +33,14 @@ void StopwatchApp::redrawButtons() {
 
 void StopwatchApp::run() {
 
+  BritepadApp::run();
+
   if (pad.down(BOTTOM_PAD)) {
     sound.click();
-    if (isAppMode(SCREENSAVER_MODE)) {
-      setAppMode(INTERACTIVE_MODE);
+    if (isAppMode(INTERACTIVE_MODE)) {
+      setAppMode(MOUSE_MODE);
     } else {
-      setAppMode(SCREENSAVER_MODE);
+      setAppMode(INTERACTIVE_MODE);
     }
   }
 
@@ -105,7 +107,7 @@ void StopwatchApp::drawTime() {
     coord_t w = screen.measureTextWidth(textTime);
 
     screen.setCursor(screen.clipMidWidth() - w/2,
-                     screen.clipTop() + screen.clipHeight()/(isAppMode(SCREENSAVER_MODE) ? 2 : 3) - screen.measureTextHeight(textTime)/2);
+                     screen.clipTop() + screen.clipHeight()/(isAppMode(INTERACTIVE_MODE) ? 3 : 2) - screen.measureTextHeight(textTime)/2);
     screen.drawText(textTime);
 
     if (!isPaused() && secs == 0 && tenths == 0) {

@@ -11,7 +11,7 @@ class TimerApp : public StopwatchApp {
     void begin() { StopwatchApp::begin(); beeps = 10; }  // always start as a screensaver
     void end();
 
-    bool wantsToBeScreensaver() { return isRunning() || !isReset(); }
+    bool wantsToBe(AppMode m) { return isRunning() || !isReset(); }
     bool disablesScreensavers() { return false; }
 
     const char* name() { return "Timer"; };

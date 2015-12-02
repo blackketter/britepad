@@ -29,7 +29,7 @@ class Britepad {
 
     void setApp(BritepadApp* newApp, AppMode asMode);  // sets the current app
 
-    BritepadApp* wantsToBeScreensaver();
+    BritepadApp* wantsToBe(AppMode m);
     BritepadApp* randomApp(AppMode m);
 
     static const millis_t screensaverDelay = 10000;

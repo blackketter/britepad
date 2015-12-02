@@ -11,7 +11,6 @@ class SetCountdownApp : public SetClockApp {
     void begin();
 
     BritepadApp* exitsTo();
-    bool wantsToBeScreensaver() { return false; };
     bool displaysClock() { return false; };
 
     const char* name() { return "Set Countdown"; };

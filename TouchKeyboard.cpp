@@ -15,9 +15,9 @@ void TouchKeyboard::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t colo
 void TouchKeyboard::initButtons() {
   DEBUG_LN("initButtons");
   coord_t buttonDistance = min(width/maxKeysPerRow, height/rows);
-  DEBUG_PARAM_LN("buttonDistance",buttonDistance);
+  DEBUGF("buttonDistance: %d\n",buttonDistance);
   coord_t radius = (buttonDistance-2)/2;  // leave a tiny space between
-  DEBUG_PARAM_LN("radius",radius);
+  DEBUGF("radius: %d\n",radius);
 
   // initialize all those buttons
   for (int r = 0; r < rows; r++) {
@@ -31,7 +31,7 @@ void TouchKeyboard::initButtons() {
       coord_t keyX = xpos + buttonDistance/2 + buttonDistance*c;
       keyX += r % 2 ? buttonDistance/2 : 0;  // every other line is offset by half the distance to nest them together
       icon_t icon = nullptr;
-      DEBUG_PARAM_LN("button init", key);
+      DEBUGF("button init: %d\n", key);
       switch (key) {
         case SHIFTDOWN_KEY:
         case SHIFTUP_KEY:
@@ -77,7 +77,6 @@ void TouchKeyboard::track() {
 void TouchKeyboard::draw() {
   for (int r = 0; r < rows; r++) {
     for (int c = 0; c < keysInRow(r); c++) {
-//      DEBUG_PARAM_LN("button draw", c);
       buttons[r][c].draw();
     }
   }

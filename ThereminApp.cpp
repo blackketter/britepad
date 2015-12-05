@@ -18,7 +18,7 @@ void ThereminApp::run() {
       lastProx = prox;
       float pitch = (1.0 + (float)prox / 255.0) * octave * sound.MIDDLE_C_FREQ;
       pitch = (pitch+lastPitch*9.0)/10.0;
-      DEBUG_PARAM_LN("pitch", pitch);
+      DEBUGF("pitch: %f\n", pitch);
       sound.tone( pitch, 1.0);
       screen.fillRect(screen.clipLeft() +(long)prox * screen.clipWidth() * 19/20 / pad.getProximityMax(), screen.clipTop(), screen.clipWidth()/20, screen.clipHeight(), currColor++);
       lastPitch = pitch;

@@ -296,7 +296,6 @@ void LauncherApp::run() {
     }
   } else if (pad.up(SCREEN_PAD)) {
       drawButton(highlighted_button, false);
-//      DEBUG_PARAM_LN("released on button", highlighted_button);
 
       if (highlighted_button != noButton) {
         BritepadApp* launched = apps[currentScreen()][b];

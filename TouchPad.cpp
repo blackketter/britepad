@@ -135,7 +135,6 @@ void TouchPad::update() {
 
 bool TouchPad::getProximityPresent() {
   if (proximity > proximityThreshold) {
-//    DEBUG_PARAM_LN("proximity", proximity);
     return true;
   } else {
     return false;
@@ -180,9 +179,9 @@ void TouchPad::updateAPDS() {
       blueLight = 0;
       DEBUG_LN("error reading blue light");
     }
-    DEBUG_PARAM_LN("Red", redLight);
-    DEBUG_PARAM_LN("Green", greenLight);
-    DEBUG_PARAM_LN("Blue", blueLight);
+    DEBUGF("Red: %d\n", redLight);
+    DEBUGF("Green: %d\n", greenLight);
+    DEBUGF("Blue: %d\n", blueLight);
 #endif
 
     uint8_t prox;

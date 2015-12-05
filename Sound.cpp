@@ -70,8 +70,6 @@ int Sound::freeSynth() {
     if (envelopes[i]->getState() == STATE_IDLE) {
       return i;
     } else {
-//      DEBUG_PARAM_LN("i",i);
-//      DEBUG_PARAM_LN("[i]->getState()", envelopes[i]->getState());
     }
   }
   DEBUG_LN("NO_SYNTH available!");
@@ -117,7 +115,6 @@ void Sound::bump() {
 }
 
 void Sound::swipe(direction_t d) {
-//  DEBUG_PARAM_LN("swipe direction:", d);
   beep(250, 300);
 }
 
@@ -142,14 +139,11 @@ void Sound::tone(float freq, float volume) {
     envelope2.noteOff();
   }
 
-//  DEBUG_PARAM_LN("tone vol", volume);
-//  DEBUG_PARAM_LN("tone freq", freq);
-
   lastToneVolume = volume;
 }
 
 void Sound::noise(float volume) {
-  DEBUG_PARAM_LN("tone vol", volume);
+  DEBUGF("noise vol: %f\n", volume);
 }
 
 void Sound::setMute(bool mute) {

@@ -11,11 +11,7 @@ uint16_t Gesture::compare(const Gesture& to) {
         samples[i].y*screen.clipHeight()/2+screen.clipMidHeight(),
         to.samples[i].x*screen.clipWidth()/2+screen.clipMidWidth(),
         to.samples[i].y*screen.clipHeight()/2+screen.clipMidHeight(), 4, draw);
-    DEBUG_PARAM("i",i);
-    DEBUG_PARAM(" to[i].x",to.samples[i].x);
-    DEBUG_PARAM(" to[i].y",to.samples[i].y);
-    DEBUG_PARAM(" samples[i].x",samples[i].x);
-    DEBUG_PARAM_LN(" samples[i].y",samples[i].y);
+    DEBUGF("i: %d, to[i]: (%d,%d), samples[i]: (%d,%d)\n",i, to.samples[i].x, to.samples[i].y, samples[i].x, samples[i].y);
     }
     dist += distance(samples[i],to.samples[i]);
   }
@@ -30,7 +26,7 @@ bool Gesture::capture() {
   }
   point_t* rawPoints = pad.getHistory();
   int rawPointCount = pad.getHistoryCount();
-  DEBUG_PARAM_LN("raw point count", rawPointCount);
+  DEBUGF("raw point count %d\n", rawPointCount);
   if (rawPointCount < minSamplesRequired()) {
     return false;
   }
@@ -49,8 +45,8 @@ bool Gesture::capture() {
 
   float interval = pathLength / (samplesPer-1);
 
-  DEBUG_PARAM_LN("pathLength",pathLength);
-  DEBUG_PARAM_LN("interval",interval);
+  DEBUGF("pathLength: %d\n",pathLength);
+  DEBUGF("interval %f\n",interval);
   float dq = 0;
 
   // resample and add to self
@@ -75,12 +71,11 @@ bool Gesture::capture() {
       i++;
       p = rawPoints[i];
     }
-//    DEBUG_PARAM_LN("samples", getSampleCount());
   } while ((i < rawPointCount) && (getSampleCount() < samplesPer-1));
 
   addSample(rawPoints[rawPointCount-1].x, rawPoints[rawPointCount-1].y);
 
-  DEBUG_PARAM_LN("new samples", getSampleCount());
+  DEBUGF("new samples %d\n", getSampleCount());
   if (draw) {
     for (int i = 1; i < getSampleCount(); i++) {
       screen.drawWideLine(samples[i].x,samples[i].y,samples[i-1].x,samples[i-1].y,3,screen.darkred);
@@ -107,7 +102,7 @@ bool Gesture::capture() {
 
   rotateBy(samples, samples, -theta);
 
-  DEBUG_PARAM_LN("theta", theta);
+  DEBUGF("theta %d\n", theta);
   if (draw) {
     for (int i = 1; i < getSampleCount(); i++) {
       screen.drawWideLine(samples[i].x,samples[i].y,samples[i-1].x,samples[i-1].y,2,screen.darkgreen);

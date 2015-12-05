@@ -17,7 +17,7 @@ void CountdownApp::redraw() {
 
 void CountdownApp::begin() {
   if (prefs.read(countdownTimePrefStr, sizeof(countdownTime), (uint8_t*)&countdownTime)) {
-    DEBUG_PARAM_LN("Countdown time of", countdownTime.get());
+    DEBUGF("Countdown time of %d\n", countdownTime.get());
   } else {
     DEBUG_LN("No countdown pref found");
   }

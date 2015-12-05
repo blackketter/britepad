@@ -58,7 +58,7 @@ BritepadApp* Britepad::randomApp(AppMode m) {
     }
     nextapp = nextapp->getNextApp();
   }
-  DEBUG_PARAM_LN("No random app avaialble for mode ", m);
+  DEBUGF("No random app avaialable for mode %d\n", m);
   return nullptr;
 }
 
@@ -119,14 +119,12 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   }
 
   if (currApp) {
-//    DEBUG_PARAM_LN("Ending App", currApp->name());
     currApp->end();
   }
 
   currApp = newApp;
 
   if (currApp) {
-//    DEBUG_PARAM_LN("Starting App", currApp->name());
     currApp->drawBars();
     currApp->begin();
     currApp->setAppMode(asMode);
@@ -214,7 +212,7 @@ void Britepad::idle() {
     } else {
       DEBUG_LN("No currapp!");
     }
-  } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.down(SCREEN_PAD) || ((pad.down(ANY_PAD) && !currApp->canBeInteractive())))) {
+  } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.down(SCREEN_PAD) || ((pad.down(SCREEN_PAD) && !currApp->canBeInteractive())))) {
     DEBUG_LN("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
     if (currApp->canBeMouse() && currApp->getEnabled(MOUSE_MODE)) {

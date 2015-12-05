@@ -126,13 +126,11 @@ void MousePad::run() {
 
           accumScroll += pad.deltay();
 
-//          DEBUG_PARAM_LN("deltay", pad.deltay());
           // limit scroll messages to max 25ms intervals and some movement
           if (pad.time() - lastScroll > 25 && abs(accumScroll) > scrollFactor) {
             int8_t mouseScrollUnits = accumScroll/scrollFactor;
             Mouse.scroll(-mouseScrollUnits); // negative because we use new natural scrolling
             // todo: notify scroll
-//            DEBUG_PARAM_LN("Scroll", mouseScrollUnits);
             accumScroll -= mouseScrollUnits*scrollFactor;
             lastScroll = pad.time();
           }
@@ -191,8 +189,7 @@ void MousePad::run() {
           // todo: notify mouse move deltax/deltay
 #if DEBUG_TRACKING
           // Print out the mouse movements
-          DEBUG("<move:"); DEBUG(deltax);
-          DEBUG(", "); DEBUG(deltay);     DEBUG(">");
+          DEBUGF("<move: %d, %d>",deltax,deltay);
 #endif
         }
       }
@@ -205,12 +202,10 @@ void MousePad::run() {
     // screen tap released
     if (pad.up(SCREEN_PAD)) {
       long downtime = pad.time() - pad.lastDownTime(SCREEN_PAD);
-//      DEBUG_PARAM_LN("Downtime:", downtime);
 
       if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < 20 && (abs(pad.lastDownY() - pad.y()) < 20)) ) {
 
         if (pad.x() > (pad.getWidth() - SCROLL_EDGE_MARGIN)) {
-//          DEBUG_PARAM_LN("pad.x()",pad.x());
           if (pad.y() < pad.getHeight()/2) {
             Keyboard.press(KEY_PAGE_UP);
             Keyboard.release(KEY_PAGE_UP);
@@ -221,7 +216,6 @@ void MousePad::run() {
             // todo: notify page down
           }
           scrollMode = true;
-//          DEBUG_LN("scrollMode on");
         } else {
           if (Mouse.isPressed()) {
             Mouse.release();

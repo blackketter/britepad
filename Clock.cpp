@@ -116,7 +116,7 @@ void chimeCallback(void* data) {
 void Clock::resetChime() {
   DEBUG_LN("Calling reset chime");
   if (hasBeenSet()) {
-    DEBUG_PARAM_LN("resetting chime timer time", hourFormat12());
+    DEBUGF("resetting chime timer time %d\n", hourFormat12());
     tmElements_t chimeTime;
     breakTime(now(), chimeTime);
     chimeTime.Minute = 0;
@@ -142,7 +142,7 @@ void Clock::chimerCallback() {
 }
 
 void Clock::adjust(stime_t adjustment) {
-  DEBUG_PARAM_LN("before:", ::now());
+  DEBUGF("before: %d\n", ::now());
   Teensy3Clock.set(now() + adjustment);
 
   // force a resync
@@ -151,7 +151,7 @@ void Clock::adjust(stime_t adjustment) {
   doneSet = true;
 
   resetChime();
-  DEBUG_PARAM_LN("after:", ::now());
+  DEBUGF("after: %d\n", ::now());
 }
 
 

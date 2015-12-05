@@ -17,6 +17,7 @@ class SpiroApp : public ScreensaverApp {
 
   private:
     void reset();
+    void drawInfo();
     float theta;
     float dTheta;
     float endTheta;
@@ -29,6 +30,7 @@ class SpiroApp : public ScreensaverApp {
     point_t lastP;
     bool first;
     int iters = 0;
+    bool displayInfo = false;
 };
 
 #endif

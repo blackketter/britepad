@@ -14,9 +14,9 @@ void KeyboardApp::run() {
   uint8_t d = kbd.down();
   uint8_t u = kbd.up();
   if (d) {
-    DEBUG_PARAM_LN("keyboard down", (char)d);
+    DEBUGF("keyboard down: %d (%c)\n", (char)d, d);
   }
   if (u) {
-    DEBUG_PARAM_LN("keyboard up", (char)u);
+    DEBUGF("keyboard up: %d (%c)\n", (char)u, u);
   }
 }

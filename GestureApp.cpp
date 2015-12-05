@@ -43,8 +43,8 @@ void GestureApp::run() {
 
         for (int i = 0; i < 10; i++) {
           curdist = gesture.compare(digits[i]);
-          DEBUG_PARAM_LN("digit",i);
-          DEBUG_PARAM_LN("dist",curdist);
+          DEBUGF("digit: %d\n",i);
+          DEBUGF("dist: %d\n",curdist);
           if (curdist < mindist) {
             mindist = curdist;
             mindigit = i;

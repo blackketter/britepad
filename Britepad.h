@@ -21,6 +21,9 @@ class Britepad {
     void updateStatusBar();
     BritepadApp* getLaunchedApp() { return launchedAppPtr; }
     AppMode getLaunchedAppMode() { return launchedAppMode; }
+    void disableScreensavers(millis_t dur = 1000*60*5) { disableScreensaversUntil = pad.time() + dur; };  // disable screensavers for a default of 5 minutes, or as specified
+
+    static const int minBrightness = 20;
 
   private:
     BritepadApp* currApp = nullptr;
@@ -35,6 +38,7 @@ class Britepad {
     static const millis_t screensaverDelay = 10000;
     static const millis_t screensaverSwitchInterval = 30000;
     static const millis_t ambientUpdateInterval = 100;
+    static const millis_t showClockDur = 5000;
 
     static const millis_t checkWantsToBeScreensaverInterval = 1000;
     millis_t lastCheckWantsToBeScreensaver = 0;
@@ -44,6 +48,7 @@ class Britepad {
     Timer     statusBarUpdateTimer;
 
     millis_t screensaverStartedTime = 0;
+    millis_t disableScreensaversUntil = 0;
 
     BritepadApp* appList = nullptr;
 };

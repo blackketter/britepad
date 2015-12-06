@@ -10,6 +10,7 @@ class Time {
     virtual time_t get() { return curTime; };
 
     virtual void set(time_t newTime) { curTime = newTime; }
+    virtual void set(uint16_t y, uint8_t m = 1, uint8_t d = 1, uint8_t hr = 0, uint8_t min = 0, uint8_t sec = 0);
     virtual void adjust(stime_t adjustment) { curTime += adjustment; } // signed time
     virtual bool isTime(time_t newTime) { return newTime == curTime; }
 
@@ -30,10 +31,10 @@ class Time {
     uint8_t month();
     uint8_t day();
     uint8_t weekday();
-    const char* weekdayString();
-    const char* monthString();
+    const char* weekdayString(uint8_t d = 0 );  // zero means current day
+    const char* monthString(uint8_t m = 0); // zero means current month
 
-    uint8_t daysInMonth(uint8_t m);  // months 1 based
+    uint8_t daysInMonth(uint8_t m = 0);  // zero means current month, months are 1 based
     const time_t secsPerMin = 60;
     const time_t secsPerHour = 60*60;
     const time_t secsPerDay = 60*60*24;

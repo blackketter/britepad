@@ -8,8 +8,9 @@ class SpiroApp : public ScreensaverApp {
     void run();
     void begin();
 
-    const char* name() { return "Spiro"; };
+    bool canBeInteractive() { return true; };  // bottom bar displays info
 
+    const char* name() { return "Spiro"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "spir";
 

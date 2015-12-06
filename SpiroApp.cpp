@@ -69,7 +69,7 @@ void SpiroApp::run() {
 
   if (theta > endTheta) {
     iters++;
-    if (iters > 3) {
+    if (iters > 2) {
       clearScreen();
       iters = 0;
     }

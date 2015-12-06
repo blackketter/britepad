@@ -4,6 +4,16 @@
 #include "Debug.h"
 #include "TimeLib.h"
 
+void Time::set(uint16_t y, uint8_t m, uint8_t d, uint8_t hr, uint8_t min, uint8_t sec) {
+  TimeElements tmE;
+  tmE.Year = y - 1970;
+  tmE.Month = m;
+  tmE.Day = d;
+  tmE.Hour = hr;
+  tmE.Minute = min;
+  tmE.Second = sec;
+  set(makeTime(tmE));
+}
 
 uint8_t Time::hourFormat12() {
   return ::hourFormat12(get());
@@ -53,16 +63,19 @@ static const uint8_t monthDays[]={31,28,31,30,31,30,31,31,30,31,30,31}; // API s
 static const char* dayStrings[] = { "", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
 static const char* monthStrings[] = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
-const char* Time::weekdayString() {
-  return dayStrings[weekday()];
+const char* Time::weekdayString(uint8_t d) {
+  if (d == 0) { d = weekday(); }
+  return dayStrings[d];
 }
 
-const char* Time::monthString() {
-  return monthStrings[month()];
+const char* Time::monthString(uint8_t m) {
+  if (m == 0) { m = month();}
+  return monthStrings[m];
 }
 
 uint8_t Time::daysInMonth(uint8_t m) {
   // todo: make this work for leap years
+  if (m == 0) { m = month(); }
   return monthDays[m-1]; // m is 1 based, the array is zero based
 }
 

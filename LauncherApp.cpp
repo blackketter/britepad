@@ -14,6 +14,7 @@
 #include "BritepadApp.h"
 #include "BubblesApp.h"
 #include "CalculatorApp.h"
+#include "CalendarApp.h"
 #include "ChromaClockApp.h"
 #include "ClockApp.h"
 #include "CountdownApp.h"
@@ -108,6 +109,7 @@ LauncherApp::LauncherApp() {
   setButton(APPS_SCREEN, 3,  new GestureApp);
   setButton(APPS_SCREEN, 4,  new SparkleApp);
   setButton(APPS_SCREEN, 5,  new TabletApp);
+  setButton(APPS_SCREEN, 6,  new CalendarApp);
 
 
   setButton(DEBUG_SCREEN, 9,  new InfoApp);
@@ -152,6 +154,7 @@ void LauncherApp::begin() {
   screen.pushFill(DIRECTION_DOWN, bgColor());
 
   drawButtons();
+  britepad.disableScreensavers(0);  // reenable screensavers if they were temporarily disabled
 }
 
 void LauncherApp::end() {
@@ -272,6 +275,7 @@ void LauncherApp::run() {
   if (launchOnRelease) {
     if (pad.up(SCREEN_PAD)) {
       launchApp(launchOnRelease, screenMode(current_screen));
+      britepad.disableScreensavers();
       launchOnRelease = nullptr;
     }
   } else if (pad.touched(SCREEN_PAD)) {

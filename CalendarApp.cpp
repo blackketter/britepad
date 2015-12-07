@@ -20,8 +20,14 @@ void CalendarApp::run() {
 };
 
 void CalendarApp::draw() {
+  Time t;
+  t.set(year,month,1);
+
   clearScreen();
-  coord_t rowHeight = screen.clipHeight() / 9 + 1; // round up otherwise there's too much space at the bottom
+
+  int rows = (t.weekday() - 1 + t.daysInMonth() + 6)/7 + 3;  // convert to zero based weekdays, add days in month, +6 to round up.
+
+  coord_t rowHeight = screen.clipHeight() / rows + 1; // round up otherwise there's too much space at the bottom
   coord_t colWidth = screen.clipWidth() / 8;
   coord_t xStart = screen.clipLeft() + colWidth;
   coord_t xEnd = xStart + 6*colWidth;
@@ -50,9 +56,6 @@ void CalendarApp::draw() {
     screen.drawText(dayAbbrev[i]);
     x += colWidth;
   }
-
-  Time t;
-  t.set(year,month,1);
 
   y += rowHeight;
   x = xStart + (t.weekday()-1)*colWidth;

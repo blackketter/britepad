@@ -127,9 +127,7 @@ void chimeCallback(void* data) {
 }
 
 void Clock::resetChime() {
-  DEBUG_LN("Calling reset chime");
   if (hasBeenSet()) {
-    DEBUGF("resetting chime timer time %d\n", hourFormat12());
     tmElements_t chimeTime;
     breakTime(now(), chimeTime);
     chimeTime.Minute = 0;

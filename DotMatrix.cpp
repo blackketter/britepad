@@ -2,13 +2,15 @@
 #include "Debug.h"
 
 DotMatrix::DotMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dots_w, int dots_h) {
-  setBounds(x,y,w,h);
-
   dots_wide = dots_w;
   dots_high = dots_h;
 
   dotspacing_w = w / dots_wide;
   dotspacing_h = h / dots_high;
+
+//  setBounds(x,y,w,h);
+  // since dots are evenly spaced and the given w & h may not be even divsors, then we need to shrink to fit the multiples
+  setBounds(x,y,dotspacing_w*dots_w,dotspacing_h*dots_h);
 
   r = min((w * dot_fill / dots_wide) / 100 / 2, (h * dot_fill / dots_high) / 100 / 2);  // dots are 80% of space
   dots = new color_t[dots_wide*dots_high];
@@ -56,6 +58,7 @@ void SquareMatrix::updateDot(int x, int y) {
 }
 
 // todo: add correct HexDotMatrix::hit()
+// todo: create a HexMatrix that is not dotty
 
 void HexDotMatrix::updateDot(int x, int y) {
 

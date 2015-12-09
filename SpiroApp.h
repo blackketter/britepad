@@ -32,6 +32,7 @@ class SpiroApp : public ScreensaverApp {
     bool first;
     int iters = 0;
     bool displayInfo = false;
+    static const int maxSpiros = 3;
 };
 
 #endif

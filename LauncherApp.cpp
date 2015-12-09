@@ -30,6 +30,7 @@
 #include "PaintApp.h"
 #include "PassApp.h"
 #include "RebootApp.h"
+#include "SeqApp.h"
 #include "SetAlarmApp.h"
 #include "SetClockApp.h"
 #include "SetTimerApp.h"
@@ -110,6 +111,8 @@ LauncherApp::LauncherApp() {
   setButton(APPS_SCREEN, 4,  new SparkleApp);
   setButton(APPS_SCREEN, 5,  new TabletApp);
   setButton(APPS_SCREEN, 6,  new CalendarApp);
+  setButton(APPS_SCREEN, 7,  new SeqApp);
+
 
 
   setButton(DEBUG_SCREEN, 9,  new InfoApp);

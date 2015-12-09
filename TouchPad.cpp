@@ -49,7 +49,7 @@ void TouchPad::begin() {
     DEBUG_LN("Couldn't start FT6206 touchscreen controller");
     while (1);
   }
-  DEBUG_LN("Started TouchPad");
+  DEBUG_LN("starting touchpad");
   initAPDS();
 
 }

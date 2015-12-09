@@ -25,6 +25,10 @@ void SpiroApp::reset() {
   theta = 0.0;
   dTheta = 2*3.14159/200;
   endTheta = 2*3.14159 * r;
+  if (iters == maxSpiros - 1) {
+    endTheta *= 3;  // draw the last one thrice to keep it on the screen
+  }
+
   first = true;
 }
 
@@ -69,7 +73,7 @@ void SpiroApp::run() {
 
   if (theta > endTheta) {
     iters++;
-    if (iters > 2) {
+    if (iters >= maxSpiros) {
       clearScreen();
       iters = 0;
     }

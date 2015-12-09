@@ -1,5 +1,16 @@
 #include "SeqApp.h"
 
+const float freq[] = {
+      261.626,
+      293.665,
+      329.628,
+      349.228,
+      391.995,
+      440.000,
+      493.883,
+      523.251,
+      587.330
+};
 
 void SeqApp::run() {
 
@@ -46,6 +57,12 @@ void SeqApp::run() {
       lastCol = getDotsWide()-1;
     }
 
+    for (int y = 0; y< getDotsHigh(); y++) {
+      if (dots->getDot(currCol,y) & noteOn) {
+        // play note associated with y
+          sound.beep(40, freq[y]);
+      }
+    }
     for (int y = 0; y<getDotsHigh(); y++) {
       dots->setDot(lastCol,y, (~highlight) & dots->getDot(lastCol,y));
       dots->updateDot(lastCol,y);

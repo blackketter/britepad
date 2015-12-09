@@ -21,7 +21,7 @@ class SeqApp : public DotsDisplayApp {
     virtual int getDotsHigh() { return 9; }
     millis_t lastRun = 0;
     int bpm = 138;
-    static const int maxBpm = 300;
+    static const int maxBpm = 400;
     static const int minBpm = 40;
 
     int currCol = 0;

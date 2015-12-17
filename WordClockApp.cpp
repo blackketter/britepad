@@ -1,21 +1,6 @@
 #include "WordClockApp.h"
 #include "Debug.h"
-
-static const char* minutes[] = {
-"","one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen",
-"twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight", "twenty-nine",
-"thirty", "thirty-one", "thirty-two", "thirty-three", "thirty-four", "thirty-five", "thirty-six", "thirty-seven", "thirty-eight", "thirty-nine",
-"forty", "forty-one", "forty-two", "forty-three", "forty-four", "forty-five", "forty-six", "forty-seven", "forty-eight", "forty-nine",
-"fifty", "fifty-one", "fifty-two", "fifty-three", "fifty-four", "fifty-five", "fifty-six", "fifty-seven", "fifty-eight", "fifty-nine" };
-
-static const char* days[] = {
-"", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth",
-"eleventh", "twelfth", "thirteenth", "forteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "ninteenth", "twentieth",
-"twenty-first", "twenty-second", "twenty-third", "twenty-fourth", "twenty-fifth", "twenty-sixth", "twenty-seventh", "twenty-eighth", "twenty-ninth",
-"thirtieth", "thirty-first" };
-
-static const char* hours[] = { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve" };
+#include "Strings.h"
 
 void WordClockApp::run() {
   millis_t mt = clock.millis();
@@ -89,14 +74,14 @@ void WordClockApp::update() {
       case 9:
       case 10:
       case 11:
-        hour = hours[hournum];
+        hour = numberStrings[hournum];
         timeofday = "in the morning ";
         break;
       case 13:
       case 14:
       case 15:
       case 16:
-        hour = hours[hournum-12];
+        hour = numberStrings[hournum-12];
         timeofday = "in the afternoon ";
         break;
       case 17:
@@ -104,11 +89,11 @@ void WordClockApp::update() {
       case 19:
       case 20:
       case 21:
-        hour = hours[hournum-12];
+        hour = numberStrings[hournum-12];
         timeofday = "in the evening ";
         break;
       default: // 22 and up
-        hour = hours[hournum-12];
+        hour = numberStrings[hournum-12];
         timeofday = "at night ";
         break;
       }
@@ -119,22 +104,22 @@ void WordClockApp::update() {
 
     if (now.minute() == 0) {
       static const char* wordsonthehourformat = "It's %s%s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsonthehourformat, about, hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+      sprintf(words, wordsonthehourformat, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else if (now.minute() == 30) {
       static const char* wordsformathalfpast = "It's %shalf past %s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else if (now.minute() == 15) {
       static const char* wordsformathalfpast = "It's %squarter past %s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else if (now.minute() == 45) {
       static const char* wordsformathalfpast = "It's %squarter to %s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else if (afterhour) {
       static const char* wordsformatpast = "It's %s%s minute%s past %s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsformatpast, about, minutes[now.minute()], (now.minute() == 1) ? "" : "s", hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+      sprintf(words, wordsformatpast, about, numberStrings[now.minute()], (now.minute() == 1) ? "" : "s", hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else if (beforehour) {
       static const char* wordsformatto = "It's %s%s minute%s to %s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsformatto, about, minutes[60-now.minute()], (now.minute() == 59) ? "" : "s", hour, timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+      sprintf(words, wordsformatto, about, numberStrings[60-now.minute()], (now.minute() == 59) ? "" : "s", hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else {
       static const char* wordsformat = "It's %s%s %s %son %s, %s %s, two-thousand and %s.";
       if (hournum == 12) {
@@ -144,7 +129,7 @@ void WordClockApp::update() {
         hour = "twelve";
         timeofday = "in the morning ";
       }
-      sprintf(words, wordsformat, about, hour, minutes[now.minute()], timeofday, now.weekdayString(), now.monthString(), days[now.day()], minutes[now.year() % 2000]);
+      sprintf(words, wordsformat, about, hour, numberStrings[now.minute()], timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     }
 
     screen.drawText(words, screen.lineBreakChars);

@@ -29,6 +29,7 @@ class Sound {
     float mainGain = 1.0;  // negative gains are mute
     float lastToneVolume = 0.0;
     int freeSynth(); // get a free synth
+
 };
 
 #endif

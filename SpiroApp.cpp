@@ -21,10 +21,11 @@ void SpiroApp::reset() {
   scale = scale*(random(4)+7)/10;  // randomly smaller by a factor of 0.3-1.0
   center.x = screen.clipMidWidth();
   center.y = screen.clipMidHeight();
-  currColor = screen.brighten(random(65536));
-  theta = 0.0;
+  currColor = random(0x10000) | random(0x10000);
+  float thetaOffset = 2*3.14159*3/4;
+  theta = 0.0 + thetaOffset;
   dTheta = 2*3.14159/200;
-  endTheta = 2*3.14159 * r;
+  endTheta = 2*3.14159 * r + thetaOffset * r;
   if (iters == maxSpiros - 1) {
     endTheta *= 3;  // draw the last one thrice to keep it on the screen
   }

@@ -7,6 +7,8 @@ void CalendarApp::run() {
       month = 12;
       year--;
     }
+    screen.pushFill(DIRECTION_LEFT, bgColor());
+    drawBars();
     draw();
   }
   if (pad.down(RIGHT_PAD)) {
@@ -15,6 +17,8 @@ void CalendarApp::run() {
       month = 1;
       year++;
     }
+    screen.pushFill(DIRECTION_RIGHT, bgColor());
+    drawBars();
     draw();
   }
 };
@@ -22,8 +26,6 @@ void CalendarApp::run() {
 void CalendarApp::draw() {
   Time t;
   t.set(year,month,1);
-
-  clearScreen();
 
   int rows = (t.weekday() - 1 + t.daysInMonth() + 6)/7 + 3;  // convert to zero based weekdays, add days in month, +6 to round up.
 

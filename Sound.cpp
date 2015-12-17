@@ -143,6 +143,7 @@ void Sound::tone(float freq, float volume) {
 }
 
 void Sound::noise(float volume) {
+//  todo: create noise sourc
   DEBUGF("noise vol: %f\n", volume);
 }
 

@@ -61,7 +61,10 @@ void SetTimerApp::drawTime() {
     screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(timeStr)/2,
                      screen.clipMidHeight() - screen.measureTextHeight(timeStr)/2);
 
+    rect_t clip = { screen.getCursorX(), screen.getCursorY(),(coord_t)screen.measureTextWidth(timeStr),(coord_t)(screen.measureTextHeight(timeStr)+2)};
+    screen.pushClipRect(&clip);
     screen.drawText(timeStr);
+    screen.pushClipRect(&clip);
 }
 
 void SetTimerApp::drawButtons() {

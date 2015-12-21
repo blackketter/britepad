@@ -3,10 +3,13 @@
 
 // get some shared typedefs, like direction_t
 #include "Types.h"
+#include "Fonts.h"
 
+#if BP5
+#include <RA8875.h>
+#else
 #include <ILI9341_t3.h>
-#include <font_Arial.h>
-#include <font_ArialBold.h>
+#endif
 
 #include "HTMLColor.h"
 
@@ -33,9 +36,12 @@ typedef struct rect_t {
   coord_t h;
 } rect_t;
 
-typedef ILI9341_t3_font_t font_t;
-
+#if BP5
+class Screen : public RA8875 {
+#else
 class Screen : public ILI9341_t3 {
+#endif
+
   public:
 
     static const uint8_t maxbrightness = 255;
@@ -46,7 +52,13 @@ class Screen : public ILI9341_t3 {
 #define TFT_DC 9
 
     Screen(uint8_t _CS = TFT_CS, uint8_t _DC = TFT_DC, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
+#if BP5
+#define RA8875_CS 10 //see below...
+#define RA8875_RESET 9//any pin or nothing!
+      RA8875(RA8875_CS,RA8875_RESET) {
+#else
       ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO) {
+#endif
       pinMode(21, OUTPUT);
       digitalWrite(21, LOW);   // set the backlight off
     };

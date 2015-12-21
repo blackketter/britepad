@@ -1,8 +1,5 @@
 #include "Arduino.h"
 
-#include <Adafruit_FT6206.h>
-#include <SparkFun_APDS9960.h>
-
 #include "BritepadShared.h"
 #include "TouchPad.h"
 
@@ -14,6 +11,7 @@
 #define L_TOUCH_PIN A1
 #define R_TOUCH_PIN A3
 
+#include <SparkFun_APDS9960.h>
 #define APDS9960_INT    20  // Needs to be an interrupt pin
 
 
@@ -29,7 +27,13 @@
 #define T_HIGH_THRESHOLD 1150
 #define T_LOW_THRESHOLD 1050
 
+#if BP5
+#include "GSLX.h"
+#else
+#include <Adafruit_FT6206.h>
 Adafruit_FT6206 ctp = Adafruit_FT6206();
+#endif
+
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
 
 
@@ -45,11 +49,15 @@ TouchPad::TouchPad(coord_t w, coord_t h) {
 }
 
 void TouchPad::begin() {
+#if BP5
+  gslx_begin();
+#else
   if (! ctp.begin(40)) {  // pass in 'sensitivity' coefficient
-    DEBUG_LN("Couldn't start FT6206 touchscreen controller");
+    DEBUG_LN("Couldn't start touchscreen controller");
     while (1);
   }
-  DEBUG_LN("starting touchpad");
+#endif
+  DEBUG_LN("started touchpad");
   initAPDS();
 
 }
@@ -59,25 +67,34 @@ void TouchPad::update() {
   copyTPState(&last, &curr);
 
   curr.time = clock.millis();
-  curr.touched[SCREEN_PAD] = ctp.touched();
-
   updateAPDS();
   curr.touched[PROXIMITY_SENSOR] = getProximityPresent();
 
   // Retrieve a point
+#if BP5
+  ts_event_t* e = gslx_run();
+  if (e && e->n_fingers) {
+    curr.x = e->coords[0].x;
+    curr.y = e->coords[0].y;
+  } else {
+    curr.touched[SCREEN_PAD] = false;
+  }
+#else
+  curr.touched[SCREEN_PAD] = ctp.touched();
   TS_Point p = ctp.getPoint();
 
   curr.x = p.y;
   curr.y = p.x;
+
+  // flip it around to match the screen.
+  curr.y = map(curr.y, 0, width, width, 0);
+#endif
 
   // bogus coordinates at 0,0
   if (curr.x == 0 && curr.y == 0 && curr.touched[SCREEN_PAD]) {
     DEBUG_LN("bogus 0,0 coordinates");
     curr.touched[SCREEN_PAD] = 0;
   }
-
-  // flip it around to match the screen.
-  curr.y = map(curr.y, 0, width, width, 0);
 
   // if we're not touching, use the last touch coordinates
   if (!curr.touched[SCREEN_PAD]) {

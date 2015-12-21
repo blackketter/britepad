@@ -22,7 +22,7 @@ void SetClockApp::drawTime() {
     if (setDate) {
       char textDate[2+1+2+1+4+1];
 
-      screen.setFont(Arial_40_Bold);
+      screen.setFont(ArialDigits_40_Bold);
       sprintf(textDate, "%d-%02d-%02d", theTime->year(), theTime->month(), theTime->day());
       screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(textDate)/2,
                        screen.clipMidHeight() - screen.measureTextHeight(textDate)/2);
@@ -30,7 +30,7 @@ void SetClockApp::drawTime() {
     } else {
       char textTime[6];
 
-      screen.setFont(Arial_72_Bold);
+      screen.setFont(ArialDigits_72_Bold);
       sprintf(textTime," %2d:%02d ", theTime->hourFormat12(), theTime->minute());
 
       coord_t x = screen.clipMidWidth() - screen.measureTextWidth(textTime)/2;
@@ -73,12 +73,12 @@ void SetClockApp::begin() {
   int x3 =  x2+90;
   int x4 =  x3+60;
 
-  button[hr1_up].init(x2, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
-  button[min10_up].init(x3, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
-  button[min1_up].init(x4, ytop, buttonradius,screen.red, false, "+", Arial_32_Bold, screen.white);
-  button[hr1_down].init(x2, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
-  button[min10_down].init(x3, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
-  button[min1_down].init(x4, ybottom, buttonradius,screen.red, false, "-", Arial_32_Bold, screen.white);
+  button[hr1_up].init(x2, ytop, buttonradius,screen.red, false, screen.white, plusIcon);
+  button[min10_up].init(x3, ytop, buttonradius,screen.red, false, screen.white, plusIcon);
+  button[min1_up].init(x4, ytop, buttonradius,screen.red, false, screen.white, plusIcon);
+  button[hr1_down].init(x2, ybottom, buttonradius,screen.red, false, screen.white, minusIcon);
+  button[min10_down].init(x3, ybottom, buttonradius,screen.red, false, screen.white, minusIcon);
+  button[min1_down].init(x4, ybottom, buttonradius,screen.red, false, screen.white, minusIcon);
 
   button[mode_set].init(x1, ytop, buttonradius, modeButtonColor(), false, modeButtonText(), modeButtonFont(), screen.white);
   button[am_pm].init(x1, ybottom, buttonradius,screen.red, false, theTime->isAM() ? "am" : "pm", Arial_18_Bold, screen.white);

@@ -1,7 +1,6 @@
 #include "BritepadApp.h"
 #include "AlarmApp.h"
 #include "Icon.h"
-#include "font_Arial.h"
 
 BritepadApp* BritepadApp::STAY_IN_APP = (BritepadApp*)0;
 BritepadApp* BritepadApp::MOUSE_APP = (BritepadApp*)1;

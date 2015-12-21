@@ -2,7 +2,6 @@
 #include "Debug.h"
 #include "Preferences.h"
 
-
 bool AlarmApp::alarmSounding() {
   return (alarmSounded || (alarmEnabled && isAlarmTime()));
 };
@@ -68,7 +67,7 @@ void AlarmApp::run() {
     alarmSounded = true;
 
     char textTime[6];
-    screen.setFont(Arial_72_Bold);
+    screen.setFont(ArialDigits_72_Bold);
     screen.setTextColor(currentColor, bgColor());
     sprintf(textTime, "%d:%02d", nextAlarm.hourFormat12(), nextAlarm.minute());
     coord_t w = screen.measureTextWidth(textTime);

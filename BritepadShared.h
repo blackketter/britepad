@@ -28,4 +28,6 @@ extern Clock clock;
 #include "Preferences.h"
 extern Preferences prefs;
 
+#include "Fonts.h"
+
 #endif

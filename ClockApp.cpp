@@ -1,5 +1,4 @@
 #include "FastLED.h"
-
 #include "BritepadShared.h"
 #include "ClockApp.h"
 #include "Debug.h"
@@ -21,7 +20,7 @@ void ClockApp::begin() {
 void ClockApp::update() {
     char textTime[6];
 
-    screen.setFont(Arial_72_Bold);
+    screen.setFont(ArialDigits_72_Bold);
 
     screen.setTextColor(screen.luminance(currentColor) < 128 ? screen.brighten(currentColor, 128) : currentColor, bgColor());
     sprintf(textTime, "%d:%02d", clock.hourFormat12(), clock.minute());

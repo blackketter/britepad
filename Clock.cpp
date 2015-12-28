@@ -110,24 +110,22 @@ time_t DayTime::nextOccurance() {
 
 // real time clock methods
 time_t Clock::now() {
-  return ::now();
-}
-
-uint16_t Clock::frac() {
-  uint16_t now_millis = 0;
-  static millis_t millis_offset = 0;
   static time_t last_sec = 0;
-  time_t now_sec = now();
+
+  time_t now_sec = ::now();
 
   if (now_sec != last_sec) {
     millis_offset = Uptime::millis();
-    now_millis = 0;
     last_sec = now_sec;
-  } else {
-    now_millis = Uptime::millis() - millis_offset;
   }
 
-  return now_millis;
+  return now_sec;
+}
+
+uint16_t Clock::frac() {
+  now();
+
+  return Uptime::millis() - millis_offset;
 }
 
 time_t getRTCTime()
@@ -183,7 +181,6 @@ void Clock::chimerCallback() {
 }
 
 void Clock::adjust(stime_t adjustment) {
-  DEBUGF("before: %d\n", ::now());
   Teensy3Clock.set(now() + adjustment);
 
   // force a resync
@@ -192,5 +189,4 @@ void Clock::adjust(stime_t adjustment) {
   doneSet = true;
 
   resetChime();
-  DEBUGF("after: %d\n", ::now());
 }

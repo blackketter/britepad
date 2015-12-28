@@ -79,6 +79,7 @@ class Clock : public Time {
     void chimerCallback();
 
   private:
+    millis_t millis_offset = 0;
 
     void resetChime();
     Timer chimeTimer;

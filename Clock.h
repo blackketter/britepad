@@ -8,11 +8,11 @@ class Time {
   public:
     Time() {};
     virtual time_t get() { return curTime; };
-
     virtual void set(time_t newTime) { curTime = newTime; }
+
     virtual void set(uint16_t y, uint8_t m = 1, uint8_t d = 1, uint8_t hr = 0, uint8_t min = 0, uint8_t sec = 0);
-    virtual void adjust(stime_t adjustment) { curTime += adjustment; } // signed time
-    virtual bool isTime(time_t newTime) { return newTime == curTime; }
+    virtual void adjust(stime_t adjustment) { set(get() + adjustment); } // signed time
+    virtual bool isTime(time_t newTime) { return newTime == get(); }
 
     virtual void beginSetTime() {};
     virtual void endSetTime() {};
@@ -49,8 +49,8 @@ class Time {
 class DayTime : public Time {
   public:
     virtual void set(time_t newTime) {  Time::set(newTime % secsPerDay); }
-    virtual void adjust(stime_t adjustment)  { if (adjustment < 0) { adjustment = secsPerDay-((-adjustment)%secsPerDay); } set(adjustment+curTime); };
-    virtual bool isTime(time_t newTime) { return curTime == (newTime % secsPerDay); }
+    virtual void adjust(stime_t adjustment)  { if (adjustment < 0) { adjustment = secsPerDay-((-adjustment)%secsPerDay); } set(adjustment+get()); };
+    virtual bool isTime(time_t newTime) { return get() == (newTime % secsPerDay); }
     virtual time_t nextOccurance();
 };
 
@@ -70,7 +70,7 @@ class Clock : public Time {
     virtual time_t get() { return now(); };
     virtual void adjust(stime_t adjustment); // signed time
 
-    uint16_t millis();  // fractional seconds
+    uint16_t frac();  // fractional seconds in millis  TODO: Make base Time class support fractional seconds too
 
     virtual bool hasBeenSet() { return doneSet && !setting; }
     virtual void beginSetTime() { setting = true; chimeTimer.cancel(); };

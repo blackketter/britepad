@@ -63,7 +63,7 @@ void AnalogClockApp::update() {
     uint16_t hr_theta, min_theta, sec_theta, millis_theta;
 
     uint8_t now_sec = clock.second();
-    uint16_t now_millis = clock.millis();
+    uint16_t now_millis = clock.frac();
 
     millis_theta = (now_millis * 65536L)/1000L;
 

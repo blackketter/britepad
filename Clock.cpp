@@ -101,7 +101,7 @@ millis_t Uptime::millis() {
 }
 
 time_t DayTime::nextOccurance() {
-  time_t nextup = (clock.now()/secsPerDay)*secsPerDay + curTime;
+  time_t nextup = (clock.now()/secsPerDay)*secsPerDay + get();
   if (nextup < clock.now()) {
     nextup+= secsPerDay;
   }
@@ -113,7 +113,7 @@ time_t Clock::now() {
   return ::now();
 }
 
-uint16_t Clock::millis() {
+uint16_t Clock::frac() {
   uint16_t now_millis = 0;
   static millis_t millis_offset = 0;
   static time_t last_sec = 0;

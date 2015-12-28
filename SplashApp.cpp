@@ -22,13 +22,13 @@ void SplashApp::begin() {
   drawindex = 0;
   clearScreen();
   currColor = screen.red;
-  firstRun = clock.millis();
+  firstRun = Uptime::millis();
 //  drawLogo(currColor);
 }
 
 
 void SplashApp::run() {
-  if (clock.millis() - firstRun > splashDuration) {
+  if (Uptime::millis() - firstRun > splashDuration) {
     launchApp(SCREENSAVER_APP, SCREENSAVER_MODE);
   }
 

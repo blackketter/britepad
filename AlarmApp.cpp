@@ -63,7 +63,7 @@ AlarmApp::AlarmApp() {
 
 
 void AlarmApp::run() {
-  if (clock.millis() - lastUpdate > beepInterval) {
+  if (Uptime::millis() - lastUpdate > beepInterval) {
     alarmSounded = true;
 
     char textTime[6];
@@ -85,7 +85,7 @@ void AlarmApp::run() {
     }
 
 
-    lastUpdate = clock.millis();
+    lastUpdate = Uptime::millis();
   }
 };
 

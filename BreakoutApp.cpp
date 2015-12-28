@@ -66,7 +66,7 @@ void BreakoutApp::newGame() {
 }
 
 void BreakoutApp::run() {
-  millis_t millisNow = clock.millis();
+  millis_t millisNow = Uptime::millis();
   if (lastDraw/millisPerFrame == millisNow/millisPerFrame && !pad.down(ANY_PAD)) {
     return;
   }

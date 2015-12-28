@@ -52,7 +52,7 @@ void CountdownApp::run() {
   }
 
   // draw the time
-  millis_t nowMillis = clock.millis();
+  millis_t nowMillis = Uptime::millis();
 
   if (lastDrawMillis/1000 != nowMillis/1000) {
 

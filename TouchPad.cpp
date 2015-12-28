@@ -58,7 +58,7 @@ void TouchPad::update() {
   // save the last state for future reference
   copyTPState(&last, &curr);
 
-  curr.time = clock.millis();
+  curr.time = Uptime::millis();
   curr.touched[SCREEN_PAD] = ctp.touched();
 
   updateAPDS();

@@ -54,16 +54,23 @@ class DayTime : public Time {
     virtual time_t nextOccurance();
 };
 
+class Uptime : public Time {
+  public:
+    static millis_t millis();
+    time_t get() { return millis()/1000; }
+};
+
 class Clock : public Time {
 
   public:
     Clock();
-    millis_t millis();  // remember, millis_t is now signed 64-bits
     time_t now();
 
     virtual void set(time_t newTime);
     virtual time_t get() { return now(); };
     virtual void adjust(stime_t adjustment); // signed time
+
+    uint16_t millis();  // fractional seconds
 
     virtual bool hasBeenSet() { return doneSet && !setting; }
     virtual void beginSetTime() { setting = true; chimeTimer.cancel(); };
@@ -79,8 +86,6 @@ class Clock : public Time {
     static const millis_t chimeInterval = 500;
     bool doneSet = false;
     bool setting = false;
-    millis_t lastMillis;
-    millis_t millisOffset = 0;
 };
 
 extern Clock clock;

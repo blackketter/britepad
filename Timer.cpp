@@ -21,7 +21,7 @@ void Timer::setMillis(millis_t millisDuration, timerCallback_t callback, void* c
   insert(callback, callbackData);
   repeatTimer = repeat;
   millisDur = millisDuration;
-  millisTime = clock.millis() + millisDur;
+  millisTime = Uptime::millis() + millisDur;
 }
 
 millis_t Timer::remainingMillis() {
@@ -30,7 +30,7 @@ millis_t Timer::remainingMillis() {
     if (isPaused()) {
       return -millisTime;
     } else {
-      return (millisTime - clock.millis());
+      return (millisTime - Uptime::millis());
     }
   } else if (clockTime) {
     // todo make this more accurate using the difference between millis() and now()
@@ -58,7 +58,7 @@ time_t Timer::timeInSecs() {
 }
 
 millis_t Timer::timeInMillis() {
-  return clock.millis()+remainingMillis();
+  return Uptime::millis()+remainingMillis();
 }
 
 time_t Timer::durationSecs() {
@@ -81,7 +81,7 @@ bool Timer::hasPassed() {
   if (isPaused()) { return false; }
 
   if (millisTime) {
-    if (clock.millis() >= millisTime) {
+    if (Uptime::millis() >= millisTime) {
       return true;
     }
   } else if (clockTime) {
@@ -111,7 +111,7 @@ void Timer::pause() {
   }
 
   if (millisTime) {
-    millisTime = -(millisTime - clock.millis());
+    millisTime = -(millisTime - Uptime::millis());
   } else if (clockTime) {
     clockTime = -(clockTime - clock.now());
   }
@@ -122,7 +122,7 @@ void Timer::resume() {
     return;
   }
   if (millisTime) {
-    millisTime = clock.millis() - millisTime;
+    millisTime = Uptime::millis() - millisTime;
   } else if (clockTime) {
     clockTime = clock.now() - clockTime;
   }

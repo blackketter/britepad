@@ -23,8 +23,8 @@ class StopwatchApp : public BritepadApp {
 
   private:
     virtual bool isPaused() { return startMillis < 0; };
-    virtual void pause() { startMillis = -(clock.millis() - startMillis); }
-    virtual void resume() { startMillis = clock.millis() + startMillis; }
+    virtual void pause() { startMillis = -(Uptime::millis() - startMillis); }
+    virtual void resume() { startMillis = Uptime::millis() + startMillis; }
     virtual void reset() { startMillis = -1; }
     virtual bool isReset() { return (startMillis == -1); }
     virtual void drawTime();

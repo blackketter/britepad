@@ -28,30 +28,41 @@ void ChromaClockApp::update() {
     r[i] = screen.clipHeight()/2;
   }
 
-  int h = (int)(clock.hourFormat12()) * slices / 12;
+  int h = (int)(clock.hourFormat12()) * slices / 12 + (int)clock.minute() * slices / (60*12) + (int)clock.second() * slices / (12*60*60);
 
-  for (int i = h-2; i<=h+2; i++) {
-    int ic = i;
-    if (ic < 0) { ic+=slices; }
-    if (ic >= slices) { ic -= slices; }
-    c[ic] = screen.red;
-//    r[ic] = screen.clipHeight()/4;
+  int steps = slices/6;
+  for (int i = 0; i < steps; i++) {
+    int ic = h - i;
+
+    while (ic < 0) { ic+=slices; }
+
+    while (ic >= slices) { ic -= slices; }
+
+    c[ic] = screen.add(RGBtoC16(255-(i*255/steps),0,0),c[ic]);
   }
 
 
-  int m = (int)clock.minute() * slices / 60;
+  int m = (int)clock.minute() * slices / 60 + (int)clock.second() * slices / (60*60);
 
-  for (int i = m; i<=m; i++) {
-    int ic = i;
-    if (ic < 0) { ic+=slices; }
-    if (ic >= slices) { ic -= slices; }
-    c[ic] = screen.green;
-    r[ic] = screen.clipHeight()/2;
+  steps = slices/30;
+  for (int i = 0; i < steps; i++) {
+    int ic = m - i;
+    while (ic < 0) { ic+=slices; }
+    while (ic >= slices) { ic -= slices; }
+
+    c[ic] = screen.add(RGBtoC16(0,255-(i*255/steps),0), c[ic]);
   }
 
-  int s = (int)clock.second() * slices / 60;
-  c[s] = screen.blue;
-  r[s] = screen.clipHeight()/2;
+  int s = (int)clock.second() * slices / 60 + (long)clock.millis() * slices / 1000 / 60;
+//  DEBUGF("s: %d, millis:%d\n", s, clock.millis());
+
+  steps = slices/60;
+  for (int i = 0; i < steps; i++) {
+    int ic = s - i;
+    while (ic < 0) { ic+=slices; }
+    while (ic >= slices) { ic -= slices; }
+    c[ic] = screen.add(RGBtoC16(0,0,255-(i*255/steps)), c[ic]);
+  }
 
   for (int i = 0; i < slices; i++) {
     drawSlice(i,c[i], r[i]);

@@ -126,22 +126,33 @@ color_t Screen::brighten(color_t c, uint8_t offset) {
   g = min(g, 255);
   b = min(b, 255);
 
-  return ((r & 0xf8) << 8) | ((g & 0xfc ) << 3) | (b >> 3);
+  return RGBtoC16(r,g,b);
 };
 
 color_t Screen::mix(color_t c1, color_t c2) {
   uint16_t r, g, b;
 
-  r = (R8(c1) + R8(c2))/2;
-  g = (G8(c1) + G8(c2))/2;
-  b = (B8(c1) + B8(c2))/2;
+  r = ((uint16_t)R8(c1) + R8(c2))/2;
+  g = ((uint16_t)G8(c1) + G8(c2))/2;
+  b = ((uint16_t)B8(c1) + B8(c2))/2;
 
-  return ((r & 0xf8) << 8) | ((g & 0xfc ) << 3) | (b >> 3);
+  return RGBtoC16(r,g,b);
+};
+
+
+color_t Screen::add(color_t c1, color_t c2) {
+  uint16_t r, g, b;
+
+  r = min(255,(uint16_t)R8(c1) + R8(c2));
+  g = min(255,(uint16_t)G8(c1) + G8(c2));
+  b = min(255,(uint16_t)B8(c1) + B8(c2));
+
+  return RGBtoC16(r,g,b);
 };
 
 
 uint8_t Screen::luminance(color_t c) {
-  uint16_t r, g, b;
+  uint32_t r, g, b;
   r = R8(c);
   g = G8(c);
   b = B8(c);

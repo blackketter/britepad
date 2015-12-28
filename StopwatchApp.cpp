@@ -76,7 +76,7 @@ void StopwatchApp::run() {
 }
 
 void StopwatchApp::drawTime() {
-  millis_t nowMillis = clock.millis();
+  millis_t nowMillis = Uptime::millis();
 
   if (lastDrawMillis/100 != nowMillis/100) {
     lastDrawMillis = nowMillis;

@@ -3,7 +3,7 @@
 #include "Strings.h"
 
 void WordClockApp::run() {
-  millis_t mt = clock.millis();
+  millis_t mt = Uptime::millis();
 
   if (lastUpdate == 0 || mt - lastUpdate > updateInterval()) {
     update();

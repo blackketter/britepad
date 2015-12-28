@@ -10,9 +10,9 @@
 
 #include "HTMLColor.h"
 
-#define R8(x) (((x)&0xf800)>>8)
-#define G8(x) (((x)&0x07e0)>>3)
-#define B8(x) (((x)&0x001f)<<3)
+#define R8(x) ((uint8_t)((((uint16_t)x)&0xf800)>>8))
+#define G8(x) ((uint8_t)((((uint16_t)x)&0x07e0)>>3))
+#define B8(x) ((uint8_t)((((uint16_t)x)&0x001f)<<3))
 
 #define C32to16(x) (color_t)((((x)&0x00f80000)>>8)+(((x)&0x0000fc00)>>5)+(((x)&0x000000f8)>>3))
 #define RGBtoC16(r,g,b) ((color_t)((((r)>>3)<<11)+(((g)>>2)<<5)+((b)>>3)))
@@ -63,6 +63,7 @@ class Screen : public ILI9341_t3 {
     color_t darken(color_t c);
     color_t brighten(color_t c, uint8_t offset = 64);
     color_t mix(color_t c1, color_t c2);
+    color_t add(color_t c1, color_t c2);
     uint8_t luminance(color_t);
 
     inline coord_t clipTop() { return _clipy1; };

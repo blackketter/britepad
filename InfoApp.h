@@ -6,7 +6,7 @@ class InfoApp : public BritepadApp {
   public:
     void run();
 
-    bool displaysStatusBar() { return true; }
+    bool displaysStatusBar() { return false; }
     bool canBeInteractive() { return true; }
     bool disablesScreensavers() { return true; }
     color_t bgColor() { return screen.blue; }

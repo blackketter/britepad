@@ -22,7 +22,7 @@ void TimerApp::drawTime() {
     delta = 0;
   }
 
-  millis_t now = clock.millis();
+  millis_t now = Uptime::millis();
   if (lastDrawMillis/redrawInterval != now/redrawInterval) {
     lastDrawMillis = now;
 

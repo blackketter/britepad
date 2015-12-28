@@ -87,6 +87,19 @@ void Time::shortDate(char* dateStr) {
   sprintf(dateStr, "%d-%02d-%02d", year(), month(), day());
 }
 
+millis_t Uptime::millis() {
+  static millis_t lastUptime = 0;
+  static millis_t uptimeOffset = 0;
+
+  millis_t nowUptime = ::millis();
+  if (nowUptime < lastUptime) {
+    // millis have rolled over, we add a new offset
+    uptimeOffset += 0x0000000100000000;
+  }
+  lastUptime = nowUptime;
+  return nowUptime + uptimeOffset;
+}
+
 time_t DayTime::nextOccurance() {
   time_t nextup = (clock.now()/secsPerDay)*secsPerDay + curTime;
   if (nextup < clock.now()) {
@@ -98,6 +111,23 @@ time_t DayTime::nextOccurance() {
 // real time clock methods
 time_t Clock::now() {
   return ::now();
+}
+
+uint16_t Clock::millis() {
+  uint16_t now_millis = 0;
+  static millis_t millis_offset = 0;
+  static time_t last_sec = 0;
+  time_t now_sec = now();
+
+  if (now_sec != last_sec) {
+    millis_offset = Uptime::millis();
+    now_millis = 0;
+    last_sec = now_sec;
+  } else {
+    now_millis = Uptime::millis() - millis_offset;
+  }
+
+  return now_millis;
 }
 
 time_t getRTCTime()
@@ -163,15 +193,4 @@ void Clock::adjust(stime_t adjustment) {
 
   resetChime();
   DEBUGF("after: %d\n", ::now());
-}
-
-
-millis_t Clock::millis() {
-  millis_t nowMillis = ::millis();
-  if (nowMillis < lastMillis) {
-    // millis have rolled over, we add a new offset
-    millisOffset += 0x0000000100000000;
-  }
-  lastMillis = nowMillis;
-  return nowMillis + millisOffset;
 }

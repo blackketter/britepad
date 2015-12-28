@@ -7,7 +7,7 @@ class ChromaClockApp : public AnalogClockApp {
   public:
     void begin();
     void update();
-    virtual millis_t updateInterval() { return 1000; }
+    virtual millis_t updateInterval() { return 1000*60/slices; }
 
     const char* name() { return "Chroma"; };
 
@@ -16,7 +16,7 @@ class ChromaClockApp : public AnalogClockApp {
 
   private:
     void drawSlice(int index, color_t c, coord_t r);
-    const int slices = 60;
+    const int slices = 240;
 };
 
 #endif

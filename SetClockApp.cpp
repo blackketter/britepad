@@ -15,7 +15,7 @@ enum {
 };
 
 void SetClockApp::drawTime() {
-  millis_t t = clock.millis();
+  millis_t t = Uptime::millis();
 
   if (lastDraw/1000 != t/1000) {
     screen.setTextColor(screen.white, bgColor());

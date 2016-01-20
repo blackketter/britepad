@@ -159,6 +159,9 @@ void MinesApp::begin() {
     field = new MineMatrix(screen.clipMidWidth()-screen.clipHeight()/2,(coord_t)(screen.clipTop()),screen.clipHeight(),screen.clipHeight(),minesHeight,minesWidth);
   }
 
+  minesLeft.init(screen.clipLeft()+2,screen.clipBottom()-20,field->getLeft()-screen.clipLeft()-4,20,Arial_12_Bold,screen.blue, screen.black, ALIGN_CENTER);
+  timer.init(field->getRight()+2,screen.clipBottom()-20,screen.clipRight()-field->getRight()-4,20,Arial_12_Bold,screen.white, screen.black, ALIGN_CENTER);
+
   mines = minesMax;
   while (mines) {
     int x = random(minesWidth);
@@ -171,10 +174,11 @@ void MinesApp::begin() {
 
   field->draw();
 
-  startTime = Uptime::millis();
+  startTime = 0;
   mines = minesMax;
   gameOver = false;
   firstTap = true;
+  flagged = false;
 }
 
 
@@ -196,7 +200,25 @@ void MinesApp::run() {
     }
   }
 
-  if (pad.up() && field->hit(pad.x(),pad.y(), &xhit, &yhit)) {
+  if (pad.touched() && !flagged && pad.holdTime() > 500 && field->hit(pad.x(),pad.y(), &xhit, &yhit)) {
+    color_t contents = field->getDot(xhit,yhit);
+    if (contents == EMPTY_MINE) {
+      field->setDot(xhit,yhit, FLAG_EMPTY_MINE);
+      field->updateDot(xhit,yhit);
+      flagged = true;
+      sound.click();
+      mines--;
+    }
+    if (contents == HIDDEN_MINE) {
+      field->setDot(xhit,yhit, FLAG_HIDDEN_MINE);
+      field->updateDot(xhit,yhit);
+      flagged = true;
+      sound.click();
+      mines--;
+    }
+  }
+
+  if (pad.up() && field->hit(pad.x(),pad.y(), &xhit, &yhit) && !flagged) {
     color_t contents = field->getDot(xhit,yhit);
     switch (contents) {
       case EMPTY_MINE:
@@ -224,6 +246,7 @@ void MinesApp::run() {
         } else {
           field->setDot(xhit,yhit, EMPTY_MINE);
         }
+        mines++;
         sound.click();
         break;
 
@@ -247,8 +270,22 @@ void MinesApp::run() {
 
     }
     field->draw();
+    if (startTime == 0) {
+      startTime = Uptime::millis();
+    }
   }
   // draw times
+  int t = 0;
+  if (startTime) {
+    t = (Uptime::millis() - startTime) / 1000;
+  }
+  timer.drawf("%d", t);
+
   // draw mine count
+
+  minesLeft.drawf("%d", mines);
+  if (pad.up()) {
+    flagged = false;
+  }
 }
 

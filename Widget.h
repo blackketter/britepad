@@ -19,6 +19,9 @@ class Widget {
     coord_t getBottom() { return ypos+height; }
     coord_t getTop() { return ypos; }
     coord_t getLeft() { return xpos; }
+    coord_t getMidWidth() { return xpos+width/2; }
+    coord_t getMidHeight() { return ypos+height/2; }
+    void getBounds(rect_t& r) { r.x = xpos; r.y = ypos; r.w = width; r.h = height; };
 
     widgetid_t getID();
     void setID(widgetid_t newID) { id = newID; }

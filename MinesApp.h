@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "DotMatrix.h"
 #include "Icons.h"
+#include "TextField.h"
 
 
 class MineMatrix : public SquareMatrix {
@@ -38,6 +39,9 @@ class MinesApp : public BritepadApp {
     uint8_t mines;
     millis_t startTime;
     bool firstTap;
+    TextField minesLeft;
+    TextField timer;
+    bool flagged;
 };
 
 #endif

@@ -20,7 +20,7 @@ void ClockApp::begin() {
 void ClockApp::update() {
     char textTime[6];
 
-    screen.setFont(ArialDigits_72_Bold);
+    screen.setFont(Arial_72_Digits_Bold);
 
     screen.setTextColor(screen.luminance(currentColor) < 128 ? screen.brighten(currentColor, 128) : currentColor, bgColor());
     sprintf(textTime, "%d:%02d", clock.hourFormat12(), clock.minute());

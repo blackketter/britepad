@@ -33,7 +33,7 @@ void TimerApp::drawTime() {
 
     sprintf(textTime, " %d:%02d ", displaytime/60, displaytime%60);
 
-    screen.setFont(ArialDigits_72_Bold);
+    screen.setFont(Arial_72_Digits_Bold);
     coord_t width = screen.measureTextWidth(textTime);
 
     if (alarm_sounded) {

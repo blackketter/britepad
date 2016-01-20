@@ -33,7 +33,7 @@ void DotMatrix::draw() {
 
 void DotMatrix::clear() {
     memset(dots, 0, dots_wide*dots_high*sizeof(color_t));
-    screen.fillScreen(bgColor);
+    screen.fillRect(getLeft(),getTop(), getWidth(), getHeight(), bgColor);
 }
 
 bool DotMatrix::hit(coord_t x, coord_t y, int* hitx, int* hity) {
@@ -42,10 +42,10 @@ bool DotMatrix::hit(coord_t x, coord_t y, int* hitx, int* hity) {
       x >= getLeft() &&
       y >= getTop()) {
     if (hitx) {
-      *hitx= x/dotspacing_w;
+      *hitx= (x-getLeft())/dotspacing_w;
     }
     if (hity) {
-      *hity = y/dotspacing_h;
+      *hity = (y-getTop())/dotspacing_h;
     }
     return true;
   } else {

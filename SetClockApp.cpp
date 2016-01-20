@@ -22,7 +22,7 @@ void SetClockApp::drawTime() {
     if (setDate) {
       char textDate[2+1+2+1+4+1];
 
-      screen.setFont(ArialDigits_40_Bold);
+      screen.setFont(Arial_40_Digits_Bold);
       sprintf(textDate, "%d-%02d-%02d", theTime->year(), theTime->month(), theTime->day());
       screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(textDate)/2,
                        screen.clipMidHeight() - screen.measureTextHeight(textDate)/2);
@@ -30,7 +30,7 @@ void SetClockApp::drawTime() {
     } else {
       char textTime[6];
 
-      screen.setFont(ArialDigits_72_Bold);
+      screen.setFont(Arial_72_Digits_Bold);
       sprintf(textTime," %2d:%02d ", theTime->hourFormat12(), theTime->minute());
 
       coord_t x = screen.clipMidWidth() - screen.measureTextWidth(textTime)/2;

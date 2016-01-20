@@ -25,6 +25,7 @@
 #include "KeyApp.h"
 #include "KeyboardApp.h"
 #include "LifeApp.h"
+#include "MinesApp.h"
 #include "MuteApp.h"
 #include "NumericKeypadApp.h"
 #include "PaintApp.h"
@@ -112,6 +113,7 @@ LauncherApp::LauncherApp() {
   setButton(APPS_SCREEN, 5,  new TabletApp);
   setButton(APPS_SCREEN, 6,  new CalendarApp);
   setButton(APPS_SCREEN, 7,  new SeqApp);
+  setButton(APPS_SCREEN, 8,  new MinesApp);
 
 
 

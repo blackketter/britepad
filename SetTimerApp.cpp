@@ -54,7 +54,7 @@ void SetTimerApp::drawTime() {
     char timeStr[100];
 
     screen.setTextColor(screen.white, bgColor());
-    screen.setFont(ArialDigits_72_Bold);
+    screen.setFont(Arial_72_Digits_Bold);
 
     sprintf(timeStr, " %d:%02d ", timer_duration/60, timer_duration%60);
 

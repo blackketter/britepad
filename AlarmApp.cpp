@@ -67,7 +67,7 @@ void AlarmApp::run() {
     alarmSounded = true;
 
     char textTime[6];
-    screen.setFont(ArialDigits_72_Bold);
+    screen.setFont(Arial_72_Digits_Bold);
     screen.setTextColor(currentColor, bgColor());
     sprintf(textTime, "%d:%02d", nextAlarm.hourFormat12(), nextAlarm.minute());
     coord_t w = screen.measureTextWidth(textTime);

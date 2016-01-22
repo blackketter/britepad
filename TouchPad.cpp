@@ -142,7 +142,7 @@ bool TouchPad::getProximityPresent() {
 };
 
 uint8_t TouchPad::getProximityDistance() {
-  return getProximityPresent() ? (long)(proximity - proximityThreshold) * proximityMax / (proximityMax -proximityThreshold) : 0;
+  return getProximityPresent() ? (int32_t)(proximity - proximityThreshold) * proximityMax / (proximityMax -proximityThreshold) : 0;
 };
 
 void TouchPad::updateAPDS() {

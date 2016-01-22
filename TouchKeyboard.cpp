@@ -23,7 +23,7 @@ void TouchKeyboard::initButtons() {
   for (int r = 0; r < rows; r++) {
     int rowLen = keysInRow(r);
 //    coord_t keyY = ypos + height/rows*r                             + height/rows/2;
-      coord_t keyY = ypos + ((long)buttonDistance * 866L * r) / 1000L + height/rows/2;  // .8660 is sqrt(3)/2
+      coord_t keyY = ypos + ((int32_t)buttonDistance * 866L * r) / 1000L + height/rows/2;  // .8660 is sqrt(3)/2
 
     for (int c = 0; c < rowLen; c++) {
       char key = keymap[currSet][r][c];

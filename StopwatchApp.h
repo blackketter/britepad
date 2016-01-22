@@ -21,7 +21,7 @@ class StopwatchApp : public BritepadApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stpw";
 
-  private:
+  protected:
     virtual bool isPaused() { return startMillis < 0; };
     virtual void pause() { startMillis = -(Uptime::millis() - startMillis); }
     virtual void resume() { startMillis = Uptime::millis() + startMillis; }
@@ -32,11 +32,10 @@ class StopwatchApp : public BritepadApp {
     void redrawTime() { lastDrawMillis = 0; };
 
     void redrawButtons();
-    long startMillis = -1;  // start out paused at zero(ish)
+    millis_t startMillis = -1;  // start out paused at zero(ish)
     RoundButton pauseButton;
     RoundButton resetButton;
 
-  protected:
     millis_t lastDrawMillis;
 
 };

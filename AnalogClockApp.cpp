@@ -54,8 +54,8 @@ void AnalogClockApp::dotpos(uint16_t theta, coord_t r, coord_t& x, coord_t& y) {
   coord_t center_x = screen.clipMidWidth();
   coord_t center_y = screen.clipMidHeight();
 
-  x = center_x + ((long)r*sin16(theta))/32768L;
-  y = center_y - ((long)r*cos16(theta))/32768L;
+  x = center_x + ((int32_t)r*sin16(theta))/32768L;
+  y = center_y - ((int32_t)r*cos16(theta))/32768L;
 }
 
 void AnalogClockApp::update() {
@@ -67,11 +67,11 @@ void AnalogClockApp::update() {
 
     millis_theta = (now_millis * 65536L)/1000L;
 
-    sec_theta = ((long)now_sec * 65536L)/60L + millis_theta/60;
+    sec_theta = ((int32_t)now_sec * 65536L)/60L + millis_theta/60;
 
     min_theta = (clock.minute() * 65536L)/60L + sec_theta/60;
 
-    long hr  = clock.hourFormat12();
+    int32_t hr  = clock.hourFormat12();
     if (hr==12) { hr=0; }
 
     hr_theta = (hr * 65536L) / 12L + min_theta/12;

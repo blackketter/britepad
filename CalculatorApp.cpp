@@ -178,7 +178,7 @@ void CalculatorApp::acceptText() {
     if (getBase() == 10) {
       push(strtod(topText, nullptr));
     } else {
-      long long top64 = strtol(topText, nullptr, getBase());
+      int64_t top64 = strtol(topText, nullptr, getBase());
       // try to do 2s compliment conversion of hex
       if (top64 > 0x7ffffff) {
         top64 =  top64 - 0x100000000;

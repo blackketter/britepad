@@ -55,7 +55,7 @@ void TimerApp::drawTime() {
     screen.pushClipRect(&clip);
 
     if (alarm_sounded && !isAppMode(INTERACTIVE_MODE)) {
-      long past = clock.now() - alarm_sounded;
+      time_t past = clock.now() - alarm_sounded;
       sprintf(textTime, "%2d:%02d", (int)(past / 60), (int)(past % 60));
       screen.setFont(Arial_20_Bold);
       screen.setTextColor(screen.red, bgColor());
@@ -82,6 +82,7 @@ void TimerApp::setTime(time_t t) {
 void TimerApp::alarm() {
   if (!alarm_sounded) {
     alarm_sounded = clock.now();
+    redrawButtons();
   }
 
   if (beeps) {

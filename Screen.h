@@ -263,7 +263,7 @@ class Screen : public ILI9341_t3 {
 
 private:
     static const int BACKLIGHT_PIN = 21;
-    static const long BACKLIGHT_FREQUENCY = 50000;
+    static const uint32_t BACKLIGHT_FREQUENCY = 50000;
     uint8_t backlightBrightness = 255;
 
 };

@@ -189,7 +189,7 @@ void Britepad::begin() {
   while (anApp != nullptr) {
 //    DEBUG_LN(count);
 //    DEBUG_LN(anApp->name());
-//    DEBUG_LN((unsigned long)anApp);
+//    DEBUG_LN((uint32_t)anApp);
     anApp = anApp->getNextApp();
     count++;
   }
@@ -271,4 +271,5 @@ void Britepad::idle() {
 
   // make sure the Timers get a chance to call their callbacks
   Timer::idle();
+  sound.idle();
 }

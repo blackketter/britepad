@@ -31,7 +31,7 @@ void InfoApp::run() {
   screen.drawTextF("Ambient: %d         \n", pad.getAmbientLight());
   screen.drawTextF("Backlight: %d         \n", screen.getBacklight());
   screen.drawTextF("Free ram: %d            \n", FreeRam());
-  screen.drawTextF("Uptime: %d\n", (long)(Uptime::millis()/1000));
+  screen.drawTextF("Uptime: %d\n", (int32_t)(Uptime::millis()/1000));
   screen.drawTextF("FPS: %d      ", 1000/(pad.time()-lastUpdate));
 
   lastUpdate = pad.time();

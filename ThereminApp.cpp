@@ -3,7 +3,7 @@
 #include "Debug.h"
 
 void ThereminApp::run() {
-  long octave = 6;
+  uint8_t octave = 6;
   uint8_t prox = pad.getProximityDistance();
 
   if (pad.down(SCREEN_PAD)) {
@@ -20,7 +20,7 @@ void ThereminApp::run() {
       pitch = (pitch+lastPitch*9.0)/10.0;
       DEBUGF("pitch: %f\n", pitch);
       sound.tone( pitch, 1.0);
-      screen.fillRect(screen.clipLeft() +(long)prox * screen.clipWidth() * 19/20 / pad.getProximityMax(), screen.clipTop(), screen.clipWidth()/20, screen.clipHeight(), currColor++);
+      screen.fillRect(screen.clipLeft() +(uint32_t)prox * screen.clipWidth() * 19/20 / pad.getProximityMax(), screen.clipTop(), screen.clipWidth()/20, screen.clipHeight(), currColor++);
       lastPitch = pitch;
     }
   } else if (lastProx) {

@@ -25,7 +25,7 @@ void StopwatchApp::redrawButtons() {
 
   resetButton.init(radius*3, y, radius, screen.blue, false,"Reset");
 
-  pauseButton.init(radius*7, y, radius,  isPaused() ? screen.green : screen.red, false, isReset() ? "Start" : (isPaused() ? "Resume" : "Pause"));
+  pauseButton.init(radius*7, y, radius,  isPaused() || isReset() ? screen.green : screen.red, false, isReset() ? "Start" : (isPaused() ? "Resume" : "Pause"));
 
   resetButton.draw();
   pauseButton.draw();
@@ -48,7 +48,7 @@ void StopwatchApp::run() {
     if (pauseButton.down()) {
       sound.click();
 
-      if (!isPaused()) {
+      if (!isPaused() && !isReset()) {
         // pause
         pause();
         pauseButton.setColor(screen.green);
@@ -80,7 +80,7 @@ void StopwatchApp::drawTime() {
 
   if (lastDrawMillis/100 != nowMillis/100) {
     lastDrawMillis = nowMillis;
-    long delta;
+    millis_t delta;
 
     if (!isPaused()) {
       delta = nowMillis - startMillis;

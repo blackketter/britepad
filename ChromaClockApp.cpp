@@ -53,7 +53,7 @@ void ChromaClockApp::update() {
     c[ic] = screen.add(RGBtoC16(0,255-(i*255/steps),0), c[ic]);
   }
 
-  int s = (int)clock.second() * slices / 60 + (long)clock.frac() * slices / 1000 / 60;
+  int s = (int)clock.second() * slices / 60 + (int32_t)clock.frac() * slices / 1000 / 60;
 
   steps = slices/60;
   for (int i = 0; i < steps; i++) {

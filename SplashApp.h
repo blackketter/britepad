@@ -14,7 +14,7 @@ class SplashApp : public ScreensaverApp {
     static constexpr appid_t ID = "spla";
 
   private:
-    long drawindex = 0;
+    int32_t drawindex = 0;
     color_t currColor;
     millis_t firstRun;
     static const millis_t splashDuration = 1000*5;

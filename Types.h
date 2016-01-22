@@ -26,8 +26,8 @@ enum Alignment {
   ALIGN_BOTTOM = 1
 };
 
-typedef long long millis_t;
-typedef signed long stime_t; // signed time for relative time, deltas, adjustments, etc.
+typedef int64_t millis_t;
+typedef int32_t stime_t; // signed time for relative time, deltas, adjustments, etc.
 typedef const char* appid_t;
 
 #endif

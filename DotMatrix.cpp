@@ -63,7 +63,7 @@ void SquareMatrix::updateDot(int x, int y) {
 void HexDotMatrix::updateDot(int x, int y) {
 
   int dotspacing_x = getWidth() / dots_wide;
-  int dotspacing_y = ((long)dotspacing_x * 866L) / 1000L;  // .8660 is sqrt(3)/2
+  int dotspacing_y = ((int32_t)dotspacing_x * 866L) / 1000L;  // .8660 is sqrt(3)/2
 
   int r = (dotspacing_x * dot_fill) / 100 / 2;  // dots are 80% of space
   int center_x = x * dotspacing_x + dotspacing_x/2 + (y%2 ? dotspacing_x / 2 : 0);

@@ -155,3 +155,11 @@ void Sound::setVolume(float volume) {
   mainGain = volume;
   mixer2.gain(0, mainGain);
 }
+
+void Sound::playTune(uint8_t* tuneBytes) {
+
+}
+
+void Sound::idle() {
+
+}

@@ -42,9 +42,9 @@ void SplashApp::run() {
   // 256 steps to draw the circles
   // ascender steps to top/bottom of ascender/descender
   if (drawindex < circlesteps) {
-    long theta = drawindex*65536/circlesteps-65536/4;
-    coord_t x1 =  loopradius*((long)sin16(theta))/32768;
-    coord_t y1 =  loopradius*((long)cos16(theta))/32768;
+    int32_t theta = drawindex*65536/circlesteps-65536/4;
+    coord_t x1 =  loopradius*((int32_t)sin16(theta))/32768;
+    coord_t y1 =  loopradius*((int32_t)cos16(theta))/32768;
     screen.fillCircle(midwidth-weight/2-loopradius+x1,midheight - y1, weight/2, screen.red);
     screen.fillCircle(midwidth+weight/2+loopradius+x1,midheight + y1, weight/2, screen.red);
 //    screen.drawLine(midwidth-radius + x1,midheight - y1,midwidth-radius+x2, midheight- y2,screen.red);

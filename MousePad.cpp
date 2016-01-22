@@ -201,7 +201,7 @@ void MousePad::run() {
 
     // screen tap released
     if (pad.up(SCREEN_PAD)) {
-      long downtime = pad.time() - pad.lastDownTime(SCREEN_PAD);
+      millis_t downtime = pad.time() - pad.lastDownTime(SCREEN_PAD);
 
       if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < 20 && (abs(pad.lastDownY() - pad.y()) < 20)) ) {
 

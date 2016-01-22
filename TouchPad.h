@@ -38,7 +38,7 @@ class TouchPad {
     millis_t lastDownTime(int pad = SCREEN_PAD); // last time the pad was down
     millis_t lastUpTime(int pad = SCREEN_PAD);   // last time the pad was released
     millis_t lastTouchedTime(int pad = SCREEN_PAD); // last time the pad was touched
-    millis_t holdTime(int pad = SCREEN_PAD) { return time() - lastDownTime(pad); }  // utility for how long it's been held down
+    millis_t holdTime(int pad = SCREEN_PAD) { return time() - lastDownTime(pad); }  // utility for how much time it's been held down
     coord_t  lastDownX();
     coord_t  lastDownY();
     coord_t  x() { return curr.x; };

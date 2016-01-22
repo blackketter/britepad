@@ -25,9 +25,9 @@ class LifeApp : public DotsDisplayApp {
     void seed();
     void wipe();
     void iterate();
-    long generation;
-    long lastpopulation = 0;
-    long samelastpopulation = 0;
+    int32_t generation;
+    int32_t lastpopulation = 0;
+    int32_t samelastpopulation = 0;
     millis_t nextRun = 0;
     bool reseed = true;
     int ruleset = 0;

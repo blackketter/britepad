@@ -18,6 +18,9 @@ class TextField : public Widget {
     void draw();
     void draw(const char* t);
     void drawf(const char* format, ...);
+    void setColor(color_t fgColor, color_t bgColor) { fColor = fgColor; bColor = bgColor; };
+    void setColor(color_t c) { fColor = bColor = c; };
+    void setFColor(color_t c) { fColor = c; }
 
   protected:
     font_t font;

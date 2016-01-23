@@ -82,7 +82,6 @@ void TimerApp::setTime(time_t t) {
 void TimerApp::alarm() {
   if (!alarm_sounded) {
     alarm_sounded = clock.now();
-    redrawButtons();
   }
 
   if (beeps) {
@@ -92,6 +91,7 @@ void TimerApp::alarm() {
   } else {
     mytimer.setSecs(alarmDur);  // keep the timer running a while to keep the app on screen, when it's done it will exit automatically because the timer isn't running
   }
+  redrawButtons();
 }
 
 void TimerApp::reset() {

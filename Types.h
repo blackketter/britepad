@@ -18,12 +18,14 @@ enum AppMode {
 };
 
 enum Alignment {
-  ALIGN_LEFT = -1,
-  ALIGN_CENTER = 0,
-  ALIGN_RIGHT = 1,
-  ALIGN_TOP = -1,
-  ALIGN_MIDDLE = 0,
-  ALIGN_BOTTOM = 1
+  ALIGN_LEFT = 0,
+  ALIGN_HCENTER = 1,
+  ALIGN_CENTER = 1,
+  ALIGN_RIGHT = 2,
+
+  ALIGN_TOP = 0,
+  ALIGN_VCENTER = 4,
+  ALIGN_BOTTOM = 8
 };
 
 typedef int64_t millis_t;

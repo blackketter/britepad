@@ -177,6 +177,7 @@ void MinesApp::begin() {
   startTime = 0;
   mines = minesMax;
   gameOver = false;
+  youlose = false;
   firstTap = true;
   flagged = false;
 }
@@ -230,10 +231,11 @@ void MinesApp::run() {
           for (int x = 0; x < minesWidth; x++) {
             for (int y = 0; y < minesHeight; y++) {
               if (field->getDot(x,y) == HIDDEN_MINE) {
-                field->setDot(x,y,FLAG_HIDDEN_MINE);
+                field->setDot(x,y,SHOW_MINE);
               }
             }
           }
+          sound.beep(800,440);
           gameOver = true;
         }
         break;
@@ -262,6 +264,7 @@ void MinesApp::run() {
         field->setDot(xhit,yhit, RED_MINE);
         sound.beep(800, 220);
         gameOver = true;
+        youlose = true;
         break;
 
       default:
@@ -282,7 +285,9 @@ void MinesApp::run() {
   timer.drawf("%d", t);
 
   // draw mine count
-
+  if (gameOver) {
+    minesLeft.setFColor(youlose ? screen.red : screen.green);
+  }
   minesLeft.drawf("%d", mines);
   if (pad.up()) {
     flagged = false;

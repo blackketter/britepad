@@ -42,6 +42,7 @@ class MinesApp : public BritepadApp {
     TextField minesLeft;
     TextField timer;
     bool flagged;
+    bool youlose;
 };
 
 #endif

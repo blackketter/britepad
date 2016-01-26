@@ -1,5 +1,4 @@
 #include "InfoApp.h"
-#include "EthernetClient.h"
 
 uint32_t FreeRam(){ // for Teensy 3.0
     uint32_t stackTop;

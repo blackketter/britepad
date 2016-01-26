@@ -1,9 +1,6 @@
 #include "Sound.h"
 
 #include <Audio.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
 
 #include "Debug.h"
 #include "Clock.h"
@@ -23,8 +20,8 @@
 // frequencies as floating point. See make_notetab.xlsx
 
 #define MAX_NOTES (16)
-
-const float tune_frequencies2_PGM[128] =
+const int16_t pitchRange = 128;
+const float tune_frequencies2_PGM[pitchRange] =
 {
     8.1758,    8.6620,    9.1770,    9.7227,    10.3009,    10.9134,    11.5623,    12.2499,
     12.9783,   13.7500,   14.5676,   15.4339,   16.3516,    17.3239,    18.3540,    19.4454,
@@ -87,67 +84,49 @@ print "\n};\n";
 #define AMPLITUDE (0.2)
 
 // Create waveforms, one for each MIDI channel
-AudioSynthWaveform sine0, sine1, sine2, sine3;
-AudioSynthWaveform sine4, sine5, sine6, sine7;
-AudioSynthWaveform sine8, sine9, sine10, sine11;
-AudioSynthWaveform sine12, sine13, sine14, sine15;
-AudioSynthWaveform *waves[MAX_NOTES] = {
-  &sine0, &sine1, &sine2, &sine3,
-  &sine4, &sine5, &sine6, &sine7,
-  &sine8, &sine9, &sine10, &sine11,
-  &sine12, &sine13, &sine14, &sine15
-};
+AudioSynthWaveform waves[MAX_NOTES];
 
 // allocate a wave type to each channel.
 // The types used and their order is purely arbitrary.
 short wave_type[MAX_NOTES] = {
   WAVEFORM_SINE,
-  WAVEFORM_SQUARE,
-  WAVEFORM_SAWTOOTH,
-  WAVEFORM_TRIANGLE,
   WAVEFORM_SINE,
-  WAVEFORM_SQUARE,
-  WAVEFORM_SAWTOOTH,
-  WAVEFORM_TRIANGLE,
   WAVEFORM_SINE,
-  WAVEFORM_SQUARE,
-  WAVEFORM_SAWTOOTH,
-  WAVEFORM_TRIANGLE,
   WAVEFORM_SINE,
-  WAVEFORM_SQUARE,
-  WAVEFORM_SAWTOOTH,
-  WAVEFORM_TRIANGLE
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
+  WAVEFORM_SINE,
 };
 
 // Each waveform will be shaped by an envelope
-AudioEffectEnvelope env0, env1, env2, env3;
-AudioEffectEnvelope env4, env5, env6, env7;
-AudioEffectEnvelope env8, env9, env10, env11;
-AudioEffectEnvelope env12, env13, env14, env15;
-AudioEffectEnvelope *envs[MAX_NOTES] = {
-  &env0, &env1, &env2, &env3,
-  &env4, &env5, &env6, &env7,
-  &env8, &env9, &env10, &env11,
-  &env12, &env13, &env14, &env15
-};
+AudioEffectEnvelope envs[MAX_NOTES];
 
 // Route each waveform through its own envelope effect
-AudioConnection tunePatchCord01(sine0, env0);
-AudioConnection tunePatchCord02(sine1, env1);
-AudioConnection tunePatchCord03(sine2, env2);
-AudioConnection tunePatchCord04(sine3, env3);
-AudioConnection tunePatchCord05(sine4, env4);
-AudioConnection tunePatchCord06(sine5, env5);
-AudioConnection tunePatchCord07(sine6, env6);
-AudioConnection tunePatchCord08(sine7, env7);
-AudioConnection tunePatchCord09(sine8, env8);
-AudioConnection tunePatchCord10(sine9, env9);
-AudioConnection tunePatchCord11(sine10, env10);
-AudioConnection tunePatchCord12(sine11, env11);
-AudioConnection tunePatchCord13(sine12, env12);
-AudioConnection tunePatchCord14(sine13, env13);
-AudioConnection tunePatchCord15(sine14, env14);
-AudioConnection tunePatchCord16(sine15, env15);
+AudioConnection tunePatchCord01(waves[0], envs[0]);
+AudioConnection tunePatchCord02(waves[1], envs[1]);
+AudioConnection tunePatchCord03(waves[2], envs[2]);
+AudioConnection tunePatchCord04(waves[3], envs[3]);
+AudioConnection tunePatchCord05(waves[4], envs[4]);
+AudioConnection tunePatchCord06(waves[5], envs[5]);
+AudioConnection tunePatchCord07(waves[6], envs[6]);
+AudioConnection tunePatchCord08(waves[7], envs[7]);
+AudioConnection tunePatchCord09(waves[8], envs[8]);
+AudioConnection tunePatchCord10(waves[9], envs[9]);
+AudioConnection tunePatchCord11(waves[10], envs[10]);
+AudioConnection tunePatchCord12(waves[11], envs[11]);
+AudioConnection tunePatchCord13(waves[12], envs[12]);
+AudioConnection tunePatchCord14(waves[13], envs[13]);
+AudioConnection tunePatchCord15(waves[14], envs[14]);
+AudioConnection tunePatchCord16(waves[15], envs[15]);
 
 // Four mixers are needed to handle 16 channels of music
 AudioMixer4     tuneMixer1;
@@ -156,22 +135,22 @@ AudioMixer4     tuneMixer3;
 AudioMixer4     tuneMixer4;
 
 // Mix the 16 channels down to 4 audio streams
-AudioConnection tunePatchCord17(env0, 0, tuneMixer1, 0);
-AudioConnection tunePatchCord18(env1, 0, tuneMixer1, 1);
-AudioConnection tunePatchCord19(env2, 0, tuneMixer1, 2);
-AudioConnection tunePatchCord20(env3, 0, tuneMixer1, 3);
-AudioConnection tunePatchCord21(env4, 0, tuneMixer2, 0);
-AudioConnection tunePatchCord22(env5, 0, tuneMixer2, 1);
-AudioConnection tunePatchCord23(env6, 0, tuneMixer2, 2);
-AudioConnection tunePatchCord24(env7, 0, tuneMixer2, 3);
-AudioConnection tunePatchCord25(env8, 0, tuneMixer3, 0);
-AudioConnection tunePatchCord26(env9, 0, tuneMixer3, 1);
-AudioConnection tunePatchCord27(env10, 0, tuneMixer3, 2);
-AudioConnection tunePatchCord28(env11, 0, tuneMixer3, 3);
-AudioConnection tunePatchCord29(env12, 0, tuneMixer4, 0);
-AudioConnection tunePatchCord30(env13, 0, tuneMixer4, 1);
-AudioConnection tunePatchCord31(env14, 0, tuneMixer4, 2);
-AudioConnection tunePatchCord32(env15, 0, tuneMixer4, 3);
+AudioConnection tunePatchCord17(envs[0], 0, tuneMixer1, 0);
+AudioConnection tunePatchCord18(envs[1], 0, tuneMixer1, 1);
+AudioConnection tunePatchCord19(envs[2], 0, tuneMixer1, 2);
+AudioConnection tunePatchCord20(envs[3], 0, tuneMixer1, 3);
+AudioConnection tunePatchCord21(envs[4], 0, tuneMixer2, 0);
+AudioConnection tunePatchCord22(envs[5], 0, tuneMixer2, 1);
+AudioConnection tunePatchCord23(envs[6], 0, tuneMixer2, 2);
+AudioConnection tunePatchCord24(envs[7], 0, tuneMixer2, 3);
+AudioConnection tunePatchCord25(envs[8], 0, tuneMixer3, 0);
+AudioConnection tunePatchCord26(envs[9], 0, tuneMixer3, 1);
+AudioConnection tunePatchCord27(envs[10], 0, tuneMixer3, 2);
+AudioConnection tunePatchCord28(envs[11], 0, tuneMixer3, 3);
+AudioConnection tunePatchCord29(envs[12], 0, tuneMixer4, 0);
+AudioConnection tunePatchCord30(envs[13], 0, tuneMixer4, 1);
+AudioConnection tunePatchCord31(envs[14], 0, tuneMixer4, 2);
+AudioConnection tunePatchCord32(envs[15], 0, tuneMixer4, 3);
 
 // Now create a final mixer for the main
 AudioMixer4     tuneMixerFinal;
@@ -192,14 +171,16 @@ void Sound::tunePlay(const tune_t tuneBytes) {
   curTuneIndex = 0;
   curTune = tuneBytes;
   nextTime = 0;
-  tuneVolume(1.0);
-  tuneTempo(1.0);
+
   if (tuneBytes == nullptr) {
+    AudioNoInterrupts();
     for (int i = 0; i < MAX_NOTES; i++) {
-        envs[i]->noteOff();
-        waves[i]->amplitude(0);
+      envs[i].noteOff();
+      waves[i].amplitude(0);
     }
+    AudioInterrupts();
   }
+
 }
 
 void Sound::tunePlayerBegin()
@@ -207,20 +188,23 @@ void Sound::tunePlayerBegin()
 
   // set envelope parameters, for pleasing sound :-)
   for (int i=0; i<MAX_NOTES; i++) {
-    envs[i]->attack(9.2);
-    envs[i]->hold(2.1);
-    envs[i]->decay(31.4);
-    envs[i]->sustain(0.6);
-    envs[i]->release(84.5);
+    envs[i].attack(9.2);
+    envs[i].hold(2.1);
+    envs[i].decay(31.4);
+    envs[i].sustain(0.6);
+    envs[i].release(84.5);
     // uncomment these to hear without envelope effects
-    //envs[i]->attack(0.0);
-    //envs[i]->hold(0.0);
-    //envs[i]->decay(0.0);
-    //envs[i]->release(0.0);
+    //envs[i].attack(0.0);
+    //envs[i].hold(0.0);
+    //envs[i].decay(0.0);
+    //envs[i].release(0.0);
   }
 
   curTune = nullptr;
   curTuneIndex = 0;
+  tuneVolume(1.0);
+  tuneTempo(1.0);
+  tuneTranspose(0);
 }
 
 
@@ -254,18 +238,21 @@ void Sound::tunePlayerIdle()
       curTuneIndex = 0;
       return;
     } else if (opcode == CMD_STOPNOTE) {
-      envs[chan]->noteOff();
+      envs[chan].noteOff();
       // don't return and parse the next note
     } else if (opcode == CMD_PLAYNOTE) {
-      unsigned char note = curTune[curTuneIndex++];
-      unsigned char velocity = curTune[curTuneIndex++];
-      AudioNoInterrupts();
-      waves[chan]->begin(AMPLITUDE * velocity2amplitude[velocity-1],
-                         tune_frequencies2_PGM[note],
-                         wave_type[chan]);
-      envs[chan]->noteOn();
-      // don't return and parse the next note
-      AudioInterrupts();
+      uint16_t note = curTune[curTuneIndex++];
+      uint8_t velocity = curTune[curTuneIndex++];
+      note = note + transpose;
+      if ((note >= 0) && (note < pitchRange)) {
+        AudioNoInterrupts();
+        waves[chan].begin(AMPLITUDE * velocity2amplitude[velocity-1],
+                           tune_frequencies2_PGM[note],
+                           wave_type[chan]);
+        envs[chan].noteOn();
+        // don't return and parse the next note
+        AudioInterrupts();
+      }
     }
   }
 }

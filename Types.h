@@ -31,5 +31,5 @@ enum Alignment {
 typedef int64_t millis_t;
 typedef int32_t stime_t; // signed time for relative time, deltas, adjustments, etc.
 typedef const char* appid_t;
-
+typedef const uint8_t* tune_t;
 #endif

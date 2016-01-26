@@ -2,6 +2,8 @@
 #include "Sound.h"
 #include <usb_keyboard.h>
 
+#include "WilliamTell.h"
+
 enum {
   EMPTY_MINE,      // blank square with no mine underneath
   HIDDEN_MINE,      // blank square with mine underneath
@@ -162,13 +164,13 @@ void MinesApp::begin() {
   minesLeft.init(screen.clipLeft()+2,screen.clipBottom()-20,field->getLeft()-screen.clipLeft()-4,20,Arial_12_Bold,screen.blue, screen.black, ALIGN_CENTER);
   timer.init(field->getRight()+2,screen.clipBottom()-20,screen.clipRight()-field->getRight()-4,20,Arial_12_Bold,screen.white, screen.black, ALIGN_CENTER);
 
-  mines = minesMax;
-  while (mines) {
+  int m = minesMax;
+  while (m) {
     int x = random(minesWidth);
     int y = random(minesHeight);
     if (field->getDot(x,y) == EMPTY_MINE) {
       field->setDot(x,y, HIDDEN_MINE);
-      mines--;
+      m--;
     }
   }
 
@@ -180,6 +182,8 @@ void MinesApp::begin() {
   youlose = false;
   firstTap = true;
   flagged = false;
+  sound.tuneTranspose(12);  // move it up an octave
+  sound.tunePlay(williamtell);
 }
 
 
@@ -187,6 +191,7 @@ void MinesApp::end() {
   BritepadApp::end();
   delete field;
   field = nullptr;
+  sound.tunePlay(nullptr);
 }
 
 // todo: add the flag
@@ -208,14 +213,14 @@ void MinesApp::run() {
       field->updateDot(xhit,yhit);
       flagged = true;
       sound.click();
-      mines--;
+      if (mines) {mines--;}
     }
     if (contents == HIDDEN_MINE) {
       field->setDot(xhit,yhit, FLAG_HIDDEN_MINE);
       field->updateDot(xhit,yhit);
       flagged = true;
       sound.click();
-      mines--;
+      if (mines) {mines--;}
     }
   }
 
@@ -262,6 +267,7 @@ void MinesApp::run() {
           }
         }
         field->setDot(xhit,yhit, RED_MINE);
+        sound.tunePlay(nullptr);
         sound.beep(800, 220);
         gameOver = true;
         youlose = true;
@@ -291,6 +297,9 @@ void MinesApp::run() {
   minesLeft.drawf("%d", mines);
   if (pad.up()) {
     flagged = false;
+  }
+  if (mines) {
+    sound.tuneTempo((1.0-((float)(mines)/minesMax))*2.0+1);  // speed up as we get to the end
   }
 }
 

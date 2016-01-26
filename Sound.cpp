@@ -3,7 +3,6 @@
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
-#include <SD.h>
 
 #include "Debug.h"
 
@@ -30,20 +29,20 @@ AudioConnection          patchCord7(envelopes[2], 0, mixer1, 2);
 AudioConnection          patchCord8(envelopes[3], 0, mixer1, 3);
 
 // final mixer/volume control
-AudioMixer4              mixer2;
+AudioMixer4              finalMixer;
 
 // output dac
 AudioOutputAnalog        dac1;
 
-AudioConnection          patchCord9(mixer1, 0, mixer2, 0);
-AudioConnection          patchCord10(mixer2, dac1);
+AudioConnection          patchCord9(mixer1, 0, finalMixer, 0);
+AudioConnection          patchCord10(finalMixer, dac1);
 
 
 Sound::Sound() {
 }
 
 void Sound::begin() {
-  AudioMemory(16);
+  AudioMemory(16 + 18);  // 18 from the TunePlayer
 
   // since we have 4 inputs, we need to cut them down to avoid clipping
   mixer1.gain(0, 0.25);
@@ -51,7 +50,13 @@ void Sound::begin() {
   mixer1.gain(2, 0.25);
   mixer1.gain(3, 0.25);
 
-  mixer2.gain(0, mainGain);
+  finalMixer.gain(0, mainGain);
+
+  tunePlayerBegin();
+
+  // Initialize processor and memory measurements
+  AudioProcessorUsageMaxReset();
+  AudioMemoryUsageMaxReset();
 
 }
 
@@ -147,19 +152,31 @@ void Sound::setMute(bool mute) {
     }
   }
 
-  mixer2.gain(0, mainGain);
+  finalMixer.gain(0, mainGain);
 }
 
 void Sound::setVolume(float volume) {
 
   mainGain = volume;
-  mixer2.gain(0, mainGain);
-}
-
-void Sound::playTune(uint8_t* tuneBytes) {
-
+  finalMixer.gain(0, mainGain);
 }
 
 void Sound::idle() {
-
+// Change this to if(1) for measurement output every 5 seconds
+if(0) {
+  static unsigned long last_time = millis();
+  if(millis() - last_time >= 5000) {
+    Serial.print("Proc = ");
+    Serial.print(AudioProcessorUsage());
+    Serial.print(" (");
+    Serial.print(AudioProcessorUsageMax());
+    Serial.print("),  Mem = ");
+    Serial.print(AudioMemoryUsage());
+    Serial.print(" (");
+    Serial.print(AudioMemoryUsageMax());
+    Serial.println(")");
+    last_time = millis();
+  }
+}
+  tunePlayerIdle();
 }

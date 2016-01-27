@@ -159,7 +159,28 @@ void CalculatorApp::handleKey(keys keyPressed) {
         break;
       case log2_f:
         keyLog2();
-         break;
+        break;
+      case in2mm_f:
+        keyIn2mm();
+        break;
+      case mm2in_f:
+        keyMm2In();
+        break;
+      case g2lb_f:
+        keyG2lb();
+        break;
+      case lb2g_f:
+        keyLb2g();
+        break;
+      case c2f_f:
+        keyC2f();
+        break;
+      case f2c_f:
+        keyF2c();
+        break;
+      case ppi_f:
+        keyPpi();
+        break;
       default:
         break;
     }
@@ -229,11 +250,20 @@ void CalculatorApp::keySubtract() {
 }
 
 void CalculatorApp::keyShift() {
-  if (buttons->getMap() == sci_map) {
-    buttons->setMap(basic_map);
-  } else {
-    buttons->setMap(sci_map);
+  keyMap curMap = (keyMap)buttons->getMap();
+
+  switch (curMap) {
+    case sci_map:
+      curMap = conv_map;
+      break;
+    case basic_map:
+      curMap = sci_map;
+      break;
+    default:
+      curMap = basic_map;
+      break;
   }
+  buttons->setMap(curMap);
 }
 
 void CalculatorApp::keyBase() {

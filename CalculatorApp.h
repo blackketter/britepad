@@ -72,13 +72,25 @@ class CalculatorApp : public BritepadApp {
       acos_f,
       atan_f,
       logy_f,
-      log2_f
+      log2_f,
+      in2mm_f,
+      mm2in_f,
+      g2lb_f,
+      lb2g_f,
+      c2f_f,
+      f2c_f,
+
+      ppi_f,  // pixels per inch
+
+      unused
     };
 
     enum keyMap {
       basic_map,
       hex_map,
-      sci_map
+      sci_map,
+      conv_map,
+      keyMaps
     };
 
     static const coord_t displayHeight = 48;
@@ -98,7 +110,7 @@ class CalculatorApp : public BritepadApp {
     uint8_t getBase() { return base; };
     void setBase(uint8_t newBase) { base = newBase; };
 
-    static const int keyMaps = 3;
+//    static const int keyMaps = 3;
     static const int keyColumns = 6;
     static const int keyRows = 4;
 
@@ -147,6 +159,13 @@ class CalculatorApp : public BritepadApp {
     void keyAtan() { push(atan(pop())); };
     void keyLogy() { keySwap(); push(log(pop())/log(pop())); };
     void keyLog2() { push(log(pop())/log(2.0)); };
+    void keyIn2mm() { push(pop()*25.4); };
+    void keyMm2In() { push(pop()/25.4); };
+    void keyG2lb()  { push(pop()/0.0022046); };
+    void keyLb2g()  { push(pop()*0.0022046); };
+    void keyC2f()   { push(pop()*9.0/5.0+32.0); };
+    void keyF2c()   { push((pop()-32.0)*5.0/9.0); };
+    void keyPpi()   { double x,y,d; d = pop(); x = pop(); y = pop(); push(sqrt(x*x + y*y)/d); };
 
     ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] =
 {
@@ -251,8 +270,41 @@ class CalculatorApp : public BritepadApp {
             {screen.green, "logy", Arial_12_Bold, screen.black, nullptr, logy_f},
             {screen.yellow, "log2", Arial_12_Bold, screen.black, nullptr, log2_f},
           },
-        }
-      };
+        },
+{ // Conversions map
+          {
+            {screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift},
+            {screen.cyan, "in > mm", Arial_9_Bold, screen.black, nullptr, in2mm_f},
+            {screen.cyan, "mm > in", Arial_9_Bold, screen.black, nullptr, mm2in_f},
+            {screen.cyan, "g > lb", Arial_9_Bold, screen.black, nullptr, g2lb_f},
+            {screen.cyan, "lb > g", Arial_9_Bold, screen.black, nullptr, lb2g_f},
+            {screen.cyan, "", Arial_9_Bold, screen.black, nullptr, unused},
+          },
+          {
+            {screen.yellow, "hex", Arial_12_Bold, screen.black, nullptr, changeBase},
+            {screen.cyan, "c > f", Arial_9_Bold, screen.black, nullptr, c2f_f},
+            {screen.cyan, "f > c", Arial_9_Bold, screen.black, nullptr, f2c_f},
+            {screen.cyan, "ppi", Arial_12_Bold, screen.black, nullptr, ppi_f},
+            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
+          },
+          {
+            {screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace},
+            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
+          },
+          {
+            {screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear},
+            {screen.green, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.green, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.green, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.green, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.yellow, "", Arial_12_Bold, screen.black, nullptr, unused},
+          },
+        }      };
 };
 
 #endif

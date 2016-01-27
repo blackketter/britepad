@@ -15,7 +15,7 @@ class ScreensaverApp : public BritepadApp {
     virtual bool disablesScreensaver() { return isAppMode(INTERACTIVE_MODE); }
 
     // by default, screensavers are not interactive
-    virtual bool canBeScreensaver() { return true; }
+    virtual bool canBeScreensaver() { return  clock.hasBeenSet() || !displaysClock(); }
     virtual bool canBeInteractive() { return false; }
 
   protected:

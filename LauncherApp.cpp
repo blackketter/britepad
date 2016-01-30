@@ -21,6 +21,7 @@
 #include "DotsDisplayApp.h"
 #include "FadeDotsApp.h"
 #include "GestureApp.h"
+#include "HexDotClockApp.h"
 #include "InfoApp.h"
 #include "KeyApp.h"
 #include "KeyboardApp.h"
@@ -56,17 +57,19 @@ LauncherApp::LauncherApp() {
 // left screen contains screensavers and settings
   setButton(SCREENSAVERS_SCREEN, 0,  new BubblesApp);
   setButton(SCREENSAVERS_SCREEN, 1,  new ChromaClockApp);
-//  setButton(SCREENSAVERS_SCREEN, 2,  new DotsDisplayApp);
-  setButton(SCREENSAVERS_SCREEN, 2,  new SpiroApp);
-  setButton(SCREENSAVERS_SCREEN, 3,  new ClockApp);
+  setButton(SCREENSAVERS_SCREEN, 2,  new DotsDisplayApp);
+  setButton(SCREENSAVERS_SCREEN, 3,  new SpiroApp);
   setButton(SCREENSAVERS_SCREEN, 4,  new BriteLiteApp);
-  setButton(SCREENSAVERS_SCREEN, 5,  new BinaryClockApp);
+  setButton(SCREENSAVERS_SCREEN, 5,  new StarfieldApp);
   setButton(SCREENSAVERS_SCREEN, 6,  new LifeApp);
   setButton(SCREENSAVERS_SCREEN, 7,  new FadeDotsApp);
-  setButton(SCREENSAVERS_SCREEN, 8,  new AnalogClockApp);
-  setButton(SCREENSAVERS_SCREEN, 9,  new WordClockApp);
-  setButton(SCREENSAVERS_SCREEN, 10,  new StarfieldApp);
-  setButton(SCREENSAVERS_SCREEN, 11,  new CountdownApp);
+
+  setButton(CLOCKS_SCREEN, 0,  new HexDotClockApp);
+  setButton(CLOCKS_SCREEN, 1,  new ClockApp);
+  setButton(CLOCKS_SCREEN, 2,  new BinaryClockApp);
+  setButton(CLOCKS_SCREEN, 3,  new AnalogClockApp);
+  setButton(CLOCKS_SCREEN, 4,  new WordClockApp);
+  setButton(CLOCKS_SCREEN, 5,  new CountdownApp);
 
 
 
@@ -203,6 +206,7 @@ void LauncherApp::drawButton(int i, bool highlighted) {
       color = screen.green;
       break;
     case SCREENSAVERS_SCREEN:
+    case CLOCKS_SCREEN:
       color = screen.yellow;
       break;
     default:
@@ -262,6 +266,7 @@ AppMode LauncherApp::screenMode(int theScreen) {
       launchMode = MOUSE_MODE;
       break;
     case SCREENSAVERS_SCREEN:
+    case CLOCKS_SCREEN:
       launchMode = SCREENSAVER_MODE;
       break;
     default:
@@ -368,6 +373,7 @@ color_t LauncherApp::bgColor() {
 const char* LauncherApp::infoBarText() {
   switch (currentScreen()) {
     case SCREENSAVERS_SCREEN:
+    case CLOCKS_SCREEN:
     case MICE_SCREEN:
       return "Press and hold to test";
     default:

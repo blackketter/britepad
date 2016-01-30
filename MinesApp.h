@@ -43,6 +43,7 @@ class MinesApp : public BritepadApp {
     TextField timer;
     bool flagged;
     bool youlose;
+    bool playTune = true;
 };
 
 #endif

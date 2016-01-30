@@ -44,7 +44,10 @@ class SquareMatrix : public DotMatrix {
 class HexDotMatrix : public DotMatrix {
   public:
     HexDotMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dotsWide, int dotsHigh) : DotMatrix(x, y, w, h, dotsWide, dotsHigh) {};
+    void setStaggerV(bool staggerVertically) {staggerV = staggerVertically; }
     virtual void updateDot(int x, int y);
+  private:
+    bool staggerV = false;
 };
 
 

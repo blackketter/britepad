@@ -167,8 +167,7 @@ class CalculatorApp : public BritepadApp {
     void keyF2c()   { push((pop()-32.0)*5.0/9.0); };
     void keyPpi()   { double x,y,d; d = pop(); x = pop(); y = pop(); push(sqrt(x*x + y*y)/d); };
 
-    ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] =
-{
+    ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] = {
         { // Basic calc map
           {
             {screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift},
@@ -271,7 +270,7 @@ class CalculatorApp : public BritepadApp {
             {screen.yellow, "log2", Arial_12_Bold, screen.black, nullptr, log2_f},
           },
         },
-{ // Conversions map
+        { // Conversions map
           {
             {screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift},
             {screen.cyan, "in > mm", Arial_9_Bold, screen.black, nullptr, in2mm_f},
@@ -304,7 +303,8 @@ class CalculatorApp : public BritepadApp {
             {screen.green, "", Arial_12_Bold, screen.black, nullptr, unused},
             {screen.yellow, "", Arial_12_Bold, screen.black, nullptr, unused},
           },
-        }      };
+        }
+    };
 };
 
 #endif

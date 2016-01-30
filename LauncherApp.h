@@ -7,6 +7,7 @@
 enum ScreenNames {
   DEBUG_SCREEN,
   MICE_SCREEN,
+  CLOCKS_SCREEN,
   SCREENSAVERS_SCREEN,
   SETTINGS_SCREEN,
   KEYS_SCREEN,
@@ -52,6 +53,7 @@ class LauncherApp : public BritepadApp {
     const char* screenNames[TOTAL_SCREENS] = {
         "Debug",
         "Mice",
+        "Clocks",
         "Screensavers",
         "Settings",
         "Keys",
@@ -63,6 +65,7 @@ class LauncherApp : public BritepadApp {
         screen.lightgrey,
         screen.black,
         screen.darkerred,
+        screen.darkeryellow,
         screen.darkeryellow,
         screen.darkergreen,
         screen.darkerblue,

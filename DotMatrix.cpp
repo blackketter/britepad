@@ -62,12 +62,26 @@ void SquareMatrix::updateDot(int x, int y) {
 
 void HexDotMatrix::updateDot(int x, int y) {
 
-  int dotspacing_x = getWidth() / dots_wide;
-  int dotspacing_y = ((int32_t)dotspacing_x * 866L) / 1000L;  // .8660 is sqrt(3)/2
+  int dotspacing_x, dotspacing_y;
+
+  if (staggerV) {
+    dotspacing_x = getWidth() / dots_wide;
+    dotspacing_y = ((int32_t)dotspacing_x * 1000L) / 866L;  // .8660 is sqrt(3)/2
+  } else {
+    dotspacing_x = getWidth() / dots_wide;
+    dotspacing_y = ((int32_t)dotspacing_x * 866L) / 1000L;  // .8660 is sqrt(3)/2
+  }
 
   int r = (dotspacing_x * dot_fill) / 100 / 2;  // dots are 80% of space
-  int center_x = x * dotspacing_x + dotspacing_x/2 + (y%2 ? dotspacing_x / 2 : 0);
-  int center_y = y * dotspacing_y + dotspacing_y/2;
+  int center_x, center_y;
+
+  if (staggerV) {
+    center_x = x * dotspacing_x + dotspacing_x/2;
+    center_y = y * dotspacing_y + dotspacing_y/2 + (x%2 ? dotspacing_y / 2 : 0);
+  } else {
+    center_x = x * dotspacing_x + dotspacing_x/2 + (y%2 ? dotspacing_x / 2 : 0);
+    center_y = y * dotspacing_y + dotspacing_y/2;
+  }
 
   // don't draw the ones that are pushed too far right
   if (center_x + r < getRight() && center_y + r < getBottom()) {

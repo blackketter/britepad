@@ -164,16 +164,6 @@ void MinesApp::begin() {
   minesLeft.init(screen.clipLeft()+2,screen.clipBottom()-20,field->getLeft()-screen.clipLeft()-4,20,Arial_12_Bold,screen.blue, screen.black, ALIGN_CENTER);
   timer.init(field->getRight()+2,screen.clipBottom()-20,screen.clipRight()-field->getRight()-4,20,Arial_12_Bold,screen.white, screen.black, ALIGN_CENTER);
 
-  int m = minesMax;
-  while (m) {
-    int x = random(minesWidth);
-    int y = random(minesHeight);
-    if (field->getDot(x,y) == EMPTY_MINE) {
-      field->setDot(x,y, HIDDEN_MINE);
-      m--;
-    }
-  }
-
   field->draw();
 
   startTime = 0;
@@ -224,7 +214,27 @@ void MinesApp::run() {
     }
   }
 
+  if (pad.up(BOTTOM_PAD)) {
+    playTune = !playTune;
+    sound.tuneVolume(playTune ? 1.0 : 0);
+  }
+
   if (pad.up() && field->hit(pad.x(),pad.y(), &xhit, &yhit) && !flagged) {
+
+    // lay the mines, but not close to the first tap
+    if (firstTap) {
+      int m = minesMax;
+      while (m) {
+        int x = random(minesWidth);
+        int y = random(minesHeight);
+        if (field->getDot(x,y) == EMPTY_MINE && ((abs(xhit-x) > 1) || (abs(yhit-y) > 1))) {
+          field->setDot(x,y, HIDDEN_MINE);
+          m--;
+        }
+      }
+      firstTap = false;
+    }
+
     color_t contents = field->getDot(xhit,yhit);
     switch (contents) {
       case EMPTY_MINE:

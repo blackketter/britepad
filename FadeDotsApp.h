@@ -7,7 +7,7 @@ class FadeDotsApp : public DotsDisplayApp {
   public:
     void run();
 
-    const char* name() { return "Fade Dots"; };
+    const char* name() { return "Fade"; };
     static constexpr appid_t ID = "fade";
     appid_t id() { return ID; };
 

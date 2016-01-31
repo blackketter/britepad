@@ -2,7 +2,7 @@
 
 void HexDotClockApp::begin() {
   if (dots == nullptr) {
-    dots = new HexDotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), 9 * 4 + 3, 9);
+    dots = new HexDotMatrix(screen.clipLeft(), screen.clipMidHeight()-screen.clipWidth()/8, screen.clipWidth(), screen.clipWidth()/4, 9 * 4 + 3, 9); // approx 4:1 aspect ratio
     dots->setStaggerV(true);  // stagger vertically
   }
   ClockApp::begin();
@@ -52,9 +52,9 @@ bool digits[11][12] = {  // which lines are filled for a given digit
   { 1,1,1,1,1, 1,0,0,0,0, 0,0 }, // 0
   { 0,0,0,0,0, 0,1,0,0,1, 0,0 }, // 1
   { 1,0,1,0,0, 1,0,1,0,1, 0,0 }, // 2
-  { 1,0,1,1,0, 1,0,1,0,0, 1,0 }, // 3
+  { 1,0,1,1,0, 1,0,1,1,0, 0,0 }, // 3
   { 0,0,0,0,1, 0,1,1,0,1, 1,0 }, // 4
-  { 1,0,1,1,0, 1,0,0,1,0, 0,1 }, // 5
+  { 1,0,1,1,0, 0,1,0,1,0, 0,0 }, // 5
   { 1,0,1,1,1, 1,0,0,1,0, 1,0 }, // 6
   { 1,0,0,0,0, 1,0,1,0,1, 0,0 }, // 7
   { 1,0,1,1,0, 1,0,1,1,0, 1,1 }, // 8
@@ -81,7 +81,7 @@ uint8_t lines[12][5] = { // which dots are filled for a given line
 
 void HexDotClockApp::drawDigit(uint8_t digit, uint8_t position) {
   color_t fc = screen.red;
-  color_t bc = screen.grey10;
+  color_t bc = screen.grey20;
   // since lines overlap at the ends, clear out the off lines, then draw the on lines
   for (uint8_t line = 0; line < 12; line++) {
     for (uint8_t dot = 0; dot < 5; dot++) {

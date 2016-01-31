@@ -64,12 +64,12 @@ LauncherApp::LauncherApp() {
   setButton(SCREENSAVERS_SCREEN, 6,  new LifeApp);
   setButton(SCREENSAVERS_SCREEN, 7,  new FadeDotsApp);
 
-  setButton(CLOCKS_SCREEN, 0,  new HexDotClockApp);
-  setButton(CLOCKS_SCREEN, 1,  new ClockApp);
-  setButton(CLOCKS_SCREEN, 2,  new BinaryClockApp);
-  setButton(CLOCKS_SCREEN, 3,  new AnalogClockApp);
-  setButton(CLOCKS_SCREEN, 4,  new WordClockApp);
-  setButton(CLOCKS_SCREEN, 5,  new CountdownApp);
+  setButton(CLOCKS_SCREEN, 0,  new AnalogClockApp);
+  setButton(CLOCKS_SCREEN, 1,  new BinaryClockApp);
+  setButton(CLOCKS_SCREEN, 2,  new ClockApp);
+  setButton(CLOCKS_SCREEN, 3,  new HexDotClockApp);
+  setButton(CLOCKS_SCREEN, 4,  new CountdownApp);
+  setButton(CLOCKS_SCREEN, 5,  new WordClockApp);
 
 
 
@@ -77,7 +77,7 @@ LauncherApp::LauncherApp() {
   setButton(SETTINGS_SCREEN, 9,   new MuteApp);
   setButton(SETTINGS_SCREEN, 10,  new SetAlarmApp);
 
-// middle screen has quick buttons
+// default screen has quick buttons
   setButton(KEYS_SCREEN, 0,  new KeyApp(volPlusIcon, KEY_MEDIA_VOLUME_INC, screen.bluegreen));
   setButton(KEYS_SCREEN, 4,  new KeyApp(volMinusIcon, KEY_MEDIA_VOLUME_DEC, screen.bluegreen));
   setButton(KEYS_SCREEN, 8,  new KeyApp(muteIcon, KEY_MEDIA_MUTE, screen.blue));
@@ -99,14 +99,13 @@ LauncherApp::LauncherApp() {
   setButton(KEYS_SCREEN, 10, new PassApp(PASSWORD_APP_NAME_2, PASSWORD_APP_PASS_2) );
   setButton(KEYS_SCREEN, 11, new PassApp(PASSWORD_APP_NAME_1, PASSWORD_APP_PASS_1) );
 
-// right screen has useful apps
   setButton(TIMERS_SCREEN, 0, new SetTimerApp("10 sec", 10));
   setButton(TIMERS_SCREEN, 1, new SetTimerApp("3 min", 3*60));
   setButton(TIMERS_SCREEN, 2, new SetTimerApp("25 min", 25*60));
   setButton(TIMERS_SCREEN, 3, new SetTimerApp("55 min", 55*60));
   setButton(TIMERS_SCREEN, 8, new SetTimerApp());
-
   setButton(TIMERS_SCREEN, 11, new StopwatchApp);
+
 
   setButton(APPS_SCREEN, 0,  new BreakoutApp);
   setButton(APPS_SCREEN, 1,  new ThereminApp);
@@ -118,12 +117,9 @@ LauncherApp::LauncherApp() {
   setButton(APPS_SCREEN, 7,  new SeqApp);
   setButton(APPS_SCREEN, 8,  new MinesApp);
 
-
-
   setButton(DEBUG_SCREEN, 9,  new InfoApp);
   setButton(DEBUG_SCREEN, 10, new ResetApp);
   setButton(DEBUG_SCREEN, 11, new RebootApp);
-
 
   // add mice apps to mice app settings screen
   BritepadApp* iterApp = britepad.getNextApp();

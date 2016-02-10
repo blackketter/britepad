@@ -10,7 +10,7 @@ DotMatrix::DotMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dots_w, int
 
 //  setBounds(x,y,w,h);
   // since dots are evenly spaced and the given w & h may not be even divsors, then we need to shrink to fit the multiples
-  setBounds(x,y,dotspacing_w*dots_w,dotspacing_h*dots_h);
+  setBounds(x,y,w,h);
 
   r = min((w * dot_fill / dots_wide) / 100 / 2, (h * dot_fill / dots_high) / 100 / 2);  // dots are 80% of space
   dots = new color_t[dots_wide*dots_high];
@@ -66,10 +66,10 @@ void HexDotMatrix::updateDot(int x, int y) {
 
   if (staggerV) {
     dotspacing_x = getWidth() / dots_wide;
-    dotspacing_y = ((int32_t)dotspacing_x * 1000L) / 866L;  // .8660 is sqrt(3)/2
+    dotspacing_y = ((int32_t)getWidth() * 1000L) / 866L / dots_wide;  // .8660 is sqrt(3)/2
   } else {
     dotspacing_x = getWidth() / dots_wide;
-    dotspacing_y = ((int32_t)dotspacing_x * 866L) / 1000L;  // .8660 is sqrt(3)/2
+    dotspacing_y = ((int32_t)getWidth() * 866L) / 1000L / dots_wide;  // .8660 is sqrt(3)/2
   }
 
   int r = (dotspacing_x * dot_fill) / 100 / 2;  // dots are 80% of space
@@ -86,6 +86,8 @@ void HexDotMatrix::updateDot(int x, int y) {
   // don't draw the ones that are pushed too far right
   if (center_x + r < getRight() && center_y + r < getBottom()) {
     screen.fillCircle(getLeft() + center_x, getTop() + center_y, r, getDot(x,y));
+  } else {
+ //   DEBUGF("not drawing %d,%d at %d,%d (bottom: %d)\n",x,y,center_x,center_y, getBottom());
   }
 }
 

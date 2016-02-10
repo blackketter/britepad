@@ -173,7 +173,7 @@ void statusBarCallback(void* data) {
 }
 
 void Britepad::updateStatusBar() {
-  // updates the clock in the status bar
+  // updates the time in the status bar
   currApp->drawStatusBar(true);
 }
 
@@ -223,15 +223,16 @@ void Britepad::idle() {
 
   } else if (pad.time() > disableScreensaversUntil && !currApp->disablesScreensavers()) {
 
-    if ( pad.up(PROXIMITY_SENSOR) &&
+    if ( pad.down(PROXIMITY_SENSOR) &&
+         currApp->isAppMode(SCREENSAVER_MODE) &&
+         !currApp->timeVisible() &&
          getAppByID(ClockApp::ID) &&
 //       (getAppByID(ClockApp::ID))->getEnabled(SCREENSAVER_MODE) &&  // the proximity clock is always enabled (todo: make this a user pref)
-         !currApp->isID(ClockApp::ID) &&
-         currApp->isAppMode(SCREENSAVER_MODE) &&
          (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay))
     {
       launchApp(getAppByID(ClockApp::ID), SCREENSAVER_MODE);
       disableScreensavers(showClockDur);  // disable screensavers for a little while
+      sound.click();
       DEBUG_LN("Proximity detected: showing clock");
 
     } else {

@@ -22,7 +22,7 @@ class HexDotClockApp : public ClockApp {
     static const millis_t redrawInterval = 1000;
     HexDotMatrix* dots = nullptr;
 
-    void drawDigit(uint8_t digit, uint8_t position);
+    void drawDigit(uint8_t digit, uint8_t xoff, uint8_t yoff);
  };
 
 #endif

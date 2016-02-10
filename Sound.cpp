@@ -74,17 +74,17 @@ int Sound::freeSynth() {
 void Sound::click() {
   int beeper = freeSynth();
   if (beeper != NO_SYNTH) {
+    AudioNoInterrupts();
     envelopes[beeper].delay(0);
     envelopes[beeper].attack(0);
     envelopes[beeper].hold(10);
     envelopes[beeper].decay(10);
     envelopes[beeper].sustain(0);  //  just a percussive sound, no sustain
 
-    AudioNoInterrupts();
     waveforms[beeper].begin(1.0, 100, WAVEFORM_PULSE);
     envelopes[beeper].noteOn();
     AudioInterrupts();
-//    DEBUG_LN("click");
+    DEBUG_LN("click");
   }
  }
 
@@ -102,12 +102,12 @@ void Sound::beep(millis_t ms, float freq)
     waveforms[beeper].begin(1.0, freq, WAVEFORM_SINE);
     envelopes[beeper].noteOn();
     AudioInterrupts();
-    DEBUGF("freq: %f\n", freq);
+    DEBUGF("beep freq: %f\n", freq);
   }
 }
 
 void Sound::bump() {
-//  DEBUG_LN("bump");
+  DEBUG_LN("bump");
   beep(1, 300);
 }
 
@@ -124,6 +124,7 @@ void Sound::tone(float freq, float volume) {
   }
 
   if (lastToneVolume == 0 && volume != 0) {
+    AudioNoInterrupts();
     envelopes[1].delay(0);
     envelopes[1].attack(200);
     envelopes[1].hold(0);
@@ -132,6 +133,7 @@ void Sound::tone(float freq, float volume) {
     envelopes[1].release(200);
     waveforms[1].begin(WAVEFORM_SINE);
     envelopes[1].noteOn();
+    AudioInterrupts();
   } else if (lastToneVolume != 0 && volume == 0) {
     envelopes[1].noteOff();
   }

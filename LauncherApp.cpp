@@ -55,21 +55,23 @@ LauncherApp::LauncherApp() {
   }
 
 // left screen contains screensavers and settings
-  setButton(SCREENSAVERS_SCREEN, 0,  new BubblesApp);
-  setButton(SCREENSAVERS_SCREEN, 1,  new ChromaClockApp);
-  setButton(SCREENSAVERS_SCREEN, 2,  new DotsDisplayApp);
-  setButton(SCREENSAVERS_SCREEN, 3,  new SpiroApp);
-  setButton(SCREENSAVERS_SCREEN, 4,  new BriteLiteApp);
-  setButton(SCREENSAVERS_SCREEN, 5,  new StarfieldApp);
-  setButton(SCREENSAVERS_SCREEN, 6,  new LifeApp);
-  setButton(SCREENSAVERS_SCREEN, 7,  new FadeDotsApp);
+  int p = 0;
+  setButton(SCREENSAVERS_SCREEN, p++,  new BubblesApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new DotsDisplayApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new SpiroApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new BriteLiteApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new StarfieldApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new LifeApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new FadeDotsApp);
 
-  setButton(CLOCKS_SCREEN, 0,  new AnalogClockApp);
-  setButton(CLOCKS_SCREEN, 1,  new BinaryClockApp);
-  setButton(CLOCKS_SCREEN, 2,  new ClockApp);
-  setButton(CLOCKS_SCREEN, 3,  new HexDotClockApp);
-  setButton(CLOCKS_SCREEN, 4,  new CountdownApp);
-  setButton(CLOCKS_SCREEN, 5,  new WordClockApp);
+  p = 0;
+  setButton(CLOCKS_SCREEN, p++,  new AnalogClockApp);
+  setButton(CLOCKS_SCREEN, p++,  new BinaryClockApp);
+  setButton(CLOCKS_SCREEN, p++,  new ClockApp);
+  setButton(CLOCKS_SCREEN, p++,  new HexDotClockApp);
+  setButton(CLOCKS_SCREEN, p++,  new CountdownApp);
+  setButton(CLOCKS_SCREEN, p++,  new WordClockApp);
+  setButton(CLOCKS_SCREEN, p++,  new ChromaClockApp);
 
 
 
@@ -107,15 +109,16 @@ LauncherApp::LauncherApp() {
   setButton(TIMERS_SCREEN, 11, new StopwatchApp);
 
 
-  setButton(APPS_SCREEN, 0,  new BreakoutApp);
-  setButton(APPS_SCREEN, 1,  new ThereminApp);
-  setButton(APPS_SCREEN, 2,  new PaintApp);
-  setButton(APPS_SCREEN, 3,  new GestureApp);
-  setButton(APPS_SCREEN, 4,  new SparkleApp);
-  setButton(APPS_SCREEN, 5,  new TabletApp);
-  setButton(APPS_SCREEN, 6,  new CalendarApp);
-  setButton(APPS_SCREEN, 7,  new SeqApp);
-  setButton(APPS_SCREEN, 8,  new MinesApp);
+  p = 0;
+  setButton(APPS_SCREEN, p++,  new BreakoutApp);
+  setButton(APPS_SCREEN, p++,  new ThereminApp);
+  setButton(APPS_SCREEN, p++,  new PaintApp);
+  setButton(APPS_SCREEN, p++,  new GestureApp);
+  setButton(APPS_SCREEN, p++,  new SparkleApp);
+  setButton(APPS_SCREEN, p++,  new TabletApp);
+  setButton(APPS_SCREEN, p++,  new CalendarApp);
+  setButton(APPS_SCREEN, p++,  new SeqApp);
+  setButton(APPS_SCREEN, p++,  new MinesApp);
 
   setButton(DEBUG_SCREEN, 9,  new InfoApp);
   setButton(DEBUG_SCREEN, 10, new ResetApp);

@@ -134,9 +134,12 @@ void TouchPad::update() {
  }
 
 bool TouchPad::getProximityPresent() {
+//  screen.drawLine(proximity, 239, 319,239, screen.blue);
   if (proximity > proximityThreshold) {
+//    screen.drawLine(0,239,proximity,239, screen.red);
     return true;
   } else {
+//    screen.drawLine(0,239,proximity,239, screen.green);
     return false;
   }
 };

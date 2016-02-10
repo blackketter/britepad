@@ -12,7 +12,7 @@ uint32_t FreeRam(){ // for Teensy 3.0
     heapTop = (uint32_t) hTop;
     free(hTop);
 
-    // The difference is the free, available ram.
+    // The difference is (approximately) the free, available ram.
     return stackTop - heapTop;
 }
 
@@ -31,7 +31,14 @@ void InfoApp::run() {
   screen.drawTextF("Backlight: %d         \n", screen.getBacklight());
   screen.drawTextF("Free ram: %d            \n", FreeRam());
   screen.drawTextF("Uptime: %d\n", (int32_t)(Uptime::millis()/1000));
-  screen.drawTextF("FPS: %d      ", 1000/(pad.time()-lastUpdate));
-
+  screen.drawTextF("FPS: %d      \n", 1000/(pad.time()-lastUpdate));
+  uint64_t x = 0;
+  unsigned long n = millis();
+  while (n == millis()){};
+  n = millis();
+  while (n == millis()) {
+    x++;
+  }
+  screen.drawTextF("Loops per millis: %d", (unsigned long)x);
   lastUpdate = pad.time();
 };

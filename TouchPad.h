@@ -66,7 +66,7 @@ class TouchPad {
     millis_t lastUpT[TOTAL_SENSORS];
     coord_t  lastDownXPos;
     coord_t  lastDownYPos;
-    static const uint8_t proximityThreshold = 100;
+    static const uint8_t proximityThreshold = 110;
     static const uint8_t proximityMax = 255;
     bool getProximityPresent();
 

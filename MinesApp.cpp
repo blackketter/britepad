@@ -9,6 +9,7 @@ enum {
   HIDDEN_MINE,      // blank square with mine underneath
   FLAG_EMPTY_MINE,  // show flag on a blank square
   FLAG_HIDDEN_MINE,        // show flag on a blank square with a mine
+  FLAG_WRONG_MINE,
 
   SHOW_EMPTY_MINE,  // reveal an empty mine
   N1_MINE,         // reveal an empty mine and how many mines are nearby
@@ -110,6 +111,7 @@ void MineMatrix::updateDot(int x, int y) {
     case HIDDEN_MINE:
     case FLAG_HIDDEN_MINE:
     case FLAG_EMPTY_MINE:
+    case FLAG_WRONG_MINE:
       screen.fillRect(l,t,w,h,screen.grey50);
 
       screen.drawLine(l,t,r,t,screen.grey70);
@@ -119,6 +121,8 @@ void MineMatrix::updateDot(int x, int y) {
 
       if (contents == FLAG_HIDDEN_MINE || contents == FLAG_EMPTY_MINE) {
         screen.fillRect(l+w/4,t+h/4,w/2,h/2,screen.blue);
+      } else if (contents == FLAG_WRONG_MINE) {
+        screen.drawRect(l+w/4,t+h/4,w/2,h/2,screen.blue);
       }
       break;
 
@@ -248,6 +252,9 @@ void MinesApp::run() {
               if (field->getDot(x,y) == HIDDEN_MINE) {
                 field->setDot(x,y,SHOW_MINE);
               }
+              if (field->getDot(x,y) == FLAG_EMPTY_MINE) {
+                field->setDot(x,y,FLAG_WRONG_MINE);
+              }
             }
           }
           sound.beep(800,440);
@@ -259,7 +266,7 @@ void MinesApp::run() {
       case FLAG_EMPTY_MINE:
         // hide the flag
         if (contents == FLAG_HIDDEN_MINE) {
-           field->setDot(xhit,yhit, HIDDEN_MINE);
+          field->setDot(xhit,yhit, HIDDEN_MINE);
         } else {
           field->setDot(xhit,yhit, EMPTY_MINE);
         }
@@ -273,6 +280,9 @@ void MinesApp::run() {
           for (int y = 0; y < minesHeight; y++) {
             if (field->getDot(x,y) == HIDDEN_MINE) {
               field->setDot(x,y,SHOW_MINE);
+            }
+            if (field->getDot(x,y) == FLAG_EMPTY_MINE) {
+              field->setDot(x,y,FLAG_WRONG_MINE);
             }
           }
         }

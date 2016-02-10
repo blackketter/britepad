@@ -2,7 +2,8 @@
 
 void HexDotClockApp::begin() {
   if (dots == nullptr) {
-    dots = new HexDotMatrix(screen.clipLeft(), screen.clipMidHeight()-screen.clipWidth()/8, screen.clipWidth(), screen.clipWidth()/4, 9 * 4 + 3, 9); // approx 4:1 aspect ratio
+    dots = new HexDotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), 9 * 4 + 3, 9*3); // approx 4:1 aspect ratio
+//    DEBUGF("top: %d, height: %d\n",screen.clipTop(),screen.clipHeight());
     dots->setStaggerV(true);  // stagger vertically
   }
   ClockApp::begin();
@@ -26,27 +27,28 @@ void HexDotClockApp::update() {
 
     if (h10 == 0) { h10 = 10; } // supress leading digit
 
-    drawDigit(h10, 0);
-    drawDigit(h1, 1);
-    drawDigit(m10, 2);
-    drawDigit(m1, 3);
+    drawDigit(h10,  0, 9);
+    drawDigit(h1, 10, 9);
+    drawDigit(m10, 20, 9);
+    drawDigit(m1, 30, 9);
     dots->draw();
 
 };
+
 //  line arrangement
-//      0
-//     560
-//    5 6 0
-//   5  6  0
-//  5b  6  71
-//  4 b 6 7 1
-//  4  a 7  1
-//  4 a   8 1
-//  4a  9  82
-//   3  9  2
-//    3 9 2
-//     392
-//      3
+//          0
+//        5 6 0
+//      5   6   0
+//    5     6     0
+//  5 b     6     7 1
+//  4   b   6   7   1
+//  4     b * 7     1
+//  4    a  9  8    1
+//  4  a    9    8  2
+//    3     9     2
+//      3   9   2
+//        3 9 2
+//          3
 
 bool digits[11][12] = {  // which lines are filled for a given digit
   { 1,1,1,1,1, 1,0,0,0,0, 0,0 }, // 0
@@ -64,6 +66,18 @@ bool digits[11][12] = {  // which lines are filled for a given digit
 };
 
 //  dots are encoded as 2 digits, first digit is y, second digit is x, for each lines
+//  rows are arranged:
+//  0     0     0     0   ...
+//     0     0     0     0 ...
+//  1     1     1     1   ...
+//     1     1     1     1 ...
+
+//  columns:
+//  0     2     4     6
+//     1     3     5     7
+//  0     2     4     6
+//     1     3     5   7
+
 uint8_t lines[12][5] = { // which dots are filled for a given line
   { 04, 05, 16, 17, 28 }, // line 0
   { 28, 38, 48, 58, 68 }, // line 1
@@ -79,15 +93,15 @@ uint8_t lines[12][5] = { // which dots are filled for a given line
   { 20, 21, 32, 33, 44 }, // line 11
 };
 
-void HexDotClockApp::drawDigit(uint8_t digit, uint8_t position) {
+void HexDotClockApp::drawDigit(uint8_t digit, uint8_t xoff, uint8_t yoff) {
   color_t fc = screen.red;
-  color_t bc = screen.grey20;
+  color_t bc = screen.grey10;
   // since lines overlap at the ends, clear out the off lines, then draw the on lines
   for (uint8_t line = 0; line < 12; line++) {
     for (uint8_t dot = 0; dot < 5; dot++) {
        if (digits[digit][line] == 0) {
-         uint8_t x = lines[line][dot] % 10 + position*10;
-         uint8_t y = lines[line][dot] / 10;
+         uint8_t x = lines[line][dot] % 10 + xoff;
+         uint8_t y = lines[line][dot] / 10 + yoff;
          dots->setDot(x,y,bc);
        }
     }
@@ -95,8 +109,8 @@ void HexDotClockApp::drawDigit(uint8_t digit, uint8_t position) {
   for (uint8_t line = 0; line < 12; line++) {
     for (uint8_t dot = 0; dot < 5; dot++) {
        if (digits[digit][line]) {
-         uint8_t x = lines[line][dot] % 10 + position*10;
-         uint8_t y = lines[line][dot] / 10;
+         uint8_t x = lines[line][dot] % 10 + xoff;
+         uint8_t y = lines[line][dot] / 10 + yoff;
          dots->setDot(x,y,fc);
        }
     }

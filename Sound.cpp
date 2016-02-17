@@ -18,7 +18,7 @@ AudioEffectEnvelope      envelopes[SYNTH_COUNT];
 // mix down the four synth channels
 AudioMixer4              mixer1;
 
-AudioConnection          patchCord1(waveforms[0], envelopes[1]);
+AudioConnection          patchCord1(waveforms[0], envelopes[0]);
 AudioConnection          patchCord2(waveforms[1], envelopes[1]);
 AudioConnection          patchCord3(waveforms[2], envelopes[2]);
 AudioConnection          patchCord4(waveforms[3], envelopes[3]);
@@ -63,6 +63,7 @@ void Sound::begin() {
 int Sound::freeSynth() {
   for (int i = 0; i < SYNTH_COUNT; i++) {
     if (envelopes[i].getState() == STATE_IDLE) {
+      DEBUGF("freeSynth = %d\n", i);
       return i;
     }
   }
@@ -102,7 +103,7 @@ void Sound::beep(millis_t ms, float freq)
     waveforms[beeper].begin(1.0, freq, WAVEFORM_SINE);
     envelopes[beeper].noteOn();
     AudioInterrupts();
-    DEBUGF("beep freq: %f\n", freq);
+    DEBUGF("beep (%d) freq: %f\n", beeper, freq);
   }
 }
 
@@ -117,28 +118,48 @@ void Sound::swipe(direction_t d) {
 
 void Sound::tone(float freq, float volume) {
 
-  waveforms[1].frequency(freq);
+  if (lastToneFreq == freq && lastToneVolume == volume) {
+    return;
+  }
+
+  DEBUGF("tone freq: %f\n",freq);
+
+  if (toneSynth == NO_SYNTH) {
+    if (volume == 0.0) {
+      return;
+    } else {
+      toneSynth = freeSynth();
+      if (toneSynth == NO_SYNTH) {
+        return;
+      }
+    }
+  }
+
+  AudioNoInterrupts();
+  waveforms[toneSynth].frequency(freq);
 
   if (volume != 0) {
-    waveforms[1].amplitude(volume);
+    waveforms[toneSynth].amplitude(volume);
   }
 
   if (lastToneVolume == 0 && volume != 0) {
-    AudioNoInterrupts();
-    envelopes[1].delay(0);
-    envelopes[1].attack(200);
-    envelopes[1].hold(0);
-    envelopes[1].decay(0);
-    envelopes[1].sustain(1.0);
-    envelopes[1].release(200);
-    waveforms[1].begin(WAVEFORM_SINE);
-    envelopes[1].noteOn();
-    AudioInterrupts();
+    envelopes[toneSynth].delay(0);
+    envelopes[toneSynth].attack(200);
+    envelopes[toneSynth].hold(0);
+    envelopes[toneSynth].decay(0);
+    envelopes[toneSynth].sustain(1.0);
+    envelopes[toneSynth].release(200);
+    waveforms[toneSynth].begin(WAVEFORM_SINE);
+    envelopes[toneSynth].noteOn();
   } else if (lastToneVolume != 0 && volume == 0) {
-    envelopes[1].noteOff();
+    envelopes[toneSynth].noteOff();
+    toneSynth = -1;
   }
 
+  AudioInterrupts();
+
   lastToneVolume = volume;
+  lastToneFreq = freq;
 }
 
 void Sound::noise(float volume) {

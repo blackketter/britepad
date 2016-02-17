@@ -176,8 +176,6 @@ void MinesApp::begin() {
   youlose = false;
   firstTap = true;
   flagged = false;
-  sound.tuneTranspose(12);  // move it up an octave
-  sound.tunePlay(williamtell);
 }
 
 
@@ -237,6 +235,8 @@ void MinesApp::run() {
         }
       }
       firstTap = false;
+      sound.tuneTranspose(12);  // move it up an octave
+      sound.tunePlay(williamtell);
     }
 
     color_t contents = field->getDot(xhit,yhit);
@@ -257,7 +257,8 @@ void MinesApp::run() {
               }
             }
           }
-          sound.beep(800,440);
+          sound.tunePlay(nullptr);
+          sound.beep(800,880);
           gameOver = true;
         }
         break;
@@ -288,7 +289,7 @@ void MinesApp::run() {
         }
         field->setDot(xhit,yhit, RED_MINE);
         sound.tunePlay(nullptr);
-        sound.beep(800, 220);
+        sound.beep(800, 440);
         gameOver = true;
         youlose = true;
         break;

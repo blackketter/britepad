@@ -1,6 +1,7 @@
 /* britepad sketch*/
 
 #include "BritepadShared.h"
+#include "Debug.h"
 
 #define DEBUG_ON 1
 

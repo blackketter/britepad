@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include "Types.h"
+#include "Clock.h"
 
 // return true if you want to cancel the timer callback
 typedef bool (*timerCallback_t)(void*);

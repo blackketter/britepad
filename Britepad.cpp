@@ -274,3 +274,35 @@ void Britepad::idle() {
   Timer::idle();
   sound.idle();
 }
+
+
+
+void chimeCallback(void* data) {
+  ((Britepad*)data)->chimerCallback();
+}
+
+void Britepad::resetChime() {
+  if (clock.hasBeenSet()) {
+    tmElements_t chimeTime;
+    breakTime(now(), chimeTime);
+    chimeTime.Minute = 0;
+    chimeTime.Second = 0;
+    chimeTime.Hour++;
+    chimeTimer.setClockTime(makeTime(chimeTime), (timerCallback_t)chimeCallback, (void*)this);
+
+    // how many chimes at the next hour
+    chimesRemaining = hourFormat12() + 1;
+    if (chimesRemaining == 13) { chimesRemaining = 1; }
+  }
+}
+
+
+void Britepad::chimerCallback() {
+  if (chimesRemaining == 0) {
+    resetChime();
+  } else {
+    chimeTimer.setMillis(chimeInterval, (timerCallback_t)chimeCallback, (void*)this);
+    sound.beep();
+    chimesRemaining--;
+  }
+}

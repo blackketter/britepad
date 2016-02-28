@@ -20,13 +20,15 @@ void InfoApp::run() {
 
   BritepadApp::run();
   screen.setTextColor(screen.white, bgColor());
-  screen.setFont(Arial_16);
+  screen.setFont(Arial_14);
   screen.setCursor(screen.clipLeft() + screen.fontGap(), screen.clipTop()+screen.fontGap());
   char string[100];
   clock.longTime(string);
   screen.drawTextF("%s\nX: %d Y: %d        \n", string, pad.x(), pad.y());
   screen.drawTextF("Points captured: %d        \n", pad.getHistoryCount());
-  screen.drawTextF("Proximity: %d    \n", pad.getProximityDistance());
+  uint8_t raw = pad.getProximityRaw();
+  if (raw > max) { max = raw; sound.beep();}
+  screen.drawTextF("Distance:%d,raw:%d,max: %d        \n", pad.getProximityDistance(), raw,max);
   screen.drawTextF("Ambient: %d         \n", pad.getAmbientLight());
   screen.drawTextF("Backlight: %d         \n", screen.getBacklight());
   screen.drawTextF("Free ram: %d            \n", FreeRam());
@@ -39,6 +41,6 @@ void InfoApp::run() {
   while (n == millis()) {
     x++;
   }
-  screen.drawTextF("Loops per millis: %d", (unsigned long)x);
+  screen.drawTextF("uint64_t loops per milli: %d", (unsigned long)x);
   lastUpdate = pad.time();
 };

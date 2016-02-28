@@ -1,8 +1,7 @@
-#include "BritepadShared.h"
+#include <stdio.h>
+#include <Arduino.h>
+
 #include "Clock.h"
-#include "Sound.h"
-#include "Debug.h"
-#include "TimeLib.h"
 
 void Time::set(uint16_t y, uint8_t m, uint8_t d, uint8_t hr, uint8_t min, uint8_t sec) {
   TimeElements tmE;
@@ -150,35 +149,6 @@ void Clock::set(time_t newTime) {
   ::setTime(newTime);
 }
 
-void chimeCallback(void* data) {
-  ((Clock*)data)->chimerCallback();
-}
-
-void Clock::resetChime() {
-  if (hasBeenSet()) {
-    tmElements_t chimeTime;
-    breakTime(now(), chimeTime);
-    chimeTime.Minute = 0;
-    chimeTime.Second = 0;
-    chimeTime.Hour++;
-    chimeTimer.setClockTime(makeTime(chimeTime), (timerCallback_t)chimeCallback, (void*)this);
-
-    // how many chimes at the next hour
-    chimesRemaining = hourFormat12() + 1;
-    if (chimesRemaining == 13) { chimesRemaining = 1; }
-  }
-}
-
-
-void Clock::chimerCallback() {
-  if (chimesRemaining == 0) {
-    resetChime();
-  } else {
-    chimeTimer.setMillis(chimeInterval, (timerCallback_t)chimeCallback, (void*)this);
-    sound.beep();
-    chimesRemaining--;
-  }
-}
 
 void Clock::adjust(stime_t adjustment) {
   Teensy3Clock.set(now() + adjustment);
@@ -188,5 +158,5 @@ void Clock::adjust(stime_t adjustment) {
 
   doneSet = true;
 
-  resetChime();
 }
+

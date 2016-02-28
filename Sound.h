@@ -2,6 +2,7 @@
 #define _Sound_
 
 #include "Types.h"
+#include "Clock.h"
 
 class Sound {
   public:

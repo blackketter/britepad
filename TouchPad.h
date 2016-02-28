@@ -2,6 +2,7 @@
 #define _TouchPad_
 
 #include "Types.h"
+#include "Clock.h"
 
 // todo - turn these into a scoped enum
 #define SCREEN_PAD 0
@@ -50,6 +51,7 @@ class TouchPad {
 
     uint8_t getProximityMax() { return proximityMax; };
     uint8_t getProximityDistance();
+    uint8_t getProximityRaw() { return proximity; };
 
     coord_t getHeight() { return width; };
     coord_t getWidth() { return height; };
@@ -66,7 +68,7 @@ class TouchPad {
     millis_t lastUpT[TOTAL_SENSORS];
     coord_t  lastDownXPos;
     coord_t  lastDownYPos;
-    static const uint8_t proximityThreshold = 110;
+    static const uint8_t proximityThreshold = 115;
     static const uint8_t proximityMax = 255;
     bool getProximityPresent();
 

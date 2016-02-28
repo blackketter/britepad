@@ -5,7 +5,7 @@
 class InfoApp : public BritepadApp {
   public:
     void run();
-
+    void begin() { max = 0; BritepadApp::begin();}
     bool displaysStatusBar() { return false; }
     bool canBeInteractive() { return true; }
     bool disablesScreensavers() { return true; }
@@ -17,6 +17,7 @@ class InfoApp : public BritepadApp {
 
   private:
     time_t lastUpdate = 0;
+    uint8_t max = 0;
 };
 
 

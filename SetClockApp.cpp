@@ -86,10 +86,12 @@ void SetClockApp::begin() {
   drawTime();
   drawButtons();
   theTime->beginSetTime();
+  britepad.enableChime(false);
 }
 
 void SetClockApp::end() {
   theTime->endSetTime();
+  britepad.enableChime(true);
 }
 
 void SetClockApp::modeButtonPressed() {

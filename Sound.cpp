@@ -1,10 +1,12 @@
 #include "Sound.h"
+#include "Clock.h"
 
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
 
 #include "Debug.h"
+#define DEBUG_ON 0
 
 #define NO_SYNTH (-1)
 #define SYNTH_COUNT (4)

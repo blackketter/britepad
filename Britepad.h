@@ -25,6 +25,10 @@ class Britepad {
 
     static const int minBrightness = 20;
 
+    void resetChime();
+    void enableChime(bool enabled) { enabled ? resetChime() : chimeTimer.cancel(); };
+    void chimerCallback();
+
   private:
     BritepadApp* currApp = nullptr;
     BritepadApp* launchedAppPtr = nullptr;
@@ -51,6 +55,12 @@ class Britepad {
     millis_t disableScreensaversUntil = 0;
 
     BritepadApp* appList = nullptr;
+
+
+    Timer chimeTimer;
+    int chimesRemaining = 0;
+    static const millis_t chimeInterval = 500;
+
 };
 
 #endif

@@ -30,7 +30,7 @@ class SetClockApp : public BritepadApp {
     virtual const char* modeButtonText() { return setDate ? "Time" : "Date"; };
     virtual void modeButtonPressed();
 
-    virtual void adjust(stime_t delta) { theTime->adjust(delta); };
+    virtual void adjust(stime_t delta) { theTime->adjust(delta);   britepad.resetChime(); };
 
     static const int buttoncount = 8;
     static const int buttonradius = 24;

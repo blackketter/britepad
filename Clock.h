@@ -1,8 +1,10 @@
 #ifndef _Clock_
 #define _Clock_
 
-#include "Timer.h"
-#include "Debug.h"
+#include "TimeLib.h"
+
+typedef int64_t millis_t;
+typedef int32_t stime_t; // signed time for relative time, deltas, adjustments, etc.
 
 class Time {
   public:
@@ -73,18 +75,12 @@ class Clock : public Time {
     uint16_t frac();  // fractional seconds in millis  TODO: Make base Time class support fractional seconds too
 
     virtual bool hasBeenSet() { return doneSet && !setting; }
-    virtual void beginSetTime() { setting = true; chimeTimer.cancel(); };
-    virtual void endSetTime() { setting = false; resetChime(); } ;
-
-    void chimerCallback();
+    virtual void beginSetTime() { setting = true;};
+    virtual void endSetTime() { setting = false; } ;
 
   private:
     millis_t millis_offset = 0;
 
-    void resetChime();
-    Timer chimeTimer;
-    int chimesRemaining = 0;
-    static const millis_t chimeInterval = 500;
     bool doneSet = false;
     bool setting = false;
 };

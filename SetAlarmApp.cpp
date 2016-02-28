@@ -26,7 +26,7 @@ void SetAlarmApp::end() {
 
   AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
   if (alarm) {
-    alarm->setAlarmTime(alarmTime.nextOccurance());
+    alarm->setAlarmTime(alarmTime.nextOccurance(clock.now()));
     alarm->setAlarmEnabled(alarmEnabled);
   }
 

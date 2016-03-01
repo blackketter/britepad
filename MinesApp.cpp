@@ -1,99 +1,73 @@
 #include "MinesApp.h"
 #include "Sound.h"
-#include <usb_keyboard.h>
 
 #include "WilliamTell.h"
 
-enum {
-  EMPTY_MINE,      // blank square with no mine underneath
-  HIDDEN_MINE,      // blank square with mine underneath
-  FLAG_EMPTY_MINE,  // show flag on a blank square
-  FLAG_HIDDEN_MINE,        // show flag on a blank square with a mine
-  FLAG_WRONG_MINE,
-
-  SHOW_EMPTY_MINE,  // reveal an empty mine
-  N1_MINE,         // reveal an empty mine and how many mines are nearby
-  N2_MINE,
-  N3_MINE,
-  N4_MINE,
-  N5_MINE,
-  N6_MINE,
-  N7_MINE,
-  N8_MINE,
-
-  SHOW_MINE,        // reveal the mine
-  RED_MINE,         // reveal the mine on the losing square
-};
-
-bool MineMatrix::revealed(int x, int y) {
-  bool reved = true;
-  switch (getDot(x,y)) {
-    case EMPTY_MINE:
-    case HIDDEN_MINE:
-    case FLAG_EMPTY_MINE:
-    case FLAG_HIDDEN_MINE:
-      reved = false;
-      break;
-    default:
-      break;
-  }
-
-  return reved;
+bool MineMatrix::isRevealed(int x, int y) {
+  return valid(x,y) && (getDot(x,y) & REVEALED_CELL) != 0;
 }
 
-int MineMatrix::revealed() {
+bool MineMatrix::isMined(int x, int y) {
+  return valid(x,y) && (getDot(x,y) & MINED_CELL) != 0;
+}
+
+bool MineMatrix::isFlagged(int x, int y) {
+  return valid(x,y) && (getDot(x,y) & FLAGGED_CELL) != 0;
+}
+
+bool MineMatrix::isLoser(int x, int y) {
+  return valid(x,y) && (getDot(x,y) & LOSER_CELL) != 0;
+}
+
+void MineMatrix::setRevealed(int x, int y, bool r) {
+  setDot(x,y, r ?  getDot(x,y) | REVEALED_CELL :  getDot(x,y)  &~REVEALED_CELL);
+}
+
+void MineMatrix::setMined(int x, int y, bool r) {
+  setDot(x,y,r ? getDot(x,y) | MINED_CELL : getDot(x,y) & ~MINED_CELL);
+}
+
+void MineMatrix::setFlagged(int x, int y, bool r) {
+  setDot(x,y, r ? getDot(x,y) | FLAGGED_CELL : getDot(x,y) & ~FLAGGED_CELL);
+}
+
+void MineMatrix::setLoser(int x, int y, bool r) {
+  setDot(x,y, r ? getDot(x,y) | LOSER_CELL : getDot(x,y) & ~LOSER_CELL);
+}
+
+int MineMatrix::countNeighbors(int x, int y) {
+  return isMined(x-1,y-1) + isMined(x,y-1) + isMined(x+1,y-1) +
+         isMined(x-1,y)   +                  isMined(x+1,y) +
+         isMined(x-1,y+1) + isMined(x,y+1) + isMined(x+1,y+1);
+}
+
+int MineMatrix::countRevealed() {
   int count = 0;
   for (int x = 0; x < getDotsWide(); x++) {
     for (int y = 0; y < getDotsHigh(); y++) {
-      if (revealed(x,y)) { count++; };
+      if (isRevealed(x,y)) { count++; };
     }
   }
   return count;
 }
 
 
-int MineMatrix::neighbors(int x, int y) {
-  return mined(x-1,y-1) + mined(x,y-1) + mined(x+1,y-1) +
-         mined(x-1,y)   +                mined(x+1,y) +
-         mined(x-1,y+1) + mined(x,y+1) + mined(x+1,y+1);
-}
-
-void MineMatrix::reveal(int x, int y) {
+void MineMatrix::revealNeighbors(int x, int y) {
   if (x<0 || x>=getDotsWide() || y<0 || y>=getDotsHigh()) { return; }
 
-  if (mined(x,y)) {
+  if (isMined(x,y)) {
     return;
   } else {
-    if (getDot(x,y) == EMPTY_MINE) {
-      int n = neighbors(x,y);
-      setDot(x,y,SHOW_EMPTY_MINE+n);
-      if (n==0) {
-        reveal(x-1,y-1); reveal(x,y-1); reveal(x+1,y-1);
-        reveal(x-1,y);                  reveal(x+1,y);
-        reveal(x-1,y+1); reveal(x,y+1); reveal(x+1,y+1);
+    if (!isRevealed(x,y) && !isMined(x,y) && !isFlagged(x,y)) {
+      setRevealed(x,y,true);
+      if (countNeighbors(x,y)==0) {
+        revealNeighbors(x-1,y-1); revealNeighbors(x,y-1); revealNeighbors(x+1,y-1);
+        revealNeighbors(x-1,y);                           revealNeighbors(x+1,y);
+        revealNeighbors(x-1,y+1); revealNeighbors(x,y+1); revealNeighbors(x+1,y+1);
       }
     }
   }
 }
-
-int MineMatrix::mined(int x, int y) {
-  if (x<0 || x>=getDotsWide() || y<0 || y>=getDotsHigh()) { return false; }
-
-  int minethere = 0;
-
-  switch (getDot(x,y)) {
-    case SHOW_MINE:
-    case RED_MINE:
-    case HIDDEN_MINE:
-    case FLAG_HIDDEN_MINE:
-      minethere = 1;
-      break;
-    default:
-      break;
-  }
-  return minethere;
-}
-
 
 void MineMatrix::updateDot(int x, int y) {
   coord_t l,t,w,h,b,r;
@@ -106,12 +80,13 @@ void MineMatrix::updateDot(int x, int y) {
   r = l+w-1;
 //    screen.fillRect(,getTop()+y*dotspacing_h,dotspacing_w,dotspacing_h,getDot(x,y));
   color_t contents = getDot(x,y);
-  switch (contents) {
-    case EMPTY_MINE:
-    case HIDDEN_MINE:
-    case FLAG_HIDDEN_MINE:
-    case FLAG_EMPTY_MINE:
-    case FLAG_WRONG_MINE:
+  bool revealed = isRevealed(x,y);
+  bool flagged = isFlagged(x,y);
+  bool mined = isMined(x,y);
+  bool loser = isLoser(x,y);
+  int neighbors = countNeighbors(x,y);
+
+  if (!revealed) {
       screen.fillRect(l,t,w,h,screen.grey50);
 
       screen.drawLine(l,t,r,t,screen.grey70);
@@ -119,43 +94,23 @@ void MineMatrix::updateDot(int x, int y) {
       screen.drawLine(r,t,r,b,screen.grey30);
       screen.drawLine(l,b,r,b,screen.grey30);
 
-      if (contents == FLAG_HIDDEN_MINE || contents == FLAG_EMPTY_MINE) {
+      if (flagged) {
         screen.fillRect(l+w/4,t+h/4,w/2,h/2,screen.blue);
-      } else if (contents == FLAG_WRONG_MINE) {
-        screen.drawRect(l+w/4,t+h/4,w/2,h/2,screen.blue);
       }
-      break;
-
-    case SHOW_EMPTY_MINE:
+  } else if (flagged && !mined) {
       screen.fillRect(l,t,w,h,screen.grey50);
-      break;
-    case N1_MINE:
-    case N2_MINE:
-    case N3_MINE:
-    case N4_MINE:
-    case N5_MINE:
-    case N6_MINE:
-    case N7_MINE:
-    case N8_MINE:
+      screen.drawRect(l+w/4,t+h/4,w/2,h/2,screen.blue);
+  } else if (mined) {
+      screen.fillRect(l,t,w,h,loser ? screen.red : screen.grey50);
+      screen.fillCircle(l+w/2,t+h/2,w/4, flagged ? screen.blue : screen.black);
+  } else if (neighbors > 0) {
       screen.fillRect(l,t,w,h,screen.grey50);
       screen.setCursor(l+w/3, t+h/3);
       screen.setFont(Arial_10_Bold);
       screen.setTextColor(screen.black);
-      screen.drawTextF("%d",contents - N1_MINE + 1);
-      break;
-
-    case SHOW_MINE:
+      screen.drawTextF("%d",neighbors);
+  } else {
       screen.fillRect(l,t,w,h,screen.grey50);
-      screen.fillCircle(l+w/2,t+h/2,w/4, screen.black);
-      break;
-    case RED_MINE:
-      screen.fillRect(l,t,w,h,screen.red);
-      screen.fillCircle(l+w/2,t+h/2,w/4, screen.black);
-     break;
-
-    default:
-      DEBUG_LN("Unknown state in mine matrix");
-      break;
   }
 }
 
@@ -175,7 +130,7 @@ void MinesApp::begin() {
   gameOver = false;
   youlose = false;
   firstTap = true;
-  flagged = false;
+  flagging = false;
 }
 
 
@@ -198,22 +153,12 @@ void MinesApp::run() {
     }
   }
 
-  if (pad.touched() && !flagged && pad.holdTime() > 500 && field->hit(pad.x(),pad.y(), &xhit, &yhit)) {
-    color_t contents = field->getDot(xhit,yhit);
-    if (contents == EMPTY_MINE) {
-      field->setDot(xhit,yhit, FLAG_EMPTY_MINE);
-      field->updateDot(xhit,yhit);
-      flagged = true;
-      sound.click();
-      if (mines) {mines--;}
-    }
-    if (contents == HIDDEN_MINE) {
-      field->setDot(xhit,yhit, FLAG_HIDDEN_MINE);
-      field->updateDot(xhit,yhit);
-      flagged = true;
-      sound.click();
-      if (mines) {mines--;}
-    }
+  if (pad.touched() && !flagging && pad.holdTime() > 500 && field->hit(pad.x(),pad.y(), &xhit, &yhit) && !field->isRevealed(xhit,yhit)) {
+    field->setFlagged(xhit,yhit,!field->isFlagged(xhit,yhit));
+    field->updateDot(xhit,yhit);
+    flagging = true;
+    sound.click();
+    if (mines) {mines--;}
   }
 
   if (pad.up(BOTTOM_PAD)) {
@@ -221,7 +166,7 @@ void MinesApp::run() {
     sound.tuneVolume(playTune ? 1.0 : 0);
   }
 
-  if (pad.up() && field->hit(pad.x(),pad.y(), &xhit, &yhit) && !flagged) {
+  if (pad.up() && field->hit(pad.x(),pad.y(), &xhit, &yhit) && !flagging) {
 
     // lay the mines, but not close to the first tap
     if (firstTap) {
@@ -229,8 +174,8 @@ void MinesApp::run() {
       while (m) {
         int x = random(minesWidth);
         int y = random(minesHeight);
-        if (field->getDot(x,y) == EMPTY_MINE && ((abs(xhit-x) > 1) || (abs(yhit-y) > 1))) {
-          field->setDot(x,y, HIDDEN_MINE);
+        if (!field->isRevealed(x,y) && !field->isMined(x,y) && ((abs(xhit-x) > 1) || (abs(yhit-y) > 1))) {
+          field->setMined(x,y,true);
           m--;
         }
       }
@@ -238,67 +183,44 @@ void MinesApp::run() {
       sound.tuneTranspose(12);  // move it up an octave
       sound.tunePlay(williamtell);
     }
+    bool m = field->isMined(xhit,yhit);
+    bool r = field->isRevealed(xhit,yhit);
+    bool f = field->isFlagged(xhit,yhit);
 
-    color_t contents = field->getDot(xhit,yhit);
-    switch (contents) {
-      case EMPTY_MINE:
-        // show it's empty and reveal the surroundings
-        field->reveal(xhit,yhit);
+    if (f && !r) {
+        // hide the flag
+        field->setFlagged(xhit,yhit, false);
+        mines++;
         sound.click();
-        if ((field->revealed() + minesMax) == (minesWidth*minesHeight)) {
+    } else if (!m && !r)  {
+        // show it's empty and reveal the surroundings
+        field->revealNeighbors(xhit,yhit);
+        sound.click();
+        if ((field->countRevealed() + minesMax) == (minesWidth*minesHeight)) {
           // you win!
           for (int x = 0; x < minesWidth; x++) {
             for (int y = 0; y < minesHeight; y++) {
-              if (field->getDot(x,y) == HIDDEN_MINE) {
-                field->setDot(x,y,SHOW_MINE);
-              }
-              if (field->getDot(x,y) == FLAG_EMPTY_MINE) {
-                field->setDot(x,y,FLAG_WRONG_MINE);
-              }
+              field->setRevealed(x,y,true);
             }
           }
           sound.tunePlay(nullptr);
           sound.beep(800,880);
           gameOver = true;
         }
-        break;
-
-      case FLAG_HIDDEN_MINE:
-      case FLAG_EMPTY_MINE:
-        // hide the flag
-        if (contents == FLAG_HIDDEN_MINE) {
-          field->setDot(xhit,yhit, HIDDEN_MINE);
-        } else {
-          field->setDot(xhit,yhit, EMPTY_MINE);
-        }
-        mines++;
-        sound.click();
-        break;
-
-      case HIDDEN_MINE:
+      } else if (!r && m) {
         // you lose
         for (int x = 0; x < minesWidth; x++) {
           for (int y = 0; y < minesHeight; y++) {
-            if (field->getDot(x,y) == HIDDEN_MINE) {
-              field->setDot(x,y,SHOW_MINE);
-            }
-            if (field->getDot(x,y) == FLAG_EMPTY_MINE) {
-              field->setDot(x,y,FLAG_WRONG_MINE);
-            }
+            field->setRevealed(x,y,true);
           }
         }
-        field->setDot(xhit,yhit, RED_MINE);
+        field->setLoser(xhit,yhit, true);
         sound.tunePlay(nullptr);
         sound.beep(800, 440);
         gameOver = true;
         youlose = true;
-        break;
+      }
 
-      default:
-        // just ignore
-        break;
-
-    }
     field->draw();
     if (startTime == 0) {
       startTime = Uptime::millis();
@@ -317,7 +239,7 @@ void MinesApp::run() {
   }
   minesLeft.drawf("%d", mines);
   if (pad.up()) {
-    flagged = false;
+    flagging = false;
   }
   if (mines) {
     sound.tuneTempo((1.0-((float)(mines)/minesMax))*2.0+1);  // speed up as we get to the end

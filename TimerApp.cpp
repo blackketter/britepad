@@ -42,6 +42,7 @@ void TimerApp::drawTime() {
       } else {
         textColor = screen.grey10;
       }
+      redrawButtons();
     }
 
     screen.setTextColor(textColor, bgColor());
@@ -79,6 +80,7 @@ void TimerApp::setTime(time_t t) {
   mytimer.setSecs(t, (timerCallback_t)alarmcallback, (void*)this);
 };
 
+// this may be called when the app is not frontmost
 void TimerApp::alarm() {
   if (!alarm_sounded) {
     alarm_sounded = clock.now();
@@ -91,7 +93,6 @@ void TimerApp::alarm() {
   } else {
     mytimer.setSecs(alarmDur);  // keep the timer running a while to keep the app on screen, when it's done it will exit automatically because the timer isn't running
   }
-  redrawButtons();
 }
 
 void TimerApp::reset() {

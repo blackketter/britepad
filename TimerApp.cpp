@@ -42,7 +42,6 @@ void TimerApp::drawTime() {
       } else {
         textColor = screen.grey10;
       }
-      redrawButtons();
     }
 
     screen.setTextColor(textColor, bgColor());
@@ -65,6 +64,10 @@ void TimerApp::drawTime() {
       screen.drawText(textTime);
     }
     last_width = width;
+
+    if (alarm_sounded) {
+      redrawButtons();
+    }
   }
 
 }
@@ -90,8 +93,6 @@ void TimerApp::alarm() {
     sound.beep();
     mytimer.setMillis(beepInterval, (timerCallback_t)alarmcallback, (void*)this);
     beeps--;
-  } else {
-    mytimer.setSecs(alarmDur);  // keep the timer running a while to keep the app on screen, when it's done it will exit automatically because the timer isn't running
   }
 }
 

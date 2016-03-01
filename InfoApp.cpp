@@ -24,7 +24,7 @@ void InfoApp::run() {
   screen.setCursor(screen.clipLeft() + screen.fontGap(), screen.clipTop()+screen.fontGap());
   char string[100];
   clock.longTime(string);
-  screen.drawTextF("%s\nX: %d Y: %d        \n", string, pad.x(), pad.y());
+  screen.drawTextF("%s %03d\nX: %d Y: %d        \n", string, clock.fracMillis(), pad.x(), pad.y());
   screen.drawTextF("Points captured: %d        \n", pad.getHistoryCount());
   uint8_t raw = pad.getProximityRaw();
   if (raw > max) { max = raw; sound.beep();}
@@ -41,6 +41,6 @@ void InfoApp::run() {
   while (n == millis()) {
     x++;
   }
-  screen.drawTextF("uint64_t loops per milli: %d", (unsigned long)x);
+  screen.drawTextF("uint64_t loops per millis: %d", (unsigned long)x);
   lastUpdate = pad.time();
 };

@@ -19,7 +19,7 @@ class CountdownApp : public ScreensaverApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "cntd";
 
-    time_t getTime() { return countdownTime.get(); }
+    time_t getTime() { return countdownTime.getSeconds(); }
     void setTime(time_t newTime);
 
   protected:

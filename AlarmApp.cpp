@@ -12,13 +12,13 @@ struct alarmSettings {
 };
 
 bool AlarmApp::isAlarmTime() {
-  return (clock.now()/60 == nextAlarm.get()/60);
+  return (clock.now()/60 == nextAlarm.getSeconds()/60);
 }
 
 void AlarmApp::saveSettings() {
   alarmSettings settings;
   settings.enabled = alarmEnabled;
-  settings.time = nextAlarm.get();
+  settings.time = nextAlarm.getSeconds();
   prefs.write(id(), sizeof(alarmSettings), (uint8_t*)&settings);
 }
 
@@ -46,8 +46,8 @@ void AlarmApp::beep() {
 }
 
 void AlarmApp::updateTimer() {
-  if (alarmEnabled && nextAlarm.get()) {
-    beepTimer.setClockTime(nextAlarm.get(), (timerCallback_t)timerCallback, (void*)this);
+  if (alarmEnabled && nextAlarm.getSeconds()) {
+    beepTimer.setClockTime(nextAlarm.getSeconds(), (timerCallback_t)timerCallback, (void*)this);
   } else {
     beepTimer.cancel();
   }

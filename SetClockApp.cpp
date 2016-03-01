@@ -128,7 +128,7 @@ void SetClockApp::run() {
   if (adj) { redraw = true; }
 
   if (redraw) {
-    adjust(adj);
+    adjustSeconds(adj);
     lastDraw = 0;  // force a redraw of the text
     // reset the seconds if we've adjusted the time
     if ((time_t)abs(adj) < clock.secsPerDay) {

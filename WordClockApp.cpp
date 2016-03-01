@@ -34,7 +34,7 @@ void WordClockApp::update() {
       about = "";
     } else if (now.second() > 55) {
       about = "almost ";
-      now.set(now.get() + 60);
+      now.set(now.getSeconds() + 60);
     } else {
       about = "about ";
     }

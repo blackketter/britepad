@@ -17,12 +17,12 @@ void CountdownApp::redraw() {
 
 void CountdownApp::begin() {
   if (prefs.read(countdownTimePrefStr, sizeof(countdownTime), (uint8_t*)&countdownTime)) {
-    DEBUGF("Countdown time of %d\n", countdownTime.get());
+    DEBUGF("Countdown time of %d\n", countdownTime.getSeconds());
   } else {
     DEBUG_LN("No countdown pref found");
   }
 
-  if (countdownTime.get() == 0) {
+  if (countdownTime.getSeconds() == 0) {
     DEBUG_LN("Countdown Time zero, resetting to now.");
     countdownTime.set(clock.now());
   }
@@ -58,7 +58,7 @@ void CountdownApp::run() {
 
     lastDrawMillis = nowMillis;
 
-    stime_t delta = countdownTime.get() - clock.now();
+    stime_t delta = countdownTime.getSeconds() - clock.now();
 
     bool past = delta < 0;
     delta = abs(delta);

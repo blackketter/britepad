@@ -22,7 +22,7 @@ void SetCountdownApp::end() {
 
   CountdownApp* countdownApp = (CountdownApp*)getAppByID(CountdownApp::ID);
   if (countdownApp) {
-    countdownApp->setTime(countdownTime.get());
+    countdownApp->setTime(countdownTime.getSeconds());
   }
 
   SetClockApp::end();

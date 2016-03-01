@@ -30,7 +30,7 @@ class SetClockApp : public BritepadApp {
     virtual const char* modeButtonText() { return setDate ? "Time" : "Date"; };
     virtual void modeButtonPressed();
 
-    virtual void adjust(stime_t delta) { theTime->adjust(delta);   britepad.resetChime(); };
+    virtual void adjustSeconds(stime_t delta) { theTime->adjustSeconds(delta);   britepad.resetChime(); };
 
     static const int buttoncount = 8;
     static const int buttonradius = 24;
@@ -39,7 +39,7 @@ class SetClockApp : public BritepadApp {
     RoundButton button[buttoncount];
     void drawTime();
     void drawButtons();
-    void resetSecs() { adjust(-theTime->get()%60); };
+    void resetSecs() { adjustSeconds(-theTime->getSeconds()%60); };
     millis_t lastDraw = 0;
     bool hasRun = false;
     bool setDate = false;

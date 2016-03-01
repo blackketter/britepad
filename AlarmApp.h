@@ -14,7 +14,7 @@ class AlarmApp : public BritepadApp {
     void end() { BritepadApp::end(); setAlarmEnabled(false); alarmSounded = false;}
 
     void setAlarmTime(time_t newTime);
-    time_t getAlarmTime() { return nextAlarm.get(); };
+    time_t getAlarmTime() { return nextAlarm.getSeconds(); };
     bool isAlarmTime();
 
     void setAlarmEnabled(bool alarmOn);

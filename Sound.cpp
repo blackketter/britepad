@@ -64,7 +64,7 @@ void Sound::begin() {
 int Sound::freeSynth() {
   for (int i = 0; i < SYNTH_COUNT; i++) {
     if (envelopes[i].getState() == STATE_IDLE) {
-      DEBUGF("freeSynth = %d\n", i);
+//      DEBUGF("freeSynth = %d\n", i);
       return i;
     }
   }
@@ -86,7 +86,7 @@ void Sound::click() {
     waveforms[beeper].begin(1.0, 100, WAVEFORM_PULSE);
     envelopes[beeper].noteOn();
     AudioInterrupts();
-    DEBUG_LN("click");
+//    DEBUG_LN("click");
   }
  }
 
@@ -104,12 +104,12 @@ void Sound::beep(millis_t ms, float freq)
     waveforms[beeper].begin(1.0, freq, WAVEFORM_SINE);
     envelopes[beeper].noteOn();
     AudioInterrupts();
-    DEBUGF("beep (%d) freq: %f\n", beeper, freq);
+//    DEBUGF("beep (%d) freq: %f\n", beeper, freq);
   }
 }
 
 void Sound::bump() {
-  DEBUG_LN("bump");
+//  DEBUG_LN("bump");
   beep(1, 300);
 }
 
@@ -123,7 +123,7 @@ void Sound::tone(float freq, float volume) {
     return;
   }
 
-  DEBUGF("tone freq: %f\n",freq);
+//  DEBUGF("tone freq: %f\n",freq);
 
   if (toneSynth == NO_SYNTH) {
     if (volume == 0.0) {
@@ -165,7 +165,7 @@ void Sound::tone(float freq, float volume) {
 
 void Sound::noise(float volume) {
 //  todo: create noise sourc
-  DEBUGF("noise vol: %f\n", volume);
+//  DEBUGF("noise vol: %f\n", volume);
 }
 
 void Sound::setMute(bool mute) {

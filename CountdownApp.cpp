@@ -19,7 +19,9 @@ void CountdownApp::redraw() {
 
 void CountdownApp::begin() {
   DEBUGF("Countdown begin\n");
-  if (prefs.read(countdownTimePrefStr, sizeof(countdownTime), (uint8_t*)&countdownTime)) {
+  time_t prefTime;
+  if (prefs.read(countdownTimePrefStr, sizeof(prefTime), (uint8_t*)&prefTime)) {
+    countdownTime.setSeconds(prefTime);
     DEBUGF("Countdown time of %d\n", countdownTime.getSeconds());
   } else {
     DEBUG_LN("No countdown pref found");
@@ -46,7 +48,7 @@ void CountdownApp::setTime(time_t newTime) {
   DEBUGF("setSeconds");
   countdownTime.setSeconds(newTime);
   DEBUGF("Countdown writepref\n", newTime);
-  prefs.write(countdownTimePrefStr, sizeof(countdownTime), (uint8_t*)&countdownTime);
+  prefs.write(countdownTimePrefStr, sizeof(newTime), (uint8_t*)&newTime);
 }
 
 void CountdownApp::run() {
@@ -73,9 +75,7 @@ void CountdownApp::run() {
   if (lastDrawMillis/1000 != nowMillis/1000) {
 
     lastDrawMillis = nowMillis;
-    DEBUGF("Countdown drawing\n");
     stime_t delta = countdownTime.getSeconds() - clock.getSeconds();
-    DEBUGF("Countdown delta: %d\n", delta);
     bool past = delta < 0;
     delta = abs(delta);
 
@@ -83,7 +83,6 @@ void CountdownApp::run() {
     int hours = (delta/(60*60)) % 24;
     int mins = (delta/60) % 60;
     int secs = delta % 60;
-    DEBUGF("countdown: D:%d h:%d m:%d s:%d total:%d\n", days, hours,mins, secs, delta);
     char textTime[100];
 
     screen.setFont(Arial_16_Bold);

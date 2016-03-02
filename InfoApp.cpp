@@ -24,7 +24,7 @@ void InfoApp::run() {
   screen.setCursor(screen.clipLeft() + screen.fontGap(), screen.clipTop()+screen.fontGap());
   char string[100];
   clock.longTime(string);
-  screen.drawTextF("%s %03d\nX: %d Y: %d        \n", string, clock.fracMillis(), pad.x(), pad.y());
+  screen.drawTextF("%s %06d\nX: %d Y: %d        \n", string, clock.fracMicros(), pad.x(), pad.y());
   screen.drawTextF("Points captured: %d        \n", pad.getHistoryCount());
   uint8_t raw = pad.getProximityRaw();
   if (raw > max) { max = raw; sound.beep();}

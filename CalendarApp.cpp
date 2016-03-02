@@ -25,7 +25,7 @@ void CalendarApp::run() {
 
 void CalendarApp::draw() {
   Time t;
-  t.set(year,month,1);
+  t.setDateTime(year,month,1);
 
   int rows = (t.weekday() - 1 + t.daysInMonth() + 6)/7 + 3;  // convert to zero based weekdays, add days in month, +6 to round up.
 

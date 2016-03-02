@@ -78,8 +78,7 @@ void MineMatrix::updateDot(int x, int y) {
   h = dotspacing_h;
   b = t+h-1;
   r = l+w-1;
-//    screen.fillRect(,getTop()+y*dotspacing_h,dotspacing_w,dotspacing_h,getDot(x,y));
-  color_t contents = getDot(x,y);
+
   bool revealed = isRevealed(x,y);
   bool flagged = isFlagged(x,y);
   bool mined = isMined(x,y);

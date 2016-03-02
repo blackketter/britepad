@@ -28,13 +28,13 @@ void WordClockApp::update() {
 
     const char* about;
     Time now;
-    now.set(clock.now());
+    now.setSeconds(clock.now());
 
     if (now.second() < 5) {
       about = "";
     } else if (now.second() > 55) {
       about = "almost ";
-      now.set(now.getSeconds() + 60);
+      now.setSeconds(now.getSeconds() + 60);
     } else {
       about = "about ";
     }

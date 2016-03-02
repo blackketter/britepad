@@ -11,7 +11,7 @@ void SetCountdownApp::begin() {
 
   CountdownApp* countdownApp = (CountdownApp*)getAppByID(CountdownApp::ID);
   if (countdownApp) {
-    countdownTime.set(countdownApp->getTime());
+    countdownTime.setSeconds(countdownApp->getTime());
   }
 
   setDate = true;

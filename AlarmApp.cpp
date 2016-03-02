@@ -23,7 +23,7 @@ void AlarmApp::saveSettings() {
 }
 
 void AlarmApp::setAlarmTime(time_t newTime) {
-  nextAlarm.set(newTime);
+  nextAlarm.setSeconds(newTime);
   updateTimer();
   saveSettings();
 }
@@ -56,7 +56,7 @@ void AlarmApp::updateTimer() {
 AlarmApp::AlarmApp() {
       alarmSettings settings;
       if (prefs.read(id(), sizeof(alarmSettings), (uint8_t*)&settings)) {
-        nextAlarm.set(settings.time);
+        nextAlarm.setSeconds(settings.time);
         alarmEnabled = settings.enabled;
       }
 };

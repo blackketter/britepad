@@ -6,7 +6,10 @@
 #include "stdint.h"
 
 enum direction_t {
-  DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT
+  DIRECTION_UP,
+  DIRECTION_RIGHT,
+  DIRECTION_DOWN,
+  DIRECTION_LEFT
 };
 
 enum AppMode {

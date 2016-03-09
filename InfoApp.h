@@ -16,7 +16,7 @@ class InfoApp : public BritepadApp {
     static constexpr appid_t ID = "info";
 
   private:
-    time_t lastUpdate = 0;
+    millis_t lastUpdate = 0;
     uint8_t max = 0;
 };
 

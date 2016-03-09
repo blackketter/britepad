@@ -307,33 +307,9 @@ void LauncherApp::run() {
       drawButton(highlighted_button, false);
       highlighted_button = noButton;
     }
-  } else if (pad.up(SCREEN_PAD)) {
-      drawButton(highlighted_button, false);
-
-      if (highlighted_button != noButton) {
-        BritepadApp* launched = apps[currentScreen()][b];
-        if (launched->isPopup()) {
-          launched->run();
-          if (!launched->isInvisible()) {
-            clearScreen();
-            drawButtons();
-          } else {
-            drawButton(b, false);
-          }
-        } else {
-          AppMode whichMode = screenMode(current_screen);
-          if (whichMode == INTERACTIVE_MODE) {
-            launchApp(launched);
-          } else {
-            launched->setEnabled(!launched->getEnabled(whichMode), whichMode);
-            drawButton(b);
-          }
-        }
-        sound.click();
-
-      }
-      highlighted_button = noButton;
-    } else if (pad.down(LEFT_PAD)) {
+  } else if (pad.down(LEFT_PAD)
+//       || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
+    ) {
       if (currentScreen() > 0) {
         current_screen--;
         sound.swipe(DIRECTION_LEFT);
@@ -343,7 +319,9 @@ void LauncherApp::run() {
       } else {
         sound.bump();
       }
-  } else if (pad.down(RIGHT_PAD)) {
+  } else if (pad.down(RIGHT_PAD)
+//     || (pad.getGesture() == GESTURE_SWIPE_LEFT)
+  ) {
     if (currentScreen() < TOTAL_SCREENS - 1) {
       current_screen++;
       sound.swipe(DIRECTION_RIGHT);
@@ -353,6 +331,32 @@ void LauncherApp::run() {
     } else {
       sound.bump();
     }
+  } else if (pad.up(SCREEN_PAD)) {
+    drawButton(highlighted_button, false);
+
+    if (highlighted_button != noButton) {
+      BritepadApp* launched = apps[currentScreen()][b];
+      if (launched->isPopup()) {
+        launched->run();
+        if (!launched->isInvisible()) {
+          clearScreen();
+          drawButtons();
+        } else {
+          drawButton(b, false);
+        }
+      } else {
+        AppMode whichMode = screenMode(current_screen);
+        if (whichMode == INTERACTIVE_MODE) {
+          launchApp(launched);
+        } else {
+          launched->setEnabled(!launched->getEnabled(whichMode), whichMode);
+          drawButton(b);
+        }
+      }
+      sound.click();
+
+    }
+    highlighted_button = noButton;
   }
 }
 

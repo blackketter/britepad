@@ -126,6 +126,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
   if (currApp) {
     currApp->drawBars();
+    DEBUGF("Begin: %s\n", currApp->name());
     currApp->begin();
     currApp->setAppMode(asMode);
     if (asMode == SCREENSAVER_MODE) {

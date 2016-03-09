@@ -43,6 +43,8 @@ void StarfieldApp::setDirection(direction_t newDirection) {
       stars[i] = random(starRange);
       distance[i] = randomDistance();
     }
+  } else {
+
   }
 }
 

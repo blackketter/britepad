@@ -3,17 +3,32 @@
 #include "Debug.h"
 #include "Touchpad.h"
 
-uint16_t Gesture::compare(const Gesture& to) {
-  float dist = 0;
+uint16_t Gesture::compare(Gesture& to) {
+  uint16_t dist = 0;
   for (int i = 0; i < getSampleCount(); i++) {
     if (draw) {
-      screen.drawWideLine(samples[i].x*screen.clipWidth()/2+screen.clipMidWidth(),
-        samples[i].y*screen.clipHeight()/2+screen.clipMidHeight(),
-        to.samples[i].x*screen.clipWidth()/2+screen.clipMidWidth(),
-        to.samples[i].y*screen.clipHeight()/2+screen.clipMidHeight(), 4, draw);
-    DEBUGF("i: %d, to[i]: (%d,%d), samples[i]: (%d,%d)\n",i, to.samples[i].x, to.samples[i].y, samples[i].x, samples[i].y);
+      screen.drawWideLine(getSampleX(i)*screen.clipWidth()/2+screen.clipMidWidth(),
+        getSampleY(i)*screen.clipHeight()/2+screen.clipMidHeight(),
+        to.getSampleX(i)*screen.clipWidth()/2+screen.clipMidWidth(),
+        to.getSampleY(i)*screen.clipHeight()/2+screen.clipMidHeight(), 4, draw);
     }
-    dist += distance(samples[i],to.samples[i]);
+    point8_t fromPoint, toPoint;
+    getSample8(i, fromPoint);
+    to.getSample8(i, toPoint);
+    dist += distance8(fromPoint,toPoint);
+  }
+
+  return dist;
+}
+
+uint16_t Gesture::compare(gestureShape_t& to) {
+  uint16_t dist = 0;
+  for (int i = 0; i < getSampleCount(); i++) {
+    point8_t fromPoint, toPoint;
+    getSample8(i, fromPoint);
+    toPoint.x = to[i].x;
+    toPoint.y = to[i].y;
+    dist += distance8(fromPoint,toPoint);
   }
 
   return dist;
@@ -29,7 +44,7 @@ bool Gesture::capture() {
   DEBUGF("raw point count %d\n", rawPointCount);
   if (rawPointCount < minSamplesRequired()) {
     return false;
-  }
+  };
   // calculate path length
   float pathLength = 0;
   for (int i = 1; i < rawPointCount; i++) {
@@ -43,7 +58,7 @@ bool Gesture::capture() {
     return false;
   }
 
-  float interval = pathLength / (samplesPer-1);
+  float interval = pathLength / (samplesPerGesture-1);
 
   DEBUGF("pathLength: %d\n",pathLength);
   DEBUGF("interval %f\n",interval);
@@ -71,53 +86,54 @@ bool Gesture::capture() {
       i++;
       p = rawPoints[i];
     }
-  } while ((i < rawPointCount) && (getSampleCount() < samplesPer-1));
+  } while ((i < rawPointCount) && (getSampleCount() < samplesPerGesture-1));
 
   addSample(rawPoints[rawPointCount-1].x, rawPoints[rawPointCount-1].y);
 
   DEBUGF("new samples %d\n", getSampleCount());
   if (draw) {
     for (int i = 1; i < getSampleCount(); i++) {
-      screen.drawWideLine(samples[i].x,samples[i].y,samples[i-1].x,samples[i-1].y,3,screen.darkred);
-  //    screen.fillCircle(samples[i-1].x, samples[i-1].y, i == 1 ? 8 : 2, screen.red);
+      screen.drawWideLine(getSampleX(i),getSampleY(i),getSampleX(i-1),getSampleY(i-1),3,screen.darkred);
     }
   }
 
   // calculate centroid
-  for (int i = 0; i < samplesPer; i++) {
-    centroid.x += samples[i].x;
-    centroid.y += samples[i].y;
+  for (int i = 0; i < samplesPerGesture; i++) {
+    centroid.x += getSampleX(i);
+    centroid.y += getSampleY(i);
   }
-  centroid.x /= samplesPer;
-  centroid.y /= samplesPer;
+
+  centroid.x /= samplesPerGesture;
+  centroid.y /= samplesPerGesture;
+
   if (draw) {
     screen.fillCircle(centroid.x, centroid.y, 5, screen.yellow);
   }
-  // calculate theta
-  float dy = samples[0].y-centroid.y;
-  float dx = samples[0].x-centroid.x;
-  theta = atan(abs(dy)/abs(dx));
-  if (dx < 0) { theta = M_PI - theta; }
-  if (dy < 0) { theta = -theta; }
 
-  rotateBy(samples, samples, -theta);
+  // calculate the orientation (i.e. the angle, relative to the centroid, where the first touch was placed
+  float dy = getSampleY(0)-centroid.y;
+  float dx = getSampleX(0)-centroid.x;
+  orientation = atan(abs(dy)/abs(dx));
+  if (dx < 0) { orientation = M_PI - orientation; }
+  if (dy < 0) { orientation = -orientation; }
 
-  DEBUGF("theta %d\n", theta);
+  rotateBy(-orientation);
+
+  DEBUGF("orientation = %f\n", orientation);
   if (draw) {
     for (int i = 1; i < getSampleCount(); i++) {
-      screen.drawWideLine(samples[i].x,samples[i].y,samples[i-1].x,samples[i-1].y,2,screen.darkgreen);
-//      screen.fillCircle(samples[i-1].x, samples[i-1].y, i == 1 ? 8 : 2, screen.green);
+      screen.drawWideLine(getSampleX(i),getSampleY(i),getSampleX(i-1),getSampleY(i-1),2,screen.darkgreen);
     }
   }
 
   // find bounding box
-  float xmax = samples[0].x;
-  float ymax = samples[0].y;
+  float xmax = getSampleX(0);
+  float ymax = getSampleY(0);
   float xmin = xmax;
   float ymin = ymax;
-  for (int i = 1; i < samplesPer; i++) {
-    float x = samples[i].x;
-    float y = samples[i].y;
+  for (int i = 1; i < samplesPerGesture; i++) {
+    float x = getSampleX(i);
+    float y = getSampleY(i);
     xmax = x > xmax ? x : xmax;
     xmin = x < xmin ? x : xmin;
     ymax = y > ymax ? y : ymax;
@@ -130,28 +146,79 @@ bool Gesture::capture() {
   float aspect = max(width,height);
 
   // put in unit square and translate to origin
-  for (int i = 0; i < samplesPer; i++) {
-    samples[i].x = (samples[i].x-centroid.x)/aspect;
-    samples[i].y = (samples[i].y-centroid.y)/aspect;
+  for (int i = 0; i < samplesPerGesture; i++) {
+    setSample(i, (getSampleX(i)-centroid.x)/aspect, (getSampleY(i)-centroid.y)/aspect);
+//    DEBUGF("sample[%d] = %f, %f\n", i, getSampleX(i), getSampleY(i));
   }
   if (draw) {
     for (int i = 0; i < getSampleCount(); i++) {
-      screen.fillCircle(samples[i-1].x*screen.clipWidth()+screen.clipMidWidth(), samples[i-1].y*screen.clipHeight()+screen.clipMidHeight(), i == 1 ? 8 : 2, screen.darkyellow);
+      screen.fillCircle(getSampleX(i-1)*screen.clipWidth()+screen.clipMidWidth(), getSampleY(i-1)*screen.clipHeight()+screen.clipMidHeight(), i == 1 ? 8 : 2, screen.darkyellow);
     }
   }
 
-  // got a reasonble capture
+
+  // got a reasonable capture
   return true;
 }
 
-void Gesture::rotateBy(const pointf_t* p, pointf_t* q, float by) {
-  float sintheta = sin(by);
-  float costheta = cos(by);
+void Gesture::rotateBy(float by) {
+  float sinOrientation = sin(by);
+  float cosOrientation = cos(by);
 
-  for (int i = 0; i < samplesPer; i++) {
-    float dx = p[i].x-centroid.x;
-    float dy = p[i].y-centroid.y;
-    q[i].x = dx*costheta - dy*sintheta + centroid.x;
-    q[i].y = dx*sintheta + dy*costheta + centroid.y;
+  for (int i = 0; i < samplesPerGesture; i++) {
+    float dx = getSampleX(i)-centroid.x;
+    float dy = getSampleY(i)-centroid.y;
+    setSample(i, dx*cosOrientation - dy*sinOrientation + centroid.x, dx*sinOrientation + dy*cosOrientation + centroid.y);
   }
 }
+
+gesture_t Gesture::match(const gestureList_t gestureList) {
+  int currGestureIndex = 0;
+  gesture_t bestGesture = NO_GESTURE;
+  uint16_t bestDistance = UINT16_MAX;
+  angle8_t o8 = (uint8_t)((orientation + M_PI)*256/(2*M_PI))-64;
+
+  while (gestureList[currGestureIndex].gesture != NO_GESTURE) {
+    const gestureData_t* d = &gestureList[currGestureIndex];
+    angle8_t max = d->maxOrientation;
+    angle8_t min = d->minOrientation;
+
+    bool validOrientation = false;
+    if (min == max) {
+      validOrientation = true;
+    } else if (min < max && o8 < max && o8 > min) {
+      validOrientation = true;
+    } else if (o8 > min || o8 < max) {
+      validOrientation = true;
+    }
+
+    gesture_t currGesture = gestureList[currGestureIndex].gesture;
+    if (validOrientation) {
+      uint16_t currDist = compare(*(gestureList[currGestureIndex].shape));
+      if (currGesture < 0x20) {
+        DEBUGF("Match distance for 0x%02x: %d\n", currGesture, currDist);
+      } else {
+        DEBUGF("Match distance for '%c': %d\n", currGesture, currDist);
+      }
+
+      if (currDist < bestDistance) {
+        bestDistance = currDist;
+        bestGesture = currGesture;
+      }
+    } else {
+      if (currGesture < 0x20) {
+        DEBUGF("No match on orientation for 0x%02x\n", currGesture);
+      } else {
+        DEBUGF("No match on orientation for '%c' \n", currGesture);
+      }
+    }
+    currGestureIndex++;
+  }
+
+  if (bestDistance > MATCH_THRESHOLD) {
+    bestGesture = NO_GESTURE;
+  }
+
+  return bestGesture;
+}
+

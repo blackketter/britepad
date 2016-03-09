@@ -53,20 +53,24 @@ int MineMatrix::countRevealed() {
 
 
 void MineMatrix::revealNeighbors(int x, int y) {
-  if (x<0 || x>=getDotsWide() || y<0 || y>=getDotsHigh()) { return; }
+
+  if (!valid(x,y)) {
+    return;
+  }
 
   if (isMined(x,y)) {
     return;
-  } else {
-    if (!isRevealed(x,y) && !isMined(x,y) && !isFlagged(x,y)) {
-      setRevealed(x,y,true);
-      if (countNeighbors(x,y)==0) {
-        revealNeighbors(x-1,y-1); revealNeighbors(x,y-1); revealNeighbors(x+1,y-1);
-        revealNeighbors(x-1,y);                           revealNeighbors(x+1,y);
-        revealNeighbors(x-1,y+1); revealNeighbors(x,y+1); revealNeighbors(x+1,y+1);
-      }
+  }
+
+  if (!isRevealed(x,y) && !isFlagged(x,y)) {
+    setRevealed(x,y,true);
+    if (countNeighbors(x,y)==0) {
+      revealNeighbors(x-1,y-1); revealNeighbors(x,y-1); revealNeighbors(x+1,y-1);
+      revealNeighbors(x-1,y);                           revealNeighbors(x+1,y);
+      revealNeighbors(x-1,y+1); revealNeighbors(x,y+1); revealNeighbors(x+1,y+1);
     }
   }
+
 }
 
 void MineMatrix::updateDot(int x, int y) {

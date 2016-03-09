@@ -114,7 +114,25 @@ void Sound::bump() {
 }
 
 void Sound::swipe(direction_t d) {
-  beep(250, 300);
+  float f;
+  switch (d) {
+    case DIRECTION_UP:
+      f = MIDDLE_C_FREQ*2;
+      break;
+    case DIRECTION_DOWN:
+      f = MIDDLE_C_FREQ;
+      break;
+    case DIRECTION_LEFT:
+      f = A440_FREQ;
+      break;
+    case DIRECTION_RIGHT:
+      f = A440_FREQ*2;
+      break;
+    default:
+      DEBUG_LN("Bad direction");
+      f = MIDDLE_C_FREQ;
+  }
+  beep(250, f);
 }
 
 void Sound::tone(float freq, float volume) {

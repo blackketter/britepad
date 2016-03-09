@@ -17,7 +17,7 @@ class GestureApp : public BritepadApp {
 
   private:
     void drawDigit(int digit, color_t color);
-    int learndigit = -1;
+    int learndigit = 0;
     Gesture digits[10];
 };
 

@@ -131,7 +131,22 @@ void TouchPad::update() {
 //      DEBUG_LN("Exceeded history size");
     }
   }
+  if (!up(SCREEN_PAD)) {
+    gestureSearched = false;
+    lastGesture = Gesture::NO_GESTURE;
+  }
  }
+
+gesture_t TouchPad::getGesture() {
+  if ( gestureSearched || !up() ) { return lastGesture; }
+
+  Gesture newGesture;
+  newGesture.capture();
+
+  lastGesture = newGesture.match(defaultGestures);
+  gestureSearched = true;
+  return lastGesture;
+}
 
 bool TouchPad::getProximityPresent() {
 //  screen.drawLine(proximity, 239, 319,239, screen.blue);
@@ -194,12 +209,13 @@ void TouchPad::updateAPDS() {
       proximity = 0;
       DEBUG_LN("error reading proximity");
     }
-
+#if 0
     if (apds.isGestureAvailable()) {
       gesture = apds.readGesture();
     } else {
       gesture = 0;
     }
+#endif
   }
 }
 

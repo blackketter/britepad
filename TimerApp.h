@@ -8,10 +8,10 @@
 
 class TimerApp : public StopwatchApp {
   public:
-    void begin() { StopwatchApp::begin(); beeps = 10; }  // always start as a screensaver
     void end();
+    void begin() { BritepadApp::begin(); }  // StopwatchApp auto starts at launch
 
-    bool wantsToBe(AppMode m) { return isRunning() || !isReset(); }
+    bool wantsToBe(AppMode m) { return isRunning() || alarm_sounded; }
     bool disablesScreensavers() { return false; }
 
     const char* name() { return "Timer"; };
@@ -24,7 +24,7 @@ class TimerApp : public StopwatchApp {
     void alarm();
     virtual bool isRunning() { return mytimer.isRunning(); }  // are we counting down?
     virtual bool isPaused() { return mytimer.isPaused(); };
-    virtual bool isReset() { return (mytimer.isReset() || alarm_sounded || (isPaused()  &&  (mytimer.remainingSecs() == timerTime()))); }
+    virtual bool isReset() { return (mytimer.isReset() || (isPaused()  &&  (mytimer.remainingSecs() == timerTime()))); }
 
   private:
     time_t timerTime() { return timer_dur; };

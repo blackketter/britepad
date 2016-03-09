@@ -14,7 +14,7 @@ void SetAlarmApp::begin() {
 
   AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
   if (alarm) {
-  debugf("getting alarm time of %d\n", alarm->getAlarmTime());
+    DEBUGF("getting alarm time of %d\n", alarm->getAlarmTime());
     alarmTime.setSeconds(alarm->getAlarmTime());
     alarmEnabled = alarm->getAlarmEnabled();
   }

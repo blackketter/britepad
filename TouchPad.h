@@ -3,6 +3,7 @@
 
 #include "Types.h"
 #include "Clock.h"
+#include "Gesture.h"
 
 // todo - turn these into a scoped enum
 #define SCREEN_PAD 0
@@ -59,6 +60,8 @@ class TouchPad {
     int getHistoryCount() { return historyCount; }
     point_t* getHistory() { return history; }
 
+    gesture_t getGesture();
+
   private:
     coord_t height;
     coord_t width;
@@ -78,6 +81,8 @@ class TouchPad {
     point_t history[maxHistory];
     int historyCount = 0;
 
+    gesture_t lastGesture = Gesture::NO_GESTURE;
+    bool gestureSearched = false;
 
     void initAPDS();
     void updateAPDS();
@@ -86,7 +91,6 @@ class TouchPad {
 
     uint16_t ambientLight;
     uint8_t proximity;
-    int gesture;
 
 };
 

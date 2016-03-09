@@ -88,11 +88,10 @@ void StopwatchApp::drawTime() {
       delta = -startMillis;
     }
 
-    int hours = delta/(60*60*1000)%60;
-    int mins = delta/(60*1000)%60;
-    int secs = delta/1000%60;
-    int tenths = delta/100%10;
-
+    int hours = (delta / Time::millisPerHour) % 99;
+    int mins =  (delta / Time::millisPerMin) % 60;
+    int secs =  (delta / Time::millisPerSec) % 60;
+    int tenths =(delta / (Time::millisPerSec/10)) % 10;
 
     char textTime[8];
 
@@ -102,6 +101,10 @@ void StopwatchApp::drawTime() {
       sprintf(textTime, " %02d:%02d.%01d ", mins, secs, tenths);
     } else {
       sprintf(textTime, "%02d:%02d:%02d", hours, mins, secs);
+    }
+    static millis_t lastDrawSecs = 0;
+    if (lastDrawSecs/1000!=nowMillis/1000) {
+      lastDrawSecs = nowMillis;
     }
 
     coord_t w = screen.measureTextWidth(textTime);

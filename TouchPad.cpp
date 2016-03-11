@@ -145,13 +145,11 @@ bool TouchPad::didGesture() {
 }
 
 gesture_t TouchPad::getGesture(const gestureData_t* gestureList) {
-  DEBUGF("GetGesture\n");
   if ( gesturesSearched == gestureList || !up() ) { return lastGesture; }
 
 
   Gesture newGesture;
 
-  DEBUGF("Capture\n");
   if (newGesture.capture()) {
     lastGesture = newGesture.match(gestureList, &lastGestureDistance);
     lastGestureOrientation = newGesture.getOrientation();

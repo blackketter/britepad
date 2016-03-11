@@ -319,7 +319,6 @@ void LauncherApp::run() {
   } else if (!pad.didGesture()) {
 
      if (pad.up(SCREEN_PAD)) {
-      DEBUGF("Pad up\n");
       drawButton(highlighted_button, false);
 
       if (highlighted_button != noButton) {
@@ -346,10 +345,8 @@ void LauncherApp::run() {
       }
       highlighted_button = noButton;
     } else if (pad.touched(SCREEN_PAD)) {
-      DEBUGF("Pad touched\n");
 
       if (b != noButton) {
-        DEBUGF("!=noButton\n");
         if (b != highlighted_button) {
           drawButton(highlighted_button, false);
           drawButton(b, true);
@@ -364,7 +361,6 @@ void LauncherApp::run() {
           }
         }
       } else {
-        DEBUGF("==noButton %d\n",highlighted_button);
         drawButton(highlighted_button, false);
         highlighted_button = noButton;
       }
@@ -373,7 +369,7 @@ void LauncherApp::run() {
       drawButton(highlighted_button, false);
       highlighted_button = noButton;
   }
-  DEBUGF("End run\n");
+
 }
 
 int LauncherApp::currentScreen() {

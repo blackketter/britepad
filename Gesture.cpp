@@ -203,9 +203,9 @@ gesture_t Gesture::match(const gestureData_t* gestureList, uint16_t* distance) {
     if (validOrientation) {
       uint16_t currDist = compare(*(gestureList[currGestureIndex].shape));
       if (currGesture < 0x20) {
-        DEBUGF("Match distance for 0x%02x: %d\n", currGesture, currDist);
+        DEBUGF("Match orientation & distance for 0x%02x: %d\n", currGesture, currDist);
       } else {
-        DEBUGF("Match distance for '%c': %d\n", currGesture, currDist);
+        DEBUGF("Match orientation & distance for '%c': %d\n", currGesture, currDist);
       }
 
       if (currDist < bestDistance) {
@@ -214,9 +214,9 @@ gesture_t Gesture::match(const gestureData_t* gestureList, uint16_t* distance) {
       }
     } else {
       if (currGesture < 0x20) {
-        DEBUGF("No match on orientation for 0x%02x\n", currGesture);
+        //DEBUGF("No match on orientation for 0x%02x\n", currGesture);
       } else {
-        DEBUGF("No match on orientation for '%c' \n", currGesture);
+        //DEBUGF("No match on orientation for '%c' \n", currGesture);
       }
     }
     currGestureIndex++;

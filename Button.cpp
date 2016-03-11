@@ -47,7 +47,7 @@ void Button::track() {
   bool h = hit(pad.x(), pad.y());
 
   if (highlighted) {
-    if (pad.up(SCREEN_PAD) || (pad.touched(SCREEN_PAD) && !h)) {
+    if (!pad.touched(SCREEN_PAD) || !h) {
       setHighlighted(false);
     }
   } else {

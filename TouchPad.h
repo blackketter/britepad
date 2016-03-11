@@ -60,7 +60,10 @@ class TouchPad {
     int getHistoryCount() { return historyCount; }
     point_t* getHistory() { return history; }
 
-    gesture_t getGesture();
+    bool didGesture();
+    gesture_t getGesture(const gestureData_t* gestureList = defaultGestures);
+    angle8_t getGestureOrientation() { return lastGestureOrientation; }
+    uint16_t getGestureDistance() { return lastGestureDistance; }
 
   private:
     coord_t height;
@@ -82,7 +85,9 @@ class TouchPad {
     int historyCount = 0;
 
     gesture_t lastGesture = Gesture::NO_GESTURE;
-    bool gestureSearched = false;
+    angle8_t lastGestureOrientation = 0;
+    uint16_t lastGestureDistance = 0;
+    const gestureData_t* gesturesSearched;
 
     void initAPDS();
     void updateAPDS();

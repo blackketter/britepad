@@ -30,9 +30,7 @@ struct gestureData_t {
   gestureShape_t* shape;
 };
 
-typedef gestureData_t gestureList_t[];
-
-extern const gestureList_t defaultGestures;
+extern const gestureData_t* defaultGestures;
 
 // encapsulates a touchpad gesture, with a series of points that can be compared against other gestures
 class Gesture {
@@ -40,18 +38,21 @@ class Gesture {
     Gesture() { reset(); }
     void reset() { sampleCount = 0; width=0; height=0; orientation=0; centerx=0; centery=0; centroid.x=0;centroid.y=0;}
     bool capture(); // captures from the global touchpad
+
     uint16_t compare(Gesture &to); // sum of distances of points.  0 is a perfect match
     uint16_t compare(gestureShape_t& to);
+    angle8_t getOrientation();
 
     void setDraw(color_t color) { draw = color; }
 
     static const gesture_t NO_GESTURE = 0;
-    gesture_t match(const gestureList_t gestureList = defaultGestures);
+    gesture_t match(const gestureData_t* gestureList = defaultGestures, uint16_t* distance = nullptr);
 
     void getSample8(int i, point8_t& t) { t.x = samplesf[i].x*128; t.y = samplesf[i].y*128; }
 
   private:
-    static const uint16_t MATCH_THRESHOLD = 1000;  // todo
+    static const uint16_t MATCH_THRESHOLD = 500;  // seems about right
+
     uint8_t getSampleCount() { return sampleCount; }
     int minSamplesRequired() { return 10; }  // seems like a reasonable number
     int minPathLength() { return 25; }

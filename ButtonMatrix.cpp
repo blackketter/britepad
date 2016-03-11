@@ -56,3 +56,30 @@ Button* ButtonMatrix::down() {
   return nullptr;
 }
 
+
+Button* ButtonMatrix::up() {
+
+  for (int r = 0; r < buttonRows; r++) {
+    for (int c = 0; c < buttonColumns; c++) {
+      int i = index(r,c,currMap);
+      if (buttons[i]->up()) {
+        return buttons[i];
+      }
+    }
+  }
+  return nullptr;
+}
+
+Button* ButtonMatrix::getID(widgetid_t id) {
+
+  for (int r = 0; r < buttonRows; r++) {
+    for (int c = 0; c < buttonColumns; c++) {
+      int i = index(r,c,currMap);
+      DEBUGF("Button %d, %d id: %d\n", r,c,buttons[i]->getID());
+      if (buttons[i]->getID() == id) {
+        return buttons[i];
+      }
+    }
+  }
+  return nullptr;
+}

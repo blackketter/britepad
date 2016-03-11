@@ -132,19 +132,32 @@ void TouchPad::update() {
     }
   }
   if (!up(SCREEN_PAD)) {
-    gestureSearched = false;
+    gesturesSearched = nullptr;
     lastGesture = Gesture::NO_GESTURE;
   }
  }
 
-gesture_t TouchPad::getGesture() {
-  if ( gestureSearched || !up() ) { return lastGesture; }
+
+// todo: save this capture and reuse in getGesture()
+bool TouchPad::didGesture() {
+  Gesture newGesture;
+  return (up() && newGesture.capture());
+}
+
+gesture_t TouchPad::getGesture(const gestureData_t* gestureList) {
+  DEBUGF("GetGesture\n");
+  if ( gesturesSearched == gestureList || !up() ) { return lastGesture; }
+
 
   Gesture newGesture;
-  newGesture.capture();
 
-  lastGesture = newGesture.match(defaultGestures);
-  gestureSearched = true;
+  DEBUGF("Capture\n");
+  if (newGesture.capture()) {
+    lastGesture = newGesture.match(gestureList, &lastGestureDistance);
+    lastGestureOrientation = newGesture.getOrientation();
+    gesturesSearched = gestureList;
+  }
+
   return lastGesture;
 }
 

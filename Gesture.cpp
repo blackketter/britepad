@@ -41,7 +41,7 @@ bool Gesture::capture() {
   }
   point_t* rawPoints = pad.getHistory();
   int rawPointCount = pad.getHistoryCount();
-  DEBUGF("raw point count %d\n", rawPointCount);
+//  DEBUGF("raw point count %d\n", rawPointCount);
   if (rawPointCount < minSamplesRequired()) {
     return false;
   };
@@ -119,7 +119,7 @@ bool Gesture::capture() {
 
   rotateBy(-orientation);
 
-  DEBUGF("orientation = %f\n", orientation);
+//  DEBUGF("orientation = %f\n", orientation);
   if (draw) {
     for (int i = 1; i < getSampleCount(); i++) {
       screen.drawWideLine(getSampleX(i),getSampleY(i),getSampleX(i-1),getSampleY(i-1),2,screen.darkgreen);
@@ -172,22 +172,29 @@ void Gesture::rotateBy(float by) {
   }
 }
 
-gesture_t Gesture::match(const gestureList_t gestureList) {
+angle8_t Gesture::getOrientation() {
+  return (uint8_t)((orientation + M_PI)*256/(2*M_PI))-64;
+}
+
+gesture_t Gesture::match(const gestureData_t* gestureList, uint16_t* distance) {
   int currGestureIndex = 0;
   gesture_t bestGesture = NO_GESTURE;
   uint16_t bestDistance = UINT16_MAX;
-  angle8_t o8 = (uint8_t)((orientation + M_PI)*256/(2*M_PI))-64;
+  angle8_t o8 = getOrientation();
 
   while (gestureList[currGestureIndex].gesture != NO_GESTURE) {
     const gestureData_t* d = &gestureList[currGestureIndex];
-    angle8_t max = d->maxOrientation;
+
     angle8_t min = d->minOrientation;
+    angle8_t max = d->maxOrientation;
 
     bool validOrientation = false;
     if (min == max) {
       validOrientation = true;
-    } else if (min < max && o8 < max && o8 > min) {
-      validOrientation = true;
+    } else if (min < max) {
+      if (o8 < max && o8 > min) {
+        validOrientation = true;
+      }
     } else if (o8 > min || o8 < max) {
       validOrientation = true;
     }
@@ -218,6 +225,8 @@ gesture_t Gesture::match(const gestureList_t gestureList) {
   if (bestDistance > MATCH_THRESHOLD) {
     bestGesture = NO_GESTURE;
   }
+
+  if (distance) { *distance = bestDistance; }
 
   return bestGesture;
 }

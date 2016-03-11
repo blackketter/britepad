@@ -153,6 +153,7 @@ void LauncherApp::begin() {
   } else if (pad.touched(RIGHT_PAD)) {
     current_screen = 2;
   }
+  highlighted_button = noButton;
 
   if (pad.down(TOP_PAD)) {
     sound.swipe(DIRECTION_DOWN);
@@ -287,31 +288,12 @@ void LauncherApp::run() {
       britepad.disableScreensavers();
       launchOnRelease = nullptr;
     }
-  } else if (pad.touched(SCREEN_PAD)) {
-
-    if (b != noButton) {
-      if (b != highlighted_button) {
-        drawButton(highlighted_button, false);
-        drawButton(b, true);
-        highlighted_button = b;
-      } else {
-        if (pad.time() - pad.lastDownTime(SCREEN_PAD) > holdTime) {
-          if (getButton(b)) {
-            sound.click();
-            clearScreen();
-            launchOnRelease = getButton(b);
-          }
-        }
-      }
-    } else {
-      drawButton(highlighted_button, false);
-      highlighted_button = noButton;
-    }
   } else if (pad.down(LEFT_PAD)
-//       || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
+       || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
     ) {
       if (currentScreen() > 0) {
         current_screen--;
+        highlighted_button = noButton;
         sound.swipe(DIRECTION_LEFT);
         screen.pushFill(DIRECTION_LEFT, bgColor());
         drawBars();
@@ -320,10 +302,11 @@ void LauncherApp::run() {
         sound.bump();
       }
   } else if (pad.down(RIGHT_PAD)
-//     || (pad.getGesture() == GESTURE_SWIPE_LEFT)
+     || (pad.getGesture() == GESTURE_SWIPE_LEFT)
   ) {
     if (currentScreen() < TOTAL_SCREENS - 1) {
       current_screen++;
+      highlighted_button = noButton;
       sound.swipe(DIRECTION_RIGHT);
       screen.pushFill(DIRECTION_RIGHT, bgColor());
       drawBars();
@@ -331,33 +314,66 @@ void LauncherApp::run() {
     } else {
       sound.bump();
     }
-  } else if (pad.up(SCREEN_PAD)) {
-    drawButton(highlighted_button, false);
+  } else if (pad.getGesture() == GESTURE_SWIPE_UP) {
+    exit();
+  } else if (!pad.didGesture()) {
 
-    if (highlighted_button != noButton) {
-      BritepadApp* launched = apps[currentScreen()][b];
-      if (launched->isPopup()) {
-        launched->run();
-        if (!launched->isInvisible()) {
-          clearScreen();
-          drawButtons();
+     if (pad.up(SCREEN_PAD)) {
+      DEBUGF("Pad up\n");
+      drawButton(highlighted_button, false);
+
+      if (highlighted_button != noButton) {
+        BritepadApp* launched = apps[currentScreen()][b];
+        if (launched->isPopup()) {
+          launched->run();
+          if (!launched->isInvisible()) {
+            clearScreen();
+            drawButtons();
+          } else {
+            drawButton(b, false);
+          }
         } else {
-          drawButton(b, false);
+          AppMode whichMode = screenMode(current_screen);
+          if (whichMode == INTERACTIVE_MODE) {
+            launchApp(launched);
+          } else {
+            launched->setEnabled(!launched->getEnabled(whichMode), whichMode);
+            drawButton(b);
+          }
+        }
+        sound.click();
+
+      }
+      highlighted_button = noButton;
+    } else if (pad.touched(SCREEN_PAD)) {
+      DEBUGF("Pad touched\n");
+
+      if (b != noButton) {
+        DEBUGF("!=noButton\n");
+        if (b != highlighted_button) {
+          drawButton(highlighted_button, false);
+          drawButton(b, true);
+          highlighted_button = b;
+        } else {
+          if (pad.time() - pad.lastDownTime(SCREEN_PAD) > holdTime) {
+            if (getButton(b)) {
+              sound.click();
+              clearScreen();
+              launchOnRelease = getButton(b);
+            }
+          }
         }
       } else {
-        AppMode whichMode = screenMode(current_screen);
-        if (whichMode == INTERACTIVE_MODE) {
-          launchApp(launched);
-        } else {
-          launched->setEnabled(!launched->getEnabled(whichMode), whichMode);
-          drawButton(b);
-        }
+        DEBUGF("==noButton %d\n",highlighted_button);
+        drawButton(highlighted_button, false);
+        highlighted_button = noButton;
       }
-      sound.click();
-
     }
-    highlighted_button = noButton;
+  } else if (highlighted_button != noButton && pad.touched()) {
+      drawButton(highlighted_button, false);
+      highlighted_button = noButton;
   }
+  DEBUGF("End run\n");
 }
 
 int LauncherApp::currentScreen() {

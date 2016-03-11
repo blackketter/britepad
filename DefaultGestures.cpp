@@ -12,9 +12,9 @@ gestureShape_t gesture_7 = { {75,0},{69,1},{65,3},{59,6},{54,8},{49,10},{43,12},
 gestureShape_t gesture_8 = { {68,0},{62,-11},{55,-21},{48,-32},{40,-41},{30,-49},{19,-54},{6,-56},{-3,-52},{-11,-43},{-17,-32},{-22,-20},{-26,-8},{-28,3},{-31,15},{-34,28},{-36,40},{-42,51},{-53,52},{-60,43},{-56,32},{-49,21},{-38,16},{-26,16},{-13,17},{-1,19},{11,20},{23,19},{36,18},{46,13},{51,2},{56,-9}, };
 gestureShape_t gesture_9 = { {57,0},{48,-6},{40,-14},{32,-22},{22,-28},{12,-33},{2,-39},{-8,-42},{-19,-45},{-30,-46},{-41,-45},{-50,-39},{-54,-29},{-50,-18},{-44,-9},{-34,-2},{-24,2},{-14,6},{-2,7},{8,6},{19,5},{30,3},{41,2},{32,8},{24,16},{17,25},{10,32},{5,41},{-1,51},{-6,61},{-10,71},{-16,81}, };
 
-const gestureList_t defaultGestures = {
+const gestureData_t defaultGesturesArray[] = {
   { '0', DEGREES(270), DEGREES(90), &gesture_0 },
-  { '1', DEGREES(270), DEGREES(90), &gesture_1 },
+  { '1', DEGREES(315), DEGREES(45), &gesture_1 },
   { '2', DEGREES(270), DEGREES(90), &gesture_2 },
   { '3', DEGREES(270), DEGREES(90), &gesture_3 },
   { '4', DEGREES(270), DEGREES(90), &gesture_4 },
@@ -33,3 +33,4 @@ const gestureList_t defaultGestures = {
   { 0, 0, 0, NULL }  // last gesture in list
 };
 
+const gestureData_t* defaultGestures = defaultGesturesArray;

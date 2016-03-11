@@ -5,80 +5,81 @@
 #include "Sound.h"
 #include "Limits.h"
 
-void GestureApp::drawDigit(int digit, color_t color) {
-  screen.setFont(Arial_20);
-  screen.setCursor(screen.clipLeft(), screen.clipTop());
-  screen.setTextColor(color, bgColor());
-  if (digit >= 0 && digit <= 9) {
-    screen.drawTextF("%1d",digit);
-  }
-}
-
 void GestureApp::run() {
   BritepadApp::run();
 
-  // learndigit > 9 = done learning
+  screen.setFont(Arial_14);
+  screen.setCursor(screen.clipLeft(), screen.clipTop());
 
   if (pad.up(BOTTOM_PAD)) {
+    learning = !learning;
     clearScreen();
-    if (learndigit > 9) {
-      learndigit = 0;
-    } else {
-      learndigit++;
+    if (learning) {
+      sound.beep();
+      screen.setTextColor(screen.red);
+      screen.drawText("Learning");
     }
-    sound.beep();
   }
 
-  if (learndigit <= 9) {
-    drawDigit(learndigit, screen.red);
+  if (pad.down(SCREEN_PAD)) {
+    clearScreen();
+    lastPoint.x = pad.x();
+    lastPoint.y = pad.y();
+  }
+
+  if (pad.touched(SCREEN_PAD)) {
+    screen.fillCircle(pad.x(),pad.y(), 4, screen.yellow);
+    screen.drawLine(lastPoint.x, lastPoint.y, pad.x(), pad.y(), screen.yellow);
+    lastPoint.x = pad.x();
+    lastPoint.y = pad.y();
   }
 
   if (pad.up(SCREEN_PAD)) {
-    if (learndigit <= 9) {
-      digits[learndigit].setDraw(true);
-      if (digits[learndigit].capture()) {
-        // captured a gesture
-        PRINTF("\ngestureShape_t gesture_%d = { ", learndigit);
-        for (int i = 0; i < samplesPerGesture; i++) {
-          point8_t p;
-          digits[learndigit].getSample8(i,p);
-          PRINTF("{%d,%d},", p.x,p.y);
-        }
-        PRINTF(" };\n\n");
+    if (learning) {
+      if (learned.capture()) {
+        printData(learned);
+        learned.setDraw(true);
       } else {
         // digit didn't capture
         sound.beep();
       }
+      learning = false;
     } else {
       Gesture gesture;
-      clearScreen();
       if (gesture.capture()) {
-        // do the comparison
-        uint16_t curdist;
-        uint16_t mindist = UINT16_MAX;
-        int mindigit = 0;
-
-        DEBUGF("Distances: ");
-        for (int i = 0; i < 10; i++) {
-          curdist = gesture.compare(digits[i]);
-          PRINTF("%d:%d, ",i, curdist);
-          if (curdist < mindist) {
-            mindist = curdist;
-            mindigit = i;
-          }
-        }
-        PRINTF("\n");
+        printData(gesture);
         gesture.setDraw(screen.green);
-        gesture.compare(digits[mindigit]);
-        drawDigit(mindigit, screen.green);
+        uint16_t learnedDist = gesture.compare(learned);
 
-        DEBUGF("Testing against standard gestures: '%c' 0x%02x", pad.getGesture(), pad.getGesture());
+        DEBUGF("Match against learned gesture distance: %d\n", learnedDist);
+        DEBUGF("Match against standard gestures: '%c' 0x%02x, angle: %d\n", pad.getGesture(), pad.getGesture(), pad.getGestureOrientation());
+        screen.setTextColor(screen.green);
+        if (pad.getGesture() == NO_GESTURE) {
+          sound.beep();
+          screen.setTextColor(screen.red);
+          screen.drawText("No match\n");
+        } else if (pad.getGesture() < 0x21) {
+          screen.drawTextF("Match: 0x%02x\n", pad.getGesture());
+        } else {
+          screen.drawTextF("Match: %c\n",pad.getGesture());
+        }
+        screen.drawTextF("Distance: %d\nLearned distance: %d", pad.getGestureDistance(), learnedDist);
+
       } else {
         // no capture, probably just a tap
-        drawDigit(-1, screen.red);
         sound.beep();
       }
     }
   }
 }
 
+void GestureApp::printData(Gesture g) {
+  // captured a gesture
+  PRINTF("\ngestureShape_t gesture_SYMBOL = { ");
+  for (int i = 0; i < samplesPerGesture; i++) {
+    point8_t p;
+    g.getSample8(i,p);
+    PRINTF("{%d,%d},", p.x,p.y);
+  }
+  PRINTF(" };\n\n");
+}

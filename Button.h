@@ -47,16 +47,15 @@ class Button : public Widget {
 
     void draw();
 
+    virtual bool getHighlighted() { return highlighted; };
+    virtual void setHighlighted(bool highlight) { highlighted = highlight; highlightedTime = pad.time(); draw(); };
+
   protected:
     virtual void drawbg();
     virtual void drawTitle();
     virtual void drawIcon();
 
     virtual color_t fillColor();
-
-
-    virtual bool getHighlighted() { return highlighted; };
-    virtual void setHighlighted(bool highlight) { highlighted = highlight; highlightedTime = pad.time(); draw(); };
 
     const char* titleStr;
 

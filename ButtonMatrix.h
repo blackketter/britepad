@@ -24,12 +24,13 @@ class ButtonMatrix : public Widget {
     void deleteButtons() { if (buttons) { for (int i = 0; i < totalButtons(); i++) { delete buttons[i]; }; delete buttons; buttons = nullptr; } }
 
     Button* down();
+    Button* up();
     void draw();
 
     void setMap(int newMap) { if (currMap != newMap) { currMap = newMap; draw();} }
     int getMap() { return currMap; };
 
-
+    Button* getID(widgetid_t id);
 
   protected:
     int index(int row, int column, int map) { return map*buttonRows*buttonColumns + row*buttonColumns + column; };

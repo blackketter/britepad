@@ -16,9 +16,10 @@ class GestureApp : public BritepadApp {
     static constexpr appid_t ID = "gest";
 
   private:
-    void drawDigit(int digit, color_t color);
-    int learndigit = 0;
-    Gesture digits[10];
+    bool learning = false;
+    Gesture learned;
+    point_t lastPoint;
+    void printData(Gesture g);
 };
 
 #endif

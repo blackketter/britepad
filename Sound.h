@@ -33,6 +33,7 @@ class Sound {
     void tuneTranspose(int8_t k) { transpose = k; }
 
   private:
+    void updateMainGain();
     float mainGain = 1.0;  // negative gains are muted
 
     float lastToneVolume = 0.0;

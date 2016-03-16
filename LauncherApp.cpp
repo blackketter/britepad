@@ -32,6 +32,7 @@
 #include "PaintApp.h"
 #include "PassApp.h"
 #include "RebootApp.h"
+#include "ScribbleClockApp.h"
 #include "SeqApp.h"
 #include "SetAlarmApp.h"
 #include "SetClockApp.h"
@@ -72,6 +73,7 @@ LauncherApp::LauncherApp() {
   setButton(CLOCKS_SCREEN, p++,  new CountdownApp);
   setButton(CLOCKS_SCREEN, p++,  new WordClockApp);
   setButton(CLOCKS_SCREEN, p++,  new ChromaClockApp);
+  setButton(CLOCKS_SCREEN, p++,  new ScribbleClockApp);
 
 
 

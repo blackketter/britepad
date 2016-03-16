@@ -16,12 +16,7 @@ class HexDotClockApp : public ClockApp {
     static constexpr appid_t ID = "hexc";
 
   protected:
-    millis_t lastRedraw = 0;
-    color_t currentColor = screen.red;
-    coord_t lastWidth = 0;
-    static const millis_t redrawInterval = 1000;
     HexDotMatrix* dots = nullptr;
-
     void drawDigit(uint8_t digit, uint8_t xoff, uint8_t yoff);
  };
 

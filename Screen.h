@@ -54,8 +54,11 @@ class Screen : public ILI9341_t3 {
     void setBacklight(uint8_t brightness);
     uint8_t getBacklight();
 
-    void drawTextF(const char* format, ...);
+    // inline utility functions that use point_t and rect_t typedefs
+    void fillRectx(rect_t& r, color_t c) { fillRect(r.x, r.y, r.w, r.h, c); }
+    void drawLinex(point_t& f, point_t& t, color_t c) { drawLine(f.x,f.y,t.x,t.y,c); }
 
+    void drawTextF(const char* format, ...);
   	void drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color);
 
     void pushFill(direction_t dir, color_t color);

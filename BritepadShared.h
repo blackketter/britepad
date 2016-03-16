@@ -21,7 +21,7 @@ extern MousePad mouse;
 extern Britepad britepad;
 
 #include "Clock.h"
-extern Clock clock;
+extern TeensyRTCClock clock;
 
 #include "Timer.h"
 

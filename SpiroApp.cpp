@@ -56,8 +56,8 @@ void SpiroApp::run() {
 
   point_t p;
   // Hypotrochoid
-  p.x = scale*((R - r)*cos(theta) + d*cos(theta*(R-r)/r));
-  p.y = scale*((R - r)*sin(theta) - d*sin(theta*(R-r)/r));
+  p.x = scale*((R - r)*cosf(theta) + d*cosf(theta*(R-r)/r));
+  p.y = scale*((R - r)*sinf(theta) - d*sinf(theta*(R-r)/r));
 
   p.x += center.x;
   p.y += center.y;

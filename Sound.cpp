@@ -51,7 +51,7 @@ void Sound::begin() {
   mixer1.gain(2, 0.25);
   mixer1.gain(3, 0.25);
 
-  finalMixer.gain(0, mainGain);
+  updateMainGain();
 
   tunePlayerBegin();
 
@@ -196,14 +196,17 @@ void Sound::setMute(bool mute) {
       mainGain = -mainGain;
     }
   }
-
-  finalMixer.gain(0, mainGain);
+  updateMainGain();
 }
 
 void Sound::setVolume(float volume) {
 
-  mainGain = volume;
-  finalMixer.gain(0, mainGain);
+  mainGain = mainGain < 0 ? -volume : volume;
+  updateMainGain();
+}
+
+void Sound::updateMainGain() {
+  finalMixer.gain(0, mainGain < 0 ? 0 : mainGain);
 }
 
 void Sound::idle() {

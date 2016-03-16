@@ -75,11 +75,11 @@ void GestureApp::run() {
 
 void GestureApp::printData(Gesture g) {
   // captured a gesture
-  PRINTF("\ngestureShape_t gesture_SYMBOL = { ");
+  PRINTF("\ngestureShape_t gesture_SYMBOL = { %d, {", g.getOrientation());
   for (int i = 0; i < samplesPerGesture; i++) {
     point8_t p;
     g.getSample8(i,p);
     PRINTF("{%d,%d},", p.x,p.y);
   }
-  PRINTF(" };\n\n");
+  PRINTF(" }};\n\n");
 }

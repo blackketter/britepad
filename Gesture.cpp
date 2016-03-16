@@ -26,8 +26,8 @@ uint16_t Gesture::compare(gestureShape_t& to) {
   for (int i = 0; i < getSampleCount(); i++) {
     point8_t fromPoint, toPoint;
     getSample8(i, fromPoint);
-    toPoint.x = to[i].x;
-    toPoint.y = to[i].y;
+    toPoint.x = to.points[i].x;
+    toPoint.y = to.points[i].y;
     dist += distance8(fromPoint,toPoint);
   }
 
@@ -119,7 +119,6 @@ bool Gesture::capture() {
 
   rotateBy(-orientation);
 
-//  DEBUGF("orientation = %f\n", orientation);
   if (draw) {
     for (int i = 1; i < getSampleCount(); i++) {
       screen.drawWideLine(getSampleX(i),getSampleY(i),getSampleX(i-1),getSampleY(i-1),2,screen.darkgreen);
@@ -140,19 +139,23 @@ bool Gesture::capture() {
     ymin = y < ymin ? y : ymin;
   }
 
-  width = xmax - xmin;
-  height = ymax - ymin;
+  float width = xmax - xmin;
+  float height = ymax - ymin;
 
   float aspect = max(width,height);
 
+  DEBUGF("orientation: %f\n", orientation);
+  DEBUGF("xmax: %f, xmin: %f, ymax: %f, ymin: %f, width: %d, height: %d, aspect: %f\n", xmax,xmin,ymax,ymin,width,height,aspect);
+  DEBUGF("centroid %f,%f\n",centroid.x, centroid.y);
+
   // put in unit square and translate to origin
   for (int i = 0; i < samplesPerGesture; i++) {
-    setSample(i, (getSampleX(i)-centroid.x)/aspect, (getSampleY(i)-centroid.y)/aspect);
+    setSample(i, (getSampleX(i)-xmin)/aspect, (getSampleY(i)-ymin)/aspect);
 //    DEBUGF("sample[%d] = %f, %f\n", i, getSampleX(i), getSampleY(i));
   }
   if (draw) {
     for (int i = 0; i < getSampleCount(); i++) {
-      screen.fillCircle(getSampleX(i-1)*screen.clipWidth()+screen.clipMidWidth(), getSampleY(i-1)*screen.clipHeight()+screen.clipMidHeight(), i == 1 ? 8 : 2, screen.darkyellow);
+      screen.fillCircle(getSampleX(i)*screen.clipWidth()+screen.clipLeft(), getSampleY(i)*screen.clipHeight()+screen.clipTop(), i == 1 ? 8 : 2, screen.darkyellow);
     }
   }
 
@@ -162,8 +165,8 @@ bool Gesture::capture() {
 }
 
 void Gesture::rotateBy(float by) {
-  float sinOrientation = sin(by);
-  float cosOrientation = cos(by);
+  float sinOrientation = sinf(by);
+  float cosOrientation = cosf(by);
 
   for (int i = 0; i < samplesPerGesture; i++) {
     float dx = getSampleX(i)-centroid.x;
@@ -180,6 +183,8 @@ gesture_t Gesture::match(const gestureData_t* gestureList, uint16_t* distance) {
   int currGestureIndex = 0;
   gesture_t bestGesture = NO_GESTURE;
   uint16_t bestDistance = UINT16_MAX;
+  uint16_t secondBestDistance = UINT16_MAX;
+
   angle8_t o8 = getOrientation();
 
   while (gestureList[currGestureIndex].gesture != NO_GESTURE) {
@@ -209,8 +214,11 @@ gesture_t Gesture::match(const gestureData_t* gestureList, uint16_t* distance) {
       }
 
       if (currDist < bestDistance) {
+        secondBestDistance = bestDistance;
         bestDistance = currDist;
         bestGesture = currGesture;
+      } else if (currDist < secondBestDistance) {
+        secondBestDistance = currDist;
       }
     } else {
       if (currGesture < 0x20) {
@@ -222,7 +230,11 @@ gesture_t Gesture::match(const gestureData_t* gestureList, uint16_t* distance) {
     currGestureIndex++;
   }
 
-  if (bestDistance > MATCH_THRESHOLD) {
+  int bestBy = (secondBestDistance - bestDistance)*100/secondBestDistance;
+
+  DEBUGF("bestDistance: %d, secondBest: %d, bestby: %d\%\n", bestDistance, secondBestDistance, bestBy);
+  if ( (bestDistance > MATCH_THRESHOLD) ||
+       (bestBy < MATCH_BESTBY)) {
     bestGesture = NO_GESTURE;
   }
 

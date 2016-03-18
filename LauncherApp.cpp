@@ -291,7 +291,7 @@ void LauncherApp::run() {
       launchOnRelease = nullptr;
     }
   } else if (pad.down(LEFT_PAD)
-       || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
+       || (pad.getGesture() == GESTURE_SWIPE_LEFT)
     ) {
       if (currentScreen() > 0) {
         current_screen--;
@@ -304,7 +304,7 @@ void LauncherApp::run() {
         sound.bump();
       }
   } else if (pad.down(RIGHT_PAD)
-     || (pad.getGesture() == GESTURE_SWIPE_LEFT)
+     || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
   ) {
     if (currentScreen() < TOTAL_SCREENS - 1) {
       current_screen++;

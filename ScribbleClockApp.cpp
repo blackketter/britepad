@@ -13,9 +13,14 @@ void ScribbleClockApp::update() {
     int s1 = clock.second() % 10;
 
     int digitsDrawn;
-    bool suppressLeading = h10 == 0;
 
-    if (suppressLeading) {
+    if (lastH10 != h10) {
+      lastH10 = lastH1 = lastM10 = lastM1 = lastS10 = lastS1 = 11;
+      clearScreen();
+      colons = false;
+    }
+
+    if (h10 == 0) {
       digitsDrawn = 7; // including the colon
     } else {
       digitsDrawn = 8;
@@ -28,37 +33,63 @@ void ScribbleClockApp::update() {
 
     rect_t r = {x,y,(coord_t)(w-10),h};  // digits are spaced out by 10 pixels
 
-    if (!suppressLeading) {
+    if (h10 != 0) {
       // supress leading digit
-      drawDigit(h10,r);
+      if (lastH10 != h10) {
+        drawDigit(h10,r);
+      }
       r.x += w;
     }
+    lastH10 = h10;
 
-    drawDigit(h1,r);
+    if (lastH1 != h1) {
+      drawDigit(h1,r);
+      lastH1 = h1;
+    }
     r.x += w;
 
-    // The colon is just couple of small zeros
-    rect_t dots = { (coord_t)(r.x + r.w/3), (coord_t)(r.y+r.h/6), (coord_t)(r.w/3), (coord_t)(r.h/6)};
-    drawDigit(0, dots);
-    dots.y+=r.h/3;
-    drawDigit(0, dots);
+    rect_t dots;
+    if (!colons){
+      // The colon is just couple of small zeros
+      dots = { (coord_t)(r.x + r.w/3), (coord_t)(r.y+r.h/6), (coord_t)(r.w/3), (coord_t)(r.h/6)};
+      drawDigit(0, dots);
+      dots.y+=r.h/3;
+      drawDigit(0, dots);
+    }
 
     r.x += w;
-    drawDigit(m10,r);
+
+    if (lastM10 != m10) {
+      drawDigit(m10,r);
+      lastM10 = m10;
+    }
     r.x += w;
-    drawDigit(m1,r);
+
+    if (lastM1 != m1) {
+      drawDigit(m1,r);
+      lastM1 = m1;
+    }
+    r.x += w;
+
+    if (!colons) {
+      dots = { (coord_t)(r.x + r.w/3), (coord_t)(r.y+r.h/6), (coord_t)(r.w/3), (coord_t)(r.h/6)};
+      drawDigit(0, dots);
+      dots.y+=r.h/3;
+      drawDigit(0, dots);
+    }
+    colons = true;
 
     r.x += w;
-    dots = { (coord_t)(r.x + r.w/3), (coord_t)(r.y+r.h/6), (coord_t)(r.w/3), (coord_t)(r.h/6)};
-    drawDigit(0, dots);
-    dots.y+=r.h/3;
-    drawDigit(0, dots);
+    if (lastS10 != s10) {
+      drawDigit(s10,r);
+      lastS10 = s10;
+    }
 
     r.x += w;
-    drawDigit(s10,r);
-
-    r.x += w;
-    drawDigit(s1,r);
+    if (lastS1 != s1) {
+      drawDigit(s1,r);
+      lastS1 = s1;
+    }
 
 }
 
@@ -70,7 +101,8 @@ void ScribbleClockApp::drawDigit(int digit, rect_t& r) {
   while (defaultGestures[i].gesture != 0) {
     if (defaultGestures[i].gesture == digit + '0') {
       // rotate the digit:
-      float by = - M_PI/2.0 + (defaultGestures[i].shape->orientation) / 256.0 * M_PI * 2.0;
+      int jitter = digit == 0 ? 256 : 20;
+      float by = - M_PI/2.0 + (defaultGestures[i].shape->orientation + random(jitter) - jitter/2) / 256.0 * M_PI * 2.0;
       float sinOrientation = sinf(by);
       float cosOrientation = cosf(by);
       pointf_t rotated[samplesPerGesture];

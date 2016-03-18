@@ -112,6 +112,10 @@ void TouchPad::update() {
     lastDownXPos = curr.x;
     lastDownYPos = curr.y;
     historyCount = 0;
+    historyMaxX = INT16_MIN;
+    historyMinX = INT16_MAX;
+    historyMaxY = INT16_MIN;
+    historyMinY = INT16_MAX;
   }
 
   if (touched(SCREEN_PAD)) {
@@ -124,6 +128,10 @@ void TouchPad::update() {
           ) ) {
         history[historyCount].x = curr.x;
         history[historyCount].y = curr.y;
+        if (curr.y > historyMaxY) { historyMaxY = curr.y; }
+        if (curr.y < historyMinY) { historyMinY = curr.y; }
+        if (curr.x > historyMaxX) { historyMaxX = curr.x; }
+        if (curr.x < historyMinX) { historyMinX = curr.y; }
         historyCount++;
         lastHistoryTime = curr.time;
       }
@@ -144,9 +152,15 @@ bool TouchPad::didGesture() {
   return (up() && newGesture.capture());
 }
 
+bool TouchPad::isGesturing() {
+  return touched(SCREEN_PAD) &&
+  getHistoryCount() > 1 &&
+  ( historyMaxX - historyMinX > Gesture::minDimension() ||
+    historyMaxY - historyMinY > Gesture::minDimension() );
+}
+
 gesture_t TouchPad::getGesture(const gestureData_t* gestureList) {
   if ( gesturesSearched == gestureList || !up() ) { return lastGesture; }
-
 
   Gesture newGesture;
 

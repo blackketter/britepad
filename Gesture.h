@@ -67,14 +67,14 @@ class Gesture {
     gesture_t match(const gestureData_t* gestureList = defaultGestures, uint16_t* distance = nullptr);
 
     void getSample8(int i, point8_t& t) { t.x = samplesf[i].x*255; t.y = samplesf[i].y*255; }
+    static coord_t minDimension() { return 25; }  // certain size of gesture
+    uint8_t getSampleCount() { return sampleCount; }
+    static int minSamplesRequired() { return 10; }  // seems like a reasonable number
+    static int minPathLength() { return 25; }  // certain amount of travel
 
   private:
     static const uint16_t MATCH_THRESHOLD = 2000;  // seems about right
     static const uint16_t MATCH_BESTBY = 10;  // percent
-
-    uint8_t getSampleCount() { return sampleCount; }
-    int minSamplesRequired() { return 10; }  // seems like a reasonable number
-    int minPathLength() { return 25; }
 
     void addSample(float x, float y) { samplesf[sampleCount].x = x; samplesf[sampleCount].y = y; sampleCount++; }
     void setSample(int i, float x, float y) { samplesf[i].x = x; samplesf[i].y = y; }

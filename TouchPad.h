@@ -57,13 +57,15 @@ class TouchPad {
     coord_t getHeight() { return width; };
     coord_t getWidth() { return height; };
 
-    int getHistoryCount() { return historyCount; }
-    point_t* getHistory() { return history; }
-
     bool didGesture();
+    bool isGesturing();
     gesture_t getGesture(const gestureData_t* gestureList = defaultGestures);
     angle8_t getGestureOrientation() { return lastGestureOrientation; }
     uint16_t getGestureDistance() { return lastGestureDistance; }
+
+    int getHistoryCount() { return historyCount; }
+    point_t* getHistory() { return history; }
+
 
   private:
     coord_t height;
@@ -82,6 +84,7 @@ class TouchPad {
     static const millis_t minHistoryInterval = 5;
     millis_t lastHistoryTime;
     point_t history[maxHistory];
+    coord_t historyMaxX, historyMaxY, historyMinX, historyMinY;
     int historyCount = 0;
 
     gesture_t lastGesture = Gesture::NO_GESTURE;

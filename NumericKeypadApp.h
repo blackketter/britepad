@@ -27,29 +27,29 @@ class NumericKeypadApp : public BritepadApp {
     static const int keyRows = 4;
 
     enum keys {
-      zero,
-      one,
-      two,
-      three,
-      four,
-      five,
-      six,
-      seven,
-      eight,
-      nine,
-      zerozero,
-      period,
-      enter,
-      plus,
-      minus,
-      times,
-      divide,
-      equals,
-      tab,
-      backspace
+      zero = '0',
+      one = '1',
+      two = '2',
+      three = '3',
+      four = '4',
+      five = '5',
+      six = '6',
+      seven = '7',
+      eight = '8',
+      nine = '9',
+      zerozero = 'z',
+      period = '.',
+      enter = '\n',
+      plus = '+',
+      minus = '-',
+      times = 'x',
+      divide = '/',
+      equals = '=',
+      tab = ' ',
+      backspace = 0x08
     };
 //
-//  7 8 9 / BS
+//  7 8 9 / B
 //  4 5 6 * TAB
 //  1 2 3 - =
 //  0 00. + ENTER

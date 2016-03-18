@@ -83,3 +83,16 @@ Button* ButtonMatrix::getID(widgetid_t id) {
   }
   return nullptr;
 }
+
+void ButtonMatrix::setHighlighted(bool highlight) {
+  for (int m = 0; m < buttonMaps; m++) {
+    for (int r = 0; r < buttonRows; r++) {
+      for (int c = 0; c < buttonColumns; c++) {
+        int i = index(r,c,m);
+        if (buttons[i]->getHighlighted() != highlight) {
+          buttons[i]->setHighlighted(highlight);
+        }
+      }
+    }
+  }
+}

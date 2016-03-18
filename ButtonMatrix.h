@@ -31,6 +31,7 @@ class ButtonMatrix : public Widget {
     int getMap() { return currMap; };
 
     Button* getID(widgetid_t id);
+    virtual void setHighlighted(bool highlight);
 
   protected:
     int index(int row, int column, int map) { return map*buttonRows*buttonColumns + row*buttonColumns + column; };

@@ -1,8 +1,6 @@
 #ifndef _Preferences_
 #define _Preferences_
 
-#include "Types.h"
-
 typedef const char* tag_t;
 
 class Preferences {

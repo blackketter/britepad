@@ -4,6 +4,16 @@
 #include "BritepadShared.h"
 #include "Timer.h"
 
+enum AppMode {
+  MOUSE_MODE = 1,
+  INTERACTIVE_MODE = 2,
+  SCREENSAVER_MODE = 4,
+  INACTIVE_MODE = 8,
+  ANY_MODE = 255
+};
+
+typedef const char* appid_t;
+
 class BritepadApp;
 class LauncherApp;
 

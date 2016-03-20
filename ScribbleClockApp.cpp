@@ -136,14 +136,14 @@ void ScribbleClockApp::drawDigit(int digit, rect_t& r) {
 
       float scale = max(maxx-minx,maxy-miny);
 
-      DEBUGF("minx: %f miny: %f maxx: %f maxy: %f\n",minx,miny,maxx,maxy);
+//      DEBUGF("minx: %f miny: %f maxx: %f maxy: %f\n",minx,miny,maxx,maxy);
       point_t lastPoint = {0,0};
       for (int j = 0; j < samplesPerGesture; j++) {
         point_t currPoint = {0,0};
         float x, y;
         x = (rotated[j].x - minx)/scale;
         y = (rotated[j].y - miny)/scale;
-        DEBUGF("x: %f, y: %f\n",x,y);
+//        DEBUGF("x: %f, y: %f\n",x,y);
         currPoint.x = r.x + ((r.w-1) * x);
         currPoint.y = r.y + ((r.h-1) * y);
 

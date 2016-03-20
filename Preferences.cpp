@@ -23,7 +23,7 @@ Preferences::Preferences() {
   }
 }
 
-void Preferences::write(appid_t tag, uint8_t size, const uint8_t* data) {
+void Preferences::write(tag_t tag, uint8_t size, const uint8_t* data) {
 
   bool changed = false;
   size_t offset = findTag(tag);
@@ -57,7 +57,7 @@ void Preferences::write(appid_t tag, uint8_t size, const uint8_t* data) {
   }
 }
 
-uint8_t Preferences::read(appid_t tag, uint8_t size, uint8_t* data) {
+uint8_t Preferences::read(tag_t tag, uint8_t size, uint8_t* data) {
 
   size_t offset = findTag(tag);
 
@@ -109,7 +109,7 @@ size_t Preferences::tagDataSize(size_t offset) {
   return prefsData[endoffset];
 }
 
-size_t Preferences::findTag(appid_t tag) {
+size_t Preferences::findTag(tag_t tag) {
   size_t offset = 0;
   while (offset < totalPrefsSize) {
     if (strcmp(tag, (const char*)&prefsData[offset]) == 0) {
@@ -141,7 +141,7 @@ void Preferences::saveOut() {
   DEBUGF("Wrote out prefs of size: %d\n", findTag(endTag) + tagSize(findTag(endTag)));
 }
 
-size_t Preferences::writeTag(size_t offset, appid_t tag, uint8_t size, const uint8_t* data) {
+size_t Preferences::writeTag(size_t offset, tag_t tag, uint8_t size, const uint8_t* data) {
     strcpy((char*)&prefsData[offset], tag);
     offset += strlen(tag) + 1;
 

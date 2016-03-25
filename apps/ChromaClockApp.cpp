@@ -13,8 +13,8 @@ void ChromaClockApp::drawSlice(int index, color_t c, coord_t r) {
   uint16_t theta = slice * index;
   uint16_t halfSlice = slice/2;
 
-  dotpos(theta+halfSlice, r, x1, y1);
-  dotpos(theta-halfSlice, r, x2, y2);
+  screen.polarToRect(theta+halfSlice, r, x1, y1);
+  screen.polarToRect(theta-halfSlice, r, x2, y2);
 
   screen.fillTriangle(screen.clipMidWidth(), screen.clipMidHeight(), x1, y1, x2, y2, c);
 }

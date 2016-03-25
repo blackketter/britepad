@@ -31,6 +31,7 @@
 #include "NumericKeypadApp.h"
 #include "PaintApp.h"
 #include "PassApp.h"
+#include "RandomClockApp.h"
 #include "RebootApp.h"
 #include "ScribbleClockApp.h"
 #include "SeqApp.h"
@@ -69,11 +70,12 @@ LauncherApp::LauncherApp() {
   setButton(CLOCKS_SCREEN, p++,  new AnalogClockApp);
   setButton(CLOCKS_SCREEN, p++,  new BinaryClockApp);
   setButton(CLOCKS_SCREEN, p++,  new ClockApp);
-  setButton(CLOCKS_SCREEN, p++,  new HexDotClockApp);
   setButton(CLOCKS_SCREEN, p++,  new CountdownApp);
-  setButton(CLOCKS_SCREEN, p++,  new WordClockApp);
+  setButton(CLOCKS_SCREEN, p++,  new HexDotClockApp);
   setButton(CLOCKS_SCREEN, p++,  new ChromaClockApp);
+  setButton(CLOCKS_SCREEN, p++,  new RandomClockApp);
   setButton(CLOCKS_SCREEN, p++,  new ScribbleClockApp);
+  setButton(CLOCKS_SCREEN, p++,  new WordClockApp);
 
 
 

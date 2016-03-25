@@ -250,7 +250,7 @@ void Britepad::idle() {
      }
 
       // let's check to see if we should run a screensaver
-     if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.time() - screensaverStartedTime) > screensaverSwitchInterval) {
+     if (currApp->isAppMode(SCREENSAVER_MODE) && getScreensaverSwitchInterval() && (pad.time() - screensaverStartedTime) > getScreensaverSwitchInterval()*1000) {
         launchApp(BritepadApp::SCREENSAVER_APP, SCREENSAVER_MODE);
 
       // is it time for the screensaver to kick in?
@@ -276,6 +276,15 @@ void Britepad::idle() {
   sound.idle();
 }
 
+time_t Britepad::getScreensaverSwitchInterval() {
+  time_t i = defaultScreensaverSwitchInterval;
+  prefs.read(screensaverSwitchIntervalPref, sizeof(i), (uint8_t*)&i);
+  return i;
+}
+
+void Britepad::setScreensaverSwitchInterval(time_t newInterval) {
+   prefs.write(screensaverSwitchIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
+}
 
 
 void chimeCallback(void* data) {

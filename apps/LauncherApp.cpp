@@ -44,6 +44,7 @@
 #include "SplashApp.h"
 #include "StopwatchApp.h"
 #include "TabletApp.h"
+#include "TimeoutApp.h"
 #include "ThereminApp.h"
 #include "WordClockApp.h"
 
@@ -78,10 +79,11 @@ LauncherApp::LauncherApp() {
   setButton(CLOCKS_SCREEN, p++,  new WordClockApp);
 
 
-
-  setButton(SETTINGS_SCREEN, 8,   new SetClockApp);
-  setButton(SETTINGS_SCREEN, 9,   new MuteApp);
-  setButton(SETTINGS_SCREEN, 10,  new SetAlarmApp);
+  p = 0;
+  setButton(SETTINGS_SCREEN, p++, new MuteApp);
+  setButton(SETTINGS_SCREEN, p++, new SetClockApp);
+  setButton(SETTINGS_SCREEN, p++, new SetAlarmApp);
+  setButton(SETTINGS_SCREEN, p++, new TimeoutApp);
 
 // default screen has quick buttons
   setButton(KEYS_SCREEN, 0,  new KeyApp(volPlusIcon, KEY_MEDIA_VOLUME_INC, screen.bluegreen));
@@ -221,10 +223,24 @@ void LauncherApp::drawButton(int i, bool highlighted) {
   screen.fillCircle( x, y, radius, highlighted ? screen.mix(color, screen.black) : color);
   const char* name = app->name();
   if (name) {
-    screen.setFont(Arial_9_Bold);
     screen.setTextColor(screen.black);
-    screen.setCursor( x - screen.measureTextWidth(name) / 2, y - screen.measureTextHeight(name)/2);
-    screen.drawText(name);
+    char* line2 = strchr(name, '\n');
+    if (line2) {
+      DEBUGF("%s\n",name);
+      line2++;
+      screen.setFont(Arial_8_Bold);
+      char line[strlen(name)+1];
+      strcpy(line,name);
+      *(strchr(line,'\n')) = 0;
+      screen.setCursor( x - screen.measureTextWidth(line) / 2, y - screen.measureTextHeight(line)-2);
+      screen.drawText(line);
+      screen.setCursor( x - screen.measureTextWidth(line2) / 2, y+2);
+      screen.drawText(line2);
+    } else {
+      screen.setFont(Arial_9_Bold);
+      screen.setCursor( x - screen.measureTextWidth(name) / 2, y - screen.measureTextHeight(name)/2);
+      screen.drawText(name);
+    }
   } else {
     Icon icon = app->getIcon();
     if (icon.getData()) {

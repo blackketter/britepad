@@ -39,6 +39,9 @@ class Britepad {
     void enableChime(bool enabled) { enabled ? resetChime() : chimeTimer.cancel(); };
     void chimerCallback();
 
+    time_t getScreensaverSwitchInterval();
+    void setScreensaverSwitchInterval(time_t newInterval);
+
   private:
     BritepadApp* currApp = nullptr;
     BritepadApp* launchedAppPtr = nullptr;
@@ -50,9 +53,10 @@ class Britepad {
     BritepadApp* randomApp(AppMode m);
 
     static const millis_t screensaverDelay = 10000;
-    static const millis_t screensaverSwitchInterval = 30000;
     static const millis_t ambientUpdateInterval = 100;
     static const millis_t showClockDur = 5000;
+
+    static const time_t defaultScreensaverSwitchInterval = 30;
 
     static const millis_t checkWantsToBeScreensaverInterval = 1000;
     millis_t lastCheckWantsToBeScreensaver = 0;
@@ -70,6 +74,7 @@ class Britepad {
     Timer chimeTimer;
     int chimesRemaining = 0;
     static const millis_t chimeInterval = 500;
+    const char* screensaverSwitchIntervalPref = "scri";
 
 };
 

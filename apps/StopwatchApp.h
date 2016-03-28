@@ -2,7 +2,7 @@
 #define _StopwatchApp_
 
 #include "BritepadApp.h"
-#include "Button.h"
+#include "widgets/Button.h"
 
 class StopwatchApp : public BritepadApp {
   public:

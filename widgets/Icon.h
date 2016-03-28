@@ -2,7 +2,7 @@
 #define _Icon_
 
 #include "Screen.h"
-#include "Icons.h"
+#include "widgets/Icons.h"
 // icondata format is:
 // 1 byte of width
 // 1 byte of height

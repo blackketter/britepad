@@ -3,7 +3,7 @@
 
 #include "ScreensaverApp.h"
 #include "BritepadShared.h"
-#include "DotMatrix.h"
+#include "widgets/DotMatrix.h"
 #include "Screen.h"
 
 class DotsDisplayApp : public ScreensaverApp {

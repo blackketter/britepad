@@ -3,7 +3,7 @@
 
 #include "BritepadShared.h"
 #include "Debug.h"
-#include "Icon.h"
+#include "widgets/Icon.h"
 
 class Britepad;
 

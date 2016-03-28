@@ -1,6 +1,6 @@
 #ifndef _ButtonMatrix_
 #define _ButtonMatrix_
-#include "Button.h"
+#include "widgets/Button.h"
 
 struct ButtonConfig {
   color_t bgColor;

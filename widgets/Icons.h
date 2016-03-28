@@ -1,6 +1,6 @@
 #ifndef _Icons_
 #define _Icons_
-#include "Icon.h"
+#include "widgets/Icon.h"
 
 const uint8_t backspaceIcon[] = {
  16, 11,

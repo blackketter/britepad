@@ -1,9 +1,9 @@
 #ifndef _CalculatorApp_
 #define _CalculatorApp_
 #include "BritepadApp.h"
-#include "Button.h"
-#include "ButtonMatrix.h"
-#include "Icons.h"
+#include "widgets/Button.h"
+#include "widgets/ButtonMatrix.h"
+#include "widgets/Icons.h"
 
 
 class CalculatorApp : public BritepadApp {

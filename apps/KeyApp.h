@@ -3,7 +3,7 @@
 
 #include "BritepadApp.h"
 #include "BritepadShared.h"
-#include "Icon.h"
+#include "widgets/Icon.h"
 
 class KeyApp : public BritepadApp {
 

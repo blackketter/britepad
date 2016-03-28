@@ -70,7 +70,6 @@ class Britepad {
 
     BritepadApp* appList = nullptr;
 
-
     Timer chimeTimer;
     int chimesRemaining = 0;
     static const millis_t chimeInterval = 500;

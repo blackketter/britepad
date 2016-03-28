@@ -1,8 +1,8 @@
 #ifndef _CalendarApp_
 #define _CalendarApp_
 #include "BritepadApp.h"
-#include "Button.h"
-#include "Icons.h"
+#include "widgets/Button.h"
+#include "widgets/Icons.h"
 
 
 class CalendarApp : public BritepadApp {

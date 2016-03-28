@@ -1,4 +1,4 @@
-#include "DotMatrix.h"
+#include "widgets/DotMatrix.h"
 #include "Debug.h"
 
 DotMatrix::DotMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dots_w, int dots_h) {

@@ -2,7 +2,7 @@
 #include "LauncherApp.h"
 #include "ScreensaverApp.h"
 #include "Debug.h"
-#include "Icon.h"
+#include "widgets/Icon.h"
 #include "Passwords.h"
 
 // apps are included here

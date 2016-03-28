@@ -3,7 +3,7 @@
 
 #include "BritepadShared.h"
 #include "Widget.h"
-#include "Icon.h"
+#include "widgets/Icon.h"
 
 class Button : public Widget {
   public:

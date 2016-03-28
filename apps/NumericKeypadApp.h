@@ -1,9 +1,9 @@
 #ifndef _NumericKeypadApp_
 #define _NumericKeypadApp_
 #include "BritepadApp.h"
-#include "Button.h"
-#include "ButtonMatrix.h"
-#include "Icons.h"
+#include "widgets/Button.h"
+#include "widgets/ButtonMatrix.h"
+#include "widgets/Icons.h"
 
 
 class NumericKeypadApp : public BritepadApp {

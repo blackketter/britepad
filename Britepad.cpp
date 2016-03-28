@@ -4,9 +4,9 @@
 #include "Types.h"
 #include "Timer.h"
 
-#include "LauncherApp.h"
-#include "ClockApp.h"
-#include "SplashApp.h"
+#include "apps/LauncherApp.h"
+#include "apps/ClockApp.h"
+#include "apps/SplashApp.h"
 
 #define DEBUG_ON 1
 #include "Debug.h"

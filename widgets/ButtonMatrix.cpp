@@ -1,4 +1,4 @@
-#include "ButtonMatrix.h"
+#include "widgets/ButtonMatrix.h"
 
 void ButtonMatrix::init(coord_t x, coord_t y, coord_t width, coord_t height, int rows, int columns, int maps, ButtonConfig configuration[]) {
   deleteButtons();

@@ -2,7 +2,7 @@
 #define _HexDotClockApp_
 
 #include "ClockApp.h"
-#include "DotMatrix.h"
+#include "widgets/DotMatrix.h"
 
 class HexDotClockApp : public ClockApp {
   public:

@@ -2,7 +2,7 @@
 #define _KeyboardApp_
 
 #include "BritepadApp.h"
-#include "TouchKeyboard.h"
+#include "widgets/TouchKeyboard.h"
 
 class KeyboardApp : public BritepadApp {
   public:

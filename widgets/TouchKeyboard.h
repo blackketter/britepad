@@ -2,7 +2,7 @@
 #define _TouchKeyboard_
 
 #include "BritepadShared.h"
-#include "Button.h"
+#include "widgets/Button.h"
 #include "Widget.h"
 
 class TouchKeyboard : public Widget {

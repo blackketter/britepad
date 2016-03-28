@@ -1,10 +1,10 @@
 #ifndef _MinesApp_
 #define _MinesApp_
 #include "BritepadApp.h"
-#include "Button.h"
-#include "DotMatrix.h"
-#include "Icons.h"
-#include "TextField.h"
+#include "widgets/Button.h"
+#include "widgets/DotMatrix.h"
+#include "widgets/Icons.h"
+#include "widgets/TextField.h"
 
 
 class MineMatrix : public SquareMatrix {

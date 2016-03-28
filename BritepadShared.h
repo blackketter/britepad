@@ -28,6 +28,6 @@ extern TeensyRTCClock clock;
 #include "Preferences.h"
 extern Preferences prefs;
 
-#include "Fonts.h"
+#include "fonts/Fonts.h"
 
 #endif

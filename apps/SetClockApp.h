@@ -3,7 +3,7 @@
 
 #include "BritepadApp.h"
 #include "BritepadShared.h"
-#include "Button.h"
+#include "widgets/Button.h"
 #include "Clock.h"
 
 class SetClockApp : public BritepadApp {

@@ -1,1 +1,0 @@
-#include "widgets/Icon.h"

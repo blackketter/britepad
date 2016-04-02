@@ -1,3 +1,6 @@
+#ifndef _BriteLiteApp_
+#define _BriteLiteApp_
+
 #include "DotsDisplayApp.h"
 
 class BriteLiteApp : public DotsDisplayApp {
@@ -18,3 +21,4 @@ class BriteLiteApp : public DotsDisplayApp {
     int cursor_x;
     int cursor_y;
 };
+#endif

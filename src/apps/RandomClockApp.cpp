@@ -67,7 +67,7 @@ void RandomClockApp::update() {
     dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
     if ( dist < 0.03) { c = screen.red; rc = 8; }
 
-//    screen.fillCircle(x,y,rc,c);
+    screen.fillCircle(x,y,rc,c);
 //      screen.drawPixel(x,y,c);
-      screen.fillRect(x,y,rc,rc,c);
+//      screen.fillRect(x,y,rc,rc,c);
 }

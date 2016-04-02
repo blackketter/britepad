@@ -45,6 +45,7 @@
 #include "StopwatchApp.h"
 #include "TabletApp.h"
 #include "TimeoutApp.h"
+#include "TrianglesApp.h"
 #include "ThereminApp.h"
 #include "WordClockApp.h"
 
@@ -66,6 +67,7 @@ LauncherApp::LauncherApp() {
   setButton(SCREENSAVERS_SCREEN, p++,  new StarfieldApp);
   setButton(SCREENSAVERS_SCREEN, p++,  new LifeApp);
   setButton(SCREENSAVERS_SCREEN, p++,  new FadeDotsApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new TrianglesApp);
 
   p = 0;
   setButton(CLOCKS_SCREEN, p++,  new AnalogClockApp);

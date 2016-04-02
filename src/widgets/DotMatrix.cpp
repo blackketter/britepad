@@ -91,6 +91,38 @@ void HexDotMatrix::updateDot(int x, int y) {
   }
 }
 
+// todo: add staggerv to TriangleMatrix
+
+void TriangleMatrix::updateDot(int x, int y) {
+
+  int dotspacing_x, dotspacing_y;
+
+  dotspacing_x = getWidth() / (dots_wide/2);
+  dotspacing_y = getHeight() / dots_high;
+
+  coord_t x0,y0,x1,y1,x2,y2;
+
+  if (x%2) {
+    x0 = (x/2 + 1) * dotspacing_x;
+    y0 = y * dotspacing_y;
+
+    x1 = x0 - dotspacing_x/2;
+    y1 = y0 + dotspacing_y;
+    x2 = x1 + dotspacing_x;
+    y2 = y1;
+  } else {
+    x0 = x/2 * dotspacing_x;
+    y0 = y * dotspacing_y;
+    x1 = x0+dotspacing_x;
+    y1 = y0;
+
+    x2 = x0+dotspacing_x/2;
+    y2 = y0+dotspacing_y;
+  }
+
+  screen.fillTriangle(x0,y0,x1,y1,x2,y2,getDot(x,y));
+
+}
 
 
 

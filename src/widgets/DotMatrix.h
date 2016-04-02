@@ -23,6 +23,7 @@ class DotMatrix : public Widget {
 
     virtual bool hit(coord_t x, coord_t y, int* hitx = nullptr, int* hity = nullptr);
     void setBGColor(color_t bg) { bgColor = bg; };
+    void setBorder(coord_t b) { border = b; }
 
   protected:
     int dot_fill = 80; // dot size in matrix cell, percent
@@ -33,7 +34,7 @@ class DotMatrix : public Widget {
     int r;
     color_t* dots = nullptr;
     color_t bgColor = screen.black;
-
+    coord_t border = 0;
 };
 
 class SquareMatrix : public DotMatrix {
@@ -47,10 +48,15 @@ class HexDotMatrix : public DotMatrix {
     HexDotMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dotsWide, int dotsHigh) : DotMatrix(x, y, w, h, dotsWide, dotsHigh) {};
     void setStaggerV(bool staggerVertically) {staggerV = staggerVertically; }
     virtual void updateDot(int x, int y);
-  private:
+  protected:
     bool staggerV = false;
 };
 
+class TriangleMatrix : public HexDotMatrix {
+  public:
+    TriangleMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dotsWide, int dotsHigh) : HexDotMatrix(x, y, w, h, dotsWide, dotsHigh) {};
+    virtual void updateDot(int x, int y);
+};
 
 #endif
 

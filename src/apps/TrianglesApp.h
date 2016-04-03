@@ -9,7 +9,7 @@ class TrianglesApp : public BriteLiteApp {
     appid_t id() { return ID; };
     const char* name() { return "Triangles"; };
   protected:
-    int getDotsWide() { return 21; }  // approximately equalateral triangles
+    int getDotsWide() { return 24; }  // approximately equalateral triangles
     int getDotsHigh() { return 9; }
 
 };

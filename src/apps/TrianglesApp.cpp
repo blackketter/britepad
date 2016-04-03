@@ -6,7 +6,8 @@
 
 void TrianglesApp::begin() {
   if (!dots) {
-    dots = new TriangleMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), getDotsWide(), getDotsHigh());
+    coord_t tWidth = screen.clipWidth() / (getDotsWide()-2);
+    dots = new TriangleMatrix(screen.clipLeft()-tWidth, screen.clipTop(), screen.clipWidth()+tWidth*2, screen.clipHeight(), getDotsWide(), getDotsHigh());
   }
   DotsDisplayApp::begin();
 }

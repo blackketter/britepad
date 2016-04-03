@@ -101,9 +101,11 @@ void TriangleMatrix::updateDot(int x, int y) {
   dotspacing_y = getHeight() / dots_high;
 
   coord_t x0,y0,x1,y1,x2,y2;
+  bool pointup = (x+y)%2;
 
-  if (x%2) {
-    x0 = (x/2 + 1) * dotspacing_x;
+  if (pointup) {
+    x0 = (x+1)/2 * dotspacing_x;
+    if (y%2) { x0+= dotspacing_x / 2; }
     y0 = y * dotspacing_y;
 
     x1 = x0 - dotspacing_x/2;
@@ -112,6 +114,7 @@ void TriangleMatrix::updateDot(int x, int y) {
     y2 = y1;
   } else {
     x0 = x/2 * dotspacing_x;
+    if (y%2) { x0+= dotspacing_x / 2; }
     y0 = y * dotspacing_y;
     x1 = x0+dotspacing_x;
     y1 = y0;
@@ -119,8 +122,9 @@ void TriangleMatrix::updateDot(int x, int y) {
     x2 = x0+dotspacing_x/2;
     y2 = y0+dotspacing_y;
   }
-
-  screen.fillTriangle(x0,y0,x1,y1,x2,y2,getDot(x,y));
+  coord_t l = getLeft();
+  coord_t t = getTop();
+  screen.fillTriangle(x0+l,y0+t,x1+l,y1+t,x2+l,y2+t,getDot(x,y));
 
 }
 

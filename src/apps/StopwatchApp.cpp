@@ -5,15 +5,15 @@
 #include "Debug.h"
 #include "Clock.h"
 
-void StopwatchApp::begin() {
-  BritepadApp::begin();
+void StopwatchApp::begin(AppMode asMode) {
+  BritepadApp::begin(asMode);
   if (isReset()) {
     resume();
   }
 }
 
-void StopwatchApp::setAppMode(AppMode asMode) {
-  BritepadApp::setAppMode(asMode);
+void StopwatchApp::switchAppMode(AppMode asMode) {
+  BritepadApp::switchAppMode(asMode);
   clearScreen();
   redrawButtons();
   redrawTime();
@@ -38,9 +38,9 @@ void StopwatchApp::run() {
   if (pad.down(BOTTOM_PAD)) {
     sound.click();
     if (isAppMode(INTERACTIVE_MODE)) {
-      setAppMode(MOUSE_MODE);
+      switchAppMode(MOUSE_MODE);
     } else {
-      setAppMode(INTERACTIVE_MODE);
+      switchAppMode(INTERACTIVE_MODE);
     }
   }
 

@@ -2,8 +2,8 @@
 
 
 
-void CalculatorApp::begin() {
-  BritepadApp::begin();
+void CalculatorApp::begin(AppMode asMode) {
+  BritepadApp::begin(asMode);
   drawDisplay();
   if (!buttons) {
     buttons = new ButtonMatrix(screen.clipLeft(),(coord_t)(screen.clipTop()+displayHeight),screen.clipWidth(),(coord_t)(screen.clipHeight()-displayHeight),keyRows,keyColumns,keyMaps,(ButtonConfig*)keyConfig);

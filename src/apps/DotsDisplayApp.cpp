@@ -4,13 +4,13 @@
 #include "DotsDisplayApp.h"
 #include "Debug.h"
 
-void DotsDisplayApp::begin() {
+void DotsDisplayApp::begin(AppMode asMode) {
 
   if (!dots) {
     dots = new DotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), getDotsWide(), getDotsHigh());
   }
 
-  ScreensaverApp::begin();
+  ScreensaverApp::begin(asMode);
 };
 
 void DotsDisplayApp::end() {

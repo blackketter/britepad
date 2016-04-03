@@ -6,7 +6,7 @@
 
 class HexDotClockApp : public ClockApp {
   public:
-    void begin();
+    void begin(AppMode asMode);
     void end();
     void update();
 

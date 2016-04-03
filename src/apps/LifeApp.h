@@ -7,7 +7,7 @@ class LifeApp : public DotsDisplayApp {
   public:
     void run();
 
-    void setAppMode(AppMode asMode);
+    void switchAppMode(AppMode asMode);
 
     bool canBeScreensaver() { return true; }
     bool canBeInteractive() { return true; }

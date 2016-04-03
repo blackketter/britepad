@@ -17,8 +17,8 @@
 //                                             conway,            maze,               mazectric
 const bool born[RULESETS][9] =    {{0,0,0,1,0,0,0,0,0},{0,0,0,1,0,0,0,0,0},{0,1,0,0,0,0,0,0}};
 const bool survive[RULESETS][9] = {{0,0,1,1,0,0,0,0,0},{0,1,1,1,1,1,0,0,0},{0,1,1,1,1,0,0,0}};
-void LifeApp::setAppMode(AppMode asMode) {
-  DotsDisplayApp::setAppMode(asMode);
+void LifeApp::switchAppMode(AppMode asMode) {
+  DotsDisplayApp::switchAppMode(asMode);
 
   if (asMode == SCREENSAVER_MODE) {
     reseed = true;

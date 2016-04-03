@@ -6,7 +6,7 @@
 class MandelApp : public BritepadApp {
   public:
     void run();
-    void begin() { lastRow = screen.clipTop(); BritepadApp::begin(); }
+    void begin(AppMode asMode) { lastRow = screen.clipTop(); BritepadApp::begin(asMode); }
     bool canBeMouse() { return true; }
     bool canBeInteractive() { return true; }
 

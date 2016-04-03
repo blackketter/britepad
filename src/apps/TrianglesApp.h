@@ -3,7 +3,7 @@
 class TrianglesApp : public BriteLiteApp {
 
   public:
-    void begin();
+    void begin(AppMode asMode);
 
     static constexpr appid_t ID = "tria";
     appid_t id() { return ID; };

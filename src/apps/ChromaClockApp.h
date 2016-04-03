@@ -5,7 +5,7 @@
 
 class ChromaClockApp : public AnalogClockApp {
   public:
-    void begin();
+    void begin(AppMode asMode);
     void update();
     virtual millis_t updateInterval() { return 1000*60/slices; }
 

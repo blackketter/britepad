@@ -4,22 +4,11 @@
 #include "BritepadShared.h"
 #include "BritepadApp.h"
 
-enum ScreenNames {
-  DEBUG_SCREEN,
-  MICE_SCREEN,
-  CLOCKS_SCREEN,
-  SCREENSAVERS_SCREEN,
-  SETTINGS_SCREEN,
-  KEYS_SCREEN,
-  TIMERS_SCREEN,
-  APPS_SCREEN,
-  TOTAL_SCREENS
-};
 
 class LauncherApp : public BritepadApp {
   public:
     LauncherApp();
-    void begin();
+    void begin(AppMode asMode);
     void end();
     void run();
     BritepadApp* exitsTo() { return MOUSE_APP; }
@@ -42,11 +31,26 @@ class LauncherApp : public BritepadApp {
     int buttonHit(int x, int y);
     void drawButton(int i, bool highlighted = false);
     void drawButtons();
-    int currentScreen();
+    int getCurrentScreen() { return current_screen; }
+    void setCurrentScreen(int n) { current_screen = n; }
     color_t bgColor();
     AppMode screenMode(int theScreen);
     void setButton(int screen, int i, BritepadApp* b);
     BritepadApp* getButton(int i);
+    void checkTimeout();
+    void clearScreen() {} // override the default clear screen because we do transitions
+
+    enum ScreenNames {
+      DEBUG_SCREEN,
+      MICE_SCREEN,
+      CLOCKS_SCREEN,
+      SCREENSAVERS_SCREEN,
+      SETTINGS_SCREEN,
+      KEYS_SCREEN,
+      TIMERS_SCREEN,
+      APPS_SCREEN,
+      TOTAL_SCREENS
+    };
 
     BritepadApp* apps[TOTAL_SCREENS][buttons_per_screen];
 
@@ -72,7 +76,7 @@ class LauncherApp : public BritepadApp {
         screen.darkergrey,
     };
 
-    int current_screen = 1;
+    int current_screen = SETTINGS_SCREEN;
 
     int highlighted_button = noButton;
 

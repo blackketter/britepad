@@ -116,7 +116,6 @@ LauncherApp::LauncherApp() {
   setButton(TIMERS_SCREEN, 8, new SetTimerApp());
   setButton(TIMERS_SCREEN, 11, new StopwatchApp);
 
-
   p = 0;
   setButton(APPS_SCREEN, p++,  new BreakoutApp);
   setButton(APPS_SCREEN, p++,  new ThereminApp);
@@ -147,9 +146,7 @@ LauncherApp::LauncherApp() {
 
 }
 
-void LauncherApp::begin() {
-  // do not do the default behaviour, we'll clear the screen ourselves
-  //BritepadApp::begin();
+void LauncherApp::begin(AppMode asMode) {
 
   // this should wake up the host, which is great for entering passwords
   // but might have some side effects
@@ -157,10 +154,16 @@ void LauncherApp::begin() {
   Keyboard.release(KEY_LEFT_SHIFT);
 
   if (pad.touched(LEFT_PAD)) {
-    current_screen = 0;
+    setCurrentScreen(0);
   } else if (pad.touched(RIGHT_PAD)) {
-    current_screen = 2;
+    setCurrentScreen(2);
+  } else {
+    checkTimeout();
   }
+
+  // adjust the current screen before beginning
+  BritepadApp::begin(asMode);
+
   highlighted_button = noButton;
 
   if (pad.down(TOP_PAD)) {
@@ -179,6 +182,7 @@ void LauncherApp::end() {
   }
 
   screen.pushFill(DIRECTION_UP, britepad.getLaunchedApp()->bgColor());
+  BritepadApp::end();
 }
 
 void LauncherApp::drawButtons() {
@@ -205,11 +209,11 @@ void LauncherApp::drawButton(int i, bool highlighted) {
 
   BritepadApp* app = getButton(i);
 
-  bool disabled = !app->getEnabled(screenMode(currentScreen()));
+  bool disabled = !app->getEnabled(screenMode(getCurrentScreen()));
   highlighted = disabled | highlighted;
 
   color_t color;
-  switch (currentScreen()) {
+  switch (getCurrentScreen()) {
     case MICE_SCREEN:
       color = screen.green;
       break;
@@ -275,7 +279,7 @@ void LauncherApp::setButton(int screen, int i, BritepadApp* b)
 
 BritepadApp* LauncherApp::getButton(int i) {
   if ((i >= 0) && (i < buttons_per_screen)) {
-    return apps[currentScreen()][i];
+    return apps[getCurrentScreen()][i];
   } else {
     return nullptr;
   }
@@ -283,7 +287,7 @@ BritepadApp* LauncherApp::getButton(int i) {
 
 AppMode LauncherApp::screenMode(int theScreen) {
   AppMode launchMode;
-  switch (current_screen) {
+  switch (getCurrentScreen()) {
     case MICE_SCREEN:
       launchMode = MOUSE_MODE;
       break;
@@ -306,15 +310,15 @@ void LauncherApp::run() {
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
     if (pad.up(SCREEN_PAD)) {
-      launchApp(launchOnRelease, screenMode(current_screen));
+      launchApp(launchOnRelease, screenMode(getCurrentScreen()));
       britepad.disableScreensavers();
       launchOnRelease = nullptr;
     }
   } else if (pad.down(LEFT_PAD)
        || (pad.getGesture() == GESTURE_SWIPE_LEFT)
     ) {
-      if (currentScreen() > 0) {
-        current_screen--;
+      if (getCurrentScreen() > 0) {
+        setCurrentScreen(getCurrentScreen() - 1);
         highlighted_button = noButton;
         sound.swipe(DIRECTION_LEFT);
         screen.pushFill(DIRECTION_LEFT, bgColor());
@@ -326,8 +330,8 @@ void LauncherApp::run() {
   } else if (pad.down(RIGHT_PAD)
      || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
   ) {
-    if (currentScreen() < TOTAL_SCREENS - 1) {
-      current_screen++;
+    if (getCurrentScreen() < TOTAL_SCREENS - 1) {
+      setCurrentScreen(getCurrentScreen()+1);
       highlighted_button = noButton;
       sound.swipe(DIRECTION_RIGHT);
       screen.pushFill(DIRECTION_RIGHT, bgColor());
@@ -344,7 +348,7 @@ void LauncherApp::run() {
       drawButton(highlighted_button, false);
 
       if (highlighted_button != noButton) {
-        BritepadApp* launched = apps[currentScreen()][b];
+        BritepadApp* launched = apps[getCurrentScreen()][b];
         if (launched->isPopup()) {
           launched->run();
           if (!launched->isInvisible()) {
@@ -354,7 +358,7 @@ void LauncherApp::run() {
             drawButton(b, false);
           }
         } else {
-          AppMode whichMode = screenMode(current_screen);
+          AppMode whichMode = screenMode(getCurrentScreen());
           if (whichMode == INTERACTIVE_MODE) {
             launchApp(launched);
           } else {
@@ -394,21 +398,12 @@ void LauncherApp::run() {
 
 }
 
-int LauncherApp::currentScreen() {
-  // if we haven't run in a while, reset to the middle screen
-  if (clock.now() - lastRun > resetScreenTimeout) {
-    current_screen = KEYS_SCREEN;
-  }
-
-  return current_screen;
-}
-
 color_t LauncherApp::bgColor() {
-  return screenColor[currentScreen()];
+  return screenColor[getCurrentScreen()];
 }
 
 const char* LauncherApp::infoBarText() {
-  switch (currentScreen()) {
+  switch (getCurrentScreen()) {
     case SCREENSAVERS_SCREEN:
     case CLOCKS_SCREEN:
     case MICE_SCREEN:
@@ -419,5 +414,12 @@ const char* LauncherApp::infoBarText() {
 }
 
 const char* LauncherApp::statusBarTitle() {
-  return screenNames[currentScreen()];
+  return screenNames[getCurrentScreen()];
+}
+
+void LauncherApp::checkTimeout() {
+  // if we haven't run in a while, reset to the middle screen
+  if (clock.now() - lastRun > resetScreenTimeout) {
+    setCurrentScreen(KEYS_SCREEN);
+  }
 }

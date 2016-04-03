@@ -8,7 +8,7 @@ class SetCountdownApp : public SetClockApp {
   public:
     SetCountdownApp() { theTime = &countdownTime;};
     void end();
-    void begin();
+    void begin(AppMode asMode);
 
     BritepadApp* exitsTo();
     bool displaysClock() { return false; };

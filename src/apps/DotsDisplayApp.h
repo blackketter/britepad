@@ -8,7 +8,7 @@
 
 class DotsDisplayApp : public ScreensaverApp {
   public:
-    void begin();
+    void begin(AppMode asMode);
     void run();
     void end();
 

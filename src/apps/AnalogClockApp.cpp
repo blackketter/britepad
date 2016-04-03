@@ -16,8 +16,8 @@ coord_t sec_length;
 coord_t min_length;
 coord_t hr_length;
 
-void AnalogClockApp::begin() {
-  ClockApp::begin();
+void AnalogClockApp::begin(AppMode asMode) {
+  ClockApp::begin(asMode);
   coord_t x = screen.clipMidWidth();
   coord_t y = screen.clipMidHeight();
   coord_t r = min(x,y);

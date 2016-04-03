@@ -113,7 +113,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
   if (newApp == currApp) {
     if (currApp->getAppMode() != asMode) {
-       currApp->setAppMode(asMode);
+       currApp->switchAppMode(asMode);
     }
     return;
   }
@@ -127,8 +127,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   if (currApp) {
     currApp->drawBars();
     DEBUGF("Begin: %s\n", currApp->name());
-    currApp->begin();
-    currApp->setAppMode(asMode);
+    currApp->begin(asMode);
     if (asMode == SCREENSAVER_MODE) {
       screensaverStartedTime = pad.time();
     }
@@ -217,7 +216,7 @@ void Britepad::idle() {
     DEBUG_LN("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
     if (currApp->canBeMouse() && currApp->getEnabled(MOUSE_MODE)) {
-      currApp->setAppMode(MOUSE_MODE);
+      currApp->switchAppMode(MOUSE_MODE);
     } else {
       launchApp(BritepadApp::MOUSE_APP, MOUSE_MODE);
     }

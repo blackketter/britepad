@@ -5,7 +5,7 @@
 
 class TabletApp : public BritepadApp {
   public:
-    void begin() { mouse.setAbsolute(true); BritepadApp::begin(); }
+    void begin(AppMode asMode) { mouse.setAbsolute(true); BritepadApp::begin(asMode); }
     void end() {  mouse.setAbsolute(false); BritepadApp::end(); }
 
     void run() {
@@ -16,7 +16,7 @@ class TabletApp : public BritepadApp {
     }
 
     // interactive = mouse mode for this app
-    void setAppMode(AppMode newMode) { if (newMode == INTERACTIVE_MODE) { newMode = MOUSE_MODE; } BritepadApp::setAppMode(newMode); }
+    void switchAppMode(AppMode newMode) { if (newMode == INTERACTIVE_MODE) { newMode = MOUSE_MODE; } BritepadApp::switchAppMode(newMode); }
 
     bool disablesScreensavers() { return true; }
 

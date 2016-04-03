@@ -1,7 +1,7 @@
 #include "CountdownApp.h"
 
-void CountdownApp::setAppMode(AppMode asMode) {
-  BritepadApp::setAppMode(asMode);
+void CountdownApp::switchAppMode(AppMode asMode) {
+  BritepadApp::switchAppMode(asMode);
   clearScreen();
   redraw();
 }
@@ -15,7 +15,8 @@ void CountdownApp::redraw() {
   lastDrawMillis = 0;
 }
 
-void CountdownApp::begin() {
+void CountdownApp::begin(AppMode asMode) {
+  ScreensaverApp::begin(asMode);
   time_t prefTime;
   if (prefs.read(countdownTimePrefStr, sizeof(prefTime), (uint8_t*)&prefTime)) {
     countdownTime.setSeconds(prefTime);
@@ -40,9 +41,9 @@ void CountdownApp::run() {
   if (pad.down(BOTTOM_PAD)) {
     sound.click();
     if (isAppMode(SCREENSAVER_MODE)) {
-      setAppMode(INTERACTIVE_MODE);
+      switchAppMode(INTERACTIVE_MODE);
     } else {
-      setAppMode(SCREENSAVER_MODE);
+      switchAppMode(SCREENSAVER_MODE);
     }
   }
 

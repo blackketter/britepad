@@ -9,7 +9,7 @@ class BreakoutApp : public BritepadApp {
     const char* name() { return "Breakout"; };
     bool disablesScreensavers() { return dx || dy || (pad.time() - pad.lastTouchedTime(ANY_PAD)) > timeoutMillis; }
     void run();
-    void begin();
+    void begin(AppMode asMode);
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "bkou";

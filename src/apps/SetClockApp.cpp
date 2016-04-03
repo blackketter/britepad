@@ -58,8 +58,8 @@ void SetClockApp::drawButtons() {
   }
 }
 
-void SetClockApp::begin() {
-  BritepadApp::begin();
+void SetClockApp::begin(AppMode asMode) {
+  BritepadApp::begin(asMode);
   lastDraw = 0;
   clearScreen();
   setDate = false;
@@ -92,6 +92,7 @@ void SetClockApp::begin() {
 void SetClockApp::end() {
   theTime->endSetTime();
   britepad.enableChime(true);
+  BritepadApp::end();
 }
 
 void SetClockApp::modeButtonPressed() {

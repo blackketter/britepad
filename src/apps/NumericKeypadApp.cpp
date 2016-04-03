@@ -2,8 +2,8 @@
 #include "Sound.h"
 #include <usb_keyboard.h>
 
-void NumericKeypadApp::begin() {
-  BritepadApp::begin();
+void NumericKeypadApp::begin(AppMode asMode) {
+  BritepadApp::begin(asMode);
   if (!buttons) {
     buttons = new ButtonMatrix(screen.clipLeft(),(coord_t)(screen.clipTop()),screen.clipWidth(),(coord_t)(screen.clipHeight()),keyRows,keyColumns,keyMaps,(ButtonConfig*)keyConfig);
   }
@@ -12,9 +12,9 @@ void NumericKeypadApp::begin() {
 
 
 void NumericKeypadApp::end() {
-  BritepadApp::end();
   delete buttons;
   buttons = nullptr;
+  BritepadApp::end();
 }
 
 void NumericKeypadApp::run() {

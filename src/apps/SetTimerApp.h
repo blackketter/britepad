@@ -11,7 +11,7 @@ class SetTimerApp : public BritepadApp {
     SetTimerApp(const char* name, time_t duration);
     SetTimerApp();
 
-    void begin();
+    void begin(AppMode asMode);
     void run();
     const char* name() { return name_str; };
 

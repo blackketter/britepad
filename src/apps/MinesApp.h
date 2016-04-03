@@ -32,7 +32,7 @@ class MineMatrix : public SquareMatrix {
 
 class MinesApp : public BritepadApp {
   public:
-    void begin();
+    void begin(AppMode asMode);
     void end();
     void run();
 

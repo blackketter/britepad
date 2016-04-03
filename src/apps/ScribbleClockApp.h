@@ -6,7 +6,7 @@
 class ScribbleClockApp : public ClockApp {
   public:
     void update();
-    void begin() { lastH10 = lastH1 = lastM10 = lastM1 = lastS10 = lastS1 = 11;  colons = false; ClockApp::begin(); }
+    void begin(AppMode asMode) { lastH10 = lastH1 = lastM10 = lastM1 = lastS10 = lastS1 = 11;  colons = false; ClockApp::begin(asMode); }
     const char* name() { return "Scribble"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "scrb";

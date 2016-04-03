@@ -5,7 +5,7 @@
 
 class SplashApp : public ScreensaverApp {
   public:
-    void begin();
+    void begin(AppMode asMode);
     void run();
     const char* name() { return "Splash"; };
     bool displaysStatusBar() { return false; };

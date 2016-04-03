@@ -8,9 +8,9 @@
 
 class CountdownApp : public ScreensaverApp {
   public:
-    void begin();
+    void begin(AppMode asMode);
     void run();
-    void setAppMode(AppMode asMode);
+    void switchAppMode(AppMode asMode);
 
     virtual bool canBeInteractive() { return true; }
     virtual bool displaysStatusBar() { return true; }

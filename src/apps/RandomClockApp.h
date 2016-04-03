@@ -7,7 +7,7 @@
 
 class RandomClockApp : public ClockApp {
   public:
-    void begin();
+    void begin(AppMode asMode);
     void update();
     virtual millis_t updateInterval() { return 1; }
 

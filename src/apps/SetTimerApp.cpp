@@ -73,8 +73,8 @@ void SetTimerApp::drawButtons() {
   }
 }
 
-void SetTimerApp::begin() {
-  BritepadApp::begin();
+void SetTimerApp::begin(AppMode asMode) {
+  BritepadApp::begin(asMode);
 
   if (edit && !customTimerRunning()) {
     clearScreen();

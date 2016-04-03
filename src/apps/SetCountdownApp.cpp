@@ -7,7 +7,7 @@ BritepadApp* SetCountdownApp::exitsTo() {
   return getAppByID(CountdownApp::ID);
 }
 
-void SetCountdownApp::begin() {
+void SetCountdownApp::begin(AppMode asMode) {
 
   CountdownApp* countdownApp = (CountdownApp*)getAppByID(CountdownApp::ID);
   if (countdownApp) {
@@ -15,7 +15,7 @@ void SetCountdownApp::begin() {
   }
 
   setDate = true;
-  SetClockApp::begin();
+  SetClockApp::begin(asMode);
 }
 
 void SetCountdownApp::end() {

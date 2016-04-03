@@ -1,8 +1,8 @@
 #include "ChromaClockApp.h"
 #include "Debug.h"
 
-void ChromaClockApp::begin() {
-  ClockApp::begin();
+void ChromaClockApp::begin(AppMode asMode) {
+  ClockApp::begin(asMode);
 
   update();
 }

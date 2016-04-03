@@ -117,8 +117,8 @@ void MineMatrix::updateDot(int x, int y) {
   }
 }
 
-void MinesApp::begin() {
-  BritepadApp::begin();
+void MinesApp::begin(AppMode asMode) {
+  BritepadApp::begin(asMode);
   if (!field) {
     field = new MineMatrix(screen.clipMidWidth()-screen.clipHeight()/2,(coord_t)(screen.clipTop()),screen.clipHeight(),screen.clipHeight(),minesHeight,minesWidth);
   }
@@ -138,10 +138,10 @@ void MinesApp::begin() {
 
 
 void MinesApp::end() {
-  BritepadApp::end();
   delete field;
   field = nullptr;
   sound.tunePlay(nullptr);
+  BritepadApp::end();
 }
 
 // todo: add the flag
@@ -150,7 +150,7 @@ void MinesApp::run() {
   if (gameOver) {
     if (pad.up()) {
       end();
-      begin();
+      begin(INTERACTIVE_MODE);
     } else {
       return;
     }

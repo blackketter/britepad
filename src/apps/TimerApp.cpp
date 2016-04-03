@@ -12,6 +12,7 @@ void TimerApp::end() {
     beeps = 0;
     alarm_sounded = 0;
   }
+  StopwatchApp::end();
 }
 
 void TimerApp::drawTime() {

@@ -33,7 +33,7 @@ void ThereminApp::run() {
 }
 
 void ThereminApp::end() {
-  BritepadApp::end();
   sound.tone(0,0);  // stop the tone
+  BritepadApp::end();
 }
 

@@ -4,8 +4,8 @@
 #include "Debug.h"
 #include "Clock.h"
 
-void RandomClockApp::begin() {
-  ClockApp::begin();
+void RandomClockApp::begin(AppMode asMode) {
+  ClockApp::begin(asMode);
 }
 
 float distance(long x1, long y1, long x2, long y2) {

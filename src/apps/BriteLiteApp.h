@@ -7,7 +7,7 @@ class BriteLiteApp : public DotsDisplayApp {
 
   public:
     void run();
-    void begin();
+    void begin(AppMode asMode);
 
     static constexpr appid_t ID = "lite";
     appid_t id() { return ID; };

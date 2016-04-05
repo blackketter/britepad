@@ -1,13 +1,13 @@
 #ifndef _MandelApp_
 #define _MandelApp_
 
-#include "BritepadApp.h"
+#include "ScreensaverApp.h"
 
-class MandelApp : public BritepadApp {
+class MandelApp : public ScreensaverApp {
   public:
     void run();
-    void begin(AppMode asMode) { lastRow = screen.clipTop(); BritepadApp::begin(asMode); }
-    bool canBeMouse() { return true; }
+    void begin(AppMode asMode);
+    bool canBeMouse() { return false; }
     bool canBeInteractive() { return true; }
 
     const char* name() { return "Mandel"; };
@@ -15,10 +15,12 @@ class MandelApp : public BritepadApp {
     static constexpr appid_t ID = "mand";
 
   private:
-    coord_t lastRow;
-    float xOrigin = 0;
-    float yOrigin = 0;
-    float scale = 0;
+    float xOrigin = -0.086f;
+    float yOrigin = 0.85f;
+    float scale = 1.0f;
+    coord_t xPixel;
+    coord_t yPixel;
+    float x1, x2,y1,y2,sx,sy;
 };
 
 #endif

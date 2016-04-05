@@ -26,6 +26,7 @@
 #include "KeyApp.h"
 #include "KeyboardApp.h"
 #include "LifeApp.h"
+#include "MandelApp.h"
 #include "MinesApp.h"
 #include "MuteApp.h"
 #include "NumericKeypadApp.h"
@@ -60,13 +61,14 @@ LauncherApp::LauncherApp() {
 
 // left screen contains screensavers and settings
   int p = 0;
+  setButton(SCREENSAVERS_SCREEN, p++,  new BriteLiteApp);
   setButton(SCREENSAVERS_SCREEN, p++,  new BubblesApp);
   setButton(SCREENSAVERS_SCREEN, p++,  new DotsDisplayApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new SpiroApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new BriteLiteApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new StarfieldApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new LifeApp);
   setButton(SCREENSAVERS_SCREEN, p++,  new FadeDotsApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new LifeApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new MandelApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new SpiroApp);
+  setButton(SCREENSAVERS_SCREEN, p++,  new StarfieldApp);
   setButton(SCREENSAVERS_SCREEN, p++,  new TrianglesApp);
 
   p = 0;
@@ -79,7 +81,6 @@ LauncherApp::LauncherApp() {
   setButton(CLOCKS_SCREEN, p++,  new RandomClockApp);
   setButton(CLOCKS_SCREEN, p++,  new ScribbleClockApp);
   setButton(CLOCKS_SCREEN, p++,  new WordClockApp);
-
 
   p = 0;
   setButton(SETTINGS_SCREEN, p++, new MuteApp);
@@ -118,14 +119,14 @@ LauncherApp::LauncherApp() {
 
   p = 0;
   setButton(APPS_SCREEN, p++,  new BreakoutApp);
-  setButton(APPS_SCREEN, p++,  new ThereminApp);
-  setButton(APPS_SCREEN, p++,  new PaintApp);
+  setButton(APPS_SCREEN, p++,  new CalendarApp);
   setButton(APPS_SCREEN, p++,  new GestureApp);
+  setButton(APPS_SCREEN, p++,  new MinesApp);
+  setButton(APPS_SCREEN, p++,  new PaintApp);
+  setButton(APPS_SCREEN, p++,  new SeqApp);
   setButton(APPS_SCREEN, p++,  new SparkleApp);
   setButton(APPS_SCREEN, p++,  new TabletApp);
-  setButton(APPS_SCREEN, p++,  new CalendarApp);
-  setButton(APPS_SCREEN, p++,  new SeqApp);
-  setButton(APPS_SCREEN, p++,  new MinesApp);
+  setButton(APPS_SCREEN, p++,  new ThereminApp);
 
   setButton(DEBUG_SCREEN, 9,  new InfoApp);
   setButton(DEBUG_SCREEN, 10, new ResetApp);

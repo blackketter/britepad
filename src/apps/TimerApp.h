@@ -9,8 +9,7 @@
 class TimerApp : public StopwatchApp {
   public:
     void end();
-    void begin(AppMode asMode) { BritepadApp::begin(asMode); }  // StopwatchApp auto starts at launch
-
+    void begin(AppMode asMode);
     bool wantsToBe(AppMode m) { return isRunning() || alarm_sounded; }
     bool disablesScreensavers() { return false; }
 

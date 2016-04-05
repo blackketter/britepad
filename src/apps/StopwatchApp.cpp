@@ -10,6 +10,8 @@ void StopwatchApp::begin(AppMode asMode) {
   if (isReset()) {
     resume();
   }
+  redrawButtons();
+  redrawTime();
 }
 
 void StopwatchApp::switchAppMode(AppMode asMode) {

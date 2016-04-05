@@ -57,7 +57,7 @@ void RandomClockApp::update() {
 
     screen.polarToRect(sec_theta, screen.clipHeight()/2, xLine, yLine);
     dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
-    if ( dist < 0.005) { c = screen.white; rc = 2;}
+    if ( dist < 0.005) { c = screen.white; rc = 1;}
 
     screen.polarToRect(min_theta, screen.clipHeight()/2, xLine, yLine);
     dist = onLine(xCenter, yCenter, xLine, yLine, x, y);

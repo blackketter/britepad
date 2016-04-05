@@ -4,7 +4,11 @@
 #include "TimerApp.h"
 #include "Debug.h"
 #include "Clock.h"
-
+void TimerApp::begin(AppMode asMode) {
+  BritepadApp::begin(asMode);    // StopwatchApp auto starts at launch
+  redrawButtons();
+  redrawTime();
+}
 void TimerApp::end() {
   // don't bother coming back as a screensaver if the alarm has sounded
   if (alarm_sounded) {

@@ -1,6 +1,7 @@
 // PlatformIO needs these for some reason
 #include "SPI.h"
 #include "Audio.h"
+#include "EEPROM.h"
 
 /* britepad sketch*/
 #include "BritepadShared.h"
@@ -17,6 +18,12 @@ Preferences prefs = Preferences();
 MousePad mouse = MousePad();
 
 void setup() {
+  // this is the magic trick for printf to support float
+  asm(".global _printf_float");
+
+  // this is the magic trick for scanf to support float
+  // not needed right now
+//  asm(".global _scanf_float");
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(500);

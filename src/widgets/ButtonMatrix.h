@@ -14,13 +14,13 @@ struct ButtonConfig {
 class ButtonMatrix : public Widget {
   public:
     ButtonMatrix() {};
-    ButtonMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int rows, int columns, int maps, ButtonConfig configuration[]) {
+    ButtonMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int rows, int columns, int maps, ButtonConfig configuration[] = nullptr) {
       init(x,y,w,h,rows,columns,maps,configuration);
     };
 
     virtual ~ButtonMatrix() { deleteButtons(); }
 
-    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h, int rows, int columns, int maps, ButtonConfig configuration[]);
+    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h, int rows, int columns, int maps, ButtonConfig configuration[] = nullptr);
     void deleteButtons() { if (buttons) { for (int i = 0; i < totalButtons(); i++) { delete buttons[i]; }; delete buttons; buttons = nullptr; } }
 
     Button* down();
@@ -30,7 +30,7 @@ class ButtonMatrix : public Widget {
     void setMap(int newMap) { if (currMap != newMap) { currMap = newMap; draw();} }
     int getMap() { return currMap; };
 
-    Button* getID(widgetid_t id);
+    Button* getButton(widgetid_t id);
     virtual void setHighlighted(bool highlight);
 
   protected:

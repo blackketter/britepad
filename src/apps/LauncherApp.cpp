@@ -39,7 +39,6 @@
 #include "SetAlarmApp.h"
 #include "SetClockApp.h"
 #include "SetTimerApp.h"
-#include "SparkleApp.h"
 #include "SpiroApp.h"
 #include "StarfieldApp.h"
 #include "SplashApp.h"
@@ -49,8 +48,6 @@
 #include "TrianglesApp.h"
 #include "ThereminApp.h"
 #include "WordClockApp.h"
-
-LauncherApp theLauncherApp;
 
 LauncherApp::LauncherApp() {
   for (int s = 0; s < TOTAL_SCREENS; s++) {
@@ -124,7 +121,6 @@ LauncherApp::LauncherApp() {
   setButton(APPS_SCREEN, p++,  new MinesApp);
   setButton(APPS_SCREEN, p++,  new PaintApp);
   setButton(APPS_SCREEN, p++,  new SeqApp);
-  setButton(APPS_SCREEN, p++,  new SparkleApp);
   setButton(APPS_SCREEN, p++,  new TabletApp);
   setButton(APPS_SCREEN, p++,  new ThereminApp);
 
@@ -148,6 +144,15 @@ LauncherApp::LauncherApp() {
 }
 
 void LauncherApp::begin(AppMode asMode) {
+
+  BritepadApp* iterApp = britepad.getNextApp();
+  while (iterApp) {
+    DEBUGF("Checking for mouse apps %s\n", iterApp->name());
+    if (iterApp->canBeMouse()) {
+      DEBUGF(" Yes\n");
+    }
+    iterApp = britepad.getNextApp(iterApp);
+  }
 
   // this should wake up the host, which is great for entering passwords
   // but might have some side effects

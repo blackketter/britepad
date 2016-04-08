@@ -43,31 +43,32 @@ void RandomClockApp::update() {
 
     hr_theta = (hr * 65536L) / 12L + min_theta/12;
 
+    for (int p = 0; p < 10; p++) {
+      int i = 0;
+      do {
+        i++;
+        x = random(screen.clipWidth()) + screen.clipLeft();
+        y = random(screen.clipHeight()) + screen.clipTop();
+        r = ((long)x-screen.clipMidWidth())*((long)x-screen.clipMidWidth())+((long)y-screen.clipMidHeight())*((long)y-screen.clipMidHeight());
+       } while (r > (screen.clipHeight()/2)*(screen.clipHeight()/2));
 
-    int i = 0;
-    do {
-      i++;
-      x = random(screen.clipWidth()) + screen.clipLeft();
-      y = random(screen.clipHeight()) + screen.clipTop();
-      r = ((long)x-screen.clipMidWidth())*((long)x-screen.clipMidWidth())+((long)y-screen.clipMidHeight())*((long)y-screen.clipMidHeight());
-     } while (r > (screen.clipHeight()/2)*(screen.clipHeight()/2));
+      color_t c = screen.black;
+      coord_t rc = 1;
 
-    color_t c = screen.black;
-    coord_t rc = 4;
+      screen.polarToRect(sec_theta, screen.clipHeight()/2, xLine, yLine);
+      dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
+      if ( dist < 0.005) { c = screen.white; rc = 1;}
 
-    screen.polarToRect(sec_theta, screen.clipHeight()/2, xLine, yLine);
-    dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
-    if ( dist < 0.005) { c = screen.white; rc = 1;}
+      screen.polarToRect(min_theta, screen.clipHeight()/2, xLine, yLine);
+      dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
+      if ( dist < 0.005) { c = screen.green; rc = 6;}
 
-    screen.polarToRect(min_theta, screen.clipHeight()/2, xLine, yLine);
-    dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
-    if ( dist < 0.005) { c = screen.green; rc = 6;}
+      screen.polarToRect(hr_theta, screen.clipHeight()/4, xLine, yLine);
+      dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
+      if ( dist < 0.03) { c = screen.red; rc = 8; }
 
-    screen.polarToRect(hr_theta, screen.clipHeight()/4, xLine, yLine);
-    dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
-    if ( dist < 0.03) { c = screen.red; rc = 8; }
-
-    screen.fillCircle(x,y,rc,c);
-//      screen.drawPixel(x,y,c);
-//      screen.fillRect(x,y,rc,rc,c);
+  //  screen.fillCircle(x,y,rc,c);
+      screen.drawPixel(x,y,c);
+  //  screen.fillRect(x,y,rc,rc,c);
+  }
 }

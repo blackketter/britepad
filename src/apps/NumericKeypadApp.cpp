@@ -28,7 +28,7 @@ void NumericKeypadApp::run() {
     if (pad.getGesture() == GESTURE_SWIPE_UP) {
       exit();
     } else {
-      b = buttons->getID(pad.getGesture());
+      b = buttons->getButton(pad.getGesture());
       if (b) {
         DEBUGF("Found button for gesture 0x%02x\n", pad.getGesture());
       } else {

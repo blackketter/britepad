@@ -8,7 +8,7 @@
 class Button : public Widget {
   public:
     Button() {};
-    Button(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr) {
+    Button(coord_t x, coord_t y, coord_t w, coord_t h,color_t color = screen.black, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr) {
       init(x,y,w,h,color,highlight,title,f,titleColor,iconData);
     };
 
@@ -37,12 +37,12 @@ class Button : public Widget {
     virtual bool hold();
 
     virtual void setColor(color_t newColor) {  colored = newColor; }
+    virtual color_t getColor() { return colored; }
+
     virtual void setTitle(const char* newTitle) { titleStr = newTitle; }
     virtual void setTitleFont(font_t newFont) { titleFont = newFont; }
     virtual void setIcon(uint8_t* iconptr) { icon = iconptr; }
 
-
-    virtual uint8_t getID() { return id; }
     virtual void track();
 
     void draw();

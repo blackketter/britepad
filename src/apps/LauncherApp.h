@@ -3,7 +3,25 @@
 
 #include "BritepadShared.h"
 #include "BritepadApp.h"
+#include "widgets/Button.h"
+#include "widgets/ButtonMatrix.h"
 
+class AppButton : public RoundButton {
+  public:
+    BritepadApp* getApp() { return (BritepadApp*)getID(); }
+    void setApp(BritepadApp* a)  {  setID((widgetid_t)a); }
+};
+
+
+class AppButtonMatrix : public ButtonMatrix {
+  public:
+    AppButtonMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int rows, int columns, int maps, ButtonConfig configuration[] = nullptr) {
+      init(x, y, w, h, rows, columns, maps, configuration);
+    };
+
+  protected:
+    Button* newButton() { return new AppButton(); }
+};
 
 class LauncherApp : public BritepadApp {
   public:
@@ -54,6 +72,8 @@ class LauncherApp : public BritepadApp {
 
     BritepadApp* apps[TOTAL_SCREENS][buttons_per_screen];
 
+    AppButtonMatrix* buttons;
+
     const char* screenNames[TOTAL_SCREENS] = {
         "Debug",
         "Mice",
@@ -84,5 +104,6 @@ class LauncherApp : public BritepadApp {
     static const millis_t holdTime = 500;
     BritepadApp* launchOnRelease = nullptr;
 };
+
 #endif
 

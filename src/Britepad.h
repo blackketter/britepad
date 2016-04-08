@@ -25,7 +25,7 @@ class Britepad {
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { launchedAppPtr = app; launchedAppMode = mode; }
     BritepadApp* currentApp() { return currApp; }
 
-    void addApp(BritepadApp* newApp);
+    static void addApp(BritepadApp* newApp);
     BritepadApp* getAppByID(appid_t appID);
     BritepadApp* getNextApp(BritepadApp* anApp = nullptr);
     void updateStatusBar();
@@ -52,6 +52,8 @@ class Britepad {
     BritepadApp* wantsToBe(AppMode m);
     BritepadApp* randomApp(AppMode m);
 
+    BritepadApp* theLauncherApp;
+
     static const millis_t screensaverDelay = 10000;
     static const millis_t ambientUpdateInterval = 100;
     static const millis_t showClockDur = 5000;
@@ -67,8 +69,6 @@ class Britepad {
 
     millis_t screensaverStartedTime = 0;
     millis_t disableScreensaversUntil = 0;
-
-    BritepadApp* appList = nullptr;
 
     Timer chimeTimer;
     int chimesRemaining = 0;

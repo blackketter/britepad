@@ -13,6 +13,10 @@
 
 #define PROXIMITY_DEAD_TIME (1000)
 
+BritepadApp* appList = nullptr;
+
+
+
 BritepadApp* Britepad::getAppByID(appid_t appID) {
 
   BritepadApp* nextapp = appList;
@@ -179,6 +183,9 @@ void Britepad::updateStatusBar() {
 
 void Britepad::begin() {
 
+  // we defer the creation of the launcher to guarantee it's last and all the other apps have been created
+  theLauncherApp = new LauncherApp;
+
   // assumes that the splashapp has been created and added to list
   launchApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
   setApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
@@ -187,9 +194,7 @@ void Britepad::begin() {
   BritepadApp* anApp = appList;
   int count = 1;
   while (anApp != nullptr) {
-//    DEBUG_LN(count);
-//    DEBUG_LN(anApp->name());
-//    DEBUG_LN((uint32_t)anApp);
+    DEBUGF("App: %d : %s (%08x)\n", count, anApp->name(), (uint32_t)anApp);
     anApp = anApp->getNextApp();
     count++;
   }

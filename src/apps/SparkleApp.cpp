@@ -4,6 +4,8 @@
 #include "Debug.h"
 #include "Sound.h"
 
+SparkleApp theSparkleApp;
+
 void SparkleApp::drawSparkle(int i, color_t c) {
    screen.drawLine(points[i].x-radius, points[i].y, points[i].x + radius, points[i].y, c);
    screen.drawLine(points[i].x, points[i].y-radius, points[i].x, points[i].y+radius, c);

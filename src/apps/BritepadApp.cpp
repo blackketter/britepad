@@ -8,7 +8,7 @@ BritepadApp* BritepadApp::BACK_APP = (BritepadApp*)2;
 BritepadApp* BritepadApp::SCREENSAVER_APP = (BritepadApp*)3;
 
 BritepadApp::BritepadApp()  {
-  britepad.addApp(this);
+  Britepad::addApp(this);
 }
 
 void BritepadApp::resetClipRect() {

@@ -23,7 +23,11 @@ void ButtonMatrix::init(coord_t x, coord_t y, coord_t width, coord_t height, int
       for (int c = 0; c<buttonColumns;c++) {
         int i = index(r,c,m);
         buttons[i] = newButton();
-        buttons[i]->init(b_x, b_y, b_w, b_h, configuration[i].bgColor, false, configuration[i].labelText, configuration[i].labelFont, configuration[i].labelColor, configuration[i].icon, configuration[i].id);
+        if (configuration) {
+          buttons[i]->init(b_x, b_y, b_w, b_h, configuration[i].bgColor, false, configuration[i].labelText, configuration[i].labelFont, configuration[i].labelColor, configuration[i].icon, configuration[i].id);
+        } else {
+          buttons[i]->init(b_x, b_y, b_w, b_h);
+        }
         b_x += xspacing;
       }
     b_y += yspacing;
@@ -70,7 +74,7 @@ Button* ButtonMatrix::up() {
   return nullptr;
 }
 
-Button* ButtonMatrix::getID(widgetid_t id) {
+Button* ButtonMatrix::getButton(widgetid_t id) {
 
   for (int r = 0; r < buttonRows; r++) {
     for (int c = 0; c < buttonColumns; c++) {

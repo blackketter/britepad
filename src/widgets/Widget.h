@@ -3,7 +3,7 @@
 
 #include "Screen.h"
 
-typedef uint8_t widgetid_t;
+typedef uint32_t widgetid_t;
 
 class Widget {
 
@@ -23,7 +23,7 @@ class Widget {
     coord_t getMidHeight() { return ypos+height/2; }
     void getBounds(rect_t& r) { r.x = xpos; r.y = ypos; r.w = width; r.h = height; };
 
-    widgetid_t getID();
+    widgetid_t getID() { return id; }
     void setID(widgetid_t newID) { id = newID; }
 
     // todo: make setting the visibility cause a redraw or erase
@@ -31,12 +31,12 @@ class Widget {
     bool getVisible() { return visible; }
 
   protected:
+    widgetid_t id = 0;
     coord_t xpos = 0;
     coord_t ypos = 0;
     coord_t width = 0;
     coord_t height = 0;
     bool visible = true;
-    widgetid_t id = 0;
 
 };
 

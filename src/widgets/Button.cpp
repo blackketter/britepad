@@ -4,7 +4,7 @@
 void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData, widgetid_t id) {
   setBounds(x,y,w,h);
 
-  colored = color;
+  setColor(color);
   highlighted = highlight;
   titleStr = title;
   titleFont = f;
@@ -58,7 +58,7 @@ void Button::track() {
 }
 
 color_t Button::fillColor() {
-  return highlighted ? screen.mix(colored, screen.black) : colored;
+  return highlighted ? screen.mix(getColor(), screen.black) : getColor();
 }
 
 void Button::drawbg() {
@@ -109,7 +109,7 @@ void Button::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight,
   ypos = y - r;
   width = r*2;
   height = r*2;
-  colored = color;
+  setColor(color);
   highlighted = highlight;
   titleStr = title;
   titleFont = f;

@@ -21,6 +21,8 @@ class StopwatchApp : public BritepadApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stpw";
 
+    AppType getAppType() { return TIMER_APP; }
+
   protected:
     virtual bool isPaused() { return startMillis < 0; };
     virtual void pause() { startMillis = -(Uptime::millis() - startMillis); }

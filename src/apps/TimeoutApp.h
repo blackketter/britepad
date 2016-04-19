@@ -56,8 +56,8 @@ class TimeoutApp : public BritepadApp {
     };
 
     bool isPopup() { return true; };
-
     bool isInvisible() { return true; };
+    AppType getAppType() { return SETTINGS_APP; }
 
     color_t buttonColor() { return screen.blue; };
 

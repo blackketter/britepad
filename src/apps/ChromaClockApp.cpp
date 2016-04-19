@@ -1,6 +1,8 @@
 #include "ChromaClockApp.h"
 #include "Debug.h"
 
+ChromaClockApp theChromaClockApp;
+
 void ChromaClockApp::begin(AppMode asMode) {
   ClockApp::begin(asMode);
 

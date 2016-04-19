@@ -1,6 +1,8 @@
 #include "SetAlarmApp.h"
 #include "Debug.h"
 
+SetAlarmApp theSetAlarmApp;
+
 void SetAlarmApp::modeButtonPressed() {
 
  alarmEnabled = !alarmEnabled;

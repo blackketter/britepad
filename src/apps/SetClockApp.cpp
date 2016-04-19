@@ -3,6 +3,8 @@
 #include "TimerApp.h"
 #include "Debug.h"
 
+SetClockApp theSetClockApp;
+
 enum {
   hr1_up,
   min10_up,

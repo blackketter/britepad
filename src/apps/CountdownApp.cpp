@@ -1,5 +1,7 @@
 #include "CountdownApp.h"
 
+CountdownApp theCountdownApp;
+
 void CountdownApp::switchAppMode(AppMode asMode) {
   BritepadApp::switchAppMode(asMode);
   clearScreen();

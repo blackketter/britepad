@@ -10,6 +10,8 @@ class ThereminApp : public BritepadApp {
     void end();
     virtual bool disablesScreensavers() { return true; }
 
+    AppType getAppType() { return INTERACTIVE_APP; }
+
     const char* name() { return "Theremin"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "thrm";

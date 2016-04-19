@@ -23,7 +23,7 @@ void setup() {
 
   // this is the magic trick for scanf to support float
   // not needed right now
-//  asm(".global _scanf_float");
+  // asm(".global _scanf_float");
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(500);

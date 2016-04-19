@@ -17,6 +17,7 @@ class TabletApp : public BritepadApp {
 
     // interactive = mouse mode for this app
     void switchAppMode(AppMode newMode) { if (newMode == INTERACTIVE_MODE) { newMode = MOUSE_MODE; } BritepadApp::switchAppMode(newMode); }
+    AppType getAppType() { return INTERACTIVE_APP; }
 
     bool disablesScreensavers() { return true; }
 

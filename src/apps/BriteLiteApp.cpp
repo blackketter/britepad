@@ -4,6 +4,8 @@
 #include "BriteLiteApp.h"
 #include "Debug.h"
 
+BriteLiteApp theBriteLiteApp;
+
 void BriteLiteApp::begin(AppMode asMode) {
   if (!dots) {
     dots = new HexDotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), getDotsWide(), getDotsHigh());

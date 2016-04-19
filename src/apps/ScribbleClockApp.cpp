@@ -2,6 +2,8 @@
 // Using the default gesture data for scribble shapes
 #include "Gesture.h"
 
+ScribbleClockApp theScribbleClockApp;
+
 void ScribbleClockApp::update() {
     // first column is 10s of hours
     int h10 = clock.hourFormat12() / 10;

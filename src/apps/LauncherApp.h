@@ -23,13 +23,15 @@ class AppButtonMatrix : public ButtonMatrix {
     Button* newButton() { return new AppButton(); }
 };
 
+typedef int (*appCompareFunction)(BritepadApp*, BritepadApp*);
+
 class LauncherApp : public BritepadApp {
   public:
     LauncherApp();
     void begin(AppMode asMode);
     void end();
     void run();
-    BritepadApp* exitsTo() { return MOUSE_APP; }
+    BritepadApp* exitsTo() { return A_MOUSE_APP; }
     const char* name() { return "Launcher"; };
 
     appid_t id() { return ID; };
@@ -46,19 +48,30 @@ class LauncherApp : public BritepadApp {
     const static int buttons_per_screen = h_buttons * v_buttons;
     const static int resetScreenTimeout = 10;  // seconds
 
+    BritepadApp* nextSortedApp(BritepadApp* last, appCompareFunction compareFunc) { return nullptr;};
     int buttonHit(int x, int y);
     void drawButton(int i, bool highlighted = false);
     void drawButtons();
     int getCurrentScreen() { return current_screen; }
     void setCurrentScreen(int n) { current_screen = n; }
     color_t bgColor();
-    AppMode screenMode(int theScreen);
     void setButton(int screen, int i, BritepadApp* b);
     BritepadApp* getButton(int i);
     void checkTimeout();
     void clearScreen() {} // override the default clear screen because we do transitions
 
-    enum ScreenNames {
+
+    AppButtonMatrix* buttons;
+
+    int current_screen = SETTINGS_SCREEN;
+
+    int highlighted_button = noButton;
+
+    time_t lastRun = 0;
+    static const millis_t holdTime = 500;
+    BritepadApp* launchOnRelease = nullptr;
+
+    enum Screens {
       DEBUG_SCREEN,
       MICE_SCREEN,
       CLOCKS_SCREEN,
@@ -72,7 +85,16 @@ class LauncherApp : public BritepadApp {
 
     BritepadApp* apps[TOTAL_SCREENS][buttons_per_screen];
 
-    AppButtonMatrix* buttons;
+    const char* infoText[TOTAL_SCREENS] = {
+        nullptr,
+        "Press and hold to test",
+        "Press and hold to test",
+        "Press and hold to test",
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+    };
 
     const char* screenNames[TOTAL_SCREENS] = {
         "Debug",
@@ -85,6 +107,28 @@ class LauncherApp : public BritepadApp {
         "Apps",
       };
 
+    const AppType screenTypes[TOTAL_SCREENS] = {
+        DEBUG_APP,
+        MOUSE_APP,
+        CLOCK_APP,
+        SCREENSAVER_APP,
+        SETTINGS_APP,
+        KEY_APP,
+        TIMER_APP,
+        INTERACTIVE_APP,
+    };
+
+    const AppMode screenMode[TOTAL_SCREENS] = {
+        INTERACTIVE_MODE,
+        MOUSE_MODE,
+        SCREENSAVER_MODE,
+        SCREENSAVER_MODE,
+        INTERACTIVE_MODE,
+        INTERACTIVE_MODE,
+        INTERACTIVE_MODE,
+        INTERACTIVE_MODE,
+    };
+
     const color_t screenColor[TOTAL_SCREENS] = {
         screen.lightgrey,
         screen.black,
@@ -95,14 +139,6 @@ class LauncherApp : public BritepadApp {
         screen.darkerblue,
         screen.darkergrey,
     };
-
-    int current_screen = SETTINGS_SCREEN;
-
-    int highlighted_button = noButton;
-
-    time_t lastRun = 0;
-    static const millis_t holdTime = 500;
-    BritepadApp* launchOnRelease = nullptr;
 };
 
 #endif

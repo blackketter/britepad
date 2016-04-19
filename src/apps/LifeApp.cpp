@@ -17,6 +17,9 @@
 //                                             conway,            maze,               mazectric
 const bool born[RULESETS][9] =    {{0,0,0,1,0,0,0,0,0},{0,0,0,1,0,0,0,0,0},{0,1,0,0,0,0,0,0}};
 const bool survive[RULESETS][9] = {{0,0,1,1,0,0,0,0,0},{0,1,1,1,1,1,0,0,0},{0,1,1,1,1,0,0,0}};
+
+LifeApp theLifeApp;
+
 void LifeApp::switchAppMode(AppMode asMode) {
   DotsDisplayApp::switchAppMode(asMode);
 

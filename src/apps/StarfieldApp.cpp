@@ -1,8 +1,9 @@
 #include "FastLED.h"
-
 #include "BritepadShared.h"
 #include "StarfieldApp.h"
 #include "Debug.h"
+
+StarfieldApp theStarfieldApp;
 
 void StarfieldApp::end() {
   if (stars) {

@@ -2,6 +2,8 @@
 #include "Debug.h"
 #include "Strings.h"
 
+WordClockApp theWordClockApp;
+
 void WordClockApp::run() {
   millis_t mt = Uptime::millis();
 

@@ -15,6 +15,7 @@ class CalendarApp : public BritepadApp {
     const char* name() { return "Calendar"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "cala";
+    AppType getAppType() { return INTERACTIVE_APP; }
 
   private:
 

@@ -1,8 +1,9 @@
 #include "FastLED.h"
-
 #include "BritepadShared.h"
 #include "BubblesApp.h"
 #include "Debug.h"
+
+BubblesApp theBubblesApp;
 
 void BubblesApp::run() {
   ScreensaverApp::run();

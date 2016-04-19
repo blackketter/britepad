@@ -96,10 +96,10 @@ BritepadApp* Britepad::getNextApp(BritepadApp* anApp) {
 void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   if (newApp == BritepadApp::STAY_IN_APP) {
     return;
-  } else if (newApp == BritepadApp::MOUSE_APP) {
+  } else if (newApp == BritepadApp::A_MOUSE_APP) {
     newApp = randomApp(MOUSE_MODE);
     asMode = MOUSE_MODE;
-  } else if (newApp == BritepadApp::SCREENSAVER_APP) {
+  } else if (newApp == BritepadApp::A_SCREENSAVER_APP) {
     newApp = randomApp(SCREENSAVER_MODE);
     asMode = SCREENSAVER_MODE;
   } else if (newApp == BritepadApp::BACK_APP) {
@@ -192,9 +192,17 @@ void Britepad::begin() {
 
 // show the apps that have been loaded
   BritepadApp* anApp = appList;
-  int count = 1;
+  int count = 0;
   while (anApp != nullptr) {
-    DEBUGF("App: %d : %s (%08x)\n", count, anApp->name(), (uint32_t)anApp);
+    anApp = anApp->getNextApp();
+    count++;
+  }
+  DEBUGF("Total apps: %d\n", count);
+
+  anApp = appList;
+  count = 1;
+  while (anApp != nullptr) {
+    DEBUGF("  %d : %s (%08x)\n", count, anApp->name(), (uint32_t)anApp);
     anApp = anApp->getNextApp();
     count++;
   }
@@ -223,14 +231,17 @@ void Britepad::idle() {
     if (currApp->canBeMouse() && currApp->getEnabled(MOUSE_MODE)) {
       currApp->switchAppMode(MOUSE_MODE);
     } else {
-      launchApp(BritepadApp::MOUSE_APP, MOUSE_MODE);
+      launchApp(BritepadApp::A_MOUSE_APP, MOUSE_MODE);
     }
 
   } else if (pad.time() > disableScreensaversUntil && !currApp->disablesScreensavers()) {
 
     if ( pad.down(PROXIMITY_SENSOR) &&
          currApp->isAppMode(SCREENSAVER_MODE) &&
+
+//         !currApp->displaysClock() &&
          !currApp->timeVisible() &&
+
          getAppByID(ClockApp::ID) &&
 //       (getAppByID(ClockApp::ID))->getEnabled(SCREENSAVER_MODE) &&  // the proximity clock is always enabled (todo: make this a user pref)
          (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay))
@@ -248,18 +259,18 @@ void Britepad::idle() {
          !currApp->wantsToBe(SCREENSAVER_MODE) &&
          wantsToBe(SCREENSAVER_MODE)) {
 
-        launchApp(BritepadApp::SCREENSAVER_APP, SCREENSAVER_MODE);
+        launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
 
         lastCheckWantsToBeScreensaver = pad.time();
      }
 
       // let's check to see if we should run a screensaver
      if (currApp->isAppMode(SCREENSAVER_MODE) && getScreensaverSwitchInterval() && (pad.time() - screensaverStartedTime) > getScreensaverSwitchInterval()*1000) {
-        launchApp(BritepadApp::SCREENSAVER_APP, SCREENSAVER_MODE);
+        launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
 
       // is it time for the screensaver to kick in?
       } else if (!currApp->isAppMode(SCREENSAVER_MODE) && (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay)) {
-        launchApp(BritepadApp::SCREENSAVER_APP, SCREENSAVER_MODE);
+        launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
       }
     }
 

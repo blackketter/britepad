@@ -4,6 +4,8 @@
 #include "Debug.h"
 #include "Sound.h"
 
+PaintApp thePaintApp;
+
 void PaintApp::run() {
   BritepadApp::run();
 

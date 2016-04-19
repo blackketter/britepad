@@ -14,6 +14,8 @@ class PaintApp : public BritepadApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "pain";
 
+    AppType getAppType() { return (AppType)(SCREENSAVER_APP + INTERACTIVE_APP); }
+
   private:
     int currentColor = screen.red;
     static const coord_t penRadius = 10;

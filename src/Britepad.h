@@ -4,6 +4,7 @@
 #include "BritepadShared.h"
 #include "Timer.h"
 
+// Apps run in particular modes
 enum AppMode {
   MOUSE_MODE = 1,
   INTERACTIVE_MODE = 2,
@@ -56,7 +57,7 @@ class Britepad {
 
     static const millis_t screensaverDelay = 10000;
     static const millis_t ambientUpdateInterval = 100;
-    static const millis_t showClockDur = 5000;
+    static const millis_t showClockDur = 2000;
 
     static const time_t defaultScreensaverSwitchInterval = 30;
 

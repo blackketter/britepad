@@ -30,6 +30,8 @@ class RebootApp : public BritepadApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "boot";
 
+    AppType getAppType() { return DEBUG_APP; }
+
 };
 
 class ResetApp : public RebootApp {

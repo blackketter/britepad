@@ -21,6 +21,7 @@ class SetTimerApp : public BritepadApp {
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stmr";
+    AppType getAppType() { return TIMER_APP; }
 
     bool customTimerRunning();
   private:

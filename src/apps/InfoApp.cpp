@@ -1,5 +1,7 @@
 #include "InfoApp.h"
 
+InfoApp theInfoApp;
+
 void InfoApp::run() {
 
   BritepadApp::run();

@@ -1,9 +1,10 @@
 #include "FastLED.h"
-
 #include "BritepadShared.h"
 #include "StopwatchApp.h"
 #include "Debug.h"
 #include "Clock.h"
+
+StopwatchApp theStopwatchApp;
 
 void StopwatchApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);

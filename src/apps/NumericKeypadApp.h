@@ -13,11 +13,13 @@ class NumericKeypadApp : public BritepadApp {
     void run();
 
     virtual bool disablesScreensavers() { return true; }
-    BritepadApp* exitsTo() { return MOUSE_APP; }
+    BritepadApp* exitsTo() { return A_MOUSE_APP; }
 
     const char* name() { return "Keypad"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "keyp";
+
+    AppType getAppType() { return KEY_APP; }
 
   private:
     ButtonMatrix* buttons = nullptr;

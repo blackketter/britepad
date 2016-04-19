@@ -3,7 +3,7 @@
 
 #include "ScreensaverApp.h"
 
-class SplashApp : public ScreensaverApp {
+class SplashApp : public BritepadApp {
   public:
     void begin(AppMode asMode);
     void run();

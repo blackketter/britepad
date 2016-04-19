@@ -7,6 +7,20 @@
 
 class Britepad;
 
+
+// Apps are of particular types, which may (for example) have them automatically placed on a screen
+enum AppType {
+  NO_APP_TYPE = 0,
+  DEBUG_APP = 1,
+  SETTINGS_APP = 2,
+  MOUSE_APP = 4,
+  CLOCK_APP = 8,
+  SCREENSAVER_APP = 16,
+  INTERACTIVE_APP = 32,
+  TIMER_APP = 64,
+  KEY_APP = 128,
+};
+
 class BritepadApp {
   public:
     BritepadApp();
@@ -17,9 +31,9 @@ class BritepadApp {
     virtual void switchAppMode(AppMode asMode);  // called when switching between modes
 
     static BritepadApp* STAY_IN_APP;
-    static BritepadApp* MOUSE_APP; // typically the MouseApp, but might be a timer when it's running
+    static BritepadApp* A_MOUSE_APP; // typically the MouseApp, but might be a timer when it's running
     static BritepadApp* BACK_APP;  // return to launcher
-    static BritepadApp* SCREENSAVER_APP; // go to a screensaver
+    static BritepadApp* A_SCREENSAVER_APP; // go to a screensaver
 
     virtual const char* name() = 0;
     virtual Icon getIcon() { return icon; };
@@ -51,11 +65,14 @@ class BritepadApp {
     bool isAppMode(AppMode is) { return (is == getAppMode()); }
     bool canBeAppMode(AppMode b);
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { britepad.launchApp(app, mode); };
-    void exit() { launchApp(MOUSE_APP); };
+    void exit() { launchApp(A_MOUSE_APP); };
 
     virtual bool canBeScreensaver() { return false; }
     virtual bool canBeInteractive() { return true; }
     virtual bool canBeMouse() { return false; }
+
+    virtual AppType getAppType() { return NO_APP_TYPE; }
+    bool isAppType(AppType t) { return t & getAppType(); }
 
     virtual bool isPopup() { return false; };        // popup apps don't need begin or end, call run() just once
     virtual bool isInvisible() { return false; };    // has no UI

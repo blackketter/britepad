@@ -5,6 +5,8 @@
 #include "Sound.h"
 #include "Limits.h"
 
+GestureApp theGestureApp;
+
 void GestureApp::run() {
   BritepadApp::run();
 

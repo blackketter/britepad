@@ -2,52 +2,6 @@
 #include "LauncherApp.h"
 #include "ScreensaverApp.h"
 #include "Debug.h"
-#include "widgets/Icon.h"
-#include "Passwords.h"
-
-// apps are included here
-#include "AlarmApp.h"
-#include "AnalogClockApp.h"
-#include "BinaryClockApp.h"
-#include "BreakoutApp.h"
-#include "BriteLiteApp.h"
-#include "BritepadApp.h"
-#include "BubblesApp.h"
-#include "CalculatorApp.h"
-#include "CalendarApp.h"
-#include "ChromaClockApp.h"
-#include "ClockApp.h"
-#include "CountdownApp.h"
-#include "DotsDisplayApp.h"
-#include "FadeDotsApp.h"
-#include "GestureApp.h"
-#include "HexDotClockApp.h"
-#include "InfoApp.h"
-#include "KeyApp.h"
-#include "KeyboardApp.h"
-#include "LifeApp.h"
-#include "MandelApp.h"
-#include "MinesApp.h"
-#include "MuteApp.h"
-#include "NumericKeypadApp.h"
-#include "PaintApp.h"
-#include "PassApp.h"
-#include "RandomClockApp.h"
-#include "RebootApp.h"
-#include "ScribbleClockApp.h"
-#include "SeqApp.h"
-#include "SetAlarmApp.h"
-#include "SetClockApp.h"
-#include "SetTimerApp.h"
-#include "SpiroApp.h"
-#include "StarfieldApp.h"
-#include "SplashApp.h"
-#include "StopwatchApp.h"
-#include "TabletApp.h"
-#include "TimeoutApp.h"
-#include "TrianglesApp.h"
-#include "ThereminApp.h"
-#include "WordClockApp.h"
 
 LauncherApp::LauncherApp() {
   for (int s = 0; s < TOTAL_SCREENS; s++) {
@@ -56,103 +10,25 @@ LauncherApp::LauncherApp() {
     }
   }
 
-// left screen contains screensavers and settings
-  int p = 0;
-  setButton(SCREENSAVERS_SCREEN, p++,  new BriteLiteApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new BubblesApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new DotsDisplayApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new FadeDotsApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new LifeApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new MandelApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new SpiroApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new StarfieldApp);
-  setButton(SCREENSAVERS_SCREEN, p++,  new TrianglesApp);
 
-  p = 0;
-  setButton(CLOCKS_SCREEN, p++,  new AnalogClockApp);
-  setButton(CLOCKS_SCREEN, p++,  new BinaryClockApp);
-  setButton(CLOCKS_SCREEN, p++,  new ClockApp);
-  setButton(CLOCKS_SCREEN, p++,  new CountdownApp);
-  setButton(CLOCKS_SCREEN, p++,  new HexDotClockApp);
-  setButton(CLOCKS_SCREEN, p++,  new ChromaClockApp);
-  setButton(CLOCKS_SCREEN, p++,  new RandomClockApp);
-  setButton(CLOCKS_SCREEN, p++,  new ScribbleClockApp);
-  setButton(CLOCKS_SCREEN, p++,  new WordClockApp);
+  // go through all the apps and add them to the appropriate screens
+  BritepadApp* a = britepad.getNextApp();
+  int p[TOTAL_SCREENS];
+  for (int i = 0; i < TOTAL_SCREENS; i++) { p[i] = 0; }
 
-  p = 0;
-  setButton(SETTINGS_SCREEN, p++, new MuteApp);
-  setButton(SETTINGS_SCREEN, p++, new SetClockApp);
-  setButton(SETTINGS_SCREEN, p++, new SetAlarmApp);
-  setButton(SETTINGS_SCREEN, p++, new TimeoutApp);
-
-// default screen has quick buttons
-  setButton(KEYS_SCREEN, 0,  new KeyApp(volPlusIcon, KEY_MEDIA_VOLUME_INC, screen.bluegreen));
-  setButton(KEYS_SCREEN, 4,  new KeyApp(volMinusIcon, KEY_MEDIA_VOLUME_DEC, screen.bluegreen));
-  setButton(KEYS_SCREEN, 8,  new KeyApp(muteIcon, KEY_MEDIA_MUTE, screen.blue));
-
-  setButton(KEYS_SCREEN, 5,  new KeyboardApp);
-  setButton(KEYS_SCREEN, 6,  new CalculatorApp);
-  setButton(KEYS_SCREEN, 7,  new NumericKeypadApp);
-
-  setButton(KEYS_SCREEN, 1,  new KeyApp(rewIcon, KEY_MEDIA_PREV_TRACK, screen.orange));
-  setButton(KEYS_SCREEN, 2,  new KeyApp(pauseIcon, KEY_MEDIA_PLAY_PAUSE, screen.orange));
-  setButton(KEYS_SCREEN, 3,  new KeyApp(ffIcon, KEY_MEDIA_NEXT_TRACK, screen.orange));
-
-// just for testing
-//  setButton(KEYS_SCREEN, 9,  new KeyApp("My Name", "Dean\nBlackketter"));
-
-// i never use this
-//  setButton(KEYS_SCREEN, 7,  new KeyApp("Eject", KEY_MEDIA_EJECT));
-
-  setButton(KEYS_SCREEN, 10, new PassApp(PASSWORD_APP_NAME_2, PASSWORD_APP_PASS_2) );
-  setButton(KEYS_SCREEN, 11, new PassApp(PASSWORD_APP_NAME_1, PASSWORD_APP_PASS_1) );
-
-  setButton(TIMERS_SCREEN, 0, new SetTimerApp("10 sec", 10));
-  setButton(TIMERS_SCREEN, 1, new SetTimerApp("3 min", 3*60));
-  setButton(TIMERS_SCREEN, 2, new SetTimerApp("25 min", 25*60));
-  setButton(TIMERS_SCREEN, 3, new SetTimerApp("55 min", 55*60));
-  setButton(TIMERS_SCREEN, 8, new SetTimerApp());
-  setButton(TIMERS_SCREEN, 11, new StopwatchApp);
-
-  p = 0;
-  setButton(APPS_SCREEN, p++,  new BreakoutApp);
-  setButton(APPS_SCREEN, p++,  new CalendarApp);
-  setButton(APPS_SCREEN, p++,  new GestureApp);
-  setButton(APPS_SCREEN, p++,  new MinesApp);
-  setButton(APPS_SCREEN, p++,  new PaintApp);
-  setButton(APPS_SCREEN, p++,  new SeqApp);
-  setButton(APPS_SCREEN, p++,  new TabletApp);
-  setButton(APPS_SCREEN, p++,  new ThereminApp);
-
-  setButton(DEBUG_SCREEN, 9,  new InfoApp);
-  setButton(DEBUG_SCREEN, 10, new ResetApp);
-  setButton(DEBUG_SCREEN, 11, new RebootApp);
-
-  // add mice apps to mice app settings screen
-  BritepadApp* iterApp = britepad.getNextApp();
-  unsigned int i = 0;
-  while (iterApp) {
-    if (iterApp->canBeMouse()) {
-      setButton(MICE_SCREEN, i++, iterApp);
-    }
-    iterApp = britepad.getNextApp(iterApp);
+  while (a) {
+      for (int i = 0; i < TOTAL_SCREENS; i++) {
+        if (a->isAppType(screenTypes[i])) {
+          DEBUGF("Adding %s to screen %s at position %d\n", a->name(), screenNames[i], p[i]);
+          setButton(i, p[i]++, a);
+        }
+      }
+    a = britepad.getNextApp(a);
   }
-
-  // this gets created, but has no button
-  new AlarmApp;
 
 }
 
 void LauncherApp::begin(AppMode asMode) {
-
-  BritepadApp* iterApp = britepad.getNextApp();
-  while (iterApp) {
-    DEBUGF("Checking for mouse apps %s\n", iterApp->name());
-    if (iterApp->canBeMouse()) {
-      DEBUGF(" Yes\n");
-    }
-    iterApp = britepad.getNextApp(iterApp);
-  }
 
   // this should wake up the host, which is great for entering passwords
   // but might have some side effects
@@ -215,7 +91,7 @@ void LauncherApp::drawButton(int i, bool highlighted) {
 
   BritepadApp* app = getButton(i);
 
-  bool disabled = !app->getEnabled(screenMode(getCurrentScreen()));
+  bool disabled = !app->getEnabled(screenMode[getCurrentScreen()]);
   highlighted = disabled | highlighted;
 
   color_t color;
@@ -291,21 +167,6 @@ BritepadApp* LauncherApp::getButton(int i) {
   }
 };
 
-AppMode LauncherApp::screenMode(int theScreen) {
-  AppMode launchMode;
-  switch (getCurrentScreen()) {
-    case MICE_SCREEN:
-      launchMode = MOUSE_MODE;
-      break;
-    case SCREENSAVERS_SCREEN:
-    case CLOCKS_SCREEN:
-      launchMode = SCREENSAVER_MODE;
-      break;
-    default:
-      launchMode = INTERACTIVE_MODE;
-  }
-  return launchMode;
-}
 
 void LauncherApp::run() {
 
@@ -316,7 +177,7 @@ void LauncherApp::run() {
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
     if (pad.up(SCREEN_PAD)) {
-      launchApp(launchOnRelease, screenMode(getCurrentScreen()));
+      launchApp(launchOnRelease, screenMode[getCurrentScreen()]);
       britepad.disableScreensavers();
       launchOnRelease = nullptr;
     }
@@ -364,7 +225,7 @@ void LauncherApp::run() {
             drawButton(b, false);
           }
         } else {
-          AppMode whichMode = screenMode(getCurrentScreen());
+          AppMode whichMode = screenMode[getCurrentScreen()];
           if (whichMode == INTERACTIVE_MODE) {
             launchApp(launched);
           } else {
@@ -409,14 +270,7 @@ color_t LauncherApp::bgColor() {
 }
 
 const char* LauncherApp::infoBarText() {
-  switch (getCurrentScreen()) {
-    case SCREENSAVERS_SCREEN:
-    case CLOCKS_SCREEN:
-    case MICE_SCREEN:
-      return "Press and hold to test";
-    default:
-      return nullptr;
-  }
+  return infoText[getCurrentScreen()];
 }
 
 const char* LauncherApp::statusBarTitle() {

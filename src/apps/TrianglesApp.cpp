@@ -4,6 +4,8 @@
 #include "TrianglesApp.h"
 #include "Debug.h"
 
+TrianglesApp theTrianglesApp;
+
 void TrianglesApp::begin(AppMode asMode) {
   if (!dots) {
     coord_t tWidth = screen.clipWidth() / (getDotsWide()-2);

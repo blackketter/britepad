@@ -4,6 +4,8 @@
 #include "Debug.h"
 #include "Clock.h"
 
+AnalogClockApp theAnalogClockApp;
+
 const coord_t sec_spacing = 5;
 const coord_t min_spacing = 5;
 const coord_t hr_spacing = 5;

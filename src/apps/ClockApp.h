@@ -14,6 +14,8 @@ class ClockApp : public ScreensaverApp {
 
     bool displaysClock() { return true; };
 
+    AppType getAppType() { return CLOCK_APP; }
+
     const char* name() { return "Digital"; };
 
     bool getEnabled(AppMode asMode) { return ScreensaverApp::getEnabled(asMode) && clock.hasBeenSet(); }

@@ -2,6 +2,8 @@
 #include "SpiroApp.h"
 #include "Debug.h"
 
+SpiroApp theSpiroApp;
+
 void SpiroApp::begin(AppMode asMode) {
   ScreensaverApp::begin(asMode);
   reset();

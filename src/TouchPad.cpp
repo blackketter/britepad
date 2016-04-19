@@ -45,13 +45,13 @@ TouchPad::TouchPad(coord_t w, coord_t h) {
 }
 
 void TouchPad::begin() {
+  DEBUG_LN("touchpad begin");
+
   if (! ctp.begin(40)) {  // pass in 'sensitivity' coefficient
     DEBUG_LN("Couldn't start FT6206 touchscreen controller");
     while (1);
   }
-  DEBUG_LN("starting touchpad");
   initAPDS();
-
 }
 
 void TouchPad::update() {
@@ -193,14 +193,23 @@ void TouchPad::updateAPDS() {
   if (curr.time / APSDupdateInterval != lastAPDSupdate / APSDupdateInterval) {
     lastAPDSupdate = curr.time;
 
+    uint8_t prox;
+    if (apds.readProximity(prox)) {
+      proximity = prox;
+    } else {
+      proximity = 0;
+      DEBUG_LN("error reading proximity");
+    }
+
     //  update the APDS9960
     uint16_t light;
     if (apds.readAmbientLight(light)) {
       ambientLight = light;
     } else {
       ambientLight = 0;
-      DEBUG_LN("error reading ambient light");
+//      DEBUG_LN("error reading ambient light");
     }
+
 #if 0
     if (apds.readRedLight(light)) {
       redLight = light;
@@ -227,13 +236,6 @@ void TouchPad::updateAPDS() {
     DEBUGF("Blue: %d\n", blueLight);
 #endif
 
-    uint8_t prox;
-    if (apds.readProximity(prox)) {
-      proximity = prox;
-    } else {
-      proximity = 0;
-      DEBUG_LN("error reading proximity");
-    }
 #if 0
     if (apds.isGestureAvailable()) {
       gesture = apds.readGesture();

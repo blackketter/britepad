@@ -11,6 +11,7 @@ class SparkleApp : public BritepadApp {
     bool canBeInteractive() { return true; }
     bool disablesScreensavers() { return getAppMode() == INTERACTIVE_MODE; }
 
+    AppType getAppType() { return MOUSE_APP; }
 
     const char* name() { return "Sparkle"; };
     appid_t id() { return ID; };

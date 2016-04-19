@@ -4,6 +4,8 @@
 #include "Debug.h"
 #include "Clock.h"
 
+RandomClockApp theRandomClockApp;
+
 void RandomClockApp::begin(AppMode asMode) {
   ClockApp::begin(asMode);
 }
@@ -53,22 +55,31 @@ void RandomClockApp::update() {
        } while (r > (screen.clipHeight()/2)*(screen.clipHeight()/2));
 
       color_t c = screen.black;
-      coord_t rc = 1;
+//      coord_t rc = 1;
 
       screen.polarToRect(sec_theta, screen.clipHeight()/2, xLine, yLine);
       dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
-      if ( dist < 0.005) { c = screen.white; rc = 1;}
+      if ( dist < 0.005) {
+        c = screen.white;
+//        rc = 1;
+      }
 
       screen.polarToRect(min_theta, screen.clipHeight()/2, xLine, yLine);
       dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
-      if ( dist < 0.005) { c = screen.green; rc = 6;}
+      if ( dist < 0.005) {
+        c = screen.green;
+//        rc = 6;
+      }
 
       screen.polarToRect(hr_theta, screen.clipHeight()/4, xLine, yLine);
       dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
-      if ( dist < 0.03) { c = screen.red; rc = 8; }
+      if ( dist < 0.03) {
+        c = screen.red;
+//        rc = 8;
+      }
 
   //  screen.fillCircle(x,y,rc,c);
-      screen.drawPixel(x,y,c);
   //  screen.fillRect(x,y,rc,rc,c);
+      screen.drawPixel(x,y,c);
   }
 }

@@ -2,6 +2,8 @@
 #include "Debug.h"
 #include "Preferences.h"
 
+AlarmApp theAlarmApp;
+
 bool AlarmApp::alarmSounding() {
   return (alarmSounded || (alarmEnabled && isAlarmTime()));
 };

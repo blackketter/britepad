@@ -3,6 +3,8 @@
 
 #include "WilliamTell.h"
 
+MinesApp theMinesApp;
+
 bool MineMatrix::isRevealed(int x, int y) {
   return valid(x,y) && (getDot(x,y) & REVEALED_CELL) != 0;
 }

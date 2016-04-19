@@ -2,6 +2,8 @@
 #include "ThereminApp.h"
 #include "Debug.h"
 
+ThereminApp theThereminApp;
+
 void ThereminApp::run() {
   uint8_t octave = 6;
   uint8_t prox = pad.getProximityDistance();

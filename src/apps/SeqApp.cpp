@@ -1,5 +1,7 @@
 #include "SeqApp.h"
 
+SeqApp theSeqApp;
+
 const float freq[] = {
       587.330,
       523.251,

@@ -1,5 +1,7 @@
 #include "CalendarApp.h"
 
+CalendarApp theCalendarApp;
+
 void CalendarApp::run() {
   if (pad.down(LEFT_PAD)) {
     month--;

@@ -18,7 +18,7 @@ void drawLogo(color_t c) {
 }
 
 void SplashApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
+  BritepadApp::begin(asMode);
   drawindex = 0;
   clearScreen();
   currColor = screen.red;
@@ -29,7 +29,7 @@ void SplashApp::begin(AppMode asMode) {
 
 void SplashApp::run() {
   if (Uptime::millis() - firstRun > splashDuration) {
-    launchApp(SCREENSAVER_APP, SCREENSAVER_MODE);
+    launchApp(A_SCREENSAVER_APP, SCREENSAVER_MODE);
   }
 
   int weight = 18;

@@ -1,5 +1,7 @@
 #include "FadeDotsApp.h"
 
+FadeDotsApp theFadeDotsApp;
+
 void FadeDotsApp::run() {
   ScreensaverApp::run();
   if (pad.touched(SCREEN_PAD)) {

@@ -22,6 +22,9 @@ class KeyApp : public BritepadApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "keys";
 
+    AppType getAppType() { return KEY_APP; }
+
+
   protected:
     const char* nameStr = nullptr;
 

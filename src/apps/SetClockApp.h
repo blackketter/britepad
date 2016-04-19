@@ -16,6 +16,7 @@ class SetClockApp : public BritepadApp {
 
     bool disablesScreensavers() { return true; };
     bool displaysClock() { return true; };
+    AppType getAppType() { return SETTINGS_APP; }
 
     const char* name() { return "Set Clock"; };
     appid_t id() { return ID; };
@@ -45,6 +46,7 @@ class SetClockApp : public BritepadApp {
     bool setDate = false;
 
 };
+
 #endif
 
 

@@ -11,6 +11,8 @@ class BreakoutApp : public BritepadApp {
     void run();
     void begin(AppMode asMode);
 
+    AppType getAppType() { return INTERACTIVE_APP; }
+
     appid_t id() { return ID; };
     static constexpr appid_t ID = "bkou";
 

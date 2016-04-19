@@ -3,6 +3,8 @@
 #include "ClockApp.h"
 #include "Debug.h"
 
+ClockApp theClockApp;
+
 void ClockApp::run() {
   millis_t mt = Uptime::millis();
 

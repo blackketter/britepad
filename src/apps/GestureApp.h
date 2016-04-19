@@ -15,6 +15,8 @@ class GestureApp : public BritepadApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "gest";
 
+    AppType getAppType() { return INTERACTIVE_APP; }
+
   private:
     bool learning = false;
     Gesture learned;

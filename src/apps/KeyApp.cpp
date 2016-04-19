@@ -1,9 +1,23 @@
 #include "BritepadShared.h"
 #include "BritepadApp.h"
 #include "KeyApp.h"
+#include "widgets/Icon.h"
 
 #include <usb_keyboard.h>
 
+// default screen has quick buttons
+KeyApp volUpKey(volPlusIcon, KEY_MEDIA_VOLUME_INC, screen.bluegreen);
+KeyApp volDownKey(volMinusIcon, KEY_MEDIA_VOLUME_DEC, screen.bluegreen);
+KeyApp muteKey(muteIcon, KEY_MEDIA_MUTE, screen.blue);
+KeyApp rewKey(rewIcon, KEY_MEDIA_PREV_TRACK, screen.orange);
+KeyApp pauseKey(pauseIcon, KEY_MEDIA_PLAY_PAUSE, screen.orange);
+KeyApp ffKey(ffIcon, KEY_MEDIA_NEXT_TRACK, screen.orange);
+
+// just for testing
+//  KeyApp myNameKey("My Name", "Dean\nBlackketter");
+
+// i never use this
+// KeyApp ejectKey("Eject", KEY_MEDIA_EJECT);
 
 void KeyApp::run() {
 

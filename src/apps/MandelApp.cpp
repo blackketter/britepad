@@ -4,6 +4,8 @@
 #include "Debug.h"
 #include "Sound.h"
 
+MandelApp theMandelApp;
+
 void MandelApp::begin(AppMode asMode) {
   ScreensaverApp::begin(asMode);
   xPixel = screen.clipRight()+1; // force a restart

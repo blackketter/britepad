@@ -1,8 +1,8 @@
 #include "BritepadShared.h"
 #include "BreakoutApp.h"
-
-#define DEBUG_ON 1
 #include "Debug.h"
+
+BreakoutApp theBreakoutApp;
 
 // todo - show score, have multiple lives
 // todo - speed up over time

@@ -3,9 +3,9 @@
 #include "widgets/Icon.h"
 
 BritepadApp* BritepadApp::STAY_IN_APP = (BritepadApp*)0;
-BritepadApp* BritepadApp::MOUSE_APP = (BritepadApp*)1;
 BritepadApp* BritepadApp::BACK_APP = (BritepadApp*)2;
-BritepadApp* BritepadApp::SCREENSAVER_APP = (BritepadApp*)3;
+BritepadApp* BritepadApp::A_MOUSE_APP = (BritepadApp*)1;
+BritepadApp* BritepadApp::A_SCREENSAVER_APP = (BritepadApp*)3;
 
 BritepadApp::BritepadApp()  {
   Britepad::addApp(this);

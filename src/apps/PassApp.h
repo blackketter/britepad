@@ -14,6 +14,8 @@ class PassApp : public KeyApp {
     color_t buttonColor() { return screen.red; };
     void draw();
 
+    AppType getAppType() { return KEY_APP; }
+
     appid_t id() { return ID; };
     static constexpr appid_t ID = "pass";
 };

@@ -2,6 +2,8 @@
 #include "Sound.h"
 #include <usb_keyboard.h>
 
+NumericKeypadApp theNumericKeypadApp;
+
 void NumericKeypadApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);
   if (!buttons) {

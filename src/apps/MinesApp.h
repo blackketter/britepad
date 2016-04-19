@@ -42,6 +42,8 @@ class MinesApp : public BritepadApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "mine";
 
+    AppType getAppType() { return INTERACTIVE_APP; }
+
   private:
     bool gameOver;
     MineMatrix* field = nullptr;

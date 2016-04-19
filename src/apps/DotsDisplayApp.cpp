@@ -4,6 +4,8 @@
 #include "DotsDisplayApp.h"
 #include "Debug.h"
 
+DotsDisplayApp theDotsDisplayApp;
+
 void DotsDisplayApp::begin(AppMode asMode) {
 
   if (!dots) {

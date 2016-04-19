@@ -1,5 +1,7 @@
 #include "HexDotClockApp.h"
 
+HexDotClockApp theHexDotClockApp;
+
 void HexDotClockApp::begin(AppMode asMode) {
   if (dots == nullptr) {
     dots = new HexDotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), 9 * 4 + 3, 9*3); // approx 4:1 aspect ratio

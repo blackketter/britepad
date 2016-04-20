@@ -6,12 +6,13 @@
 #include <usb_keyboard.h>
 
 // default screen has quick buttons
-KeyApp volUpKey(volPlusIcon, KEY_MEDIA_VOLUME_INC, screen.bluegreen);
-KeyApp volDownKey(volMinusIcon, KEY_MEDIA_VOLUME_DEC, screen.bluegreen);
-KeyApp muteKey(muteIcon, KEY_MEDIA_MUTE, screen.blue);
-KeyApp rewKey(rewIcon, KEY_MEDIA_PREV_TRACK, screen.orange);
-KeyApp pauseKey(pauseIcon, KEY_MEDIA_PLAY_PAUSE, screen.orange);
-KeyApp ffKey(ffIcon, KEY_MEDIA_NEXT_TRACK, screen.orange);
+KeyApp volUpKey(volPlusIcon, KEY_MEDIA_VOLUME_INC, screen.bluegreen, 0);
+KeyApp volDownKey(volMinusIcon, KEY_MEDIA_VOLUME_DEC, screen.bluegreen, 4);
+KeyApp muteKey(muteIcon, KEY_MEDIA_MUTE, screen.blue, 8);
+
+KeyApp rewKey(rewIcon, KEY_MEDIA_PREV_TRACK, screen.orange, 1);
+KeyApp pauseKey(pauseIcon, KEY_MEDIA_PLAY_PAUSE, screen.orange, 2);
+KeyApp ffKey(ffIcon, KEY_MEDIA_NEXT_TRACK, screen.orange, 3);
 
 // just for testing
 //  KeyApp myNameKey("My Name", "Dean\nBlackketter");

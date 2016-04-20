@@ -56,7 +56,8 @@ class LauncherApp : public BritepadApp {
     void setCurrentScreen(int n) { current_screen = n; }
     color_t bgColor();
     void setButton(int screen, int i, BritepadApp* b);
-    BritepadApp* getButton(int i);
+    BritepadApp* getApp(int i);
+    BritepadApp* getApp(int screen, int i) { return apps[screen][i]; }
     void checkTimeout();
     void clearScreen() {} // override the default clear screen because we do transitions
 

@@ -8,9 +8,9 @@
 class KeyApp : public BritepadApp {
 
   public:
-    KeyApp(const char* name, const char* keys, color_t color = screen.blue) { nameStr = name; keyStr = keys; button_color = color; };
-    KeyApp(const char* name, uint8_t key, color_t color = screen.blue ) { nameStr = name; mediaKey = key; button_color = color; }
-    KeyApp(icon_t i, uint8_t key, color_t color = screen.blue ) { icon = i; mediaKey = key; button_color = color; }
+    KeyApp(const char* name, const char* keys, color_t color, uint32_t pos) { nameStr = name; keyStr = keys; button_color = color; setLauncherPosition(pos);};
+    KeyApp(const char* name, uint8_t key, color_t color, uint32_t pos) { nameStr = name; mediaKey = key; button_color = color; setLauncherPosition(pos);}
+    KeyApp(icon_t i, uint8_t key, color_t color, uint32_t pos) { icon = i; mediaKey = key; button_color = color; setLauncherPosition(pos);}
 
     void run();
     const char* name() { return nameStr; };
@@ -23,7 +23,6 @@ class KeyApp : public BritepadApp {
     static constexpr appid_t ID = "keys";
 
     AppType getAppType() { return KEY_APP; }
-
 
   protected:
     const char* nameStr = nullptr;

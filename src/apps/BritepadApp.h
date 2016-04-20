@@ -73,6 +73,8 @@ class BritepadApp {
 
     virtual AppType getAppType() { return NO_APP_TYPE; }
     bool isAppType(AppType t) { return t & getAppType(); }
+    virtual int32_t getLauncherPosition() { return position; }
+    virtual void setLauncherPosition(int32_t p) { position = p; }
 
     virtual bool isPopup() { return false; };        // popup apps don't need begin or end, call run() just once
     virtual bool isInvisible() { return false; };    // has no UI
@@ -102,6 +104,8 @@ class BritepadApp {
     AppMode enabled = ANY_MODE;  // apps are always enabled by default
     coord_t statusBarHeight = 16;
     Icon icon;
+    const int32_t defaultLauncherPosition = -1;
+    int32_t position = defaultLauncherPosition;
 
     AppMode currAppMode = INACTIVE_MODE;
 

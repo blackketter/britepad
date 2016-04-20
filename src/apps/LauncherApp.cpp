@@ -12,20 +12,27 @@ LauncherApp::LauncherApp() {
 
 
   // go through all the apps and add them to the appropriate screens
-  BritepadApp* a = britepad.getNextApp();
-  int p[TOTAL_SCREENS];
-  for (int i = 0; i < TOTAL_SCREENS; i++) { p[i] = 0; }
+  // first, do all the specifically positioned apps, then the default (0) position apps
+  for (int specific = 1; specific >= 0; specific--) {
+    BritepadApp* a = britepad.getNextApp();
 
-  while (a) {
-      for (int i = 0; i < TOTAL_SCREENS; i++) {
-        if (a->isAppType(screenTypes[i])) {
-          DEBUGF("Adding %s to screen %s at position %d\n", a->name(), screenNames[i], p[i]);
-          setButton(i, p[i]++, a);
+    while (a) {
+      for (int screen = 0; screen < TOTAL_SCREENS; screen++) {
+        if (a->isAppType(screenTypes[screen])) {
+          int32_t pos = a->getLauncherPosition();
+          if ((specific && (pos!=defaultLauncherPosition)) || (!specific && (pos==defaultLauncherPosition))) {
+            if (pos==defaultLauncherPosition) { pos = 0; }
+            while (getApp(screen, pos)) {
+              pos++;
+            }
+            DEBUGF("Adding %s to screen %s at position %d\n", a->name(), screenNames[screen], pos);
+            setButton(screen, pos, a);
+          }
         }
       }
-    a = britepad.getNextApp(a);
+      a = britepad.getNextApp(a);
+    }
   }
-
 }
 
 void LauncherApp::begin(AppMode asMode) {
@@ -70,7 +77,7 @@ void LauncherApp::end() {
 void LauncherApp::drawButtons() {
 
   for (int i = 0; i < buttons_per_screen; i++) {
-    if (getButton(i)) {
+    if (getApp(i)) {
         drawButton(i);
     }
   }
@@ -89,7 +96,7 @@ void LauncherApp::drawButton(int i, bool highlighted) {
 
   const int radius = min(hsize,vsize) / 2 - 2;
 
-  BritepadApp* app = getButton(i);
+  BritepadApp* app = getApp(i);
 
   bool disabled = !app->getEnabled(screenMode[getCurrentScreen()]);
   highlighted = disabled | highlighted;
@@ -143,7 +150,7 @@ int LauncherApp::buttonHit(int x, int y) {
   int v = (y - screen.clipTop()) / (screen.clipHeight() / v_buttons);
 
   int i = v*h_buttons+h;
-  if (getButton(i)) {
+  if (getApp(i)) {
     return i;
   } else {
     return noButton;
@@ -159,7 +166,7 @@ void LauncherApp::setButton(int screen, int i, BritepadApp* b)
   }
 };
 
-BritepadApp* LauncherApp::getButton(int i) {
+BritepadApp* LauncherApp::getApp(int i) {
   if ((i >= 0) && (i < buttons_per_screen)) {
     return apps[getCurrentScreen()][i];
   } else {
@@ -246,10 +253,10 @@ void LauncherApp::run() {
           highlighted_button = b;
         } else {
           if (pad.time() - pad.lastDownTime(SCREEN_PAD) > holdTime) {
-            if (getButton(b)) {
+            if (getApp(b)) {
               sound.click();
               clearScreen();
-              launchOnRelease = getButton(b);
+              launchOnRelease = getApp(b);
             }
           }
         }

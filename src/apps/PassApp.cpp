@@ -1,11 +1,6 @@
 #include "BritepadShared.h"
 #include "PassApp.h"
 
-#include "Passwords.h"
-
-PassApp thePassApp1(PASSWORD_APP_NAME_1, PASSWORD_APP_PASS_1, screen.blue, 11);
-PassApp thePassApp2(PASSWORD_APP_NAME_2, PASSWORD_APP_PASS_2, screen.blue, 10);
-
 void PassApp::draw() {
 
   clearScreen();

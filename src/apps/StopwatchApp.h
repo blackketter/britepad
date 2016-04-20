@@ -6,6 +6,9 @@
 
 class StopwatchApp : public BritepadApp {
   public:
+    StopwatchApp();
+    StopwatchApp(int32_t pos);
+
     void run();
     void begin(AppMode asMode);
     void switchAppMode(AppMode asMode);

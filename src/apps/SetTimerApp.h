@@ -8,7 +8,7 @@
 class SetTimerApp : public BritepadApp {
 
   public:
-    SetTimerApp(const char* name, time_t duration);
+    SetTimerApp(const char* name, time_t duration, int32_t pos = defaultLauncherPosition);
     SetTimerApp();
 
     void begin(AppMode asMode);

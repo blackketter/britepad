@@ -12,6 +12,7 @@ class TimerApp : public StopwatchApp {
     void begin(AppMode asMode);
     bool wantsToBe(AppMode m) { return isRunning() || alarm_sounded; }
     bool disablesScreensavers() { return false; }
+    bool isHidden() { return true; }
 
     const char* name() { return "Timer"; };
     appid_t id() { return ID; };

@@ -2,16 +2,17 @@
 
 TimerApp SetTimerApp::timer_app;
 
-SetTimerApp timer10sec("10 sec", 10);
-SetTimerApp timer3min("3 min", 3*60);
-SetTimerApp timer25min("25 min", 25*60);
-SetTimerApp timer55min("55 min", 55*60);
-SetTimerApp customTimerApp;
+SetTimerApp timer10sec("10 sec", 10,0);
+SetTimerApp timer3min("3 min", 3*60,1);
+SetTimerApp timer25min("25 min", 25*60,2);
+SetTimerApp timer55min("55 min", 55*60,3);
+SetTimerApp customTimerApp("Set Timer", 0, 8);
 
-SetTimerApp::SetTimerApp(const char* name, time_t duration) : BritepadApp() {
+SetTimerApp::SetTimerApp(const char* name, time_t duration, int32_t pos) : BritepadApp() {
   timer_duration = duration;
-  edit = false;
+  edit = duration != 0;
   name_str = name;
+  setLauncherPosition(pos);
 }
 
 SetTimerApp::SetTimerApp() : BritepadApp() {

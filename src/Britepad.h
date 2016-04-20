@@ -28,6 +28,7 @@ class Britepad {
 
     static void addApp(BritepadApp* newApp);
     BritepadApp* getAppByID(appid_t appID);
+    void sortApps();
     BritepadApp* getNextApp(BritepadApp* anApp = nullptr);
     void updateStatusBar();
     BritepadApp* getLaunchedApp() { return launchedAppPtr; }

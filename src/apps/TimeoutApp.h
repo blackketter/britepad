@@ -47,7 +47,7 @@ class TimeoutApp : public BritepadApp {
         return "Don't Auto\nSwitch";
       }
 
-      if (switchInterval < 60) {
+      if (switchInterval <= 60) {
         sprintf(nameStr, "Switch\n%d seconds", (int)switchInterval);
       } else {
         sprintf(nameStr, "Switch\n%d minutes", (int)switchInterval/60);

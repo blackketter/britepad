@@ -4,7 +4,14 @@
 #include "Debug.h"
 #include "Clock.h"
 
-StopwatchApp theStopwatchApp;
+StopwatchApp theStopwatchApp(11);
+
+StopwatchApp::StopwatchApp() : BritepadApp() {
+}
+
+StopwatchApp::StopwatchApp(int32_t pos) : BritepadApp() {
+  setLauncherPosition(pos);
+}
 
 void StopwatchApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);

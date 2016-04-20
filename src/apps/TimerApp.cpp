@@ -5,6 +5,7 @@
 #include "Debug.h"
 #include "Clock.h"
 
+
 void TimerApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);    // StopwatchApp auto starts at launch
   redrawButtons();

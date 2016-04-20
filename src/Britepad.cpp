@@ -30,6 +30,30 @@ BritepadApp* Britepad::getAppByID(appid_t appID) {
   return nullptr;
 }
 
+void Britepad::sortApps() {
+  BritepadApp* oldList = appList;
+  appList = nullptr;
+
+  while (oldList) {
+    BritepadApp* i = oldList;
+    BritepadApp* highest = i;
+    while (i) {
+      if (strcasecmp(i->name(), highest->name()) > 0) {
+        highest = i;
+      }
+      i = i->getNextApp();
+    }
+
+    // remove from the list
+    BritepadApp* p = highest->getPrevApp();
+    BritepadApp* n = highest->getNextApp();
+    if (p) { p->setNextApp(n); } else { oldList = n; }
+    if (n) { n->setPrevApp(p); }
+
+    addApp(highest);
+  }
+}
+
 BritepadApp* Britepad::randomApp(AppMode m) {
 
   // if an app wants to be this mode, then give it a chance
@@ -239,8 +263,8 @@ void Britepad::idle() {
     if ( pad.down(PROXIMITY_SENSOR) &&
          currApp->isAppMode(SCREENSAVER_MODE) &&
 
-//         !currApp->displaysClock() &&
-         !currApp->timeVisible() &&
+         !currApp->displaysClock() &&
+//         !currApp->timeVisible() &&
 
          getAppByID(ClockApp::ID) &&
 //       (getAppByID(ClockApp::ID))->getEnabled(SCREENSAVER_MODE) &&  // the proximity clock is always enabled (todo: make this a user pref)

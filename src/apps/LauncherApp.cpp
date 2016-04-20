@@ -12,6 +12,9 @@ LauncherApp::LauncherApp() {
 
 
   // go through all the apps and add them to the appropriate screens
+
+  // first, sort the list alphabetically
+  britepad.sortApps();
   // first, do all the specifically positioned apps, then the default (0) position apps
   for (int specific = 1; specific >= 0; specific--) {
     BritepadApp* a = britepad.getNextApp();
@@ -25,8 +28,10 @@ LauncherApp::LauncherApp() {
             while (getApp(screen, pos)) {
               pos++;
             }
-            DEBUGF("Adding %s to screen %s at position %d\n", a->name(), screenNames[screen], pos);
-            setButton(screen, pos, a);
+            if (!a->isHidden()) {
+              DEBUGF("Adding %s to screen %s at position %d\n", a->name(), screenNames[screen], pos);
+              setButton(screen, pos, a);
+            }
           }
         }
       }

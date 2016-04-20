@@ -78,7 +78,51 @@ enum keys {
 
 const int keyColumns = 6;
 const int keyRows = 4;
+#if 1
+const ButtonConfig keyConfig[2][3][keyColumns] = {
 
+        { // Sci calc map
+          {
+            {screen.cyan, "x^3", Arial_12_Bold, screen.black, nullptr, cube_f},
+            {screen.cyan, "x^y", Arial_12_Bold, screen.black, nullptr, pow_f},
+            {screen.cyan, "e^x", Arial_12_Bold, screen.black, nullptr, exp_f},
+            {screen.cyan, "10^x", Arial_12_Bold, screen.black, nullptr, pow10_f},
+          },
+          {
+             {screen.cyan, "cubert", Arial_12_Bold, screen.black, nullptr, cubert_f},
+            {screen.cyan, "xroot", Arial_12_Bold, screen.black, nullptr, xroot_f},
+            {screen.cyan, "ln", Arial_12_Bold, screen.black, nullptr, ln_f},
+            {screen.cyan, "log10", Arial_12_Bold, screen.black, nullptr, log10_f},
+          },
+          {
+            {screen.cyan, "cos", Arial_12_Bold, screen.black, nullptr, cos_f},
+            {screen.cyan, "tan", Arial_12_Bold, screen.black, nullptr, tan_f},
+            {screen.cyan, "pi", Arial_12_Bold, screen.black, nullptr, pi_f},
+            {screen.cyan, "e", Arial_12_Bold, screen.black, nullptr, e_f},
+          },
+          },
+         { // Sci calc map
+          {
+            {screen.cyan, "x^3", Arial_12_Bold, screen.black, nullptr, cube_f},
+            {screen.cyan, "x^y", Arial_12_Bold, screen.black, nullptr, pow_f},
+            {screen.cyan, "e^x", Arial_12_Bold, screen.black, nullptr, exp_f},
+            {screen.cyan, "10^x", Arial_12_Bold, screen.black, nullptr, pow10_f},
+          },
+          {
+            {screen.cyan, "cubert", Arial_12_Bold, screen.black, nullptr, cubert_f},
+            {screen.cyan, "xroot", Arial_12_Bold, screen.black, nullptr, xroot_f},
+            {screen.cyan, "ln", Arial_12_Bold, screen.black, nullptr, ln_f},
+            {screen.cyan, "log10", Arial_12_Bold, screen.black, nullptr, log10_f},
+          },
+          {
+            {screen.cyan, "cos", Arial_12_Bold, screen.black, nullptr, cos_f},
+            {screen.cyan, "tan", Arial_12_Bold, screen.black, nullptr, tan_f},
+            {screen.cyan, "pi", Arial_12_Bold, screen.black, nullptr, pi_f},
+            {screen.cyan, "e", Arial_12_Bold, screen.black, nullptr, e_f},
+          },
+       },
+      };
+#else
 const ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] = {
         { // Basic calc map
           {
@@ -217,6 +261,7 @@ const ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] = {
           },
         }
     };
+#endif
 
 void CalculatorApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);

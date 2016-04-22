@@ -1,6 +1,5 @@
 // PlatformIO needs these for some reason
 #include "SPI.h"
-#include "Audio.h"
 #include "EEPROM.h"
 
 /* britepad sketch*/

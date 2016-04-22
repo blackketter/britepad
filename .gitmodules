@@ -1,0 +1,27 @@
+[submodule "lib/ILI9341_t3"]
+	path = lib/ILI9341_t3
+	url = git@github.com:blackketter/ILI9341_t3.git
+[submodule "lib/Clock"]
+	path = lib/Clock
+	url = https://github.com/blackketter/Clock.git
+[submodule "lib/Time"]
+	path = lib/Time
+	url = https://github.com/PaulStoffregen/Time.git
+[submodule "lib/Preferences"]
+	path = lib/Preferences
+	url = https://github.com/blackketter/Preferences.git
+[submodule "lib/FastLED"]
+	path = lib/FastLED
+	url = https://github.com/FastLED/FastLED.git
+[submodule "lib/Adafruit_FT6206"]
+	path = lib/Adafruit_FT6206
+	url = https://github.com/adafruit/Adafruit_FT6206_Library.git
+[submodule "lib/Sparkfun_APDS-9960_Sensor"]
+	path = lib/Sparkfun_APDS-9960_Sensor
+	url = https://github.com/sparkfun/SparkFun_APDS-9960_Sensor_Arduino_Library.git
+[submodule "lib/Audio"]
+	path = lib/Audio
+	url = https://github.com/blackketter/Audio.git
+[submodule "lib/SerialFlash"]
+	path = lib/SerialFlash
+	url = https://github.com/PaulStoffregen/SerialFlash.git

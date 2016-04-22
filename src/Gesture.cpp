@@ -1,7 +1,7 @@
 #include "Gesture.h"
 #include "Screen.h"
 #include "Debug.h"
-#include "Touchpad.h"
+#include "TouchPad.h"
 
 uint16_t Gesture::compare(Gesture& to) {
   uint16_t dist = 0;

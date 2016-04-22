@@ -78,7 +78,7 @@ enum keys {
 
 const int keyColumns = 6;
 const int keyRows = 4;
-#if 1
+#if 0
 const ButtonConfig keyConfig[2][3][3] = {
 
         { // Sci calc map

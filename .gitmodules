@@ -22,3 +22,6 @@
 [submodule "lib/SerialFlash"]
 	path = lib/SerialFlash
 	url = https://github.com/PaulStoffregen/SerialFlash.git
+[submodule "lib/ILI9341_t3"]
+	path = lib/ILI9341_t3
+	url = https://github.com/blackketter/ILI9341_t3.git

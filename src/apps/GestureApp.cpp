@@ -3,7 +3,7 @@
 #include "Screen.h"
 #include "Debug.h"
 #include "Sound.h"
-#include "Limits.h"
+#include <limits.h>
 
 GestureApp theGestureApp;
 

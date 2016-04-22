@@ -10,7 +10,7 @@ SetTimerApp customTimerApp("Set Timer", 0, 8);
 
 SetTimerApp::SetTimerApp(const char* name, time_t duration, int32_t pos) : BritepadApp() {
   timer_duration = duration;
-  edit = duration != 0;
+  edit = duration == 0;
   name_str = name;
   setLauncherPosition(pos);
 }

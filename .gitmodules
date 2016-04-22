@@ -1,6 +1,3 @@
-[submodule "lib/ILI9341_t3"]
-	path = lib/ILI9341_t3
-	url = git@github.com:blackketter/ILI9341_t3.git
 [submodule "lib/Clock"]
 	path = lib/Clock
 	url = https://github.com/blackketter/Clock.git

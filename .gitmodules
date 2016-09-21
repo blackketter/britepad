@@ -7,9 +7,6 @@
 [submodule "lib/Preferences"]
 	path = lib/Preferences
 	url = https://github.com/blackketter/Preferences.git
-[submodule "lib/FastLED"]
-	path = lib/FastLED
-	url = https://github.com/FastLED/FastLED.git
 [submodule "lib/Adafruit_FT6206"]
 	path = lib/Adafruit_FT6206
 	url = https://github.com/adafruit/Adafruit_FT6206_Library.git

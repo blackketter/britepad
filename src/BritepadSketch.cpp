@@ -31,6 +31,9 @@ void setup() {
 
   DEBUG_LN("britepad starting...");
 
+  DEBUG_LN("starting prefs...");
+  prefs.begin();
+
   DEBUG_LN("starting screen");
   screen.begin();
   screen.setRotation(3);  // Britepad Mark-0 is oriented this way

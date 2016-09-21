@@ -1,5 +1,3 @@
-#include "FastLED.h"
-
 #include "BritepadShared.h"
 #include "TrianglesApp.h"
 #include "Debug.h"

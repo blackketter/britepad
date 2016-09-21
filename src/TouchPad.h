@@ -78,7 +78,10 @@ class TouchPad {
     coord_t  lastDownYPos;
     static const uint8_t proximityThreshold = 115;
     static const uint8_t proximityMax = 255;
+    static const uint16_t ambientMax = 255;
     bool getProximityPresent();
+    bool ctpWorking = false;
+
 
     static const int maxHistory = 256;
     static const millis_t minHistoryInterval = 5;

@@ -1,4 +1,3 @@
-#include "FastLED.h"
 #include "BritepadShared.h"
 #include "StarfieldApp.h"
 #include "Debug.h"

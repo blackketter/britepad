@@ -47,10 +47,13 @@ TouchPad::TouchPad(coord_t w, coord_t h) {
 void TouchPad::begin() {
   DEBUG_LN("touchpad begin");
 
-  if (! ctp.begin(40)) {  // pass in 'sensitivity' coefficient
+  if (!ctp.begin(40)) {  // pass in 'sensitivity' coefficient
     DEBUG_LN("Couldn't start FT6206 touchscreen controller");
-    while (1);
+  } else {
+    DEBUG_LN("touchpad working");
+    ctpWorking = true;
   }
+
   initAPDS();
 }
 
@@ -59,25 +62,30 @@ void TouchPad::update() {
   copyTPState(&last, &curr);
 
   curr.time = Uptime::millis();
-  curr.touched[SCREEN_PAD] = ctp.touched();
 
   updateAPDS();
   curr.touched[PROXIMITY_SENSOR] = getProximityPresent();
 
-  // Retrieve a point
-  TS_Point p = ctp.getPoint();
+  if (ctpWorking) {
+    curr.touched[SCREEN_PAD] = ctp.touched();
+    // Retrieve a point
+    TS_Point p = ctp.getPoint();
 
-  curr.x = p.y;
-  curr.y = p.x;
+    curr.x = p.y;
+    curr.y = p.x;
 
-  // bogus coordinates at 0,0
-  if (curr.x == 0 && curr.y == 0 && curr.touched[SCREEN_PAD]) {
-    DEBUG_LN("bogus 0,0 coordinates");
-    curr.touched[SCREEN_PAD] = 0;
+    // bogus coordinates at 0,0
+    if (curr.x == 0 && curr.y == 0 && curr.touched[SCREEN_PAD]) {
+      DEBUG_LN("bogus 0,0 coordinates");
+      curr.touched[SCREEN_PAD] = 0;
+    }
+
+    // flip it around to match the screen.
+    curr.y = map(curr.y, 0, width, width, 0);
+  //  curr.x = map(curr.x, 0, height, height, 0);
+  } else {
+    curr.touched[SCREEN_PAD] = false;
   }
-
-  // flip it around to match the screen.
-  curr.y = map(curr.y, 0, width, width, 0);
 
   // if we're not touching, use the last touch coordinates
   if (!curr.touched[SCREEN_PAD]) {
@@ -206,7 +214,7 @@ void TouchPad::updateAPDS() {
     if (apds.readAmbientLight(light)) {
       ambientLight = light;
     } else {
-      ambientLight = 0;
+      ambientLight = ambientMax;
 //      DEBUG_LN("error reading ambient light");
     }
 

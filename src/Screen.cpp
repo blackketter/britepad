@@ -1,7 +1,7 @@
 #include <ILI9341_t3.h>
-#include <FastLED.h>
 #include "Screen.h"
 #include "Debug.h"
+#include "Utilities.h"
 
 void Screen::setBacklight(uint8_t brightness) {
   backlightBrightness = brightness;

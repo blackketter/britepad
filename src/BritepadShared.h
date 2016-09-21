@@ -30,4 +30,6 @@ extern Preferences prefs;
 
 #include "fonts/Fonts.h"
 
+#include "Utilities.h"
+
 #endif

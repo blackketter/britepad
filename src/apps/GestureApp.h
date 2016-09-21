@@ -2,7 +2,6 @@
 #define _GestureApp_
 
 #include "BritepadApp.h"
-#include "FastLED.h"
 #include "Gesture.h"
 class GestureApp : public BritepadApp {
   public:

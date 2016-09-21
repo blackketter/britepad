@@ -1,4 +1,3 @@
-#include "FastLED.h"
 #include "BritepadShared.h"
 #include "StopwatchApp.h"
 #include "Debug.h"

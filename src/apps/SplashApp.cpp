@@ -1,5 +1,4 @@
 #include "SplashApp.h"
-#include "FastLED.h"
 
 SplashApp theSplashApp;
 

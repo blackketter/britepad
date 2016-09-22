@@ -6,7 +6,7 @@
 
 class SetCountdownApp : public SetClockApp {
   public:
-    SetCountdownApp() { theTime = &countdownTime;};
+    void init() { theTime = &countdownTime;};
     void end();
     void begin(AppMode asMode);
 

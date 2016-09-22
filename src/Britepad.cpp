@@ -214,13 +214,16 @@ void Britepad::begin() {
   launchApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
   setApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
 
-// show the apps that have been loaded
+  // initialize apps
   BritepadApp* anApp = appList;
   int count = 0;
   while (anApp != nullptr) {
+    anApp->init();
     anApp = anApp->getNextApp();
     count++;
   }
+
+// show the apps that have been loaded
   DEBUGF("Total apps: %d\n", count);
 
   anApp = appList;

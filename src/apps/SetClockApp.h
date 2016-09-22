@@ -8,7 +8,7 @@
 
 class SetClockApp : public BritepadApp {
   public:
-    SetClockApp() { theTime = &clock; };
+    void init() { theTime = &clock; };
 
     void begin(AppMode asMode);
     void end();

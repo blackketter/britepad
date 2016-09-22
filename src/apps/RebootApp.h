@@ -13,8 +13,6 @@ class RebootApp : public BritepadApp {
 
   public:
 
-    RebootApp() {};
-
     void run() {
 
       while (1) {

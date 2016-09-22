@@ -16,6 +16,7 @@
 #define SCROLL_EDGE_MARGIN (10)
 
 void MousePad::begin() {
+  Mouse.begin();
 }
 
 void MousePad::end() {

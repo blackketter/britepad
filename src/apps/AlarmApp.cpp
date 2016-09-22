@@ -55,12 +55,12 @@ void AlarmApp::updateTimer() {
   }
 }
 
-AlarmApp::AlarmApp() {
-      alarmSettings settings;
-      if (prefs.read(id(), sizeof(alarmSettings), (uint8_t*)&settings)) {
-        nextAlarm.setSeconds(settings.time);
-        alarmEnabled = settings.enabled;
-      }
+void AlarmApp::init() {
+    alarmSettings settings;
+    if (prefs.read(id(), sizeof(alarmSettings), (uint8_t*)&settings)) {
+      nextAlarm.setSeconds(settings.time);
+      alarmEnabled = settings.enabled;
+    }
 };
 
 

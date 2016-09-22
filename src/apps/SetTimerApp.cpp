@@ -16,8 +16,8 @@ SetTimerApp::SetTimerApp(const char* name, time_t duration, int32_t pos) : Brite
 }
 
 SetTimerApp::SetTimerApp() : BritepadApp() {
-
 }
+
 bool SetTimerApp::customTimerRunning() {
   return (edit && timer_app.isRunning() && timer_app.getTime() == timer_duration);
 }

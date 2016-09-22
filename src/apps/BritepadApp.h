@@ -24,6 +24,7 @@ enum AppType {
 class BritepadApp {
   public:
     BritepadApp();
+    virtual void init() {};  // initialize app immediately after boot
     virtual void begin(AppMode asMode);  // initialize app state and draw first screen, allocate any memory needed while running
     virtual void end(); // called after final run(), lets app clean up, releasing any memory temporarily allocated for runs
 

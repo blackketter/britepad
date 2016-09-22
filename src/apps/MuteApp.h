@@ -8,7 +8,7 @@
 class MuteApp : public BritepadApp {
 
   public:
-    MuteApp() {
+    void init() {
       uint8_t mutestate;
       prefs.read(id(), sizeof(mutestate), &mutestate);
       sound.setMute(mutestate);

@@ -7,7 +7,7 @@
 
 class AlarmApp : public BritepadApp {
   public:
-    AlarmApp();
+    void init();
 
     void run();
     bool wantsToBe(AppMode m) { return alarmSounding(); }

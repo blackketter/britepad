@@ -4,6 +4,7 @@
 #include <ILI9341_t3.h>
 #include <font_Arial.h>
 #include <font_ArialBold.h>
+#include "Hardware.h"
 
 #include "HTMLColor.h"
 
@@ -66,13 +67,10 @@ class Screen : public ILI9341_t3 {
 
     static const coord_t offscreen = -100;
 
-#define TFT_CS 10
-#define TFT_DC 9
-
     Screen(uint8_t _CS = TFT_CS, uint8_t _DC = TFT_DC, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
       ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO) {
-      pinMode(21, OUTPUT);
-      digitalWrite(21, LOW);   // set the backlight off
+      pinMode(BACKLIGHT_PIN, OUTPUT);
+      digitalWrite(BACKLIGHT_PIN, LOW);   // set the backlight off
     };
 
     void setBacklight(uint8_t brightness);
@@ -290,7 +288,6 @@ class Screen : public ILI9341_t3 {
     static const color_t YellowGreen = C32to16(HTMLColor::YellowGreen);
 
 private:
-    static const int BACKLIGHT_PIN = 21;
     static const uint32_t BACKLIGHT_FREQUENCY = 50000;
     uint8_t backlightBrightness = 255;
 

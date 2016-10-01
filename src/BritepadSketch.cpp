@@ -25,7 +25,7 @@ void setup() {
   // asm(".global _scanf_float");
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
-  delay(500);
+  delay(5000);
 
   DEBUG_INIT();
 

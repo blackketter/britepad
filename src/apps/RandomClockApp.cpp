@@ -26,6 +26,7 @@ void RandomClockApp::update() {
     coord_t yCenter = screen.clipMidHeight();
     coord_t xLine;
     coord_t yLine;
+    coord_t secondWidth = screen.clipHeight()/10;
     float dist;
     long r;
     uint16_t hr_theta, min_theta, sec_theta, millis_theta;
@@ -56,14 +57,7 @@ void RandomClockApp::update() {
       color_t c = screen.black;
 //      coord_t rc = 1;
 
-      screen.polarToRect(sec_theta, screen.clipHeight()/2, xLine, yLine);
-      dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
-      if ( dist < 0.005) {
-        c = screen.white;
-//        rc = 1;
-      }
-
-      screen.polarToRect(min_theta, screen.clipHeight()/2, xLine, yLine);
+      screen.polarToRect(min_theta, screen.clipHeight()/2-secondWidth, xLine, yLine);
       dist = onLine(xCenter, yCenter, xLine, yLine, x, y);
       if ( dist < 0.005) {
         c = screen.green;
@@ -77,8 +71,9 @@ void RandomClockApp::update() {
 //        rc = 8;
       }
 
-  //  screen.fillCircle(x,y,rc,c);
-  //  screen.fillRect(x,y,rc,rc,c);
       screen.drawPixel(x,y,c);
   }
+
+  screen.polarToRect(sec_theta, screen.clipHeight()/2 - random(secondWidth), x, y);
+  screen.drawPixel(x,y,screen.white);
 }

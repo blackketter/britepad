@@ -5,29 +5,13 @@
 
 #include "BritepadShared.h"
 #include "TouchPad.h"
+#include "Hardware.h"
+
 
 #define DEBUG_ON 1
 #include "Debug.h"
 
-#define B_TOUCH_PIN A2
-#define T_TOUCH_PIN A8
-#define L_TOUCH_PIN A1
-#define R_TOUCH_PIN A3
 
-#define APDS9960_INT    20  // Needs to be an interrupt pin
-
-
-#define L_HIGH_THRESHOLD 950
-#define L_LOW_THRESHOLD 900
-
-#define R_HIGH_THRESHOLD 1300
-#define R_LOW_THRESHOLD 1100
-
-#define B_HIGH_THRESHOLD 1100
-#define B_LOW_THRESHOLD 1000
-
-#define T_HIGH_THRESHOLD 1150
-#define T_LOW_THRESHOLD 1050
 
 Adafruit_FT6206 ctp = Adafruit_FT6206();
 SparkFun_APDS9960 apds = SparkFun_APDS9960();

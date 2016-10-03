@@ -103,7 +103,7 @@ class Screen : public ILI9341_t3 {
     inline void getScreenBounds(rect_t* r) { r->x = 0; r->y = 0; r->h = height(); r->w = width(); };
 
     // this pushClipRect sets the cliprect to the passed rect _AND_ saves the old clip rect back into it.  call setClipRect(r) again to reset.
-    inline void pushClipRect(rect_t* r) { rect_t t; t.x = clipLeft(); t.y = clipTop(); t.h = clipHeight(); t.w = clipWidth(); setClipRect((int16_t)(r->x),(int16_t)(r->y),(int16_t)(r->x+r->w),(int16_t)(r->y+r->h)); r->y = t.y; r->x = t.x; r->h = t.h; r->w = t.w; };
+    inline void pushClipRect(rect_t* r) { rect_t t; t.x = clipLeft(); t.y = clipTop(); t.h = clipHeight(); t.w = clipWidth(); setClipRect((int16_t)(r->x),(int16_t)(r->y),(int16_t)(r->w),(int16_t)(r->h)); r->y = t.y; r->x = t.x; r->h = t.h; r->w = t.w; };
 
 //	  virtual void drawPixel(point_t& p, color_t color) { drawPixel((int16_t)p.x,(int16_t)p.y,(uint16_t)color); };
 

@@ -14,7 +14,7 @@ BritepadApp::BritepadApp()  {
 void BritepadApp::resetClipRect() {
   coord_t top = displaysStatusBar() ? statusBarHeight : 0;
   coord_t bottom = displaysInfoBar() ? screen.height()-statusBarHeight : screen.height();
-  screen.setClipRect(0, top, screen.width(), bottom);
+  screen.setClipRect(0, top, screen.width(), bottom-top);
 }
 
 const uint8_t bellIcon[] = {
@@ -79,7 +79,7 @@ void BritepadApp::drawStatusBar(bool update) {
 void BritepadApp::drawInfoBar(bool update) {
   if (displaysInfoBar()) {
     coord_t top = screen.height()-statusBarHeight;
-    screen.setClipRect(0, top, screen.width(), screen.height());
+    screen.setClipRect(0, top, screen.width(), screen.height()-top);
 
     screen.setFont(Arial_8_Bold);
     screen.setTextColor(infoBarFGColor());

@@ -25,7 +25,7 @@ void setup() {
   // asm(".global _scanf_float");
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
-  delay(5000);
+  delay(2000);
 
   DEBUG_INIT();
 
@@ -37,6 +37,7 @@ void setup() {
   DEBUG_LN("starting screen");
   screen.begin();
   screen.setRotation(3);  // Britepad Mark-0 is oriented this way
+  screen.fillScreen(screen.black);
 
   DEBUG_LN("starting touchpad");
   pad.begin();

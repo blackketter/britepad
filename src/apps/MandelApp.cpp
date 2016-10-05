@@ -17,7 +17,6 @@ void MandelApp::run() {
 
   const int MAX = 128;
   int iter;
-  color_t color;
 
   if (xPixel > screen.clipRight()) {
     xPixel = screen.clipLeft();
@@ -34,10 +33,15 @@ void MandelApp::run() {
     sx = x2 - x1;
   }
 
-  float cx = xPixel * sx / screen.clipWidth() + x1;
+  int16_t w = screen.clipWidth();
+  int16_t h = screen.clipHeight();
 
-  for (yPixel = screen.clipTop(); yPixel < screen.clipBottom(); yPixel++) {
-    float cy = yPixel * sy / screen.clipHeight() + y1;
+  float cx = xPixel * sx / w + x1;
+
+  color_t column[h];
+
+  for (yPixel = 0; yPixel < h; yPixel++) {
+    float cy = yPixel * sy / h + y1;
     float x = 0.0f, y = 0.0f, xx = 0.0f, yy = 0.0f;
     for (iter = 0; iter <= MAX && (xx + yy) < 4.0f; iter++) {
       xx = x * x;
@@ -45,9 +49,8 @@ void MandelApp::run() {
       y = 2.0f * x * y + cy;
       x = xx - yy + cx;
     }
-    color = ((iter << 7 & 0xF8) << 8) | ((iter << 4 & 0xFC) << 3) | (iter >> 3);
-    screen.drawPixel(xPixel, yPixel, color);
+    column[yPixel] = ((iter << 7 & 0xF8) << 8) | ((iter << 4 & 0xFC) << 3) | (iter >> 3);
   }
-
+  screen.drawFastVLine(xPixel,0,h,column);
   xPixel++;
 }

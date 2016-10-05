@@ -52,44 +52,45 @@ void AnalogClockApp::begin(AppMode asMode) {
 }
 
 void AnalogClockApp::update() {
-    coord_t x, y;
-    uint16_t hr_theta, min_theta, sec_theta, millis_theta;
+  DEBUGF("millis: %d\n",clock.getMillis());
+  coord_t x, y;
+  uint16_t hr_theta, min_theta, sec_theta, millis_theta;
 
-    uint8_t now_sec = clock.second();
-    uint16_t now_millis = clock.fracMillis();
+  uint8_t now_sec = clock.second();
+  uint16_t now_millis = clock.fracMillis();
 
-    millis_theta = (now_millis * 65536L)/1000L;
+  millis_theta = (now_millis * 65536L)/1000L;
 
-    sec_theta = ((int32_t)now_sec * 65536L)/60L + millis_theta/60;
+  sec_theta = ((int32_t)now_sec * 65536L)/60L + millis_theta/60;
 
-    min_theta = (clock.minute() * 65536L)/60L + sec_theta/60;
+  min_theta = (clock.minute() * 65536L)/60L + sec_theta/60;
 
-    int32_t hr  = clock.hourFormat12();
-    if (hr==12) { hr=0; }
+  int32_t hr  = clock.hourFormat12();
+  if (hr==12) { hr=0; }
 
-    hr_theta = (hr * 65536L) / 12L + min_theta/12;
+  hr_theta = (hr * 65536L) / 12L + min_theta/12;
 
-    screen.polarToRect(hr_theta, hr_length, x, y);
-    if (x != last_hr_x || y != last_hr_y) {
-      screen.fillCircle(last_hr_x,last_hr_y, hr_dot_r, hr_bg);
-      screen.fillCircle(x,y, hr_dot_r, hr_fg);
-      last_hr_x = x;
-      last_hr_y = y;
-    }
+  screen.polarToRect(hr_theta, hr_length, x, y);
+  if (x != last_hr_x || y != last_hr_y) {
+    screen.fillCircle(last_hr_x,last_hr_y, hr_dot_r, hr_bg);
+    screen.fillCircle(x,y, hr_dot_r, hr_fg);
+    last_hr_x = x;
+    last_hr_y = y;
+  }
 
-    screen.polarToRect(min_theta, min_length, x, y);
-    if (x != last_min_x || y != last_min_y) {
-      screen.fillCircle(last_min_x,last_min_y, min_dot_r, min_bg);
-      screen.fillCircle(x,y, min_dot_r, min_fg);
-      last_min_x = x;
-      last_min_y = y;
-    }
+  screen.polarToRect(min_theta, min_length, x, y);
+  if (x != last_min_x || y != last_min_y) {
+    screen.fillCircle(last_min_x,last_min_y, min_dot_r, min_bg);
+    screen.fillCircle(x,y, min_dot_r, min_fg);
+    last_min_x = x;
+    last_min_y = y;
+  }
 
-    screen.polarToRect(sec_theta, sec_length, x, y);
-    if (x != last_sec_x || y != last_sec_y) {
-      screen.fillCircle(last_sec_x,last_sec_y, sec_dot_r, sec_bg);
-      screen.fillCircle(x,y, sec_dot_r, sec_fg);
-      last_sec_x = x;
-      last_sec_y = y;
-    }
+  screen.polarToRect(sec_theta, sec_length, x, y);
+  if (x != last_sec_x || y != last_sec_y) {
+    screen.fillCircle(last_sec_x,last_sec_y, sec_dot_r, sec_bg);
+    screen.fillCircle(x,y, sec_dot_r, sec_fg);
+    last_sec_x = x;
+    last_sec_y = y;
+  }
 }

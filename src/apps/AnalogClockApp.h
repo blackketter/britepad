@@ -9,7 +9,7 @@ class AnalogClockApp : public ClockApp {
   public:
     void begin(AppMode asMode);
     void update();
-    virtual millis_t updateInterval() { return 100; }
+  virtual millis_t updateInterval() { return 100; }
 
     const char* name() { return "Analog"; };
 
@@ -35,7 +35,6 @@ class AnalogClockApp : public ClockApp {
 
     millis_t millis_offset;
     uint8_t last_sec;
-
 };
 
 #endif

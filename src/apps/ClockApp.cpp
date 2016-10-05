@@ -21,10 +21,15 @@ void ClockApp::begin(AppMode asMode) {
 void ClockApp::update() {
     char textTime[6];  // "12:34"
 
+    currentColor++;
+
+    Time thisTime;
+
+    thisTime.setSeconds(clock.getSeconds()+_offset);
     screen.setFont(Arial_72_Digits_Bold);
 
     screen.setTextColor(screen.luminance(currentColor) < 128 ? screen.brighten(currentColor, 128) : currentColor, bgColor());
-    sprintf(textTime, "%d:%02d", clock.hourFormat12(), clock.minute());
+    sprintf(textTime, "%d:%02d", thisTime.hourFormat12(), thisTime.minute());
     coord_t w = screen.measureTextWidth(textTime);
     coord_t h = screen.measureTextHeight(textTime);
     coord_t x = screen.clipMidWidth() - w/2;
@@ -43,18 +48,17 @@ void ClockApp::update() {
     screen.setFont(Arial_16);
 
     screen.setCursor(screen.clipMidWidth()+w/2,screen.clipMidHeight() + h/2 - screen.measureTextHeight(textTime));
-    screen.drawText(clock.isAM() ? "am" : "pm");
+    screen.drawText(thisTime.isAM() ? "am" : "pm");
 
     screen.setCursor(screen.clipMidWidth()+w/2,screen.clipMidHeight() - h/2);
-    screen.drawTextF("%02d", clock.second());
+    screen.drawTextF("%02d", thisTime.second());
 
     char longDate[100];
-    clock.longDate(longDate);
+    thisTime.longDate(longDate);
 
     screen.setFont(Arial_12);
     screen.setCursor(
       screen.clipMidWidth()-screen.measureTextWidth(longDate)/2,
       screen.clipBottom()-((screen.clipBottom()-(screen.clipMidHeight() + h/2))/2  + screen.measureTextHeight(longDate)/2));
     screen.drawText(longDate);
-    currentColor++;
 }

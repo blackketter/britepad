@@ -24,6 +24,7 @@ void ChromaClockApp::drawSlice(int index, color_t c, coord_t r) {
 void ChromaClockApp::update() {
   coord_t r[slices];
   color_t c[slices];
+  DEBUGF("begin chromaclockupdate\n");
 
   for (int i = 0; i < slices; i++) {
     c[i] = screen.grey10;
@@ -46,7 +47,7 @@ void ChromaClockApp::update() {
 
   int m = (int)clock.minute() * slices / 60 + (int)clock.second() * slices / (60*60);
 
-  steps = slices/30;
+  steps = slices/12;
   for (int i = 0; i < steps; i++) {
     int ic = m - i;
     while (ic < 0) { ic+=slices; }
@@ -57,7 +58,7 @@ void ChromaClockApp::update() {
 
   int s = (int)clock.second() * slices / 60 + (int32_t)clock.fracMillis() * slices / 1000 / 60;
 
-  steps = slices/60;
+  steps = slices/24;
   for (int i = 0; i < steps; i++) {
     int ic = s - i;
     while (ic < 0) { ic+=slices; }
@@ -68,4 +69,6 @@ void ChromaClockApp::update() {
   for (int i = 0; i < slices; i++) {
     drawSlice(i,c[i], r[i]);
   }
+  DEBUGF("end chromaclockupdate\n");
+
 }

@@ -73,7 +73,7 @@ class BritepadApp {
     virtual bool canBeMouse() { return false; }
 
     virtual AppType getAppType() { return NO_APP_TYPE; }
-    bool isAppType(AppType t) { return t & getAppType(); }
+    virtual bool isAppType(AppType t) { return t & getAppType(); }
     virtual int32_t getLauncherPosition() { return position; }
     virtual void setLauncherPosition(int32_t p) { position = p; }
     virtual bool isHidden() { return false; }

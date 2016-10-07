@@ -3,25 +3,6 @@
 
 #include "BritepadShared.h"
 #include "BritepadApp.h"
-#include "widgets/Button.h"
-#include "widgets/ButtonMatrix.h"
-
-class AppButton : public RoundButton {
-  public:
-    BritepadApp* getApp() { return (BritepadApp*)getID(); }
-    void setApp(BritepadApp* a)  {  setID((widgetid_t)a); }
-};
-
-
-class AppButtonMatrix : public ButtonMatrix {
-  public:
-    AppButtonMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int rows, int columns, int maps, ButtonConfig configuration[] = nullptr) {
-      init(x, y, w, h, rows, columns, maps, configuration);
-    };
-
-  protected:
-    Button* newButton() { return new AppButton(); }
-};
 
 typedef int (*appCompareFunction)(BritepadApp*, BritepadApp*);
 
@@ -61,12 +42,10 @@ class LauncherApp : public BritepadApp {
     void checkTimeout();
     void clearScreen() {} // override the default clear screen because we do transitions
 
-
-    AppButtonMatrix* buttons;
-
     int current_screen = SETTINGS_SCREEN;
 
     int highlighted_button = noButton;
+    bool waitForRelease = false;
 
     time_t lastRun = 0;
     static const millis_t holdTime = 500;

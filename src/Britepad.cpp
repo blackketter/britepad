@@ -255,10 +255,12 @@ void Britepad::idle() {
   } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.down(SCREEN_PAD) || ((pad.down(ANY_PAD) && !currApp->canBeInteractive())))) {
     DEBUG_LN("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
-    if (currApp->canBeMouse() && currApp->getEnabled(MOUSE_MODE)) {
+    if (currApp->canBeMouse() && currApp->getEnabled(MOUSE_MODE) && usbActive()) {
       currApp->switchAppMode(MOUSE_MODE);
-    } else {
+    } else if (usbActive()) {
       launchApp(BritepadApp::A_MOUSE_APP, MOUSE_MODE);
+    } else {
+      launchApp(theLauncherApp);
     }
 
   } else if (pad.time() > disableScreensaversUntil && !currApp->disablesScreensavers()) {

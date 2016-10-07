@@ -55,6 +55,10 @@ void LauncherApp::begin(AppMode asMode) {
     checkTimeout();
   }
 
+  if (pad.touched(SCREEN_PAD)) {
+    waitForRelease = true;
+  }
+
   // adjust the current screen before beginning
   BritepadApp::begin(asMode);
 
@@ -182,6 +186,8 @@ BritepadApp* LauncherApp::getApp(int i) {
 
 void LauncherApp::run() {
 
+  if (pad.up(SCREEN_PAD)) { waitForRelease = false; }
+
   lastRun = clock.now();
 
   int b = buttonHit(pad.x(),pad.y());
@@ -249,7 +255,7 @@ void LauncherApp::run() {
 
       }
       highlighted_button = noButton;
-    } else if (pad.touched(SCREEN_PAD)) {
+    } else if (pad.touched(SCREEN_PAD) && !waitForRelease) {
 
       if (b != noButton) {
         if (b != highlighted_button) {

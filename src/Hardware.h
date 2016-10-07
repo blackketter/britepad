@@ -1,7 +1,12 @@
 #ifndef _Hardware_
 #define _Hardware_
 
+#include "Arduino.h"
+
 typedef int pinNumber;
+bool usbActive();
+
+#ifdef TEENSYDUINO
 
 // touchpad pins
 const pinNumber B_TOUCH_PIN = A2;
@@ -29,5 +34,13 @@ const pinNumber APDS9960_INT = 20;  // Needs to be an interrupt pin
 const pinNumber TFT_CS = 10;
 const pinNumber TFT_DC = 9;
 const pinNumber BACKLIGHT_PIN = 21;
+
+#elif defined(ESP8266)
+
+const pinNumber TFT_DC = 2;
+const pinNumber TFT_CS  = 4;
+const pinNumber BACKLIGHT_PIN  = 0;
+
+#endif
 
 #endif

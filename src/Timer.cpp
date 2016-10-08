@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "Timer.h"
-#include "Debug.h"
 #include "Clock.h"
 
 Timer* Timer::first = nullptr;

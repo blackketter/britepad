@@ -1,6 +1,5 @@
 #include <ILI9341_t3.h>
 #include "Screen.h"
-#include "Debug.h"
 #include "Utilities.h"
 
 void Screen::setBacklight(uint8_t brightness) {

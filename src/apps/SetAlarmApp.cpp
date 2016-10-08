@@ -1,5 +1,4 @@
 #include "SetAlarmApp.h"
-#include "Debug.h"
 
 SetAlarmApp theSetAlarmApp;
 
@@ -16,7 +15,7 @@ void SetAlarmApp::begin(AppMode asMode) {
 
   AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
   if (alarm) {
-    DEBUGF("getting alarm time of %d\n", alarm->getAlarmTime());
+    console.debugf("getting alarm time of %d\n", alarm->getAlarmTime());
     alarmTime.setSeconds(alarm->getAlarmTime());
     alarmEnabled = alarm->getAlarmEnabled();
   }

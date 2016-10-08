@@ -5,7 +5,7 @@ HexDotClockApp theHexDotClockApp;
 void HexDotClockApp::begin(AppMode asMode) {
   if (dots == nullptr) {
     dots = new HexDotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), 9 * 4 + 3, 9*3); // approx 4:1 aspect ratio
-//    DEBUGF("top: %d, height: %d\n",screen.clipTop(),screen.clipHeight());
+//    console.debugf("top: %d, height: %d\n",screen.clipTop(),screen.clipHeight());
     dots->setStaggerV(true);  // stagger vertically
   }
   ClockApp::begin(asMode);

@@ -2,7 +2,6 @@
 #define _BritepadApp_
 
 #include "BritepadShared.h"
-#include "Debug.h"
 #include "widgets/Icon.h"
 
 class Britepad;

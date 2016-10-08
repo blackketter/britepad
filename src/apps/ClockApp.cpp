@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "ClockApp.h"
-#include "Debug.h"
 
 ClockApp theClockApp;
 

@@ -1,5 +1,4 @@
 #include "WordClockApp.h"
-#include "Debug.h"
 #include "Strings.h"
 
 WordClockApp theWordClockApp;

@@ -2,7 +2,6 @@
 #define _Gesture_
 
 #include "Screen.h"
-#include "Debug.h"
 
 typedef uint8_t gesture_t;
 

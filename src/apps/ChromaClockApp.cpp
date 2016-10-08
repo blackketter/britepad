@@ -1,5 +1,4 @@
 #include "ChromaClockApp.h"
-#include "Debug.h"
 
 ChromaClockApp theChromaClockApp;
 

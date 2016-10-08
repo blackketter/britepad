@@ -1,7 +1,7 @@
 #include "Gesture.h"
 #include "Screen.h"
-#include "Debug.h"
 #include "TouchPad.h"
+#include "Console.h"
 
 uint16_t Gesture::compare(Gesture& to) {
   uint16_t dist = 0;
@@ -41,7 +41,7 @@ bool Gesture::capture() {
   }
   point_t* rawPoints = pad.getHistory();
   int rawPointCount = pad.getHistoryCount();
-//  DEBUGF("raw point count %d\n", rawPointCount);
+//  console.debugf("raw point count %d\n", rawPointCount);
   if (rawPointCount < minSamplesRequired()) {
     return false;
   };
@@ -60,8 +60,8 @@ bool Gesture::capture() {
 
   float interval = pathLength / (samplesPerGesture-1);
 
-  DEBUGF("pathLength: %d\n",pathLength);
-  DEBUGF("interval %f\n",interval);
+  console.debugf("pathLength: %d\n",pathLength);
+  console.debugf("interval %f\n",interval);
   float dq = 0;
 
   // resample and add to self
@@ -90,7 +90,7 @@ bool Gesture::capture() {
 
   addSample(rawPoints[rawPointCount-1].x, rawPoints[rawPointCount-1].y);
 
-  DEBUGF("new samples %d\n", getSampleCount());
+  console.debugf("new samples %d\n", getSampleCount());
   if (draw) {
     for (int i = 1; i < getSampleCount(); i++) {
       screen.drawWideLine(getSampleX(i),getSampleY(i),getSampleX(i-1),getSampleY(i-1),3,screen.darkred);
@@ -144,14 +144,14 @@ bool Gesture::capture() {
 
   float aspect = max(width,height);
 
-  DEBUGF("orientation: %f\n", orientation);
-  DEBUGF("xmax: %f, xmin: %f, ymax: %f, ymin: %f, width: %d, height: %d, aspect: %f\n", xmax,xmin,ymax,ymin,width,height,aspect);
-  DEBUGF("centroid %f,%f\n",centroid.x, centroid.y);
+  console.debugf("orientation: %f\n", orientation);
+  console.debugf("xmax: %f, xmin: %f, ymax: %f, ymin: %f, width: %d, height: %d, aspect: %f\n", xmax,xmin,ymax,ymin,width,height,aspect);
+  console.debugf("centroid %f,%f\n",centroid.x, centroid.y);
 
   // put in unit square and translate to origin
   for (int i = 0; i < samplesPerGesture; i++) {
     setSample(i, (getSampleX(i)-xmin)/aspect, (getSampleY(i)-ymin)/aspect);
-//    DEBUGF("sample[%d] = %f, %f\n", i, getSampleX(i), getSampleY(i));
+//    console.debugf("sample[%d] = %f, %f\n", i, getSampleX(i), getSampleY(i));
   }
   if (draw) {
     for (int i = 0; i < getSampleCount(); i++) {
@@ -208,9 +208,9 @@ gesture_t Gesture::match(const gestureData_t* gestureList, uint16_t* distance) {
     if (validOrientation) {
       uint16_t currDist = compare(*(gestureList[currGestureIndex].shape));
       if (currGesture < 0x20) {
-        DEBUGF("Match orientation & distance for 0x%02x: %d\n", currGesture, currDist);
+        console.debugf("Match orientation & distance for 0x%02x: %d\n", currGesture, currDist);
       } else {
-        DEBUGF("Match orientation & distance for '%c': %d\n", currGesture, currDist);
+        console.debugf("Match orientation & distance for '%c': %d\n", currGesture, currDist);
       }
 
       if (currDist < bestDistance) {
@@ -222,9 +222,9 @@ gesture_t Gesture::match(const gestureData_t* gestureList, uint16_t* distance) {
       }
     } else {
       if (currGesture < 0x20) {
-        //DEBUGF("No match on orientation for 0x%02x\n", currGesture);
+        //console.debugf("No match on orientation for 0x%02x\n", currGesture);
       } else {
-        //DEBUGF("No match on orientation for '%c' \n", currGesture);
+        //console.debugf("No match on orientation for '%c' \n", currGesture);
       }
     }
     currGestureIndex++;
@@ -232,7 +232,7 @@ gesture_t Gesture::match(const gestureData_t* gestureList, uint16_t* distance) {
 
   int bestBy = (secondBestDistance - bestDistance)*100/secondBestDistance;
 
-  DEBUGF("bestDistance: %d, secondBest: %d, bestby: %d\%\n", bestDistance, secondBestDistance, bestBy);
+  console.debugf("bestDistance: %d, secondBest: %d, bestby: %d\%\n", bestDistance, secondBestDistance, bestBy);
   if ( (bestDistance > MATCH_THRESHOLD) ||
        (bestBy < MATCH_BESTBY)) {
     bestGesture = NO_GESTURE;

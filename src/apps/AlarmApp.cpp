@@ -1,5 +1,4 @@
 #include "AlarmApp.h"
-#include "Debug.h"
 #include "Preferences.h"
 
 AlarmApp theAlarmApp;

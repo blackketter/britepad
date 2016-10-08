@@ -1,7 +1,6 @@
 #include "BritepadShared.h"
 #include "MandelApp.h"
 #include "Screen.h"
-#include "Debug.h"
 #include "Sound.h"
 
 MandelApp theMandelApp;

@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "MousePad.h"
-#include "Debug.h"
 #include "usb_mouse.h"
 
 // Mouse parameters
@@ -35,15 +34,15 @@ void MousePad::run() {
   // right panel
   if (pad.changed(RIGHT_PAD)) {
     if (pad.touched(RIGHT_PAD)) {
-//      DEBUG_LN("mouse press right panel");
+//      console.debugln("mouse press right panel");
     } else {
-//      DEBUG_LN("mouse release right panel");
+//      console.debugln("mouse release right panel");
       Keyboard.release(MODIFIERKEY_CTRL);
     }
 
     if (pad.touched(RIGHT_PAD)) {
       // right has been pressed
-//      DEBUG_LN("right panel pressed");
+//      console.debugln("right panel pressed");
       // if the left is down, send a tab
       if (pad.touched(LEFT_PAD)) {
         Keyboard.press(MODIFIERKEY_GUI);
@@ -53,7 +52,7 @@ void MousePad::run() {
       // always hold down ctrl
       Keyboard.press(MODIFIERKEY_CTRL);
     } else {
-//      DEBUG_LN("right panel released");
+//      console.debugln("right panel released");
       // always release ctrl
       Keyboard.release(MODIFIERKEY_CTRL);
 
@@ -75,7 +74,7 @@ void MousePad::run() {
   // left panel
   if (pad.down(LEFT_PAD)) {
     // left has been pressed
-//    DEBUG_LN("Left panel pressed");
+//    console.debugln("Left panel pressed");
     Keyboard.press(MODIFIERKEY_GUI);
     if (pad.touched(RIGHT_PAD)) {
       // release ctrl so we can command tab
@@ -104,7 +103,7 @@ void MousePad::run() {
 
     if (scrollMode) {
       // we are in scroll mode
-      DEBUG_LN("scroll mode scrolling");
+      console.debugln("scroll mode scrolling");
       if (pad.y() < pad.getHeight()/2) {
         Keyboard.press(KEY_PAGE_UP);
         Keyboard.release(KEY_PAGE_UP);
@@ -160,7 +159,7 @@ void MousePad::run() {
           if (y < 0) { y = 0; }
           if (y >= screen_v) { y = screen_v - 1; }
 
-          DEBUGF("pad.x: %d, pad.y: %d, x: %d, y: %d\n", pad.x(), pad.y(), x, y);
+          console.debugf("pad.x: %d, pad.y: %d, x: %d, y: %d\n", pad.x(), pad.y(), x, y);
           Mouse.moveTo(x, y);
         } else {
           // otherwise we move the mouse, if this isn't a down transition
@@ -190,7 +189,7 @@ void MousePad::run() {
           // todo: notify mouse move deltax/deltay
 #if DEBUG_TRACKING
           // Print out the mouse movements
-          DEBUGF("<move: %d, %d>",deltax,deltay);
+          console.debugf("<move: %d, %d>",deltax,deltay);
 #endif
         }
       }
@@ -239,7 +238,7 @@ void MousePad::run() {
             }
             // todo: notify mouse up
             Mouse.release();
-//            DEBUG_LN("mouse release after timeout");
+//            console.debugln("mouse release after timeout");
           }
           scrollMode = false;
         }

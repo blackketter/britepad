@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "DotsDisplayApp.h"
-#include "Debug.h"
 
 DotsDisplayApp theDotsDisplayApp;
 

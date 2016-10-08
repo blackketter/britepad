@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "ThereminApp.h"
-#include "Debug.h"
 
 ThereminApp theThereminApp;
 
@@ -20,7 +19,7 @@ void ThereminApp::run() {
       lastProx = prox;
       float pitch = (1.0 + (float)prox / 255.0) * octave * sound.MIDDLE_C_FREQ;
       pitch = (pitch+lastPitch*9.0)/10.0;
-      DEBUGF("prox: %d, pitch: %f\n", prox, pitch);
+      console.debugf("prox: %d, pitch: %f\n", prox, pitch);
       sound.tone( pitch, 1.0);
       screen.fillRect(screen.clipLeft() +(uint32_t)prox * screen.clipWidth() * 19/20 / pad.getProximityMax(), screen.clipTop(), screen.clipWidth()/20, screen.clipHeight(), currColor++);
       lastPitch = pitch;

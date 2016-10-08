@@ -1,5 +1,4 @@
 #include "widgets/DotMatrix.h"
-#include "Debug.h"
 
 DotMatrix::DotMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dots_w, int dots_h) {
   dots_wide = dots_w;
@@ -87,7 +86,7 @@ void HexDotMatrix::updateDot(int x, int y) {
   if (center_x + r < getRight() && center_y + r < getBottom()) {
     screen.fillCircle(getLeft() + center_x, getTop() + center_y, r, getDot(x,y));
   } else {
- //   DEBUGF("not drawing %d,%d at %d,%d (bottom: %d)\n",x,y,center_x,center_y, getBottom());
+ //   console.debugf("not drawing %d,%d at %d,%d (bottom: %d)\n",x,y,center_x,center_y, getBottom());
   }
 }
 

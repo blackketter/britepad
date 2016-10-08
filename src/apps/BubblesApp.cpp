@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "BubblesApp.h"
-#include "Debug.h"
 
 BubblesApp theBubblesApp;
 

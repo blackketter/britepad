@@ -1,7 +1,6 @@
 #include "SetCountdownApp.h"
 #include "CountdownApp.h"
 
-#include "Debug.h"
 
 BritepadApp* SetCountdownApp::exitsTo() {
   return getAppByID(CountdownApp::ID);

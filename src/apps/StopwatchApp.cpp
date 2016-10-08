@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "StopwatchApp.h"
-#include "Debug.h"
 #include "Clock.h"
 
 StopwatchApp theStopwatchApp(11);

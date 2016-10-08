@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "SpiroApp.h"
-#include "Debug.h"
 
 SpiroApp theSpiroApp;
 

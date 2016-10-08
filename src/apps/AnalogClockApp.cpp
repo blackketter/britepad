@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "AnalogClockApp.h"
-#include "Debug.h"
 #include "Clock.h"
 
 AnalogClockApp theAnalogClockApp;
@@ -52,7 +51,7 @@ void AnalogClockApp::begin(AppMode asMode) {
 }
 
 void AnalogClockApp::update() {
-  DEBUGF("millis: %d\n",clock.getMillis());
+  console.debugf("millis: %d\n",clock.getMillis());
   coord_t x, y;
   uint16_t hr_theta, min_theta, sec_theta, millis_theta;
 

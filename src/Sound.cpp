@@ -4,7 +4,8 @@
 
 #include "Sound.h"
 #include "Clock.h"
-#include "Debug.h"
+
+#include "Console.h"
 
 #define NO_SYNTH (-1)
 #define SYNTH_COUNT (4)
@@ -63,11 +64,11 @@ void Sound::begin() {
 int Sound::freeSynth() {
   for (int i = 0; i < SYNTH_COUNT; i++) {
     if (envelopes[i].getState() == STATE_IDLE) {
-//      DEBUGF("freeSynth = %d\n", i);
+//      console.debugf("freeSynth = %d\n", i);
       return i;
     }
   }
-  DEBUG_LN("NO_SYNTH available!");
+  console.debugln("NO_SYNTH available!");
   return NO_SYNTH;
 }
 
@@ -85,7 +86,7 @@ void Sound::click() {
     waveforms[beeper].begin(1.0, 100, WAVEFORM_PULSE);
     envelopes[beeper].noteOn();
     AudioInterrupts();
-//    DEBUG_LN("click");
+//    console.debugln("click");
   }
  }
 
@@ -103,12 +104,12 @@ void Sound::beep(millis_t ms, float freq)
     waveforms[beeper].begin(1.0, freq, WAVEFORM_SINE);
     envelopes[beeper].noteOn();
     AudioInterrupts();
-//    DEBUGF("beep (%d) freq: %f\n", beeper, freq);
+//    console.debugf("beep (%d) freq: %f\n", beeper, freq);
   }
 }
 
 void Sound::bump() {
-//  DEBUG_LN("bump");
+//  console.debugln("bump");
   beep(1, 300);
 }
 
@@ -128,7 +129,7 @@ void Sound::swipe(direction_t d) {
       f = A440_FREQ*2;
       break;
     default:
-      DEBUG_LN("Bad direction");
+      console.debugln("Bad direction");
       f = MIDDLE_C_FREQ;
   }
   beep(250, f);
@@ -140,7 +141,7 @@ void Sound::tone(float freq, float volume) {
     return;
   }
 
-//  DEBUGF("tone freq: %f\n",freq);
+//  console.debugf("tone freq: %f\n",freq);
 
   if (toneSynth == NO_SYNTH) {
     if (volume == 0.0) {
@@ -182,7 +183,7 @@ void Sound::tone(float freq, float volume) {
 
 void Sound::noise(float volume) {
 //  todo: create noise sourc
-//  DEBUGF("noise vol: %f\n", volume);
+//  console.debugf("noise vol: %f\n", volume);
 }
 
 void Sound::setMute(bool mute) {

@@ -24,7 +24,7 @@ void NumericKeypadApp::run() {
 
   if (pad.isGesturing()) {
     // todo: maybe draw the gesture
-    DEBUGF("Is gesturing\n");
+    console.debugf("Is gesturing\n");
     buttons->setHighlighted(false);
   } else if (pad.didGesture()) {
     if (pad.getGesture() == GESTURE_SWIPE_UP) {
@@ -32,9 +32,9 @@ void NumericKeypadApp::run() {
     } else {
       b = buttons->getButton(pad.getGesture());
       if (b) {
-        DEBUGF("Found button for gesture 0x%02x\n", pad.getGesture());
+        console.debugf("Found button for gesture 0x%02x\n", pad.getGesture());
       } else {
-        DEBUGF("NO Found button for gesture 0x%02x\n", pad.getGesture());
+        console.debugf("NO Found button for gesture 0x%02x\n", pad.getGesture());
       }
     }
   } else {

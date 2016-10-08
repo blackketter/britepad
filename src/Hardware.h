@@ -5,9 +5,10 @@
 
 typedef int pinNumber;
 bool usbActive();
+uint32_t FreeMem();
+
 
 #ifdef TEENSYDUINO
-
 // touchpad pins
 const pinNumber B_TOUCH_PIN = A2;
 const pinNumber T_TOUCH_PIN = A8;

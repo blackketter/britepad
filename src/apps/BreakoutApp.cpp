@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "BreakoutApp.h"
-#include "Debug.h"
 
 BreakoutApp theBreakoutApp;
 

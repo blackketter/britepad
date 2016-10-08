@@ -1,7 +1,6 @@
 #include "BritepadShared.h"
 #include "LauncherApp.h"
 #include "ScreensaverApp.h"
-#include "Debug.h"
 
 LauncherApp::LauncherApp() {
   for (int s = 0; s < TOTAL_SCREENS; s++) {
@@ -29,7 +28,7 @@ LauncherApp::LauncherApp() {
               pos++;
             }
             if (!a->isHidden()) {
-              DEBUGF("Adding %s to screen %s at position %d\n", a->name(), screenNames[screen], pos);
+              console.debugf("Adding %s to screen %s at position %d\n", a->name(), screenNames[screen], pos);
               setButton(screen, pos, a);
             }
           }
@@ -130,7 +129,7 @@ void LauncherApp::drawButton(int i, bool highlighted) {
     screen.setTextColor(screen.black);
     char* line2 = strchr(name, '\n');
     if (line2) {
-      DEBUGF("%s\n",name);
+      console.debugf("%s\n",name);
       line2++;
       screen.setFont(Arial_8_Bold);
       char line[strlen(name)+1];
@@ -171,7 +170,7 @@ void LauncherApp::setButton(int screen, int i, BritepadApp* b)
   if (screen < TOTAL_SCREENS && i < buttons_per_screen) {
     apps[screen][i] = b;
   } else {
-    DEBUG_LN("setButton out of bounds");
+    console.debugln("setButton out of bounds");
   }
 };
 

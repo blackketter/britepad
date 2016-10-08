@@ -8,9 +8,6 @@
 #include "apps/ClockApp.h"
 #include "apps/SplashApp.h"
 
-#define DEBUG_ON 1
-#include "Debug.h"
-
 #define PROXIMITY_DEAD_TIME (1000)
 
 BritepadApp* appList = nullptr;
@@ -86,7 +83,7 @@ BritepadApp* Britepad::randomApp(AppMode m) {
     }
     nextapp = nextapp->getNextApp();
   }
-  DEBUGF("No random app avaialable for mode %d\n", m);
+  console.debugf("No random app avaialable for mode %d\n", m);
   return nullptr;
 }
 
@@ -134,7 +131,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   if (newApp) {
     launchedAppPtr = newApp;
   } else {
-    DEBUG_LN("Can't switch to null newApp, returning to launcher");
+    console.debugln("Can't switch to null newApp, returning to launcher");
     newApp = getAppByID(LauncherApp::ID);
     asMode = INTERACTIVE_MODE;
   }
@@ -154,7 +151,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
   if (currApp) {
     currApp->drawBars();
-    DEBUGF("Begin: %s\n", currApp->name());
+    console.debugf("Begin: %s\n", currApp->name());
     currApp->begin(asMode);
     if (asMode == SCREENSAVER_MODE) {
       screensaverStartedTime = pad.time();
@@ -224,12 +221,12 @@ void Britepad::begin() {
   }
 
 // show the apps that have been loaded
-  DEBUGF("Total apps: %d\n", count);
+  console.debugf("Total apps: %d\n", count);
 
   anApp = appList;
   count = 1;
   while (anApp != nullptr) {
-    DEBUGF("  %d : %s (%08x)\n", count, anApp->name(), (uint32_t)anApp);
+    console.debugf("  %d : %s (%08x)\n", count, anApp->name(), (uint32_t)anApp);
     anApp = anApp->getNextApp();
     count++;
   }
@@ -245,15 +242,15 @@ void Britepad::idle() {
   pad.update();
 
   if (pad.down(TOP_PAD)) {
-//    DEBUG_LN("Toppad down");
+//    console.debugln("Toppad down");
     if (currApp) {
       BritepadApp* nextApp = currApp->exitsTo();
       launchApp(nextApp);
     } else {
-      DEBUG_LN("No currapp!");
+      console.debugln("No currapp!");
     }
   } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.down(SCREEN_PAD) || ((pad.down(ANY_PAD) && !currApp->canBeInteractive())))) {
-    DEBUG_LN("waking screensaver");
+    console.debugln("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
     if (currApp->canBeMouse() && currApp->getEnabled(MOUSE_MODE) && usbActive()) {
       currApp->switchAppMode(MOUSE_MODE);
@@ -278,7 +275,7 @@ void Britepad::idle() {
       launchApp(getAppByID(ClockApp::ID), SCREENSAVER_MODE);
       disableScreensavers(showClockDur);  // disable screensavers for a little while
       sound.click();
-      DEBUG_LN("Proximity detected: showing clock");
+      console.debugln("Proximity detected: showing clock");
 
     } else {
 
@@ -312,7 +309,7 @@ void Britepad::idle() {
   if (currApp) {
     currApp->run();
   } else {
-    DEBUG_LN("currApp nullptr!");
+    console.debugln("currApp nullptr!");
   }
 
   // make sure the Timers get a chance to call their callbacks

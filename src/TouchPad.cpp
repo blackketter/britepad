@@ -7,12 +7,6 @@
 #include "TouchPad.h"
 #include "Hardware.h"
 
-
-#define DEBUG_ON 1
-#include "Debug.h"
-
-
-
 Adafruit_FT6206 ctp = Adafruit_FT6206();
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
 
@@ -29,12 +23,12 @@ TouchPad::TouchPad(coord_t w, coord_t h) {
 }
 
 void TouchPad::begin() {
-  DEBUG_LN("touchpad begin");
+  console.debugln("touchpad begin");
 
   if (!ctp.begin(40)) {  // pass in 'sensitivity' coefficient
-    DEBUG_LN("Couldn't start FT6206 touchscreen controller");
+    console.debugln("Couldn't start FT6206 touchscreen controller");
   } else {
-    DEBUG_LN("touchpad working");
+    console.debugln("touchpad working");
     ctpWorking = true;
   }
 
@@ -60,7 +54,7 @@ void TouchPad::update() {
 
     // bogus coordinates at 0,0
     if (curr.x == 0 && curr.y == 0 && curr.touched[SCREEN_PAD]) {
-      DEBUG_LN("bogus 0,0 coordinates");
+      console.debugln("bogus 0,0 coordinates");
       curr.touched[SCREEN_PAD] = 0;
     }
 
@@ -128,7 +122,7 @@ void TouchPad::update() {
         lastHistoryTime = curr.time;
       }
     } else {
-//      DEBUG_LN("Exceeded history size");
+//      console.debugln("Exceeded history size");
     }
   }
   if (!up(SCREEN_PAD)) {
@@ -190,7 +184,7 @@ void TouchPad::updateAPDS() {
       proximity = prox;
     } else {
       proximity = 0;
-      DEBUG_LN("error reading proximity");
+      console.debugln("error reading proximity");
     }
 
     //  update the APDS9960
@@ -199,7 +193,7 @@ void TouchPad::updateAPDS() {
       ambientLight = light;
     } else {
       ambientLight = ambientMax;
-//      DEBUG_LN("error reading ambient light");
+//      console.debugln("error reading ambient light");
     }
 
 #if 0
@@ -207,25 +201,25 @@ void TouchPad::updateAPDS() {
       redLight = light;
     } else {
       redLight = 0;
-      DEBUG_LN("error reading red light");
+      console.debugln("error reading red light");
     }
 
     if (apds.readGreenLight(light)) {
       greenLight = light;
     } else {
       greenLight = 0;
-      DEBUG_LN("error reading green light");
+      console.debugln("error reading green light");
     }
 
     if (apds.readBlueLight(light)) {
       blueLight = light;
     } else {
       blueLight = 0;
-      DEBUG_LN("error reading blue light");
+      console.debugln("error reading blue light");
     }
-    DEBUGF("Red: %d\n", redLight);
-    DEBUGF("Green: %d\n", greenLight);
-    DEBUGF("Blue: %d\n", blueLight);
+    console.debugf("Red: %d\n", redLight);
+    console.debugf("Green: %d\n", greenLight);
+    console.debugf("Blue: %d\n", blueLight);
 #endif
 
 #if 0
@@ -248,14 +242,14 @@ void TouchPad::initAPDS() {
   }
 
   if (apds.init()) {
-    DEBUG_LN("APDS-9960 Initialized");
+    console.debugln("APDS-9960 Initialized");
     apds.enableLightSensor(useAPDS9960Interrupts);
     apds.enableProximitySensor(useAPDS9960Interrupts);
 
     // gestures lock up device.  I suspect that they require interrupts
     // apds.enableGestureSensor(useAPDS9960Interrupts);
   } else {
-    DEBUG_LN("APDS-9960 Fail init()");
+    console.debugln("APDS-9960 Fail init()");
   }
 }
 

@@ -1,6 +1,5 @@
 #include "widgets/TouchKeyboard.h"
 #include "widgets/Icons.h"
-#include "Debug.h"
 
 void TouchKeyboard::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, font_t legendFont, color_t legendColor)
 {
@@ -13,11 +12,11 @@ void TouchKeyboard::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t colo
 
 //////////////////////////////////////////////////////
 void TouchKeyboard::initButtons() {
-  DEBUG_LN("initButtons");
+  console.debugln("initButtons");
   coord_t buttonDistance = min(width/maxKeysPerRow, height/rows);
-  DEBUGF("buttonDistance: %d\n",buttonDistance);
+  console.debugf("buttonDistance: %d\n",buttonDistance);
   coord_t radius = (buttonDistance-2)/2;  // leave a tiny space between
-  DEBUGF("radius: %d\n",radius);
+  console.debugf("radius: %d\n",radius);
 
   // initialize all those buttons
   for (int r = 0; r < rows; r++) {
@@ -31,7 +30,7 @@ void TouchKeyboard::initButtons() {
       coord_t keyX = xpos + buttonDistance/2 + buttonDistance*c;
       keyX += r % 2 ? buttonDistance/2 : 0;  // every other line is offset by half the distance to nest them together
       icon_t icon = nullptr;
-      DEBUGF("button init: %d\n", key);
+      console.debugf("button init: %d\n", key);
       switch (key) {
         case SHIFTDOWN_KEY:
         case SHIFTUP_KEY:

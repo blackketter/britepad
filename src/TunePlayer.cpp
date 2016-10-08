@@ -2,7 +2,6 @@
 
 #include <Audio.h>
 
-#include "Debug.h"
 #include "Clock.h"
 
 // Implement a polyphonic midi player, based on the public domain code provided by   :-)

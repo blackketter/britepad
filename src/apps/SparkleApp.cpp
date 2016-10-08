@@ -1,7 +1,6 @@
 #include "BritepadShared.h"
 #include "SparkleApp.h"
 #include "Screen.h"
-#include "Debug.h"
 #include "Sound.h"
 
 SparkleApp theSparkleApp;

@@ -1,7 +1,6 @@
 #include "BritepadShared.h"
 #include "PaintApp.h"
 #include "Screen.h"
-#include "Debug.h"
 #include "Sound.h"
 
 PaintApp thePaintApp;

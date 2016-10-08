@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "TrianglesApp.h"
-#include "Debug.h"
 
 TrianglesApp theTrianglesApp;
 

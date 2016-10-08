@@ -5,6 +5,8 @@
 
 #include "Types.h"
 
+#include "Console.h"
+
 #include "Screen.h"
 extern Screen screen;
 

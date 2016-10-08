@@ -4,9 +4,7 @@
 
 /* britepad sketch*/
 #include "BritepadShared.h"
-#include "Debug.h"
 
-#define DEBUG_ON 1
 
 Screen screen = Screen();
 TouchPad pad = TouchPad(screen.width(), screen.height());
@@ -27,25 +25,25 @@ void setup() {
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(2000);
 
-  DEBUG_INIT();
+  console.begin();
 
-  DEBUG_LN("britepad starting...");
+  console.debugln("britepad starting...");
 
-  DEBUG_LN("starting prefs...");
+  console.debugln("starting prefs...");
   prefs.begin();
 
-  DEBUG_LN("starting screen");
+  console.debugln("starting screen");
   screen.begin();
   screen.setRotation(3);  // Britepad Mark-0 is oriented this way
   screen.fillScreen(screen.black);
 
-  DEBUG_LN("starting touchpad");
+  console.debugln("starting touchpad");
   pad.begin();
 
-  DEBUG_LN("starting sound");
+  console.debugln("starting sound");
   sound.begin();
 
-  DEBUG_LN("starting app framework");
+  console.debugln("starting app framework");
   britepad.begin();
 }
 

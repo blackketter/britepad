@@ -79,7 +79,7 @@ Button* ButtonMatrix::getButton(widgetid_t id) {
   for (int r = 0; r < buttonRows; r++) {
     for (int c = 0; c < buttonColumns; c++) {
       int i = index(r,c,currMap);
-      DEBUGF("Button %d, %d id: %d\n", r,c,buttons[i]->getID());
+      console.debugf("Button %d, %d id: %d\n", r,c,buttons[i]->getID());
       if (buttons[i]->getID() == id) {
         return buttons[i];
       }

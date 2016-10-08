@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "RandomClockApp.h"
-#include "Debug.h"
 #include "Clock.h"
 
 RandomClockApp theRandomClockApp;

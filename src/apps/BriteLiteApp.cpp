@@ -1,6 +1,5 @@
 #include "BritepadShared.h"
 #include "BriteLiteApp.h"
-#include "Debug.h"
 
 BriteLiteApp theBriteLiteApp;
 

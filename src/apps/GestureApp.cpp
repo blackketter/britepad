@@ -1,7 +1,6 @@
 #include "GestureApp.h"
 #include "BritepadShared.h"
 #include "Screen.h"
-#include "Debug.h"
 #include "Sound.h"
 #include <limits.h>
 
@@ -53,8 +52,8 @@ void GestureApp::run() {
         gesture.setDraw(screen.green);
         uint16_t learnedDist = gesture.compare(learned);
 
-        DEBUGF("Match against learned gesture distance: %d\n", learnedDist);
-        DEBUGF("Match against standard gestures: '%c' 0x%02x, angle: %d\n", pad.getGesture(), pad.getGesture(), pad.getGestureOrientation());
+        console.debugf("Match against learned gesture distance: %d\n", learnedDist);
+        console.debugf("Match against standard gestures: '%c' 0x%02x, angle: %d\n", pad.getGesture(), pad.getGesture(), pad.getGestureOrientation());
         screen.setTextColor(screen.green);
         if (pad.getGesture() == NO_GESTURE) {
           sound.beep();
@@ -77,11 +76,11 @@ void GestureApp::run() {
 
 void GestureApp::printData(Gesture g) {
   // captured a gesture
-  PRINTF("\ngestureShape_t gesture_SYMBOL = { %d, {", g.getOrientation());
+  console.debugf("\ngestureShape_t gesture_SYMBOL = { %d, {", g.getOrientation());
   for (int i = 0; i < samplesPerGesture; i++) {
     point8_t p;
     g.getSample8(i,p);
-    PRINTF("{%d,%d},", p.x,p.y);
+    console.debugf("{%d,%d},", p.x,p.y);
   }
-  PRINTF(" }};\n\n");
+  console.debugf(" }};\n\n");
 }

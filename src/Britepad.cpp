@@ -315,6 +315,7 @@ void Britepad::idle() {
   // make sure the Timers get a chance to call their callbacks
   Timer::idle();
   sound.idle();
+  console.idle();
 }
 
 time_t Britepad::getScreensaverSwitchInterval() {

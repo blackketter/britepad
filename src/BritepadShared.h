@@ -3,9 +3,8 @@
 
 #include "Arduino.h"
 
-#include "Types.h"
-
 #include "Console.h"
+extern Console console;
 
 #include "Screen.h"
 extern Screen screen;

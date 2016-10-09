@@ -51,7 +51,6 @@ void AnalogClockApp::begin(AppMode asMode) {
 }
 
 void AnalogClockApp::update() {
-  console.debugf("millis: %d\n",clock.getMillis());
   coord_t x, y;
   uint16_t hr_theta, min_theta, sec_theta, millis_theta;
 

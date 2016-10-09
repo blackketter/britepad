@@ -4,8 +4,9 @@
 
 #include "Sound.h"
 #include "Clock.h"
-
 #include "Console.h"
+
+extern Console console;
 
 #define NO_SYNTH (-1)
 #define SYNTH_COUNT (4)

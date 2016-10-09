@@ -13,6 +13,7 @@ TeensyRTCClock clock = TeensyRTCClock();
 Britepad britepad = Britepad();
 Preferences prefs = Preferences();
 MousePad mouse = MousePad();
+Console console = Console();
 
 void setup() {
   // this is the magic trick for printf to support float

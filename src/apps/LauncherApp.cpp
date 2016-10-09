@@ -129,7 +129,6 @@ void LauncherApp::drawButton(int i, bool highlighted) {
     screen.setTextColor(screen.black);
     char* line2 = strchr(name, '\n');
     if (line2) {
-      console.debugf("%s\n",name);
       line2++;
       screen.setFont(Arial_8_Bold);
       char line[strlen(name)+1];

@@ -42,7 +42,7 @@ class LauncherApp : public BritepadApp {
     void checkTimeout();
     void clearScreen() {} // override the default clear screen because we do transitions
 
-    int current_screen = SETTINGS_SCREEN;
+    int current_screen = HOME_SCREEN;
 
     int highlighted_button = noButton;
     bool waitForRelease = false;
@@ -59,6 +59,7 @@ class LauncherApp : public BritepadApp {
       SCREENSAVERS_SCREEN,
       SETTINGS_SCREEN,
       KEYS_SCREEN,
+      HOME_SCREEN = KEYS_SCREEN,
       TIMERS_SCREEN,
       APPS_SCREEN,
       TOTAL_SCREENS

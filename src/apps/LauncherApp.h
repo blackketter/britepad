@@ -34,7 +34,7 @@ class LauncherApp : public BritepadApp {
     void drawButton(int i, bool highlighted = false);
     void drawButtons();
     int getCurrentScreen() { return current_screen; }
-    void setCurrentScreen(int n) { current_screen = n; }
+    void setCurrentScreen(int n = KEYS_SCREEN) { current_screen = n; }
     color_t bgColor();
     void setButton(int screen, int i, BritepadApp* b);
     BritepadApp* getApp(int i);
@@ -48,6 +48,7 @@ class LauncherApp : public BritepadApp {
     bool waitForRelease = false;
 
     time_t lastRun = 0;
+    time_t lastBegin = 0;
     static const millis_t holdTime = 500;
     BritepadApp* launchOnRelease = nullptr;
 

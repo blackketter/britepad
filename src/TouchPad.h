@@ -16,15 +16,16 @@
 
 #define PROXIMITY_SENSOR 5
 
-#define TOTAL_SENSORS 6
+#define SENSOR_COUNT 6
 
 #define ANY_PAD 1000
+#define ANY_SENSOR 1001
 
 typedef struct TPState {
     millis_t time;
     coord_t  x;
     coord_t  y;
-    bool touched[TOTAL_SENSORS];
+    bool touched[SENSOR_COUNT];
 } TPState;
 
 class TouchPad {
@@ -72,11 +73,11 @@ class TouchPad {
     coord_t width;
     TPState curr;
     TPState last;
-    millis_t lastDownT[TOTAL_SENSORS];
-    millis_t lastUpT[TOTAL_SENSORS];
+    millis_t lastDownT[SENSOR_COUNT];
+    millis_t lastUpT[SENSOR_COUNT];
     coord_t  lastDownXPos;
     coord_t  lastDownYPos;
-    static const uint8_t proximityThreshold = 115;
+    static const uint8_t proximityThreshold = 125;
     static const uint8_t proximityMax = 255;
     static const uint16_t ambientMax = 255;
     bool getProximityPresent();

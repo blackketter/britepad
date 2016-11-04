@@ -83,7 +83,7 @@ void TouchPad::update() {
   curr.touched[RIGHT_PAD] = last.touched[RIGHT_PAD] ? r > R_LOW_THRESHOLD : r > R_HIGH_THRESHOLD;
 
   // calculate lastup and lastdown times
-  for (int i = 0; i < TOTAL_SENSORS; i++) {
+  for (int i = 0; i < SENSOR_COUNT; i++) {
     if (down(i)) {
       lastDownT[i] = curr.time;
     }
@@ -254,8 +254,8 @@ void TouchPad::initAPDS() {
 }
 
 bool TouchPad::touched(int pad) {
-  if (pad == ANY_PAD) {
-    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
+  if (pad >= ANY_PAD) {
+    for (int i = 0; i < (pad == ANY_PAD ? TOUCH_PAD_COUNT : SENSOR_COUNT); i++) {
       if (touched(i))
         return true;
     }
@@ -267,8 +267,8 @@ bool TouchPad::touched(int pad) {
 }
 
 bool TouchPad::changed(int pad) {
-  if (pad == ANY_PAD) {
-    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
+  if (pad >= ANY_PAD) {
+    for (int i = 0; i < (pad == ANY_PAD ? TOUCH_PAD_COUNT : SENSOR_COUNT); i++) {
       if (changed(i))
         return true;
     }
@@ -280,8 +280,8 @@ bool TouchPad::changed(int pad) {
 }
 
 bool TouchPad::down(int pad) {
-  if (pad == ANY_PAD) {
-    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
+  if (pad >= ANY_PAD) {
+    for (int i = 0; i < (pad == ANY_PAD ? TOUCH_PAD_COUNT : SENSOR_COUNT); i++) {
       if (down(i))
         return true;
     }
@@ -292,8 +292,8 @@ bool TouchPad::down(int pad) {
 }
 
 bool TouchPad::up(int pad) {
-  if (pad == ANY_PAD) {
-    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
+  if (pad >= ANY_PAD) {
+    for (int i = 0; i < (pad == ANY_PAD ? TOUCH_PAD_COUNT : SENSOR_COUNT); i++) {
       if (up(pad))
         return true;
     }
@@ -305,9 +305,9 @@ bool TouchPad::up(int pad) {
 }
 
 millis_t TouchPad::lastDownTime(int pad) {
-  if (pad == ANY_PAD) {
+  if (pad >= ANY_PAD) {
     millis_t lastest = 0;
-    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
+    for (int i = 0; i < (pad == ANY_PAD ? TOUCH_PAD_COUNT : SENSOR_COUNT); i++) {
       if (lastDownT[i] > lastest) {
         lastest = lastDownT[i];
       }
@@ -319,9 +319,9 @@ millis_t TouchPad::lastDownTime(int pad) {
 }
 
 millis_t TouchPad::lastUpTime(int pad) {
-  if (pad == ANY_PAD) {
+  if (pad >= ANY_PAD) {
     millis_t lastest = 0;
-    for (int i = 0; i < TOUCH_PAD_COUNT; i++) {
+    for (int i = 0; i < (pad == ANY_PAD ? TOUCH_PAD_COUNT : SENSOR_COUNT); i++) {
       if (lastUpT[i] > lastest) {
         lastest = lastUpT[i];
       }

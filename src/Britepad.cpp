@@ -265,6 +265,14 @@ void Britepad::idle() {
     if ( pad.down(PROXIMITY_SENSOR) &&
          currApp->isAppMode(SCREENSAVER_MODE) &&
 
+         (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay))
+    {
+      launchApp(theLauncherApp);
+      console.debugln("Proximity detected: showing launcher");
+
+    } else if ( pad.down(PROXIMITY_SENSOR) &&
+         currApp->isAppMode(SCREENSAVER_MODE) &&
+
          !currApp->displaysClock() &&
 //         !currApp->timeVisible() &&
 
@@ -295,7 +303,7 @@ void Britepad::idle() {
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
 
       // is it time for the screensaver to kick in?
-      } else if (!currApp->isAppMode(SCREENSAVER_MODE) && (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay)) {
+      } else if (!currApp->isAppMode(SCREENSAVER_MODE) && (pad.time() - pad.lastTouchedTime(ANY_SENSOR) > screensaverDelay)) {
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
       }
     }

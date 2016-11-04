@@ -50,6 +50,8 @@ void LauncherApp::begin(AppMode asMode) {
     setCurrentScreen(0);
   } else if (pad.touched(RIGHT_PAD)) {
     setCurrentScreen(2);
+  } else if (clock.now() - lastBegin < 2) {
+    setCurrentScreen();
   } else {
     checkTimeout();
   }
@@ -71,6 +73,8 @@ void LauncherApp::begin(AppMode asMode) {
 
   drawButtons();
   britepad.disableScreensavers(0);  // reenable screensavers if they were temporarily disabled
+  lastBegin = clock.now();
+
 }
 
 void LauncherApp::end() {
@@ -296,6 +300,6 @@ const char* LauncherApp::statusBarTitle() {
 void LauncherApp::checkTimeout() {
   // if we haven't run in a while, reset to the middle screen
   if (clock.now() - lastRun > resetScreenTimeout) {
-    setCurrentScreen(KEYS_SCREEN);
+    setCurrentScreen();
   }
 }

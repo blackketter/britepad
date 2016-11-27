@@ -1,4 +1,3 @@
-#include <ILI9341_t3.h>
 #include "Screen.h"
 #include "Utilities.h"
 
@@ -24,7 +23,7 @@ void Screen::polarToRect(uint16_t theta, coord_t r, coord_t& x, coord_t& y) {
 // todo - make ends of lines square (or round)
 void Screen::drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color) {
   if (width == 1) {
-    ILI9341_t3::drawLine(x0, y0, x1, y1, color);
+    drawLine(x0, y0, x1, y1, color);
   } else if (width < 1) {
     return;
   } else if (x1 == x0) {
@@ -56,7 +55,7 @@ void Screen::drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_
     y1 -= dy*width/2;
 
     for (int i = 0; i < width; i++) {
-      ILI9341_t3::drawLine(x0, y0, x1, y1, color);
+      drawLine(x0, y0, x1, y1, color);
       x0+=dx;
       x1+=dx;
       y0+=dy;

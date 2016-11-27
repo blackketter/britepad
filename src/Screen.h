@@ -1,7 +1,12 @@
 #ifndef _Screen_
 #define _Screen_
 
+#if TEENSY31 == 1
 #include <ILI9341_t3.h>
+#else
+//include <Adafruit_ILI9341.h>
+#endif
+
 #include <font_Arial.h>
 #include <font_ArialBold.h>
 #include "Hardware.h"
@@ -60,7 +65,15 @@ enum alignment_t {
 
 typedef ILI9341_t3_font_t font_t;
 
-class Screen : public ILI9341_t3 {
+class Screen : public
+
+#ifdef TEENSYDUINO
+ILI9341_t3
+#else
+Adafruit_ILI9341
+#endif
+
+{
   public:
 
     static const uint8_t maxbrightness = 255;

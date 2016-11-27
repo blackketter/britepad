@@ -1,7 +1,11 @@
 #ifndef _Fonts_
 #define _Fonts_
 
-#include "ILI9341_t3.h"
+#if TEENSY31 == 1
+#include <ILI9341_t3.h>
+#else
+//include <Adafruit_ILI9341.h>
+#endif
 #include "font_Arial.h"
 #include "font_ArialBold.h"
 #include "font_Arial_Digits.h"

@@ -343,15 +343,10 @@ void chimeCallback(void* data) {
 
 void Britepad::resetChime() {
   if (clock.hasBeenSet()) {
-    tmElements_t chimeTime;
-    breakTime(now(), chimeTime);
-    chimeTime.Minute = 0;
-    chimeTime.Second = 0;
-    chimeTime.Hour++;
-    chimeTimer.setClockTime(makeTime(chimeTime), (timerCallback_t)chimeCallback, (void*)this);
+    chimeTimer.setClockTime((clock.now() % Time::secsPerHour)+Time::secsPerHour, (timerCallback_t)chimeCallback, (void*)this);
 
     // how many chimes at the next hour
-    chimesRemaining = hourFormat12() + 1;
+    chimesRemaining = clock.hourFormat12() + 1;
     if (chimesRemaining == 13) { chimesRemaining = 1; }
   }
 }

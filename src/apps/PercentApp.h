@@ -17,8 +17,8 @@ class PercentApp : public ClockApp {
     static constexpr appid_t ID = "percent";
 
   protected:
-    virtual int getDotsWide() { return 10; }
-    virtual int getDotsHigh() { return 10; }
+    virtual int getDotsWide() { return 12; }
+    virtual int getDotsHigh() { return 8; }
     DotMatrix* dots = nullptr;
 
   private:

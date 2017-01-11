@@ -6,7 +6,7 @@
 
 class SetAlarmApp : public SetClockApp {
   public:
-    SetAlarmApp() { theTime = &alarmTime; };
+    void init() { theTime = &alarmTime; };
     void end();
     void begin(AppMode asMode);
 

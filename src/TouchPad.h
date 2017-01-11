@@ -5,21 +5,28 @@
 #include "Clock.h"
 #include "Gesture.h"
 
-// todo - turn these into a scoped enum
-#define SCREEN_PAD 0
-#define LEFT_PAD 1
-#define RIGHT_PAD 2
-#define BOTTOM_PAD 3
-#define TOP_PAD 4
+enum Pads {
+  SCREEN_PAD,
+  LEFT_PAD,
+  RIGHT_PAD,
+  BOTTOM_PAD,
+  TOP_PAD,
+  TOUCH_PAD_COUNT,
+  PROXIMITY_SENSOR = TOUCH_PAD_COUNT,
+  SENSOR_COUNT,
+  ANY_PAD = 1000,
+  ANY_SENSOR = 1001
+};
 
-#define TOUCH_PAD_COUNT 5
-
-#define PROXIMITY_SENSOR 5
-
-#define SENSOR_COUNT 6
-
-#define ANY_PAD 1000
-#define ANY_SENSOR 1001
+enum ProximityGesture {
+  PROX_NONE,
+  PROX_UP,
+  PROX_DOWN,
+  PROX_LEFT,
+  PROX_RIGHT,
+  PROX_NEAR,
+  PROX_FAR
+};
 
 typedef struct TPState {
     millis_t time;
@@ -54,6 +61,7 @@ class TouchPad {
     uint8_t getProximityMax() { return proximityMax; };
     uint8_t getProximityDistance();
     uint8_t getProximityRaw() { return proximity; };
+    ProximityGesture getProximityGesture();
 
     coord_t getHeight() { return width; };
     coord_t getWidth() { return height; };
@@ -66,7 +74,6 @@ class TouchPad {
 
     int getHistoryCount() { return historyCount; }
     point_t* getHistory() { return history; }
-
 
   private:
     coord_t height;
@@ -99,11 +106,14 @@ class TouchPad {
     void initAPDS();
     void updateAPDS();
     millis_t lastAPDSupdate = 0;
-    millis_t APSDupdateInterval = 100;
+    millis_t APSDupdateInterval = 10;
 
     uint16_t ambientLight;
     uint8_t proximity;
+    ProximityGesture proximityGesture = PROX_NONE;
 
+    static const uint8_t proxGestureBeginThreshold = 100;
+    static const uint8_t proxGestureEndTheshold = 90;
 };
 
 extern TouchPad pad;

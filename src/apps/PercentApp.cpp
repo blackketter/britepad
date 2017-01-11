@@ -28,14 +28,14 @@ void PercentApp::update() {
   int n = dotsNow();
   // make sure the last dot is drawn correctly
   if (n > 0) {
-    x = (n-1)%getDotsHigh();
-    y = (n-1)/getDotsHigh();
+    x = (n-1)%getDotsWide();
+    y = (n-1)/getDotsWide();
     dots->setDot(x, y, beforeColor);
     dots->updateDot(x, y);
   }
 
-  x = n%getDotsHigh();
-  y = n/getDotsHigh();
+  x = n%getDotsWide();
+  y = n/getDotsWide();
 
   dots->setDot(x, y, nowColor());
   dots->updateDot(x, y);

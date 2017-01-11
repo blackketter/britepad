@@ -1,7 +1,7 @@
 #ifndef _Fonts_
 #define _Fonts_
 
-#if TEENSY31 == 1
+#if TEENSY == 1
 #include <ILI9341_t3.h>
 #else
 //include <Adafruit_ILI9341.h>

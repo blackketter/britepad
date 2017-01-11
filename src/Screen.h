@@ -1,14 +1,14 @@
 #ifndef _Screen_
 #define _Screen_
 
-#if TEENSY31 == 1
+#if TEENSY == 1
 #include <ILI9341_t3.h>
-#else
-//include <Adafruit_ILI9341.h>
-#endif
-
 #include <font_Arial.h>
 #include <font_ArialBold.h>
+#else
+#include <Adafruit_ILI9341.h>
+#endif
+
 #include "Hardware.h"
 
 #include "HTMLColor.h"
@@ -63,7 +63,11 @@ enum alignment_t {
   ALIGN_BOTTOM = 8
 };
 
+#if TEENSY == 1
 typedef ILI9341_t3_font_t font_t;
+#else
+typedef GFXfont font_t;
+#endif
 
 class Screen : public
 

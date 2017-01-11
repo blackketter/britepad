@@ -9,7 +9,7 @@
 Screen screen = Screen();
 TouchPad pad = TouchPad(screen.width(), screen.height());
 Sound sound = Sound();
-TeensyRTCClock clock = TeensyRTCClock();
+Clock clock = Clock();
 Britepad britepad = Britepad();
 Preferences prefs = Preferences();
 MousePad mouse = MousePad();

@@ -222,19 +222,80 @@ void TouchPad::updateAPDS() {
     console.debugf("Blue: %d\n", blueLight);
 #endif
 
-#if 0
-    if (apds.isGestureAvailable()) {
-      gesture = apds.readGesture();
-    } else {
-      gesture = 0;
+    // check for proximity gesture data
+    proximityGesture = PROX_NONE;
+
+    static millis_t lastt = 0;
+    static millis_t firstt = 0;
+    millis_t now = Uptime::millis();
+    static int totalSamples = 0;
+    static millis_t upBegin = 0;
+    static millis_t downBegin = 0;
+    static millis_t leftBegin = 0;
+    static millis_t rightBegin = 0;
+    static millis_t upEnd = 0;
+    static millis_t downEnd = 0;
+    static millis_t leftEnd = 0;
+    static millis_t rightEnd = 0;
+
+    uint8_t up,down,left,right;
+    int i = 0;
+    while(apds.readGestureData(up,down,left,right)) {
+//      console.debugf("u:%3d d:%3d l:%3d r:%3d\n",up,down,left,right);
+      char d = 0;
+      if (up > down  && up > right   && up > left) { d = 'U'; }
+      if (down > up  && down > right && down > left) { d = 'D'; }
+      if (left > up  && left > down  && left > right) { d = 'L'; }
+      if (right > up && right > down && right > left) { d = 'R'; }
+      if (d) { console.debugf("max: %c\n", d); }
+      
+      if (!upBegin && up > proxGestureBeginThreshold) { upBegin = now; console.debug("upBegin\n"); }
+      if (!downBegin && down > proxGestureBeginThreshold) { downBegin = now; console.debug("downBegin\n");}
+      if (!leftBegin && left > proxGestureBeginThreshold) { leftBegin = now; console.debug("leftBegin\n");}
+      if (!rightBegin && right > proxGestureBeginThreshold) { rightBegin = now; console.debug("rightBegin\n");}
+
+      if (upBegin && !upEnd && up < proxGestureEndTheshold) { upEnd = now; console.debug("upEnd\n");}
+      if (downBegin && !downEnd && down < proxGestureEndTheshold) { downEnd = now; console.debug("downEnd\n");}
+      if (leftBegin && !leftEnd && left < proxGestureEndTheshold) { leftEnd = now; console.debug("leftEnd\n");}
+      if (rightBegin && !rightEnd && right < proxGestureEndTheshold) { rightEnd = now; console.debug("rightEnd\n");}
+      i++;
     }
-#endif
+
+    millis_t gestureQuietTime = 20;
+
+    if (i) {
+      if (lastt == 0) { firstt = now; console.debugf("firstt: %d\n",firstt);}
+      lastt = now;
+//      console.debugf("lastt: %d\n",lastt);
+      totalSamples += i;
+//      console.debugf("prox gesture sample count: %d\n",i);      
+    } else if ((totalSamples != 0) && ((now - lastt) > gestureQuietTime)) {
+      console.debugf("  gesture end detected, samples: %d\n", totalSamples);
+      
+      millis_t gestureDur = lastt - firstt;
+      console.debugf("  gesture duration: %dms\n", gestureDur);
+      
+      upBegin -= firstt;
+      downBegin -= firstt;
+      leftBegin -= firstt;
+      rightBegin -= firstt;
+      console.debugf("  start times: u:%3d d:%3d l:%3d r:%3d\n", upBegin, downBegin,leftBegin,rightBegin);
+
+      upEnd -= firstt;
+      downEnd -= firstt;
+      leftEnd -= firstt;
+      rightEnd -= firstt;
+      console.debugf("  delta times: u:%3d d:%3d l:%3d r:%3d\n", upEnd-upBegin, downEnd-downBegin,leftEnd-leftBegin,rightEnd-rightBegin);
+      totalSamples = 0;
+      upBegin = downBegin = rightBegin = leftBegin = upEnd = downEnd = leftEnd = rightEnd = 0;
+      firstt = lastt = 0;
+    }
   }
 }
 
 void TouchPad::initAPDS() {
 
-// initialize APDS9960 interrupt
+  // not using APDS9960 interrupt
   bool useAPDS9960Interrupts = false;
   if (useAPDS9960Interrupts) {
     //pinMode(APDS9960_INT, INPUT);
@@ -242,12 +303,16 @@ void TouchPad::initAPDS() {
   }
 
   if (apds.init()) {
-    console.debugln("APDS-9960 Initialized");
     apds.enableLightSensor(useAPDS9960Interrupts);
     apds.enableProximitySensor(useAPDS9960Interrupts);
+    apds.setGestureEnterThresh(proxGestureBeginThreshold); // default is 40
+    apds.setGestureExitThresh(proxGestureEndTheshold); // default is 30
+    apds.setLEDDrive(LED_DRIVE_25MA); // default is 100
+    apds.setGestureGain(GGAIN_1X); // default is 4x
+    apds.enableGestureSensor(useAPDS9960Interrupts);
 
-    // gestures lock up device.  I suspect that they require interrupts
-    // apds.enableGestureSensor(useAPDS9960Interrupts);
+    console.debugln("APDS-9960 Initialized");
+
   } else {
     console.debugln("APDS-9960 Fail init()");
   }
@@ -343,3 +408,8 @@ coord_t TouchPad::lastDownX() {
 coord_t TouchPad::lastDownY() {
   return lastDownYPos;
 }
+
+ProximityGesture TouchPad::getProximityGesture() {
+    return proximityGesture;
+}
+

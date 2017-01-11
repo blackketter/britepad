@@ -9,16 +9,28 @@
 #define CPU_RESTART_VAL 0x5FA0004
 #define CPU_RESTART (*CPU_RESTART_ADDR = CPU_RESTART_VAL);
 
+void reboot() {
+      while (1) {
+        delay(100);
+        CPU_RESTART
+      };
+}
+
+class RebootCommand : public Command {
+  public:
+    const char* getName() { return "reboot"; }
+    const char* getHelp() { return "Reboots system"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) { reboot(); }
+};
+
+RebootCommand theRebootCommand;
+
 class RebootApp : public BritepadApp {
 
   public:
 
     void run() {
-
-      while (1) {
-        delay(100);
-        CPU_RESTART
-      };
+      reboot();
     }
 
     const char* name() { return "Reboot"; };

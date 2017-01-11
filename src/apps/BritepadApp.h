@@ -6,7 +6,6 @@
 
 class Britepad;
 
-
 // Apps are of particular types, which may (for example) have them automatically placed on a screen
 enum AppType {
   NO_APP_TYPE = 0,

@@ -12,8 +12,6 @@
 
 BritepadApp* appList = nullptr;
 
-
-
 BritepadApp* Britepad::getAppByID(appid_t appID) {
 
   BritepadApp* nextapp = appList;
@@ -213,22 +211,9 @@ void Britepad::begin() {
 
   // initialize apps
   BritepadApp* anApp = appList;
-  int count = 0;
   while (anApp != nullptr) {
     anApp->init();
     anApp = anApp->getNextApp();
-    count++;
-  }
-
-// show the apps that have been loaded
-  console.debugf("Total apps: %d\n", count);
-
-  anApp = appList;
-  count = 1;
-  while (anApp != nullptr) {
-    console.debugf("  %d : %s (%08x)\n", count, anApp->name(), (uint32_t)anApp);
-    anApp = anApp->getNextApp();
-    count++;
   }
 
   screen.fillScreen(screen.black);

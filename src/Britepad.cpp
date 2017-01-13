@@ -321,31 +321,3 @@ void Britepad::setScreensaverSwitchInterval(time_t newInterval) {
    prefs.write(screensaverSwitchIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
 }
 
-
-void chimeCallback(void* data) {
-  ((Britepad*)data)->chimerCallback();
-}
-
-void Britepad::resetChime() {
-  if (clock.hasBeenSet()) {
-
-    time_t nextChime = ((clock.now() / Time::secsPerHour)+1) * Time::secsPerHour;
-    chimeTimer.setClockTime( nextChime, (timerCallback_t)chimeCallback, (void*)this);
-
-    // how many chimes at the next hour
-    chimesRemaining = clock.hourFormat12() + 1;
-    if (chimesRemaining == 13) { chimesRemaining = 1; }
-  }
-}
-
-
-void Britepad::chimerCallback() {
-  console.debugf("Chimes: %d\n", chimesRemaining);
-  if (chimesRemaining == 0) {
-    resetChime();
-  } else {
-    chimeTimer.setMillis(chimeInterval, (timerCallback_t)chimeCallback, (void*)this);
-    sound.beep();
-    chimesRemaining--;
-  }
-}

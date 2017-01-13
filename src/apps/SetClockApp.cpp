@@ -87,12 +87,10 @@ void SetClockApp::begin(AppMode asMode) {
   drawTime();
   drawButtons();
   theTime->beginSetTime();
-  britepad.enableChime(false);
 }
 
 void SetClockApp::end() {
   theTime->endSetTime();
-  britepad.enableChime(true);
   BritepadApp::end();
 }
 

@@ -1,10 +1,15 @@
 #include "InfoApp.h"
 
 void printInfo(Print* p) {
-  p->println("SYSTEM INFO");
   char string[100];
   clock.longTime(string);
-  p->printf("Time: %s %06d\nX: %3d Y: %3d\n", string, clock.fracMicros(), pad.x(), pad.y());
+  
+  p->printf("Time: %s\nX: %3d Y: %3d\n", string, pad.x(), pad.y());
+
+  uint32_t rtcMillis = (uint32_t)((clock.getRTCMicros()%1000000)/1000);
+  uint32_t clockMillis = clock.fracMillis();
+
+  p->printf("RTC millis:%03d, clock: %03d, diff: %d\n", (uint32_t)rtcMillis, (uint32_t)clockMillis, (int)rtcMillis - (int)clockMillis);
   p->printf("Ambient: %3d\n", pad.getAmbientLight());
   p->printf("Backlight: %3d\n", screen.getBacklight());
   p->printf("Free ram: %10d\n", FreeMem());

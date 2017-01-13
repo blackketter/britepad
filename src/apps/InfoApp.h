@@ -7,7 +7,7 @@ class InfoApp : public BritepadApp {
     void run();
     void init();
     void begin(AppMode asMode) { max = 0; BritepadApp::begin(asMode);}
-    bool displaysStatusBar() { return false; }
+    bool displaysStatusBar() { return true; }
     bool canBeInteractive() { return true; }
     bool disablesScreensavers() { return true; }
     color_t bgColor() { return screen.blue; }

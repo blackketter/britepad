@@ -91,6 +91,11 @@ void SetClockApp::begin(AppMode asMode) {
 
 void SetClockApp::end() {
   theTime->endSetTime();
+  ChimeApp* a = (ChimeApp*)getAppByID(ChimeApp::ID);  
+  if (a) {
+    a->resetChime();
+  } 
+
   BritepadApp::end();
 }
 

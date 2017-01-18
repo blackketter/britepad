@@ -3,6 +3,8 @@
 
 #include "BritepadShared.h"
 
+// only be a mouse if you are a teensy: todo - depend on HID capabilities
+#if TEENSY==1
 class MousePad {
   public:
     void begin();
@@ -18,5 +20,16 @@ class MousePad {
     uint16_t absMargin = 5; // 5% at each edge
     bool isMac = false;
 };
+#else
+class MousePad {
+  public:
+    void begin() {};
+    void run() {};
+    void end() {};
+    void setAbsolute(bool a) { }
+    bool isAbsolute() { return false; }
+  private:
+};
+#endif
 
 #endif

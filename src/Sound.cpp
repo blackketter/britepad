@@ -1,3 +1,4 @@
+#if TEENSY
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -229,3 +230,4 @@ if(0) {
 }
   tunePlayerIdle();
 }
+#endif // TEENSY

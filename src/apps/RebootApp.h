@@ -25,6 +25,15 @@ class RebootCommand : public Command {
 
 RebootCommand theRebootCommand;
 
+class ReloadCommand : public Command {
+  public:
+    const char* getName() { return "reload"; }
+    const char* getHelp() { return "Jump to Teensy bootloader"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) { _reboot_Teensyduino_(); }
+};
+
+ReloadCommand theReloadCommand;
+
 class RebootApp : public BritepadApp {
 
   public:
@@ -34,13 +43,12 @@ class RebootApp : public BritepadApp {
     }
 
     const char* name() { return "Reboot"; };
-
-    bool isInvisible() { return true; };
-
     appid_t id() { return ID; };
     static constexpr appid_t ID = "boot";
 
     AppType getAppType() { return DEBUG_APP; }
+    bool isInvisible() { return true; };
+
 
 };
 
@@ -55,11 +63,22 @@ class ResetApp : public RebootApp {
     }
 
     const char* name() { return "Reset"; };
-
-    bool isInvisible() { return true; };
-
     appid_t id() { return ID; };
     static constexpr appid_t ID = "rset";
+
+};
+
+
+class ReloadApp : public RebootApp {
+  public:
+
+    void run() {
+      _reboot_Teensyduino_();
+    }
+
+    const char* name() { return "Reload"; };
+    appid_t id() { return ID; };
+    static constexpr appid_t ID = "rlod";
 
 };
 #endif

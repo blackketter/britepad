@@ -1,3 +1,5 @@
+#if TEENSY==1
+
 #include "BritepadShared.h"
 #include "MousePad.h"
 #include "usb_mouse.h"
@@ -246,5 +248,5 @@ void MousePad::run() {
     }
   }
 }
-
+#endif
 

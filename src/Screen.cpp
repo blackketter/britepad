@@ -3,7 +3,9 @@
 
 void Screen::setBacklight(uint8_t brightness) {
   backlightBrightness = brightness;
+#if TEENSY
   analogWriteFrequency(BACKLIGHT_PIN, BACKLIGHT_FREQUENCY);
+#endif
   analogWrite(BACKLIGHT_PIN, brightness);
 }
 

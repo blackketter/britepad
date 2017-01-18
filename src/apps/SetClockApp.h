@@ -5,7 +5,6 @@
 #include "BritepadShared.h"
 #include "widgets/Button.h"
 #include "Clock.h"
-#include "ChimeApp.h"
 
 class SetClockApp : public BritepadApp {
   public:

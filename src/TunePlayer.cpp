@@ -1,3 +1,4 @@
+#if TEENSY
 #include "Sound.h"
 
 #include <Audio.h>
@@ -259,3 +260,4 @@ void Sound::tunePlayerIdle()
     }
   }
 }
+#endif // TEENSY

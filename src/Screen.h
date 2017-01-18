@@ -63,33 +63,34 @@ enum alignment_t {
   ALIGN_BOTTOM = 8
 };
 
+
 #if TEENSY == 1
+
 typedef ILI9341_t3_font_t font_t;
-#else
-typedef GFXfont font_t;
-#endif
 
-class Screen : public
-
-#ifdef TEENSYDUINO
-ILI9341_t3
-#else
-Adafruit_ILI9341
-#endif
-
+class Screen : public ILI9341_t3
 {
   public:
-
-    static const uint8_t maxbrightness = 255;
-
-    static const coord_t offscreen = -100;
-
     Screen(uint8_t _CS = TFT_CS, uint8_t _DC = TFT_DC, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
-      ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO) {
+      ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
+#else 
+//this is for ESP8266 Wemos D1 Mini
+typedef GFXfont font_t;
+
+class Screen : public Adafruit_ILI9341
+{
+  public:
+    Screen(uint8_t _CS = TFT_CS, uint8_t _DC = TFT_DC, uint8_t _RST = 255) :
+      Adafruit_ILI9341(_CS, _DC, _RST)
+#endif
+
+    {
       pinMode(BACKLIGHT_PIN, OUTPUT);
       digitalWrite(BACKLIGHT_PIN, LOW);   // set the backlight off
     };
 
+    static const uint8_t maxbrightness = 255;
+    static const coord_t offscreen = -100;
     void setBacklight(uint8_t brightness);
     uint8_t getBacklight();
 

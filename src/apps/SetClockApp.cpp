@@ -1,6 +1,7 @@
 #include "BritepadShared.h"
 #include "SetClockApp.h"
 #include "TimerApp.h"
+#include "ChimeApp.h"
 
 SetClockApp theSetClockApp;
 

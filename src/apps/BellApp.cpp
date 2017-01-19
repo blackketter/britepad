@@ -54,8 +54,8 @@ void BellApp::run() {
     prefs.write(id(), sizeof(prefdata), (uint8_t*)&prefdata);
   }
   
-  if (adj || (_last_run != clock.now())) {
-    _last_run = clock.now();
+  if (adj || (_last_run != _bell_timer.remainingSecs())) {
+    _last_run = _bell_timer.remainingSecs();
     drawTime();
   }
   

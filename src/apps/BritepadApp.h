@@ -76,7 +76,6 @@ class BritepadApp {
     virtual void setLauncherPosition(int32_t p) { position = p; }
     virtual bool isHidden() { return false; }
 
-    virtual bool isPopup() { return false; };        // popup apps don't need begin or end, call run() just once
     virtual bool isInvisible() { return false; };    // has no UI
 
     virtual color_t bgColor() { return screen.black; }  // background color of app screen

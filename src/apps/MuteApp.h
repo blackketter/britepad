@@ -25,9 +25,8 @@ class MuteApp : public BritepadApp {
 
     const char* name() { return sound.getMute() ? "Pad Muted" : "Mute Pad"; };
 
-    bool isPopup() { return true; };
-
     bool isInvisible() { return true; };
+
     AppType getAppType() { return SETTINGS_APP; }
 
     color_t buttonColor() { return sound.getMute() ? screen.darkblue : screen.blue; };

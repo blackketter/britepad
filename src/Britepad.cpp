@@ -218,8 +218,8 @@ void Britepad::begin() {
 
   screen.fillScreen(screen.black);
   screen.setBacklight(screen.maxbrightness);
-  backlightTimer.setMillis(ambientUpdateInterval, (timerCallback_t)backlightCallback, (void*)this, true);
-  statusBarUpdateTimer.setMillis(1000, (timerCallback_t)statusBarCallback, (void*)this, true);
+  backlightTimer.setMillis(ambientUpdateInterval, backlightCallback, (void*)this, true);
+  statusBarUpdateTimer.setMillis(1000, statusBarCallback, (void*)this, true);
 }
 
 void Britepad::idle() {

@@ -47,7 +47,6 @@ class RebootApp : public BritepadApp {
     static constexpr appid_t ID = "boot";
 
     AppType getAppType() { return DEBUG_APP; }
-    bool isInvisible() { return true; };
 
 
 };

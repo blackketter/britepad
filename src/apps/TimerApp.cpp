@@ -84,7 +84,7 @@ void TimerApp::setTime(time_t t) {
   beeps = totalBeeps -1;
   timer_dur = t;
   alarm_sounded = 0;
-  mytimer.setSecs(t, (timerCallback_t)alarmcallback, (void*)this);
+  mytimer.setSecs(t, alarmcallback, (void*)this);
 };
 
 // this may be called when the app is not frontmost
@@ -95,7 +95,7 @@ void TimerApp::alarm() {
 
   if (beeps) {
     sound.beep();
-    mytimer.setMillis(beepInterval, (timerCallback_t)alarmcallback, (void*)this);
+    mytimer.setMillis(beepInterval, alarmcallback, (void*)this);
     beeps--;
   }
 }

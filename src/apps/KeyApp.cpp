@@ -22,6 +22,18 @@ KeyApp ffKey(ffIcon, KEY_MEDIA_NEXT_TRACK, screen.orange, 3);
 
 void KeyApp::run() {
 
+  millis_t now = Uptime::millis();
+  millis_t since = now - lastKey;
+  if (since < (repeating ? keyRepeat : keyStartRepeat)) {
+    return;
+  }
+
+  if (lastKey != 0) {
+    repeating = true;
+  }
+
+  lastKey = Uptime::millis();
+
   const char* slowstr = keyStr;
 
   switch (mediaKey) {

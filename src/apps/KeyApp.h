@@ -15,8 +15,9 @@ class KeyApp : public BritepadApp {
     KeyApp(icon_t i, mediakey_t key, color_t color, uint32_t pos) { icon = i; mediaKey = key; button_color = color; setLauncherPosition(pos);}
 
     void run();
+    void begin(AppMode asMode) { lastKey = 0; BritepadApp::begin(asMode); }
+
     const char* name() { return nameStr; };
-     bool isPopup() { return true; };
     bool isInvisible();
 
     color_t buttonColor();
@@ -27,12 +28,17 @@ class KeyApp : public BritepadApp {
     AppType getAppType() { return KEY_APP; }
 
   protected:
-    const char* nameStr = nullptr;
 
+    const char* nameStr = nullptr;
     const char* keyStr = nullptr;
     mediakey_t  mediaKey = 0;
     color_t button_color = 0;;
     virtual void draw();
+
+    millis_t lastKey = 0;
+    bool repeating = false;
+    const millis_t keyRepeat = 250;
+    const millis_t keyStartRepeat = 1000;
 };
 
 #endif

@@ -42,13 +42,13 @@ void timerCallback(void* data) {
 void AlarmApp::beep() {
   if (isAlarmTime()) {
     sound.beep();
-    beepTimer.setMillis(beepInterval, (timerCallback_t)timerCallback, (void*)this);
+    beepTimer.setMillis(beepInterval, timerCallback, (void*)this);
   }
 }
 
 void AlarmApp::updateTimer() {
   if (alarmEnabled && nextAlarm.getSeconds()) {
-    beepTimer.setClockTime(nextAlarm.getSeconds(), (timerCallback_t)timerCallback, (void*)this);
+    beepTimer.setClockTime(nextAlarm.getSeconds(), timerCallback, (void*)this);
   } else {
     beepTimer.cancel();
   }

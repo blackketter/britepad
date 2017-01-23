@@ -6,6 +6,7 @@
 #include "Sound.h"
 #include "Clock.h"
 #include "Console.h"
+#include "Timer.h"
 
 extern Console console;
 
@@ -17,19 +18,30 @@ AudioSynthWaveform       waveforms[SYNTH_COUNT];
 
 // envelopes for the synths
 AudioEffectEnvelope      envelopes[SYNTH_COUNT];
+Timer                    envelopeTimer[SYNTH_COUNT];
+AudioEffectFade          fades[SYNTH_COUNT];
+
+void noteOff(void* envelope) {
+  ((AudioEffectEnvelope*)envelope)->noteOff();
+}
 
 // mix down the four synth channels
 AudioMixer4              mixer1;
 
-AudioConnection          patchCord1(waveforms[0], envelopes[0]);
-AudioConnection          patchCord2(waveforms[1], envelopes[1]);
-AudioConnection          patchCord3(waveforms[2], envelopes[2]);
-AudioConnection          patchCord4(waveforms[3], envelopes[3]);
+AudioConnection          patchCordA0(waveforms[0], envelopes[0]);
+AudioConnection          patchCordA1(waveforms[1], envelopes[1]);
+AudioConnection          patchCordA2(waveforms[2], envelopes[2]);
+AudioConnection          patchCordA3(waveforms[3], envelopes[3]);
 
-AudioConnection          patchCord6(envelopes[0], 0, mixer1, 0);
-AudioConnection          patchCord5(envelopes[1], 0, mixer1, 1);
-AudioConnection          patchCord7(envelopes[2], 0, mixer1, 2);
-AudioConnection          patchCord8(envelopes[3], 0, mixer1, 3);
+AudioConnection          patchCordB0(envelopes[0], fades[0]);
+AudioConnection          patchCordB1(envelopes[1], fades[1]);
+AudioConnection          patchCordB2(envelopes[2], fades[2]);
+AudioConnection          patchCordB3(envelopes[3], fades[3]);
+
+AudioConnection          patchCordC0(fades[0], 0, mixer1, 0);
+AudioConnection          patchCordC1(fades[1], 0, mixer1, 1);
+AudioConnection          patchCordC2(fades[2], 0, mixer1, 2);
+AudioConnection          patchCordC3(fades[3], 0, mixer1, 3);
 
 // final mixer/volume control
 AudioMixer4              finalMixer;
@@ -45,7 +57,7 @@ Sound::Sound() {
 }
 
 void Sound::begin() {
-  AudioMemory(16 + 18);  // 18 from the TunePlayer
+  AudioMemory(20 + 18);  // 18 from the TunePlayer
 
   // since we have 4 inputs, we need to cut them down to avoid clipping
   mixer1.gain(0, 0.25);
@@ -79,6 +91,7 @@ void Sound::click() {
   int beeper = freeSynth();
   if (beeper != NO_SYNTH) {
     AudioNoInterrupts();
+    fades[beeper].fadeIn(0);
     envelopes[beeper].delay(0);
     envelopes[beeper].attack(0);
     envelopes[beeper].hold(10);
@@ -92,21 +105,45 @@ void Sound::click() {
   }
  }
 
+
 void Sound::beep(millis_t ms, float freq)
  {
   int beeper = freeSynth();
   if (beeper != NO_SYNTH) {
     AudioNoInterrupts();
+    fades[beeper].fadeIn(0);
     envelopes[beeper].delay(0);
-    envelopes[beeper].attack(10);
-    envelopes[beeper].hold(ms);
-    envelopes[beeper].decay(200);
-    envelopes[beeper].sustain(0);  //  just a percussive sound, no sustain
-    envelopes[beeper].release(0.0);
+    envelopes[beeper].attack(20);
+    envelopes[beeper].hold(0);
+    envelopes[beeper].decay(0);
+    envelopes[beeper].sustain(1.0);
+    envelopes[beeper].release(20.0);
     waveforms[beeper].begin(1.0, freq, WAVEFORM_SINE);
     envelopes[beeper].noteOn();
     AudioInterrupts();
+    envelopeTimer[beeper].setMillis(ms, &noteOff, (void*)(&envelopes[beeper]));
 //    console.debugf("beep (%d) freq: %f\n", beeper, freq);
+  }
+}
+
+void Sound::bell(millis_t ms, float freq)
+ {
+  int beeper = freeSynth();
+  if (beeper != NO_SYNTH) {
+    AudioNoInterrupts();
+    fades[beeper].fadeIn(0);
+    envelopes[beeper].delay(0);
+    envelopes[beeper].attack(20);
+    envelopes[beeper].hold(0);
+    envelopes[beeper].decay(0);
+    envelopes[beeper].sustain(1.0);
+    envelopes[beeper].release(20.0);
+    waveforms[beeper].begin(1.0, freq, WAVEFORM_SINE);
+    fades[beeper].fadeOut(ms);
+    envelopes[beeper].noteOn();
+    AudioInterrupts();
+    envelopeTimer[beeper].setMillis(ms, &noteOff, (void*)(&envelopes[beeper]));
+    console.debugf("bell (%d) freq: %f\n", beeper, freq);
   }
 }
 
@@ -134,7 +171,7 @@ void Sound::swipe(direction_t d) {
       console.debugln("Bad direction");
       f = MIDDLE_C_FREQ;
   }
-  beep(250, f);
+  bell(250, f);
 }
 
 void Sound::tone(float freq, float volume) {
@@ -164,6 +201,7 @@ void Sound::tone(float freq, float volume) {
   }
 
   if (lastToneVolume == 0 && volume != 0) {
+    fades[toneSynth].fadeIn(0);
     envelopes[toneSynth].delay(0);
     envelopes[toneSynth].attack(200);
     envelopes[toneSynth].hold(0);

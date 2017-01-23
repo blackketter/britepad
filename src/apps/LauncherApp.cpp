@@ -236,14 +236,9 @@ void LauncherApp::run() {
 
       if (highlighted_button != noButton) {
         BritepadApp* launched = apps[getCurrentScreen()][b];
-        if (launched->isPopup()) {
+        if (launched->isInvisible()) {
           launched->run();
-          if (!launched->isInvisible()) {
-            clearScreen();
-            drawButtons();
-          } else {
-            drawButton(b, false);
-          }
+          drawButton(b, false);
         } else {
           AppMode whichMode = screenMode[getCurrentScreen()];
           if (whichMode == INTERACTIVE_MODE) {
@@ -266,7 +261,7 @@ void LauncherApp::run() {
           highlighted_button = b;
         } else {
           if (pad.time() - pad.lastDownTime(SCREEN_PAD) > holdTime) {
-            if (getApp(b)) {
+            if (getApp(b) && !getApp(b)->isInvisible()) {
               sound.click();
               clearScreen();
               launchOnRelease = getApp(b);

@@ -4,6 +4,7 @@
 
 Timer* Timer::first = nullptr;
 
+// fixme: handle other clocks besides "clock"
 void Timer::setClockTime(time_t clockTimeSet, timerCallback_t callback, void* callbackData) {
   cancel();
   insert(callback, callbackData);

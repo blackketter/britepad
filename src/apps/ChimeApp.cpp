@@ -10,7 +10,7 @@ void ChimeApp::resetChime() {
   if (clock.hasBeenSet() && _chimeEnabled) {
 
     time_t nextChime = ((clock.now() / Time::secsPerHour)+1) * Time::secsPerHour;
-    _chimeTimer.setClockTime( nextChime, (timerCallback_t)chimeCallback, (void*)this);
+    _chimeTimer.setClockTime( nextChime, chimeCallback, (void*)this);
 
     // how many chimes at the next hour
     _chimesRemaining = clock.hourFormat12() + 1;
@@ -27,7 +27,7 @@ void ChimeApp::chimerCallback() {
   if (_chimesRemaining == 0) {
     resetChime();
   } else {
-    _chimeTimer.setMillis(_chimeInterval, (timerCallback_t)chimeCallback, (void*)this);
+    _chimeTimer.setMillis(_chimeInterval, chimeCallback, (void*)this);
     sound.beep();
     _chimesRemaining--;
   }

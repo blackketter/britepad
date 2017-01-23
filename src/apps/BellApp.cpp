@@ -7,13 +7,13 @@ void bellCallbackFunc(void* data) {
 }
 
 void BellApp::bellCallback() {
-  sound.beep(5000, 1046);  // 5 second C6
+  sound.bell(3000, 1046);  // C6
   resetTimer();
 }
 
 void BellApp::resetTimer() {
     if (_bell_enabled) {
-      _bell_timer.setSecs(_bell_interval, (timerCallback_t)bellCallbackFunc, (void*)this);
+      _bell_timer.setSecs(_bell_interval, bellCallbackFunc, (void*)this);
     } else {
       _bell_timer.cancel();
     }
@@ -24,7 +24,7 @@ void BellApp::init() {
   prefs.read(id(), sizeof(prefdata), (uint8_t*)&prefdata);
   _bell_enabled = (prefdata > 0) ? true : false;
   _bell_interval = abs(prefdata);
-  resetTimer();    
+  resetTimer();
 }
 
 void BellApp::run() {
@@ -53,12 +53,12 @@ void BellApp::run() {
     int16_t prefdata = _bell_enabled ? _bell_interval : -_bell_interval;
     prefs.write(id(), sizeof(prefdata), (uint8_t*)&prefdata);
   }
-  
+
   if (adj || (_last_run != _bell_timer.remainingSecs())) {
     _last_run = _bell_timer.remainingSecs();
     drawTime();
   }
-  
+
 };
 
 
@@ -84,7 +84,7 @@ void BellApp::drawTime() {
     screen.setFont(Arial_16_Digits_Bold);
 
     int16_t remain = _bell_enabled ? _bell_timer.remainingSecs()+1 : _bell_interval;
-    
+
     sprintf(timeStr, " %d:%02d ", remain/60, remain%60);
 
     screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(timeStr)/2,
@@ -94,7 +94,7 @@ void BellApp::drawTime() {
     screen.pushClipRect(&clip);
     screen.drawText(timeStr);
     screen.pushClipRect(&clip);
-        
+
 }
 
 void BellApp::drawButtons() {

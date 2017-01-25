@@ -122,8 +122,8 @@ bool BritepadApp::canBeAppMode(AppMode b) {
 }
 
 void BritepadApp::switchAppMode(AppMode asMode) {
-  if (currAppMode != asMode) {
-    if (currAppMode == MOUSE_MODE) {
+  if (_currAppMode != asMode) {
+    if (_currAppMode == MOUSE_MODE) {
       mouse.end();
     }
 
@@ -131,7 +131,7 @@ void BritepadApp::switchAppMode(AppMode asMode) {
       mouse.begin();
     }
   }
-  currAppMode = asMode;
+  _currAppMode = asMode;
 }
 
 // initialize app state and clear screen
@@ -142,5 +142,5 @@ void BritepadApp::begin(AppMode asMode) {
 };
 
 void BritepadApp::end() {
-  currAppMode = INACTIVE_MODE;
+  _currAppMode = INACTIVE_MODE;
 }

@@ -57,17 +57,16 @@ class Button : public Widget {
 
     virtual color_t fillColor();
 
-    const char* titleStr;
+    static const millis_t holdTime = 1000;
 
+
+    const char* titleStr;
     font_t titleFont;
     color_t titleCol;
-
     Icon icon;
-
     color_t colored;
     bool highlighted;
     millis_t highlightedTime;
-    static const millis_t holdTime = 1000;
 };
 
 class RoundButton : public Button {

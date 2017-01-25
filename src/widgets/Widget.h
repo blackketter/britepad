@@ -37,7 +37,6 @@ class Widget {
     coord_t width = 0;
     coord_t height = 0;
     bool visible = true;
-
 };
 
 #endif

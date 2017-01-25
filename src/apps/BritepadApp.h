@@ -35,7 +35,7 @@ class BritepadApp {
     static BritepadApp* A_SCREENSAVER_APP; // go to a screensaver
 
     virtual const char* name() = 0;
-    virtual Icon getIcon() { return icon; };
+    virtual Icon getIcon() { return _icon; };
     virtual appid_t id() = 0;
     bool isID(appid_t match);
     BritepadApp* getAppByID(appid_t getID) { return britepad.getAppByID(getID); }
@@ -50,17 +50,17 @@ class BritepadApp {
     virtual bool displaysClock() { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
     virtual bool timeVisible() { return displaysClock() || displaysStatusBar(); }
 
-    virtual bool getEnabled(AppMode asMode = ANY_MODE) { readPrefs(); return (bool)(enabled & asMode); }
+    virtual bool getEnabled(AppMode asMode = ANY_MODE) { readPrefs(); return (bool)(_enabled & asMode); }
     virtual void setEnabled(bool e, AppMode asMode = ANY_MODE) {
       if (e) {
-        enabled = (AppMode)(enabled | asMode);
+        _enabled = (AppMode)(_enabled | asMode);
       } else {
-        enabled = (AppMode)(enabled & (~asMode));
+        _enabled = (AppMode)(_enabled & (~asMode));
       }
       writePrefs();
     }
 
-    AppMode getAppMode() { return currAppMode; }
+    AppMode getAppMode() { return _currAppMode; }
     bool isAppMode(AppMode is) { return (is == getAppMode()); }
     bool canBeAppMode(AppMode b);
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { britepad.launchApp(app, mode); };
@@ -72,8 +72,8 @@ class BritepadApp {
 
     virtual AppType getAppType() { return NO_APP_TYPE; }
     virtual bool isAppType(AppType t) { return t & getAppType(); }
-    virtual int32_t getLauncherPosition() { return position; }
-    virtual void setLauncherPosition(int32_t p) { position = p; }
+    virtual int32_t getLauncherPosition() { return _launcherPosition; }
+    virtual void setLauncherPosition(int32_t p) { _launcherPosition = p; }
     virtual bool isHidden() { return false; }
 
     virtual bool isInvisible() { return false; };    // has no UI
@@ -94,31 +94,32 @@ class BritepadApp {
     virtual color_t infoBarFGColor() { return screen.luminance(infoBarBGColor()) > 127 ? screen.grey : screen.lightgrey; }  // info text is faded, by default
     virtual const char* infoBarText() { return nullptr; }
 
-    BritepadApp* getNextApp() {  return nextApp; };
-    BritepadApp* getPrevApp() {  return prevApp; };
-    void setNextApp(BritepadApp* app) {  nextApp = app; };
-    void setPrevApp(BritepadApp* app) {  prevApp = app; };
+    inline BritepadApp* getNextApp() {  return _nextApp; };
+    inline BritepadApp* getPrevApp() {  return _prevApp; };
+    inline void setNextApp(BritepadApp* app) {  _nextApp = app; };
+    inline void setPrevApp(BritepadApp* app) {  _prevApp = app; };
 
   protected:
-    AppMode enabled = ANY_MODE;  // apps are always enabled by default
-    coord_t statusBarHeight = 16;
-    Icon icon;
-    static const int32_t defaultLauncherPosition = -1;
-    int32_t position = defaultLauncherPosition;
-
-    AppMode currAppMode = INACTIVE_MODE;
-
     virtual bool hasPrefs() { return canBeScreensaver() | canBeMouse(); } // mice and screensavers have prefs
 
     virtual void clearScreen() { screen.fillScreen(bgColor()); }
     void resetClipRect();  // resets clip rect to content area
 
-    virtual void writePrefs() {  if (hasPrefs()) { uint8_t pref = (uint8_t)enabled; prefs.write(id(), sizeof(pref), (uint8_t*)&pref); } };
-    virtual void readPrefs() { if (hasPrefs()) { uint8_t pref = (uint8_t)ANY_MODE; prefs.read(id(),  sizeof(pref), (uint8_t*)&pref); enabled = (AppMode)pref;} };
+    virtual void writePrefs() {  if (hasPrefs()) { uint8_t pref = (uint8_t)_enabled; prefs.write(id(), sizeof(pref), (uint8_t*)&pref); } };
+    virtual void readPrefs() { if (hasPrefs()) { uint8_t pref = (uint8_t)ANY_MODE; prefs.read(id(),  sizeof(pref), (uint8_t*)&pref); _enabled = (AppMode)pref;} };
+
+    static const coord_t statusBarHeight = 16;
+    static const int32_t defaultLauncherPosition = -1;
+
+    AppMode _enabled = ANY_MODE;  // bit mask for enabled modes. apps are always enabled by default
+    AppMode _currAppMode = INACTIVE_MODE;
+
+    Icon _icon;
+    int32_t _launcherPosition = defaultLauncherPosition;
 
   private:
-    BritepadApp* nextApp = nullptr;
-    BritepadApp* prevApp = nullptr;
+    BritepadApp* _nextApp = nullptr;
+    BritepadApp* _prevApp = nullptr;
 };
 
 #endif

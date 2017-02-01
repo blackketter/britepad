@@ -133,6 +133,8 @@ void WordClockApp::update() {
       sprintf(words, wordsformat, about, hour, numberStrings[now.minute()], timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     }
 
-    screen.drawText(words, screen.lineBreakChars);
+//    const char* oldWrap = screen.setTextSoftWrapChars(" -");
+    screen.drawText(words);
+//    screen.setTextSoftWrapChars(oldWrap);
 }
 

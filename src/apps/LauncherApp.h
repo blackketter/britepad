@@ -3,15 +3,16 @@
 
 #include "BritepadShared.h"
 #include "BritepadApp.h"
+#include "widgets/ButtonMatrix.h"
 
 typedef int (*appCompareFunction)(BritepadApp*, BritepadApp*);
 
 class LauncherApp : public BritepadApp {
   public:
-    LauncherApp();
     void begin(AppMode asMode);
-    void end();
     void run();
+    void end();
+
     BritepadApp* exitsTo() { return A_MOUSE_APP; }
     const char* name() { return "Launcher"; };
 
@@ -30,21 +31,15 @@ class LauncherApp : public BritepadApp {
     const static int resetScreenTimeout = 10;  // seconds
 
     BritepadApp* nextSortedApp(BritepadApp* last, appCompareFunction compareFunc) { return nullptr;};
-    int buttonHit(int x, int y);
-    void drawButton(int i, bool highlighted = false);
-    void drawButtons();
-    int getCurrentScreen() { return current_screen; }
-    void setCurrentScreen(int n = KEYS_SCREEN) { current_screen = n; }
-    color_t bgColor();
-    void setButton(int screen, int i, BritepadApp* b);
-    BritepadApp* getApp(int i);
-    BritepadApp* getApp(int screen, int i) { return apps[screen][i]; }
-    void checkTimeout();
-    void clearScreen() {} // override the default clear screen because we do transitions
 
+    int getCurrentScreen() { return current_screen; }
+    void setCurrentScreen(int n = KEYS_SCREEN);
+    color_t bgColor();
+
+    void clearScreen() {} // override the default clear screen because we do transitions
+    void drawButtons();
     int current_screen = HOME_SCREEN;
 
-    int highlighted_button = noButton;
     bool waitForRelease = false;
 
     time_t lastRun = 0;
@@ -65,7 +60,7 @@ class LauncherApp : public BritepadApp {
       TOTAL_SCREENS
     };
 
-    BritepadApp* apps[TOTAL_SCREENS][buttons_per_screen];
+    ButtonMatrix* buttons = 0;
 
     const char* infoText[TOTAL_SCREENS] = {
         nullptr,

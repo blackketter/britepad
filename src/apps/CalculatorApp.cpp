@@ -502,6 +502,7 @@ void CalculatorApp::keyShift() {
       break;
   }
   buttons->setMap(curMap);
+  buttons->draw();
 }
 
 void CalculatorApp::keyBase() {
@@ -512,6 +513,7 @@ void CalculatorApp::keyBase() {
     buttons->setMap(basic_map);
     setBase(10);
   }
+  buttons->draw();
   drawDisplay();
 }
 

@@ -10,7 +10,7 @@ class AlarmApp : public BritepadApp {
     void init();
 
     void run();
-    bool wantsToBe(AppMode m) { return alarmSounding(); }
+    bool wantsToRun() { return alarmSounding(); }
     void end() { BritepadApp::end(); setAlarmEnabled(false); alarmSounded = false;}
 
     void setAlarmTime(time_t newTime);

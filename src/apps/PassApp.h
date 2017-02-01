@@ -11,7 +11,6 @@ class PassApp : public KeyApp {
   public:
     PassApp(const char* name, const char* keys, color_t color, uint32_t pos) : KeyApp(name, keys, color, pos) {};
     PassApp(const char* name, uint8_t mediaKey, color_t color, uint32_t pos) : KeyApp(name, mediaKey, color, pos) {};
-    color_t buttonColor() { return screen.red; };
     void draw();
 
     AppType getAppType() { return KEY_APP; }

@@ -2,34 +2,67 @@
 #include "LauncherApp.h"
 #include "ScreensaverApp.h"
 
-LauncherApp::LauncherApp() {
-  for (int s = 0; s < TOTAL_SCREENS; s++) {
-    for (int i = 0; i < buttons_per_screen; i++) {
-      setButton(s, i,nullptr);
-    }
-  }
+//  LAUNCHERAPP
+color_t LauncherApp::bgColor() {
+  return screenColor[getCurrentScreen()];
+}
 
+const char* LauncherApp::infoBarText() {
+  return infoText[getCurrentScreen()];
+}
+
+const char* LauncherApp::statusBarTitle() {
+  return screenNames[getCurrentScreen()];
+}
+
+void LauncherApp::setCurrentScreen(int n) {
+  current_screen = n;
+  buttons->setMap(n);
+}
+
+void LauncherApp::begin(AppMode asMode) {
+  if (buttons) { delete(buttons); }
+  buttons = new ButtonMatrix(screen.clipLeft(),screen.clipTop(),screen.clipWidth(),screen.clipHeight(),v_buttons,h_buttons,TOTAL_SCREENS);
 
   // go through all the apps and add them to the appropriate screens
 
   // first, sort the list alphabetically
   britepad.sortApps();
-  // first, do all the specifically positioned apps, then the default (0) position apps
+
+  // do all the specifically positioned apps, then the default (0) position apps
   for (int specific = 1; specific >= 0; specific--) {
     BritepadApp* a = britepad.getNextApp();
 
     while (a) {
-      for (int screen = 0; screen < TOTAL_SCREENS; screen++) {
-        if (a->isAppType(screenTypes[screen])) {
+      for (int curScreen = 0; curScreen < TOTAL_SCREENS; curScreen++) {
+        if (a->isAppType(screenTypes[curScreen])) {
           int32_t pos = a->getLauncherPosition();
           if ((specific && (pos!=defaultLauncherPosition)) || (!specific && (pos==defaultLauncherPosition))) {
             if (pos==defaultLauncherPosition) { pos = 0; }
-            while (getApp(screen, pos)) {
+            while (buttons->getButton(pos,curScreen)) {
               pos++;
             }
             if (!a->isHidden()) {
-              console.debugf("Adding %s to screen %s at position %d\n", a->name(), screenNames[screen], pos);
-              setButton(screen, pos, a);
+              console.debugf("Adding %s to screen %s at position %d\n", a->name(), screenNames[curScreen], pos);
+
+              Button* b = nullptr;
+
+              switch (screenMode[curScreen]) {
+                case MOUSE_MODE:
+                  b = new SettingsButton(a, MOUSE_MODE);
+                  b->setColor(screen.green);
+                  break;
+                case SCREENSAVER_MODE:
+                  b = new SettingsButton(a, SCREENSAVER_MODE);
+                  b->setColor(screen.yellow);
+                  break;
+                case INTERACTIVE_MODE:
+                  b = new AppButton(a);
+                  break;
+                default:
+                  break;
+              }
+              buttons->setButton(b,pos, curScreen);
             }
           }
         }
@@ -37,9 +70,7 @@ LauncherApp::LauncherApp() {
       a = britepad.getNextApp(a);
     }
   }
-}
-
-void LauncherApp::begin(AppMode asMode) {
+  buttons->setMap(getCurrentScreen());
 
   // this should wake up the host, which is great for entering passwords
   // but might have some side effects
@@ -51,9 +82,11 @@ void LauncherApp::begin(AppMode asMode) {
   } else if (pad.touched(RIGHT_PAD)) {
     setCurrentScreen(2);
   } else if (clock.now() - lastBegin < 2) {
+    // launching twice quickly resets to default screen
     setCurrentScreen();
-  } else {
-    checkTimeout();
+  } else if (clock.now() - lastRun > resetScreenTimeout) {
+    // if we haven't run in a while, reset to the default screen
+    setCurrentScreen();
   }
 
   if (pad.touched(SCREEN_PAD)) {
@@ -62,8 +95,6 @@ void LauncherApp::begin(AppMode asMode) {
 
   // adjust the current screen before beginning
   BritepadApp::begin(asMode);
-
-  highlighted_button = noButton;
 
   if (pad.down(TOP_PAD)) {
     sound.swipe(DIRECTION_DOWN);
@@ -74,125 +105,20 @@ void LauncherApp::begin(AppMode asMode) {
   drawButtons();
   britepad.disableScreensavers(0);  // reenable screensavers if they were temporarily disabled
   lastBegin = clock.now();
-
-}
-
-void LauncherApp::end() {
-  if (pad.down(TOP_PAD)) {
-    sound.swipe(DIRECTION_UP);
-  }
-
-  screen.pushFill(DIRECTION_UP, britepad.getLaunchedApp()->bgColor());
-  BritepadApp::end();
+  console.debugln("done LauncherApp::begin");
 }
 
 void LauncherApp::drawButtons() {
-
-  for (int i = 0; i < buttons_per_screen; i++) {
-    if (getApp(i)) {
-        drawButton(i);
-    }
-  }
+  console.debugln("drawing buttons");
+  buttons->setBounds(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight());
+  buttons->draw();
 }
-
-void LauncherApp::drawButton(int i, bool highlighted) {
-  if (i == noButton || i >= buttons_per_screen) {
-    return;
-  }
-  // todo: factor out these into function that finds button coordinates
-  const int vsize = screen.clipHeight() / v_buttons;
-  const int hsize = screen.clipWidth() / h_buttons;
-
-  int x = hsize/2 + hsize*(i%h_buttons) + screen.clipLeft();
-  int y = vsize/2 + vsize*(i/h_buttons) + screen.clipTop();
-
-  const int radius = min(hsize,vsize) / 2 - 2;
-
-  BritepadApp* app = getApp(i);
-
-  bool disabled = !app->getEnabled(screenMode[getCurrentScreen()]);
-  highlighted = disabled | highlighted;
-
-  color_t color;
-  switch (getCurrentScreen()) {
-    case MICE_SCREEN:
-      color = screen.green;
-      break;
-    case SCREENSAVERS_SCREEN:
-    case CLOCKS_SCREEN:
-      color = screen.yellow;
-      break;
-    default:
-      color = app->buttonColor();
-      break;
-  }
-
-  screen.fillCircle( x, y, radius, highlighted ? screen.mix(color, screen.black) : color);
-  const char* name = app->name();
-  if (name) {
-    screen.setTextColor(screen.black);
-    char* line2 = strchr(name, '\n');
-    if (line2) {
-      line2++;
-      screen.setFont(Arial_8_Bold);
-      char line[strlen(name)+1];
-      strcpy(line,name);
-      *(strchr(line,'\n')) = 0;
-      screen.setCursor( x - screen.measureTextWidth(line) / 2, y - screen.measureTextHeight(line)-2);
-      screen.drawText(line);
-      screen.setCursor( x - screen.measureTextWidth(line2) / 2, y+2);
-      screen.drawText(line2);
-    } else {
-      screen.setFont(Arial_9_Bold);
-      screen.setCursor( x - screen.measureTextWidth(name) / 2, y - screen.measureTextHeight(name)/2);
-      screen.drawText(name);
-    }
-  } else {
-    Icon icon = app->getIcon();
-    if (icon.getData()) {
-      icon.draw(x - icon.width()/2, y - icon.height()/2, screen.black);
-    }
-  }
-}
-
-int LauncherApp::buttonHit(int x, int y) {
-
-  int h = (x - screen.clipLeft()) / (screen.clipWidth() / h_buttons);
-  int v = (y - screen.clipTop()) / (screen.clipHeight() / v_buttons);
-
-  int i = v*h_buttons+h;
-  if (getApp(i)) {
-    return i;
-  } else {
-    return noButton;
-  }
-}
-
-void LauncherApp::setButton(int screen, int i, BritepadApp* b)
-{
-  if (screen < TOTAL_SCREENS && i < buttons_per_screen) {
-    apps[screen][i] = b;
-  } else {
-    console.debugln("setButton out of bounds");
-  }
-};
-
-BritepadApp* LauncherApp::getApp(int i) {
-  if ((i >= 0) && (i < buttons_per_screen)) {
-    return apps[getCurrentScreen()][i];
-  } else {
-    return nullptr;
-  }
-};
-
 
 void LauncherApp::run() {
 
   if (pad.up(SCREEN_PAD)) { waitForRelease = false; }
 
   lastRun = clock.now();
-
-  int b = buttonHit(pad.x(),pad.y());
 
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
@@ -206,7 +132,6 @@ void LauncherApp::run() {
     ) {
       if (getCurrentScreen() > 0) {
         setCurrentScreen(getCurrentScreen() - 1);
-        highlighted_button = noButton;
         sound.swipe(DIRECTION_LEFT);
         screen.pushFill(DIRECTION_LEFT, bgColor());
         drawBars();
@@ -219,7 +144,6 @@ void LauncherApp::run() {
   ) {
     if (getCurrentScreen() < TOTAL_SCREENS - 1) {
       setCurrentScreen(getCurrentScreen()+1);
-      highlighted_button = noButton;
       sound.swipe(DIRECTION_RIGHT);
       screen.pushFill(DIRECTION_RIGHT, bgColor());
       drawBars();
@@ -230,71 +154,39 @@ void LauncherApp::run() {
   } else if (pad.getGesture() == GESTURE_SWIPE_UP) {
     exit();
   } else if (!pad.didGesture()) {
-
-     if (pad.up(SCREEN_PAD)) {
-      drawButton(highlighted_button, false);
-
-      if (highlighted_button != noButton) {
-        BritepadApp* launched = apps[getCurrentScreen()][b];
-        if (launched->isInvisible()) {
-          launched->run();
-          drawButton(b, false);
-        } else {
-          AppMode whichMode = screenMode[getCurrentScreen()];
-          if (whichMode == INTERACTIVE_MODE) {
-            launchApp(launched);
-          } else {
-            launched->setEnabled(!launched->getEnabled(whichMode), whichMode);
-            drawButton(b);
-          }
-        }
-        sound.click();
-
-      }
-      highlighted_button = noButton;
-    } else if (pad.touched(SCREEN_PAD) && !waitForRelease) {
-
-      if (b != noButton) {
-        if (b != highlighted_button) {
-          drawButton(highlighted_button, false);
-          drawButton(b, true);
-          highlighted_button = b;
-        } else {
-          if (pad.time() - pad.lastDownTime(SCREEN_PAD) > holdTime) {
-            if (getApp(b) && !getApp(b)->isInvisible()) {
-              sound.click();
-              clearScreen();
-              launchOnRelease = getApp(b);
-            }
-          }
-        }
+    AppButton* b = (AppButton*)(buttons->up());
+    if (b) {
+      BritepadApp* launched = ((AppButton*)b)->getApp();
+      if (launched->isInvisible()) {
+        launched->run();
+        b->draw();
       } else {
-        drawButton(highlighted_button, false);
-        highlighted_button = noButton;
+        AppMode whichMode = screenMode[getCurrentScreen()];
+        if (whichMode == INTERACTIVE_MODE) {
+          launchApp(launched);
+        } else {
+          launched->setEnabled(!launched->getEnabled(whichMode), whichMode);
+          b->draw();
+        }
       }
+      sound.click();
     }
-  } else if (highlighted_button != noButton && pad.touched()) {
-      drawButton(highlighted_button, false);
-      highlighted_button = noButton;
+    b = (AppButton*)buttons->hold();
+    if (b && b->getApp() && !b->getApp()->isInvisible() && !waitForRelease) {
+      sound.click();
+      clearScreen();
+      launchOnRelease = b->getApp();
+    }
+  }
+}
+
+void LauncherApp::end() {
+  if (buttons) { delete(buttons); buttons = nullptr; }
+
+  if (pad.down(TOP_PAD)) {
+    sound.swipe(DIRECTION_UP);
   }
 
-}
-
-color_t LauncherApp::bgColor() {
-  return screenColor[getCurrentScreen()];
-}
-
-const char* LauncherApp::infoBarText() {
-  return infoText[getCurrentScreen()];
-}
-
-const char* LauncherApp::statusBarTitle() {
-  return screenNames[getCurrentScreen()];
-}
-
-void LauncherApp::checkTimeout() {
-  // if we haven't run in a while, reset to the middle screen
-  if (clock.now() - lastRun > resetScreenTimeout) {
-    setCurrentScreen();
-  }
+  screen.pushFill(DIRECTION_UP, britepad.getLaunchedApp()->bgColor());
+  BritepadApp::end();
 }

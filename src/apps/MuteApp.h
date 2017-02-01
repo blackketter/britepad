@@ -29,7 +29,7 @@ class MuteApp : public BritepadApp {
 
     AppType getAppType() { return SETTINGS_APP; }
 
-    color_t buttonColor() { return sound.getMute() ? screen.darkblue : screen.blue; };
+    virtual bool highlighted() { return sound.getMute(); }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "mute";

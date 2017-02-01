@@ -86,10 +86,6 @@ bool KeyApp::isInvisible() {
   return (mediaKey != 0);
 }
 
-color_t KeyApp::buttonColor() {
-  return button_color;
-}
-
 void KeyApp::draw() {
   clearScreen();
   screen.setFont(Arial_20_Bold);

@@ -40,8 +40,13 @@ class Button : public Widget {
     virtual color_t getColor() { return colored; }
 
     virtual void setTitle(const char* newTitle) { titleStr = newTitle; }
+    virtual const char* getTitle() { return titleStr; }
     virtual void setTitleFont(font_t newFont) { titleFont = newFont; }
     virtual void setIcon(uint8_t* iconptr) { icon = iconptr; }
+    virtual Icon getIcon() { return icon; }
+
+    virtual font_t getTitleFont() { return titleFont; }
+    virtual color_t getTitleColor() { return titleCol; }
 
     virtual void track();
 

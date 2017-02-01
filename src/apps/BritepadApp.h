@@ -5,6 +5,7 @@
 #include "widgets/Icon.h"
 
 class Britepad;
+class AppButton;
 
 // Apps are of particular types, which may (for example) have them automatically placed on a screen
 enum AppType {
@@ -41,11 +42,12 @@ class BritepadApp {
     BritepadApp* getAppByID(appid_t getID) { return britepad.getAppByID(getID); }
 
     virtual color_t buttonColor() { return screen.blue; }
+    virtual bool highlighted() { return wantsToRun(); }  // by default, apps are highlighted if they want to be displayed
 
     virtual bool isCurrentApp() { return britepad.currentApp() == this; };
 
     virtual bool disablesScreensavers() { return false; }
-    virtual bool wantsToBe(AppMode m) { return false; }  // return true if you want to be switched to as the specified mode (canBeMODENAME() doesn't have to be true)
+    virtual bool wantsToRun() { return false; }  // return true if you want to be switched to (canBeMODENAME() doesn't have to be true)
     virtual BritepadApp* exitsTo() { return BACK_APP; }  // when exiting the app, typically by the TOP_PAD, where should it go by default (BACK_APP is to LauncherApp, MOUSE_APP is to a mouse capable app)
     virtual bool displaysClock() { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
     virtual bool timeVisible() { return displaysClock() || displaysStatusBar(); }
@@ -74,6 +76,8 @@ class BritepadApp {
     virtual bool isAppType(AppType t) { return t & getAppType(); }
     virtual int32_t getLauncherPosition() { return _launcherPosition; }
     virtual void setLauncherPosition(int32_t p) { _launcherPosition = p; }
+    virtual AppButton* newAppButton();
+
     virtual bool isHidden() { return false; }
 
     virtual bool isInvisible() { return false; };    // has no UI

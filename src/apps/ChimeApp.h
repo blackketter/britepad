@@ -19,7 +19,7 @@ class ChimeApp : public MuteApp {
 
     const char* name() { return _chimeEnabled ? "Chime\nOn" : "Chime\nOff"; };
 
-    color_t buttonColor() { return _chimeEnabled ? screen.blue : screen.darkblue; };
+    virtual bool highlighted() { return !_chimeEnabled; }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "chim";
@@ -29,7 +29,7 @@ class ChimeApp : public MuteApp {
     void chimerCallback();
 
   private:
-  
+
     uint8_t _chimeEnabled;
     Timer _chimeTimer;
     int _chimesRemaining = 0;

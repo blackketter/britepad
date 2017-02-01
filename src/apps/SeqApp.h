@@ -15,7 +15,6 @@ class SeqApp : public DotsDisplayApp {
     bool canBeScreensaver() { return false; }
     bool canBeMouse() { return false; }
     bool canBeInteractive() { return true; }
-    virtual color_t buttonColor() { return BritepadApp::buttonColor(); };  // don't use the DotsDisplayApp color
     AppType getAppType() { return INTERACTIVE_APP; }
 
   protected:

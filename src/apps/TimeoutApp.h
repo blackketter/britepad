@@ -59,8 +59,6 @@ class TimeoutApp : public BritepadApp {
 
     AppType getAppType() { return SETTINGS_APP; }
 
-    color_t buttonColor() { return screen.blue; };
-
     appid_t id() { return ID; };
     static constexpr appid_t ID = "tout";
 

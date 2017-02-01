@@ -47,7 +47,7 @@ class Britepad {
 
     void setApp(BritepadApp* newApp, AppMode asMode);  // sets the current app
 
-    BritepadApp* wantsToBe(AppMode m);
+    BritepadApp* wantsToRun();
     BritepadApp* randomApp(AppMode m);
 
     BritepadApp* theLauncherApp;

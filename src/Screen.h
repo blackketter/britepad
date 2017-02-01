@@ -52,18 +52,6 @@ enum direction_t {
   DIRECTION_NW
 };
 
-enum alignment_t {
-  ALIGN_LEFT = 0,
-  ALIGN_HCENTER = 1,
-  ALIGN_CENTER = 1,
-  ALIGN_RIGHT = 2,
-
-  ALIGN_TOP = 0,
-  ALIGN_VCENTER = 4,
-  ALIGN_BOTTOM = 8
-};
-
-
 #if TEENSY == 1
 
 typedef ILI9341_t3_font_t font_t;
@@ -73,7 +61,7 @@ class Screen : public ILI9341_t3
   public:
     Screen(uint8_t _CS = TFT_CS, uint8_t _DC = TFT_DC, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
       ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
-#else 
+#else
 //this is for ESP8266 Wemos D1 Mini
 typedef GFXfont font_t;
 
@@ -122,6 +110,11 @@ class Screen : public Adafruit_ILI9341
 
     // this pushClipRect sets the cliprect to the passed rect _AND_ saves the old clip rect back into it.  call setClipRect(r) again to reset.
     inline void pushClipRect(rect_t* r) { rect_t t; t.x = clipLeft(); t.y = clipTop(); t.h = clipHeight(); t.w = clipWidth(); setClipRect((int16_t)(r->x),(int16_t)(r->y),(int16_t)(r->w),(int16_t)(r->h)); r->y = t.y; r->x = t.x; r->h = t.h; r->w = t.w; };
+
+    inline void getOrigin(point_t* o) { o->x = _originx; o->y = _originy; }
+    inline void setOrigin(point_t* o) { _originx = o->x; _originy = o->y; }
+
+    inline void pushOrigin(point_t* o) { point_t t; getOrigin(&t); setOrigin(o); o->x = t.x; o->y = t.y; };
 
 //	  virtual void drawPixel(point_t& p, color_t color) { drawPixel((int16_t)p.x,(int16_t)p.y,(uint16_t)color); };
 

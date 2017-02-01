@@ -11,8 +11,8 @@ class PomodoroApp : public BritepadApp {
     virtual void begin(AppMode asMode);
     virtual void run();
 
-    bool wantsToBe(AppMode m) { return isRunning(); }
-    bool disablesScreensavers() { return isAppMode(INTERACTIVE_MODE) && wantsToBe(SCREENSAVER_MODE); }
+    bool wantsToRun() { return isRunning(); }
+    bool disablesScreensavers() { return isAppMode(INTERACTIVE_MODE) && wantsToRun(); }
 
     AppType getAppType() { return TIMER_APP; }
 

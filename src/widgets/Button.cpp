@@ -67,9 +67,8 @@ void Button::drawbg() {
 void Button::drawIcon() {
 //  uint8_t hash[] = {8,8,0xaa,0x55,0xaa,0x55,0xaa,0x55,0xaa,0x55};
 //  icon.setData(hash);
-  if (icon.getData()) {
-    icon.draw(xpos+width/2-icon.width()/2, ypos+height/2-icon.height()/2, titleCol);
-  }
+  Icon i = getIcon();
+  i.draw(xpos+width/2-i.width()/2, ypos+height/2-i.height()/2, getTitleColor());
 }
 
 void Button::draw() {
@@ -85,22 +84,24 @@ void Button::drawTitle() {
   const char* drawStr;
   char onechar[2];
 
-  if (!titleStr) {
+  if (!getTitle()) {
     return;
   }
 
-  if ((uint32_t)titleStr > 0xff) {
-    drawStr = titleStr;
+  if ((uint32_t)getTitle() > 0xff) {
+    drawStr = getTitle();
   } else {
-    onechar[0] = (uint32_t)titleStr;
+    onechar[0] = (uint32_t)getTitle();
     onechar[1] = 0;
     drawStr = onechar;
   }
 
-  screen.setFont(titleFont);
-  screen.setTextColor(titleCol);
-  screen.setCursor( xpos+width/2 - screen.measureTextWidth(drawStr) / 2, ypos+height/2 - screen.measureTextHeight(drawStr) / 2);
+  screen.setFont(getTitleFont());
+  screen.setTextColor(getTitleColor());
+  screen.setCursor( xpos+width/2, ypos+height/2 - screen.measureTextHeight(drawStr) / 2);
+  alignment_t oldalign = screen.setTextAlign(ALIGN_HCENTER);
   screen.drawText(drawStr);
+  screen.setTextAlign(oldalign);
 }
 
 void Button::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData) {

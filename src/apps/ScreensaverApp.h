@@ -3,10 +3,10 @@
 
 #include "BritepadShared.h"
 #include "BritepadApp.h"
+#include "AppButton.h"
 
 class ScreensaverApp : public BritepadApp {
   public:
-    virtual color_t buttonColor() { return screen.yellow; };
 
     // by default, no status bars
     virtual bool displaysStatusBar() { return false; }
@@ -19,6 +19,8 @@ class ScreensaverApp : public BritepadApp {
     // by default, screensavers are not interactive
     virtual bool canBeScreensaver() { return  clock.hasBeenSet() || !displaysClock(); }
     virtual bool canBeInteractive() { return false; }
+
+//    virtual AppButton* newAppButton() { return new SettingsButton(this); }
 
   protected:
 };

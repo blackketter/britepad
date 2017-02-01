@@ -15,7 +15,7 @@ class SetTimerApp : public BritepadApp {
     void run();
     const char* name() { return name_str; };
 
-    color_t buttonColor() { color_t c = BritepadApp::buttonColor(); return !timer_app.isReset() && (timer_app.getTime() == timer_duration) ? screen.brighten(c,128) : c; }
+    virtual bool highlighted() { return !timer_app.isReset() && (timer_app.getTime() == timer_duration); }
 
     bool disablesScreensavers() { return true; }
 

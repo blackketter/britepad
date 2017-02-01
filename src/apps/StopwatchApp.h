@@ -15,11 +15,9 @@ class StopwatchApp : public BritepadApp {
 
     const char* name() { return "Stopwatch"; };
     bool displaysStatusBar() { return true; }
-    bool wantsToBe(AppMode m) { return !isReset(); }
+    bool wantsToRun() { return !isReset(); }
 
-    color_t buttonColor() { color_t c = BritepadApp::buttonColor(); return startMillis > 0 ? screen.brighten(c,128) : c; }
-
-    bool disablesScreensavers() { return isAppMode(INTERACTIVE_MODE) && wantsToBe(SCREENSAVER_MODE); }
+    bool disablesScreensavers() { return isAppMode(INTERACTIVE_MODE) && wantsToRun(); }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stpw";

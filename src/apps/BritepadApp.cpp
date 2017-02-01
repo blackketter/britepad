@@ -1,6 +1,7 @@
 #include "BritepadApp.h"
 #include "AlarmApp.h"
 #include "widgets/Icon.h"
+#include "AppButton.h"
 
 BritepadApp* BritepadApp::STAY_IN_APP = (BritepadApp*)0;
 BritepadApp* BritepadApp::BACK_APP = (BritepadApp*)2;
@@ -144,3 +145,8 @@ void BritepadApp::begin(AppMode asMode) {
 void BritepadApp::end() {
   _currAppMode = INACTIVE_MODE;
 }
+
+AppButton* BritepadApp::newAppButton() {
+  return new AppButton(this);
+}
+

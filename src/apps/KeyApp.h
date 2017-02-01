@@ -20,8 +20,6 @@ class KeyApp : public BritepadApp {
     const char* name() { return nameStr; };
     bool isInvisible();
 
-    color_t buttonColor();
-
     appid_t id() { return ID; };
     static constexpr appid_t ID = "keys";
 

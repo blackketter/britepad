@@ -1,5 +1,5 @@
 #include "TextField.h"
-void TextField::init(coord_t x, coord_t y, coord_t w, coord_t h, font_t f, color_t fgColor, color_t bgColor, int8_t hAlign,int8_t vAlign, const char* t) {
+void TextField::init(coord_t x, coord_t y, coord_t w, coord_t h, font_t f, color_t fgColor, color_t bgColor, int8_t hAlign,int8_t vAlign) {
 
   setBounds(x,y,w,h);
   font = f;
@@ -7,12 +7,6 @@ void TextField::init(coord_t x, coord_t y, coord_t w, coord_t h, font_t f, color
   bColor = bgColor;
   alignV = vAlign;
   alignH = hAlign;
-  text = t;
-};
-
-
-void TextField::draw() {
-  draw(text);
 };
 
 void TextField::drawf(const char* format, ...) {
@@ -29,28 +23,35 @@ void TextField::draw(const char* t) {
   rect_t r;
   getBounds(r);
   screen.pushClipRect(&r);
-  screen.setFont(font);
   coord_t x, y;
 
   // todo vertical alignment
   y = getTop();
-  coord_t w = screen.measureTextWidth(t);
-  coord_t h = screen.measureTextHeight(t);
+  coord_t w = 0;
+  coord_t h = 0;
 
-  if (alignH == ALIGN_LEFT) {
-    x = getLeft();
-  } else {
-    if (alignH == ALIGN_CENTER) {
-      x = getMidWidth()-w/2;
+  if (t) {
+    screen.setFont(font);
+    w = screen.measureTextWidth(t);
+    h = screen.measureTextHeight(t);
+
+    if (alignH == ALIGN_LEFT) {
+      x = getLeft();
     } else {
-      x = getRight()-w;
+      if (alignH == ALIGN_CENTER) {
+        x = getMidWidth()-w/2;
+      } else {
+        x = getRight()-w;
+      }
     }
+
+    screen.setCursor(x,y);
+
+    screen.setTextColor(fColor,bColor);
+    screen.drawText(t);
+  } else {
+    x = getLeft();
   }
-
-  screen.setCursor(x,y);
-
-  screen.setTextColor(fColor,bColor);
-  screen.drawText(t);
 
   if (fColor != bColor) {
     screen.fillRect(getLeft(),getTop(),x - getLeft(), h, bColor);

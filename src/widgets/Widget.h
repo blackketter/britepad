@@ -9,34 +9,37 @@ class Widget {
 
   public:
     virtual ~Widget() {};
-    virtual void setBounds(coord_t x, coord_t y, coord_t w, coord_t h) { xpos = x; ypos = y; width = w; height = h; }
-    virtual bool hit(coord_t x, coord_t y) { return visible && (x >= xpos) && (x <= xpos+width) && (y > ypos) && (y <= ypos + height); }
+    virtual void setBounds(coord_t x, coord_t y, coord_t w, coord_t h) { _xpos = x; _ypos = y; _width = w; _height = h; }
+    virtual bool hit(coord_t x, coord_t y) { return _visible && (x >= _xpos) && (x <= _xpos+_width) && (y > _ypos) && (y <= _ypos + _height); }
     virtual void draw() = 0;
 
-    coord_t getWidth() { return width; }
-    coord_t getHeight() { return height; }
-    coord_t getRight() { return xpos+width; }
-    coord_t getBottom() { return ypos+height; }
-    coord_t getTop() { return ypos; }
-    coord_t getLeft() { return xpos; }
-    coord_t getMidWidth() { return xpos+width/2; }
-    coord_t getMidHeight() { return ypos+height/2; }
-    void getBounds(rect_t& r) { r.x = xpos; r.y = ypos; r.w = width; r.h = height; };
+    coord_t getWidth() { return _width; }
+    coord_t getHeight() { return _height; }
+    coord_t getRight() { return _xpos+_width; }
+    coord_t getBottom() { return _ypos+_height; }
+    coord_t getTop() { return _ypos; }
+    coord_t getLeft() { return _xpos; }
+    coord_t getMidWidth() { return _xpos+_width/2; }
+    coord_t getMidHeight() { return _ypos+_height/2; }
+    void getBounds(rect_t& r) { r.x = _xpos; r.y = _ypos; r.w = _width; r.h = _height; };
 
-    widgetid_t getID() { return id; }
-    void setID(widgetid_t newID) { id = newID; }
+    widgetid_t getID() { return _id; }
+    void setID(widgetid_t newID) { _id = newID; }
 
     // todo: make setting the visibility cause a redraw or erase
-    virtual void setVisible(bool visibility) { visible = visibility; }
-    bool getVisible() { return visible; }
+    virtual void setVisible(bool visibility) { _visible = visibility; }
+    virtual bool getVisible() { return _visible; }
+    virtual void setEnabled(bool enable) { _enabled = enable; }
+    virtual bool getEnabled() { return _enabled; }
 
   protected:
-    widgetid_t id = 0;
-    coord_t xpos = 0;
-    coord_t ypos = 0;
-    coord_t width = 0;
-    coord_t height = 0;
-    bool visible = true;
+    widgetid_t _id = 0;
+    coord_t _xpos = 0;
+    coord_t _ypos = 0;
+    coord_t _width = 0;
+    coord_t _height = 0;
+    bool _visible = true;
+    bool _enabled = true;
 };
 
 #endif

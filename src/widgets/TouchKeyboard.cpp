@@ -13,7 +13,7 @@ void TouchKeyboard::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t colo
 //////////////////////////////////////////////////////
 void TouchKeyboard::initButtons() {
   console.debugln("initButtons");
-  coord_t buttonDistance = min(width/maxKeysPerRow, height/rows);
+  coord_t buttonDistance = min(_width/maxKeysPerRow, _height/rows);
   console.debugf("buttonDistance: %d\n",buttonDistance);
   coord_t radius = (buttonDistance-2)/2;  // leave a tiny space between
   console.debugf("radius: %d\n",radius);
@@ -21,13 +21,13 @@ void TouchKeyboard::initButtons() {
   // initialize all those buttons
   for (int r = 0; r < rows; r++) {
     int rowLen = keysInRow(r);
-//    coord_t keyY = ypos + height/rows*r                             + height/rows/2;
-      coord_t keyY = ypos + ((int32_t)buttonDistance * 866L * r) / 1000L + height/rows/2;  // .8660 is sqrt(3)/2
+//    coord_t keyY = _ypos + _height/rows*r                             + _height/rows/2;
+      coord_t keyY = _ypos + ((int32_t)buttonDistance * 866L * r) / 1000L + _height/rows/2;  // .8660 is sqrt(3)/2
 
     for (int c = 0; c < rowLen; c++) {
       char key = keymap[currSet][r][c];
       char* keyStr = (char*)((uint32_t)key);
-      coord_t keyX = xpos + buttonDistance/2 + buttonDistance*c;
+      coord_t keyX = _xpos + buttonDistance/2 + buttonDistance*c;
       keyX += r % 2 ? buttonDistance/2 : 0;  // every other line is offset by half the distance to nest them together
       icon_t icon = nullptr;
       console.debugf("button init: %d\n", key);

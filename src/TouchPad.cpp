@@ -247,8 +247,10 @@ void TouchPad::updateAPDS() {
       if (down > up  && down > right && down > left) { d = 'D'; }
       if (left > up  && left > down  && left > right) { d = 'L'; }
       if (right > up && right > down && right > left) { d = 'R'; }
-      if (d) { console.debugf("max: %c\n", d); }
-      
+      if (d) {
+      //  console.debugf("max: %c\n", d);
+      }
+
       if (!upBegin && up > proxGestureBeginThreshold) { upBegin = now; console.debug("upBegin\n"); }
       if (!downBegin && down > proxGestureBeginThreshold) { downBegin = now; console.debug("downBegin\n");}
       if (!leftBegin && left > proxGestureBeginThreshold) { leftBegin = now; console.debug("leftBegin\n");}
@@ -264,28 +266,31 @@ void TouchPad::updateAPDS() {
     millis_t gestureQuietTime = 20;
 
     if (i) {
-      if (lastt == 0) { firstt = now; console.debugf("firstt: %d\n",firstt);}
+      if (lastt == 0) {
+        firstt = now;
+//      console.debugf("firstt: %d\n",firstt);
+      }
       lastt = now;
 //      console.debugf("lastt: %d\n",lastt);
       totalSamples += i;
-//      console.debugf("prox gesture sample count: %d\n",i);      
+//      console.debugf("prox gesture sample count: %d\n",i);
     } else if ((totalSamples != 0) && ((now - lastt) > gestureQuietTime)) {
-      console.debugf("  gesture end detected, samples: %d\n", totalSamples);
-      
-      millis_t gestureDur = lastt - firstt;
-      console.debugf("  gesture duration: %dms\n", gestureDur);
-      
+      //console.debugf("  gesture end detected, samples: %d\n", totalSamples);
+
+//      millis_t gestureDur = lastt - firstt;
+      //console.debugf("  gesture duration: %dms\n", gestureDur);
+
       upBegin -= firstt;
       downBegin -= firstt;
       leftBegin -= firstt;
       rightBegin -= firstt;
-      console.debugf("  start times: u:%3d d:%3d l:%3d r:%3d\n", upBegin, downBegin,leftBegin,rightBegin);
+      //console.debugf("  start times: u:%3d d:%3d l:%3d r:%3d\n", upBegin, downBegin,leftBegin,rightBegin);
 
       upEnd -= firstt;
       downEnd -= firstt;
       leftEnd -= firstt;
       rightEnd -= firstt;
-      console.debugf("  delta times: u:%3d d:%3d l:%3d r:%3d\n", upEnd-upBegin, downEnd-downBegin,leftEnd-leftBegin,rightEnd-rightBegin);
+      //console.debugf("  delta times: u:%3d d:%3d l:%3d r:%3d\n", upEnd-upBegin, downEnd-downBegin,leftEnd-leftBegin,rightEnd-rightBegin);
       totalSamples = 0;
       upBegin = downBegin = rightBegin = leftBegin = upEnd = downEnd = leftEnd = rightEnd = 0;
       firstt = lastt = 0;

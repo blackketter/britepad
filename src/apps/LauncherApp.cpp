@@ -49,12 +49,10 @@ void LauncherApp::begin(AppMode asMode) {
 
               switch (screenMode[curScreen]) {
                 case MOUSE_MODE:
-                  b = new SettingsButton(a, MOUSE_MODE);
-                  b->setColor(screen.green);
+                  b = new MouseButton(a);
                   break;
                 case SCREENSAVER_MODE:
-                  b = new SettingsButton(a, SCREENSAVER_MODE);
-                  b->setColor(screen.yellow);
+                  b = new ScreensaverButton(a);
                   break;
                 case INTERACTIVE_MODE:
                   b = new AppButton(a);
@@ -158,7 +156,13 @@ void LauncherApp::run() {
     if (b) {
       BritepadApp* launched = ((AppButton*)b)->getApp();
       if (launched->isInvisible()) {
-        launched->run();
+        if (held) {
+          held = false;
+        } else {
+          launched->begin(INTERACTIVE_MODE);
+          launched->run();
+          launched->end();
+        }
         b->draw();
       } else {
         AppMode whichMode = screenMode[getCurrentScreen()];
@@ -172,10 +176,18 @@ void LauncherApp::run() {
       sound.click();
     }
     b = (AppButton*)buttons->hold();
-    if (b && b->getApp() && !b->getApp()->isInvisible() && !waitForRelease) {
-      sound.click();
-      clearScreen();
-      launchOnRelease = b->getApp();
+    if (b && b->getApp()) {
+      BritepadApp* launched = ((AppButton*)b)->getApp();
+      if (b->getApp()->isInvisible()) {
+        launched->begin(INTERACTIVE_MODE);
+        launched->run();
+        launched->end();
+        held = true;
+      } else if (!waitForRelease) {
+        sound.click();
+        clearScreen();
+        launchOnRelease = b->getApp();
+      }
     }
   }
 }

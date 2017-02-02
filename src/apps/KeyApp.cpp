@@ -58,6 +58,7 @@ void KeyApp::run() {
       Keyboard.send_now();
       Keyboard.set_media(0);
       Keyboard.send_now();
+      console.debugf("sent media key: %d\n", mediaKey);
       break;
     case KEY_MEDIA_EJECT:
       Keyboard.set_media(KEY_MEDIA_EJECT);

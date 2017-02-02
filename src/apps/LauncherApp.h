@@ -44,7 +44,7 @@ class LauncherApp : public BritepadApp {
 
     time_t lastRun = 0;
     time_t lastBegin = 0;
-    static const millis_t holdTime = 500;
+    bool held = false;
     BritepadApp* launchOnRelease = nullptr;
 
     enum Screens {

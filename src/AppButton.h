@@ -23,22 +23,30 @@ class AppButton : public RoundButton {
     }
     virtual color_t     getTitleColor() { return Screen::black; }
     virtual font_t      getTitleFont()  { return strchr(getTitle(), '\n') ? Arial_8_Bold : Arial_9_Bold; }
+    virtual AppMode     getAppMode()    { return INTERACTIVE_MODE; }
 };
 
 // SETTINGSBUTTON
 class SettingsButton : public AppButton {
   public:
-    SettingsButton(BritepadApp* a, AppMode m) { setApp(a); _appMode = m; setColor(screen.yellow);}
-    virtual color_t getColor() {
+     virtual color_t getColor() {
       color_t c = RoundButton::getColor();
-      if (!getApp()->getEnabled(_appMode)) {
+      if (!getApp()->getEnabled(getAppMode())) {
           c = screen.darken(c);
         }
       return c;
     }
-
-  private:
-    AppMode _appMode;
 };
 
+class MouseButton : public SettingsButton {
+  public:
+    MouseButton(BritepadApp* a) { setApp(a); setColor(screen.yellow);}
+    virtual AppMode getAppMode() { return MOUSE_MODE; }
+};
+
+class ScreensaverButton : public SettingsButton {
+  public:
+    ScreensaverButton(BritepadApp* a) { setApp(a); setColor(screen.green);}
+    virtual AppMode getAppMode() { return MOUSE_MODE; }
+};
 #endif

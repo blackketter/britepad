@@ -14,6 +14,7 @@ class SetTimerApp : public BritepadApp {
     void begin(AppMode asMode);
     void run();
     const char* name() { return name_str; };
+    color_t appButtonColor() { return screen.LightBlue; }
 
     virtual bool highlighted() { return !timer_app.isReset() && (timer_app.getTime() == timer_duration); }
 

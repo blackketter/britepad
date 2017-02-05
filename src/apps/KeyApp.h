@@ -4,6 +4,7 @@
 #include "BritepadApp.h"
 #include "BritepadShared.h"
 #include "widgets/Icon.h"
+#include "AppButton.h"
 
 typedef int mediakey_t;
 
@@ -30,6 +31,9 @@ class KeyApp : public BritepadApp {
     static constexpr appid_t ID = "keys";
 
     AppType getAppType() { return KEY_APP; }
+
+    AppButton* newAppButton() { AppButton* b = new AppButton(this); return b; }
+    color_t appButtonColor() { return button_color; }
 
   protected:
 

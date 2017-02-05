@@ -1,6 +1,7 @@
 #include "BritepadShared.h"
 #include "LauncherApp.h"
 #include "ScreensaverApp.h"
+#include "AppButton.h"
 
 //  LAUNCHERAPP
 color_t LauncherApp::bgColor() {
@@ -55,7 +56,7 @@ void LauncherApp::begin(AppMode asMode) {
                   b = new ScreensaverButton(a);
                   break;
                 case INTERACTIVE_MODE:
-                  b = new AppButton(a);
+                  b = a->newAppButton();
                   break;
                 default:
                   break;

@@ -3,7 +3,6 @@
 
 #include "BritepadShared.h"
 #include "BritepadApp.h"
-#include "AppButton.h"
 
 class ScreensaverApp : public BritepadApp {
   public:
@@ -19,8 +18,6 @@ class ScreensaverApp : public BritepadApp {
     // by default, screensavers are not interactive
     virtual bool canBeScreensaver() { return  clock.hasBeenSet() || !displaysClock(); }
     virtual bool canBeInteractive() { return false; }
-
-//    virtual AppButton* newAppButton() { return new SettingsButton(this); }
 
   protected:
 };

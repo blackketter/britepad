@@ -77,6 +77,7 @@ class BritepadApp {
     virtual int32_t getLauncherPosition() { return _launcherPosition; }
     virtual void setLauncherPosition(int32_t p) { _launcherPosition = p; }
     virtual AppButton* newAppButton();
+    virtual color_t appButtonColor() { return screen.blue; }
 
     virtual bool isHidden() { return false; }
 

@@ -22,6 +22,8 @@ class PomodoroApp : public BritepadApp {
 
     void alarm();
 
+    color_t appButtonColor() { return screen.red; }
+
   private:
     bool isRunning() { return _timer.isRunning(); }  // are we counting down?
     bool isWorking() { return isRunning() && _isWorking; }

@@ -6,7 +6,7 @@
 class AppButton : public RoundButton {
   public:
     AppButton() {};
-    AppButton(BritepadApp* a) { setApp(a); setColor(screen.blue);}
+    AppButton(BritepadApp* a) { setApp(a); }
     ~AppButton() {};
     BritepadApp* getApp() { return (BritepadApp*)getID(); }
     void setApp(BritepadApp* a) { setID((widgetid_t)a); }
@@ -15,7 +15,7 @@ class AppButton : public RoundButton {
     virtual Icon        getIcon()  { return getApp()->getIcon(); }
 
     virtual color_t     getColor() {
-      color_t c = RoundButton::getColor();
+      color_t c = getApp()->appButtonColor();
       if (getApp()->highlighted()) {
           c = screen.brighten(c, 128);
         }
@@ -26,7 +26,7 @@ class AppButton : public RoundButton {
     virtual AppMode     getAppMode()    { return INTERACTIVE_MODE; }
 };
 
-// SETTINGSBUTTON
+// SETTINGSBUTTON - special buttons for settings rather than launching apps
 class SettingsButton : public AppButton {
   public:
      virtual color_t getColor() {
@@ -47,6 +47,6 @@ class MouseButton : public SettingsButton {
 class ScreensaverButton : public SettingsButton {
   public:
     ScreensaverButton(BritepadApp* a) { setApp(a); setColor(screen.green);}
-    virtual AppMode getAppMode() { return MOUSE_MODE; }
+    virtual AppMode getAppMode() { return SCREENSAVER_MODE; }
 };
 #endif

@@ -70,30 +70,17 @@ void CountdownApp::run() {
     int hours = (delta/(60*60)) % 24;
     int mins = (delta/60) % 60;
     int secs = delta % 60;
-    char textTime[100];
+    PString textTime;
+    textTime.printf("  %d days, %d hours,  \n", days, hours);
+    textTime.printf("  %d minutes, & %d seconds  \n", mins, secs);
+    textTime.printf("    %s    \n", past ? "ago..." : "until...");
 
     screen.setFont(Arial_16_Bold);
     screen.setTextColor(past ? screen.red : screen.white , bgColor());
+    screen.setTextAlign((alignment_t)(ALIGN_HCENTER|ALIGN_VCENTER));
+    screen.setCursor(screen.clipMidWidth(),screen.clipMidHeight());
 
-    sprintf(textTime, "  %d days, %d hours,  ", days, hours);
-
-    coord_t w = screen.measureTextWidth(textTime);
-    coord_t y = screen.clipTop() + screen.clipHeight()/(isAppMode(SCREENSAVER_MODE) ? 2 : 3) - 3*screen.fontLineSpace()/2;
-
-    screen.setCursor(screen.clipMidWidth() - w/2, y);
-    screen.drawText(textTime);
-
-    sprintf(textTime, "  %d minutes, & %d seconds  ", mins, secs);
-    w = screen.measureTextWidth(textTime);
-    y += screen.fontLineSpace();
-    screen.setCursor(screen.clipMidWidth() - w/2, y);
-    screen.drawText(textTime);
-
-    sprintf(textTime, "    %s    ", past ? "ago..." : "until...");
-    w = screen.measureTextWidth(textTime);
-    y += screen.fontLineSpace();
-    screen.setCursor(screen.clipMidWidth() - w/2, y);
-    screen.drawText(textTime);
-
+    screen.drawText(textTime.c_str());
+    screen.setTextAlign();
   }
 }

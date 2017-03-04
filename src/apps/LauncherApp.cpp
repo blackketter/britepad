@@ -44,7 +44,7 @@ void LauncherApp::begin(AppMode asMode) {
               pos++;
             }
             if (!a->isHidden()) {
-              console.debugf("Adding %s to screen %s at position %d\n", a->name(), screenNames[curScreen], pos);
+              //console.debugf("Adding %s to screen %s at position %d\n", a->name(), screenNames[curScreen], pos);
 
               Button* b = nullptr;
 

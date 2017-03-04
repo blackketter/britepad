@@ -8,36 +8,34 @@
 class SetTimerApp : public BritepadApp {
 
   public:
-    SetTimerApp(const char* name, time_t duration, int32_t pos = defaultLauncherPosition);
-    SetTimerApp();
+    SetTimerApp(int32_t pos);
+
+    void init();
+    void end();
 
     void begin(AppMode asMode);
     void run();
-    const char* name() { return name_str; };
-    color_t appButtonColor() { return screen.LightBlue; }
 
-    virtual bool highlighted() { return !timer_app.isReset() && (timer_app.getTime() == timer_duration); }
+    color_t appButtonColor() { return screen.LightBlue; }
 
     bool disablesScreensavers() { return true; }
 
+    const char* name() { return "Set Timer"; }
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stmr";
     AppType getAppType() { return TIMER_APP; }
 
-    bool customTimerRunning();
+    int32_t getDuration() { return _customTimerDuration; }
+
   private:
-    bool edit = true;
-    const char* name_str = "Timer";
-    int timer_duration = 0;
+    int32_t _customTimerDuration = 30*60;  // there's only one custom timer
+    static const int _buttonCount = 5;
+    RoundButton button[_buttonCount];
 
     void drawTime();
     void drawButtons();
-    static TimerApp timer_app;
-    static const int buttoncount = 5;
-
-    RoundButton button[buttoncount];
 };
 
-
+extern SetTimerApp theSetTimerApp;
 #endif
 

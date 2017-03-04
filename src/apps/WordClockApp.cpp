@@ -24,7 +24,7 @@ void WordClockApp::end() {
 
 void WordClockApp::update() {
     clearScreen();
-    char words[500];
+    PString words;
     const char* hour;
 
     const char* about;
@@ -101,26 +101,27 @@ void WordClockApp::update() {
 
     screen.setFont(Arial_20_Bold);
     screen.setTextColor(currentColor++, bgColor());
-    screen.setCursor(screen.clipLeft() + 8, screen.clipTop() + 12);
+    screen.setCursor(screen.clipMidWidth(), screen.clipTop());
+    screen.setTextAlign((alignment_t)(ALIGN_VCENTER|ALIGN_HCENTER));
 
     if (now.minute() == 0) {
       static const char* wordsonthehourformat = "It's %s%s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsonthehourformat, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
+      words.printf(wordsonthehourformat, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else if (now.minute() == 30) {
       static const char* wordsformathalfpast = "It's %shalf past %s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
+      words.printf(wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else if (now.minute() == 15) {
       static const char* wordsformathalfpast = "It's %squarter past %s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
+      words.printf(wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else if (now.minute() == 45) {
       static const char* wordsformathalfpast = "It's %squarter to %s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
+      words.printf(wordsformathalfpast, about, hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else if (afterhour) {
       static const char* wordsformatpast = "It's %s%s minute%s past %s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsformatpast, about, numberStrings[now.minute()], (now.minute() == 1) ? "" : "s", hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
+      words.printf(wordsformatpast, about, numberStrings[now.minute()], (now.minute() == 1) ? "" : "s", hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else if (beforehour) {
       static const char* wordsformatto = "It's %s%s minute%s to %s %son %s, %s %s, two-thousand and %s.";
-      sprintf(words, wordsformatto, about, numberStrings[60-now.minute()], (now.minute() == 59) ? "" : "s", hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
+      words.printf(wordsformatto, about, numberStrings[60-now.minute()], (now.minute() == 59) ? "" : "s", hour, timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     } else {
       static const char* wordsformat = "It's %s%s %s %son %s, %s %s, two-thousand and %s.";
       if (hournum == 12) {
@@ -130,11 +131,12 @@ void WordClockApp::update() {
         hour = "twelve";
         timeofday = "in the morning ";
       }
-      sprintf(words, wordsformat, about, hour, numberStrings[now.minute()], timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
+      words.printf(wordsformat, about, hour, numberStrings[now.minute()], timeofday, now.weekdayString(), now.monthString(), ordinalStrings[now.day()], numberStrings[now.year() % 2000]);
     }
 
 //    const char* oldWrap = screen.setTextSoftWrapChars(" -");
-    screen.drawText(words);
+    screen.drawText(words.c_str());
+    screen.setTextAlign();
 //    screen.setTextSoftWrapChars(oldWrap);
 }
 

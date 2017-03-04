@@ -33,4 +33,6 @@ extern Preferences prefs;
 
 #include "Utilities.h"
 
+#include "PString.h"
+
 #endif

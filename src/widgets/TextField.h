@@ -10,33 +10,32 @@ class TextField : public Widget
 {
   public:
     TextField() {};
-    TextField(coord_t x, coord_t y, coord_t w, coord_t h, font_t f, color_t fgColor, color_t bgColor, int8_t hAlign = ALIGN_LEFT, int8_t vAlign = ALIGN_TOP) {
-      init(x,y,w,h,f,fgColor, bgColor,hAlign,vAlign);
+    TextField(coord_t x, coord_t y, coord_t w, coord_t h, font_t f, color_t fgColor, color_t bgColor, alignment_t a = ALIGN_DEFAULT) {
+      init(x,y,w,h,f,fgColor, bgColor,a);
     };
 
 
-    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h, font_t f, color_t fgColor, color_t bgColor, int8_t hAlign = ALIGN_LEFT, int8_t vAlign = ALIGN_TOP);
+    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h, font_t f, color_t fgColor, color_t bgColor, alignment_t a = ALIGN_DEFAULT);
 
     void draw() { draw(nullptr); }
     void draw(const char* t);
-    void drawf(const char* format, ...);
+    void draw(String& s) { draw(s.c_str());}
 
-    void setColor(color_t fgColor, color_t bgColor) { fColor = fgColor; bColor = bgColor; };
-    void setColor(color_t c) { fColor = bColor = c; };
-    void setFColor(color_t c) { fColor = c; }
+    void setColor(color_t fgColor, color_t bgColor) { _fColor = fgColor; _bColor = bgColor; };
+    void setColor(color_t c) { _fColor = _bColor = c; };
+    void setFColor(color_t c) { _fColor = c; }
 
-    void setFont(font_t f) { font = f; }
-    void setAlign(int8_t h = ALIGN_LEFT, int8_t v = ALIGN_TOP) { alignH = h; alignV = v; }
+    void setFont(font_t f) { _font = f; }
+    void setAlign(alignment_t a) { _align = a; }
 
 //    virtual void write(uint8_t);
 //    virtual void write(const char *str);
 //    virtual void write(const uint8_t *buffer, size_t size);
   protected:
-    font_t font;
-    color_t fColor;
-    color_t bColor;
-    int8_t alignH;
-    int8_t alignV;
+    font_t _font;
+    color_t _fColor;
+    color_t _bColor;
+    alignment_t _align;
 };
 #endif
 

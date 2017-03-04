@@ -47,6 +47,8 @@ class TimerApp : public StopwatchApp {
     time_t alarm_sounded = 0;
 };
 
+extern TimerApp theTimerApp;
+
 #endif
 
 

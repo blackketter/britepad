@@ -125,8 +125,9 @@ void MinesApp::begin(AppMode asMode) {
     field = new MineMatrix(screen.clipMidWidth()-screen.clipHeight()/2,(coord_t)(screen.clipTop()),screen.clipHeight(),screen.clipHeight(),minesHeight,minesWidth);
   }
 
-  minesLeft.init(screen.clipLeft()+2,screen.clipBottom()-20,field->getLeft()-screen.clipLeft()-4,20,Arial_12_Bold,screen.blue, screen.black, ALIGN_CENTER);
-  timer.init(field->getRight()+2,screen.clipBottom()-20,screen.clipRight()-field->getRight()-4,20,Arial_12_Bold,screen.white, screen.black, ALIGN_CENTER);
+  coord_t textH = field->getHeight()/minesHeight;
+  minesLeft.init(screen.clipLeft(),screen.clipBottom()-textH,field->getLeft()-screen.clipLeft(),textH,Arial_12_Bold,screen.blue, screen.black, (alignment_t)(ALIGN_CENTER|ALIGN_VCENTER));
+  timer.init(field->getRight(),screen.clipBottom()-textH,screen.clipRight()-field->getRight(),textH,Arial_12_Bold,screen.white, screen.black, (alignment_t)(ALIGN_CENTER|ALIGN_VCENTER));
 
   field->draw();
 
@@ -236,13 +237,16 @@ void MinesApp::run() {
   if (startTime) {
     t = (Uptime::millis() - startTime) / 1000;
   }
-  timer.drawf("%d", t);
+  String timeString(t);
+  timer.draw(timeString);
 
   // draw mine count
   if (gameOver) {
     minesLeft.setFColor(youlose ? screen.red : screen.green);
   }
-  minesLeft.drawf("%d", mines);
+  String mineString(mines);
+  minesLeft.draw(mineString);
+
   if (pad.up()) {
     flagging = false;
   }

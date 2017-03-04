@@ -98,10 +98,10 @@ void Button::drawTitle() {
 
   screen.setFont(getTitleFont());
   screen.setTextColor(getTitleColor());
-  screen.setCursor( _xpos+_width/2, _ypos+_height/2 - screen.measureTextHeight(drawStr) / 2);
-  alignment_t oldalign = screen.setTextAlign(ALIGN_HCENTER);
+  screen.setCursor( _xpos+_width/2, _ypos+_height/2);
+  screen.setTextAlign(alignment_t(ALIGN_HCENTER|ALIGN_VCENTER));
   screen.drawText(drawStr);
-  screen.setTextAlign(oldalign);
+  screen.setTextAlign();
 }
 
 void Button::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData) {

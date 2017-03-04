@@ -2,6 +2,7 @@
 #include "TimerApp.h"
 #include "Clock.h"
 
+TimerApp theTimerApp;
 
 void TimerApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);    // StopwatchApp auto starts at launch

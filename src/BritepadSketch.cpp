@@ -13,6 +13,7 @@ Clock clock = Clock();
 Britepad britepad = Britepad();
 Preferences prefs = Preferences();
 MousePad mouse = MousePad();
+
 Console console = Console();
 
 void setup() {
@@ -24,7 +25,7 @@ void setup() {
   // asm(".global _scanf_float");
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
-  delay(2000);
+  delay(1000);
 
   console.begin();
 

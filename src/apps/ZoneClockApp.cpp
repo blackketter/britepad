@@ -1,17 +1,20 @@
 #include "ZoneClockApp.h"
 
-ZoneClockApp theZoneClock("Paris", 60*60*9);
+//Central European Time (Frankfurt, Paris)
+TimeChangeRule CEST = {"CEST", Last, Sun, Mar, 2, 120};     //Central European Summer Time
+TimeChangeRule CET = {"CET ", Last, Sun, Oct, 3, 60};       //Central European Standard Time
 
-ZoneClockApp::ZoneClockApp(const char* name, stime_t offset) {
-  _offset = offset;
+ZoneClockApp theZoneClock("Paris", CEST, CET);
+
+ZoneClockApp::ZoneClockApp(const char* name, TimeChangeRule dstStart, TimeChangeRule stdStart) {
   _offsetName = name;
+  _zone.setRules(dstStart,stdStart);
+  _zoneClock.setZone(&_zone);
 };
 
 const char* ZoneClockApp::name() {
-  Time secondTime;
   char shortTime[10];
-  secondTime.setSeconds(clock.getSeconds()+_offset);
-  secondTime.shortTime(shortTime);
+  _zoneClock.shortTime(shortTime);
   sprintf(_nameStr, "%s\n%s", _offsetName, shortTime);
   return _nameStr;
 };

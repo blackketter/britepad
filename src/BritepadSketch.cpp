@@ -9,12 +9,16 @@
 Screen screen = Screen();
 TouchPad pad = TouchPad(screen.width(), screen.height());
 Sound sound = Sound();
-Clock clock = Clock();
 Britepad britepad = Britepad();
 Preferences prefs = Preferences();
 MousePad mouse = MousePad();
-
 Console console = Console();
+
+//US Pacific Time Zone (Las Vegas, Los Angeles)
+TimeChangeRule usPDT = {"PDT", Second, dowSunday, Mar, 2, -420};
+TimeChangeRule usPST = {"PST", First, dowSunday, Nov, 2, -480};
+Timezone localTimezone(usPDT,usPST);
+Clock clock = Clock();
 
 void setup() {
   // this is the magic trick for printf to support float
@@ -44,6 +48,10 @@ void setup() {
 
   console.debugln("starting sound");
   sound.begin();
+
+  console.debugln("starting clock");
+  clock.setZone(&localTimezone);
+  clock.updateTime();
 
   console.debugln("starting app framework");
   britepad.begin();

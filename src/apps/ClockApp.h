@@ -11,6 +11,7 @@ class ClockApp : public ScreensaverApp {
     void run();
     virtual void update();
     virtual millis_t updateInterval() { return 1000; }
+    virtual Clock& getClock() { return clock; }
 
     bool displaysClock() { return true; };
 
@@ -27,7 +28,6 @@ class ClockApp : public ScreensaverApp {
     millis_t lastUpdate = 0;
     color_t currentColor = screen.red;
     coord_t lastWidth = 0;
-    stime_t _offset = 0;
 };
 
 #endif

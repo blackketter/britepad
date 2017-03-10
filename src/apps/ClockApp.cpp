@@ -18,13 +18,13 @@ void ClockApp::begin(AppMode asMode) {
 }
 
 void ClockApp::update() {
-    char textTime[6];  // "12:34"
+    char textTime[6];  // "12:34\0"
 
     currentColor++;
 
     Time thisTime;
 
-    thisTime.setSeconds(clock.getSeconds()+_offset);
+    thisTime.setSeconds(getClock().getSeconds());
     screen.setFont(Arial_72_Digits_Bold);
 
     screen.setTextColor(screen.luminance(currentColor) < 128 ? screen.brighten(currentColor, 128) : currentColor, bgColor());

@@ -4,7 +4,7 @@
 
 class ZoneClockApp : public ClockApp {
   public:
-    ZoneClockApp(const char* name, stime_t offset);
+    ZoneClockApp(const char* name, TimeChangeRule dstStart, TimeChangeRule stdStart);
     const char* name();
     virtual void update();
 
@@ -13,9 +13,13 @@ class ZoneClockApp : public ClockApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "zone";
 
+    virtual Clock& getClock() { return _zoneClock; }
+
   protected:
     const char* _offsetName;
     char _nameStr[100];
+    Clock _zoneClock;
+    Timezone _zone;
 };
 
 #endif

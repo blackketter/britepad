@@ -31,8 +31,9 @@ void TouchPad::begin() {
     console.debugln("touchpad working");
     ctpWorking = true;
   }
-
+  console.debugln("starting ambient");
   initAPDS();
+  console.debugln("started ambient");
 }
 
 void TouchPad::update() {
@@ -308,6 +309,7 @@ void TouchPad::initAPDS() {
   }
 
   if (apds.init()) {
+    console.debugln("APDS-9960 Initialized");
     apds.enableLightSensor(useAPDS9960Interrupts);
     apds.enableProximitySensor(useAPDS9960Interrupts);
     apds.setGestureEnterThresh(proxGestureBeginThreshold); // default is 40
@@ -315,8 +317,7 @@ void TouchPad::initAPDS() {
     apds.setLEDDrive(LED_DRIVE_25MA); // default is 100
     apds.setGestureGain(GGAIN_1X); // default is 4x
     apds.enableGestureSensor(useAPDS9960Interrupts);
-
-    console.debugln("APDS-9960 Initialized");
+    console.debugln("APDS-9960 Configured");
 
   } else {
     console.debugln("APDS-9960 Fail init()");

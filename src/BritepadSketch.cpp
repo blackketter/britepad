@@ -5,7 +5,6 @@
 /* britepad sketch*/
 #include "BritepadShared.h"
 
-
 Screen screen = Screen();
 TouchPad pad = TouchPad(screen.width(), screen.height());
 Sound sound = Sound();
@@ -13,6 +12,7 @@ Britepad britepad = Britepad();
 Preferences prefs = Preferences();
 MousePad mouse = MousePad();
 Console console = Console();
+KeyboardMatrix keyboardMatrix = KeyboardMatrix();
 
 //US Pacific Time Zone (Las Vegas, Los Angeles)
 TimeChangeRule usPDT = {"PDT", Second, dowSunday, Mar, 2, -420};
@@ -35,6 +35,9 @@ void setup() {
 
   console.debugln("britepad starting...");
 
+  delay(1000);
+  console.executeCommandLine("i2c");
+
   console.debugln("starting prefs...");
   prefs.begin();
 
@@ -52,6 +55,9 @@ void setup() {
   console.debugln("starting clock");
   clock.setZone(&localTimezone);
   clock.updateTime();
+
+  console.debugln("starting keyboard matrix");
+  keyboardMatrix.begin();
 
   console.debugln("starting app framework");
   britepad.begin();

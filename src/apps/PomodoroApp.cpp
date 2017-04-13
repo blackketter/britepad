@@ -2,7 +2,7 @@
 #include "PomodoroApp.h"
 #include "Clock.h"
 
-PomodoroApp thePomodoroApp;
+PomodoroApp thePomodoroApp(10);
 
 void PomodoroApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);

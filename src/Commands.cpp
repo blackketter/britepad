@@ -19,6 +19,37 @@ class AppsCommand : public Command {
 };
 AppsCommand theAppsCommand;
 
+class AppCommand : public Command {
+  public:
+    const char* getName() { return "app"; }
+    const char* getHelp() { return "Info about currently running app"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) {
+        // show the apps that have been loaded
+        BritepadApp* anApp = britepad.currentApp();
+        if (anApp) {
+          String modeString;
+          c->printf("Current app:\n  name: %s\n  id:   %s\n  addr: %08x\n", anApp->name(), anApp->id(), (uint32_t)anApp);
+          switch (anApp->getAppMode()) {
+            case MOUSE_MODE:
+              modeString = "MOUSE_MODE";
+              break;
+            case SCREENSAVER_MODE:
+              modeString = "SCREENSAVER_MODE";
+              break;
+            case INTERACTIVE_MODE:
+              modeString = "INTERACTIVE_MODE";
+              break;
+            default:
+              modeString.append(anApp->getAppMode());
+          };
+          c->printf("  mode: %s\n", modeString.c_str());
+        } else {
+          c->printf("No currently running app!\n");
+        }
+    }
+};
+AppCommand theAppCommand;
+
 class RunCommand : public Command {
   public:
     const char* getName() { return "run"; }
@@ -37,7 +68,7 @@ class RunCommand : public Command {
               a = britepad.getAppByID(params[1]);
           }
         }
-        
+
         if (a) {
           c->printf("Running app '%s' - %s...\n",a->id(), a->name());
           britepad.launchApp(a);

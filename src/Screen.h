@@ -59,7 +59,7 @@ typedef ILI9341_t3_font_t font_t;
 class Screen : public ILI9341_t3
 {
   public:
-    Screen(uint8_t _CS = TFT_CS, uint8_t _DC = TFT_DC, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
+    Screen(uint8_t _CS = TFT_CS_PIN, uint8_t _DC = TFT_DC_PIN, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
       ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
 #else
 //this is for ESP8266 Wemos D1 Mini
@@ -68,7 +68,7 @@ typedef GFXfont font_t;
 class Screen : public Adafruit_ILI9341
 {
   public:
-    Screen(uint8_t _CS = TFT_CS, uint8_t _DC = TFT_DC, uint8_t _RST = 255) :
+    Screen(uint8_t _CS = TFT_CS_PIN, uint8_t _DC = TFT_DC_PIN, uint8_t _RST = 255) :
       Adafruit_ILI9341(_CS, _DC, _RST)
 #endif
 

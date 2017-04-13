@@ -4,7 +4,7 @@ StartTimerApp timer10sec("10 sec", 10,0);
 StartTimerApp timer3min("3 min", 3*60,1);
 StartTimerApp timer25min("25 min", 25*60,2);
 StartTimerApp timer55min("55 min", 55*60,3);
-StartCustomTimerApp customTimerApp(9);
+StartCustomTimerApp customTimerApp(5);
 
 ////////////////////////////////////////////////////////////////////////////////
 // StartTimerApp

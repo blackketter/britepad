@@ -17,8 +17,8 @@ class BellApp : public BritepadApp {
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "bell";
-    AppType getAppType() { return TIMER_APP; }
-    
+    AppType getAppType() { return SETTINGS_APP; }
+
     void bellCallback();
 
   private:
@@ -27,11 +27,11 @@ class BellApp : public BritepadApp {
 
     int16_t _bell_interval = 20*60;  // 20 minutes
     bool _bell_enabled = true;
-    
+
     void drawTime();
     void drawButtons();
     void resetTimer();
-    
+
     static const int buttoncount = 5;
     time_t _last_run;
 

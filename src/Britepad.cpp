@@ -309,6 +309,7 @@ void Britepad::idle() {
   Timer::idle();
   sound.idle();
   console.idle();
+  keyboardMatrix.idle();
 }
 
 time_t Britepad::getScreensaverSwitchInterval() {

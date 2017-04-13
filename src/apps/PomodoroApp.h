@@ -8,6 +8,7 @@
 
 class PomodoroApp : public BritepadApp {
   public:
+    PomodoroApp(int pos) : BritepadApp() { setLauncherPosition(pos); }
     virtual void begin(AppMode asMode);
     virtual void run();
 

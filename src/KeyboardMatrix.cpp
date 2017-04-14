@@ -133,13 +133,37 @@ keycode_t KeyboardMatrix::getCodeFromSwitch(keyswitch_t k) {
 }
 
 void KeyboardMatrix::sendKeys() {
+  static int cmdHeld = 0;
   keyswitch_t changeCount = keysChanged();
   for (keyswitch_t i = 0; i < changeCount; i++) {
-    keyswitch_t c = keyChanged(i);
-    if (isKeyDown(c)) {
-      Keyboard.press(getCodeFromSwitch(c));
+    keyswitch_t key = keyChanged(i);
+    bool down = isKeyDown(key);
+    keycode_t code = getCodeFromSwitch(key);
+
+    // a little logic here for Launchbar: delete key is launchbar key
+    // multiple taps selects running apps, tapping any other key switches app
+    // single tap then other keys select within launchbar
+    if (code == KEY_DELETE) {
+      if (down) {
+        if (!cmdHeld) {
+          Keyboard.press(MODIFIERKEY_LEFT_GUI);
+        }
+        cmdHeld++;
+        Keyboard.press(KEY_SPACE);
+        Keyboard.release(KEY_SPACE);
+      }
+    } else if (down) {
+      if (cmdHeld) {
+        Keyboard.release(MODIFIERKEY_LEFT_GUI);
+        if (cmdHeld == 1) {
+          Keyboard.press(code);
+        }
+        cmdHeld = 0;
+      } else {
+        Keyboard.press(code);
+      }
     } else {
-      Keyboard.release(getCodeFromSwitch(c));
+      Keyboard.release(code);
     }
 //    console.debugf(" %d/%d - key %d %s\n", i+1, changeCount, c, isKeyDown(c) ? "down" : "up" );
   }

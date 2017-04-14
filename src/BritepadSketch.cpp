@@ -1,6 +1,7 @@
 // PlatformIO needs these for some reason
 #include "SPI.h"
 #include "EEPROM.h"
+#include "Wire.h"
 
 /* britepad sketch*/
 #include "BritepadShared.h"
@@ -30,7 +31,6 @@ void setup() {
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(1000);
-
   console.begin();
 
   console.debugln("britepad starting...");
@@ -58,6 +58,8 @@ void setup() {
 
   console.debugln("starting keyboard matrix");
   keyboardMatrix.begin();
+
+  Wire.setClock(400000);
 
   console.debugln("starting app framework");
   britepad.begin();

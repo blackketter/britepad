@@ -71,6 +71,7 @@ class BritepadApp {
     virtual bool canBeScreensaver() { return false; }
     virtual bool canBeInteractive() { return true; }
     virtual bool canBeMouse() { return false; }
+    virtual bool usesKeyboard() { return false; }
 
     virtual AppType getAppType() { return NO_APP_TYPE; }
     virtual bool isAppType(AppType t) { return t & getAppType(); }

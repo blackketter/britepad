@@ -10,6 +10,34 @@
 
 #define PROXIMITY_DEAD_TIME (1000)
 
+class FPSCommand : public Command {
+  public:
+    const char* getName() { return "fps"; }
+    const char* getHelp() { return "toggle displaying frame rate in fps"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) {
+      enable = !enable;
+      c->printf("FPS display %s\n", enable ? "enabled" : "disabled");
+    }
+    void newFrame() {
+      fps++;
+      time_t now = Uptime::seconds();
+      if (now != lastTime) {
+        lastTime = now;
+        if (enable) {
+          console.debugf("FPS: %d\n", fps);
+        }
+        fps = 0;
+      }
+    }
+
+  private:
+    bool enable = false;
+    uint32_t fps = 0;
+    time_t lastTime;
+};
+
+FPSCommand theFPSCommand;
+
 BritepadApp* appList = nullptr;
 
 BritepadApp* Britepad::getAppByID(appid_t appID) {
@@ -224,6 +252,11 @@ void Britepad::begin() {
 
 void Britepad::idle() {
 
+  keyswitch_t count = keyboardMatrix.update();
+  if (count && !currApp->usesKeyboard()) {
+    keyboardMatrix.sendKeys();
+  }
+
   pad.update();
 
   if (pad.down(TOP_PAD)) {
@@ -301,6 +334,7 @@ void Britepad::idle() {
 
   if (currApp) {
     currApp->run();
+    theFPSCommand.newFrame();
   } else {
     console.debugln("currApp nullptr!");
   }
@@ -309,7 +343,6 @@ void Britepad::idle() {
   Timer::idle();
   sound.idle();
   console.idle();
-  keyboardMatrix.idle();
 }
 
 time_t Britepad::getScreensaverSwitchInterval() {

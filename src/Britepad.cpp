@@ -19,23 +19,28 @@ class FPSCommand : public Command {
       c->printf("FPS display %s\n", enable ? "enabled" : "disabled");
     }
     void newFrame() {
-      fps++;
-      time_t now = Uptime::seconds();
-      if (now != lastTime) {
-        lastTime = now;
+      frames++;
+      millis_t now = Uptime::millis();
+      millis_t frameDur = now - lastFrame;
+      if (frameDur > maxFrame) { maxFrame = frameDur; }
+      if (now - lastTime > 1000) {
         if (enable) {
-          console.debugf("FPS: %d\n", fps);
+          console.debugf("FPS: %.2f (Max: %dms)\n", ((float)(frames*1000))/(now - lastTime), maxFrame);
         }
-        fps = 0;
+        lastTime = now;
+        frames = 0;
+        maxFrame = 0;
       }
+      lastFrame = now;
     }
 
   private:
     bool enable = false;
-    uint32_t fps = 0;
-    time_t lastTime;
+    uint32_t frames = 0;
+    millis_t lastTime;
+    millis_t lastFrame;
+    millis_t maxFrame;
 };
-
 FPSCommand theFPSCommand;
 
 BritepadApp* appList = nullptr;
@@ -258,6 +263,13 @@ void Britepad::idle() {
   }
 
   pad.update();
+
+  // idle apps
+  BritepadApp* anApp = appList;
+  while (anApp != nullptr) {
+    anApp->idle();
+    anApp = anApp->getNextApp();
+  }
 
   if (pad.down(TOP_PAD)) {
 //    console.debugln("Toppad down");

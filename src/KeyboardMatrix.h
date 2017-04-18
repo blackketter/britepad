@@ -26,17 +26,36 @@ class KeyboardMatrix {
     keyswitch_t update();  //returns number of keys changed
     void sendKeys();  // send key events to host
 
-    inline bool isKeyDown(keyswitch_t k) { return ((curState[k/numRows] >> (k%numRows)) & 0x01); }
-    inline bool wasKeyDown(keyswitch_t k) { return ((lastState[k/numRows] >> (k%numRows)) & 0x01); }
-    inline bool isKeyUp(keyswitch_t k) { return !isKeyDown(k); }
-    inline bool wasKeyUp(keyswitch_t k) { return !wasKeyDown(k); }
-    inline bool didKeyChange(keyswitch_t k) { return isKeyDown(k) != wasKeyDown(k); }
-
     keyswitch_t numKeys() { return numColumns * numRows; }  // returns the total number of keys in the matrix
-    keyswitch_t keysChanged(); // returns the number of keys that changed state in the last idle
-    keyswitch_t keyChanged(keyswitch_t n); // returns the nth key that's changed (up to the number returned by keysChanged())
+
+    // returns the number of keys that changed state in the last idle
+    keyswitch_t keysChanged();
+    keyswitch_t keysPressed();
+    keyswitch_t keysReleased();
+
+    // did a given key change?
+    inline bool keyChanged(keyswitch_t k) { return ((changedKeys[k/numRows] >> (k%numRows)) & 0x01); }
+    inline bool keyChanged(keycode_t c) { return keyChanged(getSwitchFromCode(c)); }
+    inline bool keyPressed(keyswitch_t k) { return keyChanged(k) && isKeyDown(k); }
+    inline bool keyReleased(keyswitch_t k) { return keyChanged(k) && isKeyUp(k); }
+    inline bool keyPressed(keycode_t c) { keyswitch_t k = getSwitchFromCode(c); return isKeyDown(k) && keyChanged(k); }
+    inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitchFromCode(c); return isKeyUp(k) && keyChanged(k); }
+
+    // marks key as not changed so that the event is not processed
+    inline void clearKeyChange(keyswitch_t k) { changedKeys[k/numRows] = changedKeys[k/numRows] & ~(0x01 << (k%numRows)); }
+    inline void clearKeyChange(keycode_t c) { clearKeyChange(getSwitchFromCode(c)); }
+    void clearKeyChanges();
 
     keycode_t getCodeFromSwitch(keyswitch_t k);
+    keyswitch_t getSwitchFromCode(keycode_t c);
+
+    inline bool isKeyDown(keyswitch_t k) { return ((curState[k/numRows] >> (k%numRows)) & 0x01); }
+    inline bool isKeyUp(keyswitch_t k) { return !isKeyDown(k); }
+
+    inline bool isKeyDown(keycode_t c) { return isKeyDown(getSwitchFromCode(c)); }
+    inline bool isKeyUp(keycode_t c) { return !isKeyDown(c); }
+
+
   private:
     millis_t lastScan = 0;
     static const millis_t minScanInterval = 5;
@@ -53,13 +72,9 @@ class KeyboardMatrix {
 
     uint8_t curState[numColumns];  // assumes less than 8 rows
     uint8_t lastState[numColumns];
+    uint8_t changedKeys[numColumns];
+
     void scanMatrix();
     const keymap_t* currentLayout;
-};
-
-class KeyMap {
-  public:
-    KeyMap();
-    char getChar(keyswitch_t k);
 };
 #endif

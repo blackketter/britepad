@@ -10,7 +10,6 @@
 Adafruit_FT6206 ctp = Adafruit_FT6206();
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
 
-
 void copyTPState( TPState* dest, TPState* src ) {
   memcpy(dest,src,sizeof(TPState));
 }
@@ -60,8 +59,12 @@ void TouchPad::update() {
     }
 
     // flip it around to match the screen.
-    curr.y = map(curr.y, 0, width, width, 0);
-  //  curr.x = map(curr.x, 0, height, height, 0);
+    if (ctp.getChipID() == FT6236_CHIPID) {
+      curr.x = map(curr.x, 0, height, height, 0);
+    } else {
+      curr.y = map(curr.y, 0, width, width, 0);
+    }
+
   } else {
     curr.touched[SCREEN_PAD] = false;
   }

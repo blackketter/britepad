@@ -258,9 +258,6 @@ void Britepad::begin() {
 void Britepad::idle() {
 
   keyswitch_t count = keyboardMatrix.update();
-  if (count && !currApp->usesKeyboard()) {
-    keyboardMatrix.sendKeys();
-  }
 
   pad.update();
 
@@ -269,6 +266,10 @@ void Britepad::idle() {
   while (anApp != nullptr) {
     anApp->idle();
     anApp = anApp->getNextApp();
+  }
+
+  if (count && !currApp->usesKeyboard()) {
+    keyboardMatrix.sendKeys();
   }
 
   if (pad.down(TOP_PAD)) {

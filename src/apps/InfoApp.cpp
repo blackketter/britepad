@@ -3,35 +3,36 @@
 void printInfo(Print* p) {
   char string[100];
   clock.longTime(string);
-  
+
   p->printf("Time: %s\nX: %3d Y: %3d\n", string, pad.x(), pad.y());
 
   uint32_t rtcMillis = (uint32_t)((clock.getRTCMicros()%1000000)/1000);
   uint32_t clockMillis = clock.fracMillis();
 
+  p->printf("Touch: t(%d) l(%d) b(%d) r(%d)\n", touchRead(T_TOUCH_PIN), touchRead(L_TOUCH_PIN), touchRead(B_TOUCH_PIN), touchRead(R_TOUCH_PIN));
   p->printf("RTC millis:%03d, clock: %03d, diff: %d\n", (uint32_t)rtcMillis, (uint32_t)clockMillis, (int)rtcMillis - (int)clockMillis);
   p->printf("Ambient: %3d\n", pad.getAmbientLight());
   p->printf("Backlight: %3d\n", screen.getBacklight());
   p->printf("Free ram: %10d\n", FreeMem());
   p->printf("Uptime: %f\n", Uptime::micros()/1000000.0);
-  
+
 /*
   millis_t n = Uptime::millis();
-  
+
   while (n == Uptime::millis()) {}
   n++;
-  
+
   uint32_t x = 0;
   while (n == Uptime::millis()) {
     x++;
   }
-  
+
   p->printf("Uptime::millis(): %4d   \n", x);
 
   n = millis();
   while (n == millis()) {};
   n++;
-  
+
   x = 0;
   while (n == millis()) {
     x++;
@@ -60,7 +61,7 @@ class InfoCommand : public Command {
   public:
     const char* getName() { return "info"; }
     const char* getHelp() { return "Print System Info"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) { 
+    void execute(Stream* c, uint8_t paramCount, char** params) {
       printInfo(c);
     }
 };
@@ -76,9 +77,9 @@ void InfoApp::run() {
   screen.setTextColor(screen.white, bgColor());
   screen.setFont(Arial_12);
   screen.setCursor(screen.clipLeft() + screen.fontGap(), screen.clipTop()+screen.fontGap());
-  
+
   printInfo(&screen);
-  
+
   // this info only makes sense when printed on screen
   uint8_t raw = pad.getProximityRaw();
   if (raw > max) { max = raw; sound.beep();}

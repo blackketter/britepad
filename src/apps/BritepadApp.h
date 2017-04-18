@@ -30,6 +30,8 @@ class BritepadApp {
     virtual void run() { if (isAppMode(MOUSE_MODE)) { mouse.run(); } };  // run current app state repeatedly, returns pointer to next app to run (or one of the constants below)
     virtual void switchAppMode(AppMode asMode);  // called when switching between modes
 
+    virtual void idle() {};  // give apps an opportuntity to run in the background, useful for processing keyboard events
+
     static BritepadApp* STAY_IN_APP;
     static BritepadApp* A_MOUSE_APP; // typically the MouseApp, but might be a timer when it's running
     static BritepadApp* BACK_APP;  // return to launcher

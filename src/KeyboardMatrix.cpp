@@ -20,44 +20,8 @@ void KeyboardMatrix::begin() {
   rightMatrix.SetPortA(0); // check all columns at once
 }
 
-// returns the number of keys that changed state in the last update
-keyswitch_t KeyboardMatrix::keysChanged() {
-  keyswitch_t count = 0;
-  keyswitch_t total = numKeys();
-
-  // check to see if any buttons have changed
-  for (int i = 0; i < numColumns; i++) {
-    if (curState[i] != lastState[i]) {
-      // count them
-      for (i = 0; i < total; i++) {
-        if (isKeyDown(i)!=wasKeyDown(i)) {
-          count++;
-        }
-      }
-      break;
-    }
-  }
-  return count;
-}
-
-// returns the nth key that's changed (up to the number returned by keysChanged())
-keyswitch_t KeyboardMatrix::keyChanged(keyswitch_t n) {
-  keyswitch_t count = n;
-  keyswitch_t total = numKeys();
-  keyswitch_t i;
-  for (i = 0; i < total; i++) {
-    if (isKeyDown(i)!=wasKeyDown(i)) {
-      if (count == 0) {
-        return i;
-      } else {
-        count--;
-      }
-    }
-  }
-  return NO_KEY;
-}
-
 void KeyboardMatrix::scanMatrix() {
+
   // save the last state
   for (int i = 0; i < numColumns; i++) {
     lastState[i] = curState[i];
@@ -104,7 +68,49 @@ void KeyboardMatrix::scanMatrix() {
       curState[i+numColumnsPerMatrix] = 0;
     }
   }
+
+  for (int i = 0; i < numColumns; i++) {
+    changedKeys[i] = lastState[i] ^ curState[i];
+  }
 }
+
+// returns the number of keys that changed state in the last update
+keyswitch_t KeyboardMatrix::keysChanged() {
+  keyswitch_t count = 0;
+  keyswitch_t total = numKeys();
+
+  for (keyswitch_t i = 0; i < total; i++) {
+    if (keyChanged(i)) {
+      count++;
+    }
+  }
+  return count;
+}
+
+keyswitch_t KeyboardMatrix::keysPressed() {
+  keyswitch_t count = 0;
+  keyswitch_t total = numKeys();
+
+  for (keyswitch_t i = 0; i < total; i++) {
+    if (keyPressed(i)) {
+      count++;
+    }
+  }
+  return count;
+}
+
+keyswitch_t KeyboardMatrix::keysReleased() {
+  keyswitch_t count = 0;
+  keyswitch_t total = numKeys();
+
+  for (keyswitch_t i = 0; i < total; i++) {
+    if (keyReleased(i)) {
+      count++;
+    }
+  }
+  return count;
+}
+
 
 keyswitch_t KeyboardMatrix::update() {
 
@@ -114,10 +120,21 @@ keyswitch_t KeyboardMatrix::update() {
   } else {
     lastScan = now;
   }
-
   scanMatrix();
 
   return keysChanged();
+}
+
+keyswitch_t KeyboardMatrix::getSwitchFromCode(keycode_t c) {
+  keyswitch_t i = 0;
+  while (currentLayout[i].key != NO_KEY) {
+    if (currentLayout[i].code == c) {
+      return currentLayout[i].key;
+    } else {
+      i++;
+    }
+  }
+  return NO_KEY;
 }
 
 keycode_t KeyboardMatrix::getCodeFromSwitch(keyswitch_t k) {
@@ -132,45 +149,27 @@ keycode_t KeyboardMatrix::getCodeFromSwitch(keyswitch_t k) {
   return NO_CODE;
 }
 
-void KeyboardMatrix::sendKeys() {
-  static int cmdHeld = 0;
-  keyswitch_t changeCount = keysChanged();
-  for (keyswitch_t i = 0; i < changeCount; i++) {
-    keyswitch_t key = keyChanged(i);
-    bool down = isKeyDown(key);
-    keycode_t code = getCodeFromSwitch(key);
-
-    // a little logic here for Launchbar: delete key is launchbar key
-    // multiple taps selects running apps, tapping any other key switches app
-    // single tap then other keys select within launchbar
-    if (code == KEY_DELETE) {
-      if (down) {
-        if (!cmdHeld) {
-          Keyboard.press(MODIFIERKEY_LEFT_GUI);
-        }
-        cmdHeld++;
-        Keyboard.press(KEY_SPACE);
-        Keyboard.release(KEY_SPACE);
-      }
-    } else if (down) {
-      if (cmdHeld) {
-        Keyboard.release(MODIFIERKEY_LEFT_GUI);
-        if (cmdHeld == 1) {
-          Keyboard.press(code);
-        }
-        cmdHeld = 0;
-      } else {
-        Keyboard.press(code);
-      }
-    } else {
-      Keyboard.release(code);
-    }
-//    console.debugf(" %d/%d - key %d %s\n", i+1, changeCount, c, isKeyDown(c) ? "down" : "up" );
+void KeyboardMatrix::clearKeyChanges() {
+  // save the last state
+  for (int i = 0; i < numColumns; i++) {
+    changedKeys[i] = 0;
   }
+}
 
-/*
-    console.debugf("Matrix: %02x %02x %02x %02x %02x %02x %02x\n",
-      curState[0], curState[1], curState[2], curState[3],
-      curState[4], curState[5], curState[6] );
-*/
+void KeyboardMatrix::sendKeys() {
+  int changeCount = keysChanged();
+  int changeIndex = 0;
+  for (keyswitch_t i = 0; i < numKeys(); i++) {
+    if (keyChanged(i)) {
+      bool down = isKeyDown(i);
+      keycode_t code = getCodeFromSwitch(i);
+
+      if (down) {
+        Keyboard.press(code);
+      } else {
+        Keyboard.release(code);
+      }
+      console.debugf(" %d/%d - key %d %s\n", changeIndex++, changeCount, code, down ? "down" : "up" );
+    }
+  }
 }

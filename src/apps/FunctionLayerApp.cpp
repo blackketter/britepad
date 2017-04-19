@@ -17,6 +17,21 @@ const keylayout_t functionLayer[] = {
     { 48, KEY_F10, 10+6, 0 },
     { 42, KEY_F12, 11+6, 0 },
 
+// row 1
+    { 0+1, KEY_MEDIA_VOLUME_DEC, 0, 1 },
+//    { 6+1, KEY_Q, 1, 1 },
+//    { 12+1, KEY_W, 2, 1 },
+//    { 18+1, KEY_E, 3, 1 },
+//    { 24+1, KEY_R, 4, 1 },
+//    { 30+1, KEY_T, 5, 1 },
+
+//    { 72+1, KEY_Y, 6+6, 1 },
+    { 66+1, KEY_MEDIA_PREV_TRACK, 7+6, 1 },
+    { 60+1, KEY_MEDIA_PLAY_PAUSE, 8+6, 1 },
+    { 54+1, KEY_MEDIA_NEXT_TRACK, 9+6, 1 },
+    { 48+1, KEY_MEDIA_MUTE, 10+6, 1 },
+    { 42+1, KEY_MEDIA_VOLUME_INC, 11+6, 1 },
+
 // row 4
     { 0+4, KEY_LEFT_FN, 0, 4 },
     { 42+4, KEY_RIGHT_FN, 11+6, 4 },

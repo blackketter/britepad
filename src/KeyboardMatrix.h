@@ -3,25 +3,17 @@
 
 #include "Clock.h"
 #include "MCP23018.h"
-#include "keylayouts.h"
-
-typedef uint8_t keyswitch_t;
-const keyswitch_t NO_KEY = 0xff;
-
-typedef uint16_t keycode_t;
-const keycode_t NO_CODE = 0;
-
-typedef struct keymap_t {
-  keyswitch_t key;
-  keycode_t code;
-  uint8_t x;
-  uint8_t y;
-} keymap_t;
+#include "KeyboardLayout.h"
+#include "ErgodoxLayout.h"
 
 class KeyboardMatrix {
   public:
     KeyboardMatrix();
     void begin();
+
+    void setLayout(const keylayout_t* l = nullptr) { currentLayout = l ? l : getDefaultLayout(); }  // pass nullptr to reset to default layout
+    const keylayout_t* getLayout() { return currentLayout; }
+    const keylayout_t* getDefaultLayout() { return ergodoxLayout; }
 
     keyswitch_t update();  //returns number of keys changed
     void sendKeys();  // send key events to host
@@ -55,7 +47,6 @@ class KeyboardMatrix {
     inline bool isKeyDown(keycode_t c) { return isKeyDown(getSwitchFromCode(c)); }
     inline bool isKeyUp(keycode_t c) { return !isKeyDown(c); }
 
-
   private:
     millis_t lastScan = 0;
     static const millis_t minScanInterval = 5;
@@ -75,6 +66,6 @@ class KeyboardMatrix {
     uint8_t changedKeys[numColumns];
 
     void scanMatrix();
-    const keymap_t* currentLayout;
+    const keylayout_t* currentLayout;
 };
 #endif

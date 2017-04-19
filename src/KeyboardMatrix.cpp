@@ -4,7 +4,7 @@
 
 
 KeyboardMatrix::KeyboardMatrix() {
-  currentLayout = ergodoxLayout;
+  setLayout(nullptr);  // set to default layout
 }
 
 // Port A is columns, Port B is rows.  Diodes have cathodes (positive) on A

@@ -1,10 +1,8 @@
 #ifndef _ErgodoxLayout_
 #define _ErgodoxLayout_
-#include "KeyboardMatrix.h"
+#include "KeyboardLayout.h"
 
-#define KEY_MISSING (0)
-
-const keymap_t ergodoxLayout[] = {
+const keylayout_t ergodoxLayout[] = {
 // row 0
     { 0, KEY_EQUAL, 0, 0 },
     { 6, KEY_1, 1, 0 },
@@ -66,7 +64,7 @@ const keymap_t ergodoxLayout[] = {
     { 42+3, MODIFIERKEY_RIGHT_SHIFT, 11+6, 3 },
 
 // row 4
-    { 0+4, KEY_F1, 0, 4 },
+    { 0+4, KEY_LEFT_FN, 0, 4 },
     { 6+4, KEY_TILDE, 1, 4 },
     { 12+4, KEY_ESC, 2, 4 },
     { 18+4, KEY_LEFT, 3, 4 },
@@ -76,7 +74,7 @@ const keymap_t ergodoxLayout[] = {
     { 60+4, KEY_DOWN, 8+6, 4 },
     { 54+4, KEY_LEFT_BRACE, 9+6, 4 },
     { 48+4, KEY_RIGHT_BRACE, 10+6, 4 },
-    { 42+4, KEY_F2, 11+6, 4 },
+    { 42+4, KEY_RIGHT_FN, 11+6, 4 },
 
 // thumb clusters
 
@@ -97,7 +95,9 @@ const keymap_t ergodoxLayout[] = {
     { 53, KEY_PAGE_DOWN, 10, 4 },
     { 59, KEY_ENTER, 11, 4 },
     { 65, KEY_SPACE, 12, 4 },
-    { NO_KEY, 0, 0, 0 }  // end of table marker
+
+  // end of table marker
+    { NO_KEY, 0, 0, 0 }
 };
 
 #endif

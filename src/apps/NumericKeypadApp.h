@@ -71,7 +71,7 @@ class NumericKeypadApp : public BritepadApp {
           {screen.grey30, "5", Arial_16_Bold, screen.white, nullptr, five},
           {screen.grey30, "6", Arial_16_Bold, screen.white, nullptr, six},
           {screen.grey40, "*", Arial_16_Bold, screen.white, nullptr, times},
-          {screen.grey20, nullptr, Arial_16_Bold, screen.white, tabIcon16, tab},
+          {screen.grey20, nullptr, Arial_16_Bold, screen.white, tabIcon, tab},
          },
         {
           {screen.grey30, "1", Arial_16_Bold, screen.white, nullptr, one},

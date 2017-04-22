@@ -8,7 +8,7 @@ typedef uint32_t widgetid_t;
 class Widget {
 
   public:
-    virtual ~Widget() {};
+    virtual ~Widget() {};  // does not delete list
     virtual void setBounds(coord_t x, coord_t y, coord_t w, coord_t h) { _xpos = x; _ypos = y; _width = w; _height = h; }
     virtual bool hit(coord_t x, coord_t y) { return _visible && (x >= _xpos) && (x <= _xpos+_width) && (y > _ypos) && (y <= _ypos + _height); }
     virtual void draw() = 0;
@@ -32,6 +32,15 @@ class Widget {
     virtual void setEnabled(bool enable) { _enabled = enable; }
     virtual bool getEnabled() { return _enabled; }
 
+    // manage linked list of widgets
+    Widget* getPrevious() { return _previous; }
+    Widget* getNext() { return _next; }
+    void setNext(Widget* n) { _next = n; }
+    void setPrevious(Widget* p) { _previous = p; }
+
+    void add(Widget* w);
+    void remove(Widget* w);
+
   protected:
     widgetid_t _id = 0;
     coord_t _xpos = 0;
@@ -40,6 +49,8 @@ class Widget {
     coord_t _height = 0;
     bool _visible = true;
     bool _enabled = true;
+    Widget* _previous = nullptr;
+    Widget* _next = nullptr;
 };
 
 #endif

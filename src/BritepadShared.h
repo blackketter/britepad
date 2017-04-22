@@ -9,8 +9,8 @@ extern Console console;
 #include "Screen.h"
 extern Screen screen;
 
-#include "KeyboardMatrix.h"
-extern KeyboardMatrix keyboardMatrix;
+#include "KeyMatrix.h"
+extern KeyMatrix keyMatrix;
 
 #include "TouchPad.h"
 extern TouchPad pad;

@@ -28,7 +28,7 @@ class KeyApp : public BritepadApp {
     bool isInvisible();
 
     appid_t id() { return ID; };
-    static constexpr appid_t ID = "keys";
+    static constexpr appid_t ID = "1key";
 
     AppType getAppType() { return KEY_APP; }
 

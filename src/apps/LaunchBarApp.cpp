@@ -8,17 +8,17 @@ void LaunchBarApp::idle() {
     // a little logic here for Launchbar: delete key is launchbar key
     // multiple taps selects running apps, tapping any other key switches app
     // single tap then other keys select within launchbar
-  if (keyboardMatrix.keyPressed((keycode_t)KEY_DELETE)) {
+  if (keyMatrix.keyPressed((keycode_t)KEY_DELETE)) {
      if (!cmdHeld) {
       Keyboard.press(MODIFIERKEY_LEFT_GUI);
     }
     cmdHeld = Uptime::millis();
     Keyboard.press(KEY_SPACE);
     Keyboard.release(KEY_SPACE);
-    keyboardMatrix.clearKeyChange((keycode_t)KEY_DELETE);
+    keyMatrix.clearKeyChange((keycode_t)KEY_DELETE);
 
   } else if (cmdHeld &&
-      (keyboardMatrix.keysPressed() || (Uptime::millis()-cmdHeld > releaseTimeout))) {
+      (keyMatrix.keysPressed() || (Uptime::millis()-cmdHeld > releaseTimeout))) {
     // any other key press, we'll escape out
     Keyboard.release(MODIFIERKEY_LEFT_GUI);
     cmdHeld = 0;

@@ -256,21 +256,31 @@ void Britepad::begin() {
 }
 
 void Britepad::idle() {
+  if (currApp && !currApp->usesKeyboard()) {
+    keyMatrix.update();
+  }
 
-  keyswitch_t count = keyboardMatrix.update();
+  idleApps();
 
-  pad.update();
+  if (currApp && !currApp->usesKeyboard()) {
+    keyMatrix.sendKeys();
+  }
+};
 
+void Britepad::idleApps() {
   // idle apps
   BritepadApp* anApp = appList;
   while (anApp != nullptr) {
     anApp->idle();
     anApp = anApp->getNextApp();
   }
+}
 
-  if (count && !currApp->usesKeyboard()) {
-    keyboardMatrix.sendKeys();
-  }
+void Britepad::loop() {
+
+  keyMatrix.update();
+  pad.update();
+  idleApps();
 
   if (pad.down(TOP_PAD)) {
 //    console.debugln("Toppad down");
@@ -356,6 +366,8 @@ void Britepad::idle() {
   Timer::idle();
   sound.idle();
   console.idle();
+
+  keyMatrix.sendKeys();
 }
 
 time_t Britepad::getScreensaverSwitchInterval() {

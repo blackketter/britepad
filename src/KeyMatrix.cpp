@@ -1,14 +1,14 @@
 #include "BritepadShared.h"
-#include "KeyboardMatrix.h"
+#include "KeyMatrix.h"
 #include "ErgodoxLayout.h"
 
 
-KeyboardMatrix::KeyboardMatrix() {
+KeyMatrix::KeyMatrix() {
   setLayout(nullptr);  // set to default layout
 }
 
 // Port A is columns, Port B is rows.  Diodes have cathodes (positive) on A
-void KeyboardMatrix::begin() {
+void KeyMatrix::begin() {
   leftMatrix.SetAddress(leftAddr);
   leftMatrix.SetDirection(0, 0xff);  // port a output, port b input
   leftMatrix.SetPullups(0,0xff); // port a no pullups, port b pullups
@@ -20,7 +20,7 @@ void KeyboardMatrix::begin() {
   rightMatrix.SetPortA(0); // check all columns at once
 }
 
-void KeyboardMatrix::scanMatrix() {
+void KeyMatrix::scanMatrix() {
 
   // save the last state
   for (int i = 0; i < numColumns; i++) {
@@ -75,7 +75,7 @@ void KeyboardMatrix::scanMatrix() {
 }
 
 // returns the number of keys that changed state in the last update
-keyswitch_t KeyboardMatrix::keysChanged() {
+keyswitch_t KeyMatrix::keysChanged() {
   keyswitch_t count = 0;
   keyswitch_t total = numKeys();
 
@@ -87,7 +87,7 @@ keyswitch_t KeyboardMatrix::keysChanged() {
   return count;
 }
 
-keyswitch_t KeyboardMatrix::keysPressed() {
+keyswitch_t KeyMatrix::keysPressed() {
   keyswitch_t count = 0;
   keyswitch_t total = numKeys();
 
@@ -99,7 +99,7 @@ keyswitch_t KeyboardMatrix::keysPressed() {
   return count;
 }
 
-keyswitch_t KeyboardMatrix::keysReleased() {
+keyswitch_t KeyMatrix::keysReleased() {
   keyswitch_t count = 0;
   keyswitch_t total = numKeys();
 
@@ -112,7 +112,7 @@ keyswitch_t KeyboardMatrix::keysReleased() {
 }
 
 
-keyswitch_t KeyboardMatrix::update() {
+keyswitch_t KeyMatrix::update() {
 
   millis_t now = Uptime::millis();
   if ((now - lastScan) < minScanInterval) {
@@ -125,7 +125,7 @@ keyswitch_t KeyboardMatrix::update() {
   return keysChanged();
 }
 
-keyswitch_t KeyboardMatrix::getSwitchFromCode(keycode_t c) {
+keyswitch_t KeyMatrix::getSwitch(keycode_t c) {
   keyswitch_t i = 0;
   while (currentLayout[i].key != NO_KEY) {
     if (currentLayout[i].code == c) {
@@ -137,39 +137,140 @@ keyswitch_t KeyboardMatrix::getSwitchFromCode(keycode_t c) {
   return NO_KEY;
 }
 
-keycode_t KeyboardMatrix::getCodeFromSwitch(keyswitch_t k) {
-  keyswitch_t i = 0;
-  while (currentLayout[i].key != NO_KEY) {
-    if (currentLayout[i].key == k) {
-      return currentLayout[i].code;
-    } else {
-      i++;
-    }
+keycode_t KeyMatrix::getCode(keyswitch_t k) {
+  const keylayout_t* l = getKey(k);
+  if (l) {
+    return l->code;
   }
-  return NO_CODE;
+ return NO_CODE;
 }
 
-void KeyboardMatrix::clearKeyChanges() {
+const keylayout_t* KeyMatrix::getKey(keyswitch_t k, const keylayout_t* l) {
+  if (l == nullptr) { l = currentLayout; }
+  keyswitch_t i = 0;
+  while (l[i].key != NO_KEY) {
+    if (l[i].key == k) {
+      return (&l[i]);
+    }
+    i++;
+  }
+  return nullptr;
+}
+
+uint8_t KeyMatrix::getWidth() {
+  uint8_t maxWidth = 0;
+  keyswitch_t i = 0;
+  const keylayout_t* l = getDefaultLayout();
+  while (l[i].key != NO_KEY) {
+    uint8_t w = l[i].x+l[i].w;
+    if (w > maxWidth) { maxWidth = w; }
+    i++;
+  }
+  return maxWidth;
+}
+
+uint8_t KeyMatrix::getHeight() {
+  uint8_t maxHeight = 0;
+  keyswitch_t i = 0;
+  const keylayout_t* l = getDefaultLayout();
+  while (l[i].key != NO_KEY) {
+    uint8_t h = l[i].y+l[i].h;
+    if (h > maxHeight) { maxHeight = h; }
+    i++;
+  }
+  return maxHeight;
+}
+
+// todo: make these accurate
+char KeyMatrix::getChar(keyswitch_t k) { return 'x'; }
+
+uint8_t KeyMatrix::getKeyX(keyswitch_t k) {
+  const keylayout_t* l = getKey(k, getDefaultLayout());
+  if (l) {
+    return l->x;
+  }
+  return 0;
+}
+
+uint8_t KeyMatrix::getKeyY(keyswitch_t k) {
+  const keylayout_t* l = getKey(k, getDefaultLayout());
+  if (l) {
+    return l->y;
+  }
+  return 0;
+}
+
+uint8_t KeyMatrix::getKeyWidth(keyswitch_t k) {
+  const keylayout_t* l = getKey(k, getDefaultLayout());
+  if (l) {
+    return l->w;
+  }
+  return 0;
+}
+uint8_t KeyMatrix::getKeyHeight(keyswitch_t k) {
+  const keylayout_t* l = getKey(k, getDefaultLayout());
+  if (l) {
+    return l->h;
+  }
+  return 0;
+}
+
+const keyinfo_t* KeyMatrix::getKeyInfo(keycode_t c) {
+  int i = 0;
+  while (keyInfo[i].code != NO_CODE) {
+    if (keyInfo[i].code == c) {
+      return &keyInfo[i];
+    }
+    i++;
+  }
+  return nullptr;
+}
+
+char KeyMatrix::getKeyChar(keycode_t c) {
+  const keyinfo_t* info = getKeyInfo(c);
+  if (info) {
+    return info->c;
+  } else {
+    return 0;
+  }
+}
+
+const icon_t KeyMatrix::getKeyIcon(keycode_t c) {
+  const keyinfo_t* info = getKeyInfo(c);
+  if (info) {
+    return info->icon;
+  } else {
+    return 0;
+  }
+}
+
+const char* KeyMatrix::getKeyLabel(keycode_t c) {
+  const keyinfo_t* info = getKeyInfo(c);
+  if (info) {
+    return info->label;
+  } else {
+    return 0;
+  }
+}
+
+void KeyMatrix::clearKeyChanges() {
   // save the last state
   for (int i = 0; i < numColumns; i++) {
     changedKeys[i] = 0;
   }
 }
 
-void KeyboardMatrix::sendKeys() {
-  int changeCount = keysChanged();
-  int changeIndex = 0;
+void KeyMatrix::sendKeys() {
   for (keyswitch_t i = 0; i < numKeys(); i++) {
     if (keyChanged(i)) {
       bool down = isKeyDown(i);
-      keycode_t code = getCodeFromSwitch(i);
+      keycode_t code = getCode(i);
 
       if (down) {
         Keyboard.press(code);
       } else {
         Keyboard.release(code);
       }
-      console.debugf(" %d/%d - key %d %s\n", changeIndex++, changeCount, code, down ? "down" : "up" );
     }
   }
 }

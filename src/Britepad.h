@@ -20,8 +20,9 @@ class LauncherApp;
 
 class Britepad {
   public:
-    void begin();
-    void idle();
+    void begin();  // system setup
+    void loop();   // event loop
+    void idle();   // background processing (esp. for keyboard event handling)
 
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { launchedAppPtr = app; launchedAppMode = mode; }
     BritepadApp* currentApp() { return currApp; }
@@ -49,6 +50,8 @@ class Britepad {
 
     BritepadApp* wantsToRun();
     BritepadApp* randomApp(AppMode m);
+
+    void idleApps();
 
     BritepadApp* theLauncherApp;
 

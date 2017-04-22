@@ -4,7 +4,7 @@
 
 
 KeyMatrix::KeyMatrix() {
-  setLayout(nullptr);  // set to default layout
+  setLayout();  // set to default layout
 }
 
 // Port A is columns, Port B is rows.  Diodes have cathodes (positive) on A
@@ -273,4 +273,10 @@ void KeyMatrix::sendKeys() {
       }
     }
   }
+}
+
+void KeyMatrix::setLayout(const keylayout_t* l) {
+  console.debugf("setlayout: %d\n",(int)l);
+  currentLayout = l ? l : getDefaultLayout();
+  console.debugf(" now: %d (default: %d vs %d)\n",(int)currentLayout, (int)keyMatrix.getDefaultLayout(), (int)getDefaultLayout());
 }

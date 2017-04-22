@@ -21,12 +21,13 @@ void KeyboardViewerApp::begin(AppMode asMode) {
       coord_t y = screen.clipTop()+keyMatrix.getKeyY(k)*oneKeyHeight;
       coord_t w = oneKeyWidth*keyMatrix.getKeyWidth(k);
       coord_t h = oneKeyWidth*keyMatrix.getKeyHeight(k);
-      Button* b = new Button(x+1, y+1, w-1, h-1, screen.red, false, nullptr, Arial_10_Bold, screen.black, nullptr, (widgetid_t)k);
+      Button* b = new Button(x+1, y+1, w-1, h-1, screen.red, false, "", Arial_10_Bold, screen.black, nullptr, (widgetid_t)k);
       buttons->add(b);
     }
   }
 
   draw();
+  manuallyLaunched = !tutorialMode;
 }
 
 void KeyboardViewerApp::end() {
@@ -35,7 +36,12 @@ void KeyboardViewerApp::end() {
 }
 
 void KeyboardViewerApp::run() {
-  draw();
+  idle(); // make sure we know if we're in tutorial mode
+  if (!manuallyLaunched && !tutorialMode) {
+    launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
+  } else {
+    draw();
+  }
 };
 
 void KeyboardViewerApp::draw() {
@@ -46,19 +52,32 @@ void KeyboardViewerApp::draw() {
 
     keycode_t c = keyMatrix.getCode(k);
 
-    const char* label = keyMatrix.getKeyLabel(c);
+    const char* title = keyMatrix.getKeyLabel(c);
     const icon_t icon = keyMatrix.getKeyIcon(c);
+    bool down = keyMatrix.isKeyDown(k);
 
     if (icon) {
-      label = nullptr;
+      title = nullptr;
     }
 
-    button->setHighlighted(keyMatrix.isKeyDown(k));
-    button->setTitle(label);
-    button->setIcon(icon);
+    bool changed = false;
+    if (button->getTitle() != title) changed = true;
+    if (button->getIcon().getData() != icon) changed = true;
+    if (button->getHighlighted() != down) changed = true;
 
+    if (changed) {
+      button->setHighlighted(keyMatrix.isKeyDown(k));
+      button->setTitle(title);
+      button->setIcon(icon);
+      button->draw();
+    }
     button = (Button*)(button->getNext());
   }
-
-  buttons->draw();
 };
+
+void KeyboardViewerApp::idle() {
+  tutorialMode = false;
+  if (keyMatrix.getLayout() != keyMatrix.getDefaultLayout()) {
+      tutorialMode = true;
+  }
+}

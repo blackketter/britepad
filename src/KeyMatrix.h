@@ -11,9 +11,9 @@ class KeyMatrix {
     KeyMatrix();
     void begin();
 
-    void setLayout(const keylayout_t* l = nullptr) { currentLayout = l ? l : getDefaultLayout(); }  // pass nullptr to reset to default layout
+    void setLayout(const keylayout_t* l = nullptr);  // pass nullptr to reset to default layout
     const keylayout_t* getLayout() { return currentLayout; }
-    const keylayout_t* getDefaultLayout() { return ergodoxLayout; }
+    const keylayout_t* getDefaultLayout() { return defaultLayout; }
 
     keyswitch_t update();  //returns number of keys changed
     void sendKeys();  // send key events to host
@@ -83,5 +83,6 @@ class KeyMatrix {
 
     void scanMatrix();
     const keylayout_t* currentLayout;
+    const keylayout_t* defaultLayout = ergodoxLayout;
 };
 #endif

@@ -24,8 +24,8 @@ const int R_LOW_THRESHOLD = 1100;
 const int B_HIGH_THRESHOLD = 1100;
 const int B_LOW_THRESHOLD = 1000;
 
-const int T_HIGH_THRESHOLD = 1150;
-const int T_LOW_THRESHOLD = 1050;
+const int T_HIGH_THRESHOLD = 1200;
+const int T_LOW_THRESHOLD = 1100;
 
 // prox/light sensor interrupt pin
 const pinNumber APDS9960_INT_PIN = 20;  // Needs to be an interrupt pin

@@ -20,10 +20,15 @@ class KeyboardViewerApp : public BritepadApp {
     bool wantsToRun() { return tutorialMode; }
     bool disablesScreensavers() { return manuallyLaunched; }
 
+    bool canBeMouse() { return true; }
+    bool canBeInteractive() { return true; }
+
   private:
     void draw();
     WidgetGroup* buttons = nullptr;
     bool tutorialMode = false;
+    BritepadApp* lastApp = nullptr;
+    AppMode lastMode;
     bool manuallyLaunched = false;
 };
 

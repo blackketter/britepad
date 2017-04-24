@@ -40,22 +40,24 @@ void TouchPad::update() {
   copyTPState(&last, &curr);
 
   curr.time = Uptime::millis();
-
+//console.debugln("updateAPDS()");
   updateAPDS();
   curr.touched[PROXIMITY_SENSOR] = getProximityPresent();
 
   if (ctpWorking) {
-    curr.touched[SCREEN_PAD] = ctp.touched();
     // Retrieve a point
+//console.debugln("ctp.getPoint()");
     TS_Point p = ctp.getPoint();
+//console.debugln("ctp.getPoint() done");
 
     curr.x = p.y;
     curr.y = p.x;
 
     // bogus coordinates at 0,0
-    if (curr.x == 0 && curr.y == 0 && curr.touched[SCREEN_PAD]) {
-      console.debugln("bogus 0,0 coordinates");
+    if (curr.x == 0 && curr.y == 0) {
       curr.touched[SCREEN_PAD] = 0;
+    } else {
+      curr.touched[SCREEN_PAD] = 1;
     }
 
     // flip it around to match the screen.
@@ -75,6 +77,7 @@ void TouchPad::update() {
     curr.y = last.y;
   }
 
+//console.debugln("touchRead(T_TOUCH_PIN)");
   // read the 4 touch panels
   int t = touchRead(T_TOUCH_PIN);
   int b = touchRead(B_TOUCH_PIN);
@@ -133,7 +136,7 @@ void TouchPad::update() {
     gesturesSearched = nullptr;
     lastGesture = Gesture::NO_GESTURE;
   }
- }
+}
 
 
 // todo: save this capture and reuse in getGesture()

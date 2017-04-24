@@ -36,12 +36,18 @@ void KeyboardViewerApp::end() {
 }
 
 void KeyboardViewerApp::run() {
+
   idle(); // make sure we know if we're in tutorial mode
+
   if (!manuallyLaunched && !tutorialMode) {
-    launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
-  } else {
-    draw();
+    if (lastApp) {
+      launchApp(lastApp, lastMode);
+//      britepad.disableScreensavers(0);
+    }
   }
+
+  draw();
+
 };
 
 void KeyboardViewerApp::draw() {
@@ -79,5 +85,10 @@ void KeyboardViewerApp::idle() {
   tutorialMode = false;
   if (keyMatrix.getLayout() != keyMatrix.getDefaultLayout()) {
       tutorialMode = true;
+      BritepadApp* currApp = britepad.currentApp();
+      if (currApp && currApp != this) {
+        lastApp = currApp;
+        lastMode = lastApp->getAppMode();
+      }
   }
 }

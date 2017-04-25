@@ -2,6 +2,15 @@
 #include "KeyMatrix.h"
 #include "ErgodoxLayout.h"
 
+class KeysCommand : public Command {
+  public:
+    const char* getName() { return "keys"; }
+    const char* getHelp() { return "display status of key matrix"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) {
+      keyMatrix.dumpStatus(c);
+    }
+};
+KeysCommand theKeysCommand;
 
 KeyMatrix::KeyMatrix() {
   setLayout();  // set to default layout
@@ -369,18 +378,23 @@ bool KeyMatrix::doubleTapped(keycode_t c) {
   }
 }
 
-void KeyMatrix::dumpStatus() {
-  console.debugln("---------------");
-  console.debugln("Keyboard Status:");
+void KeyMatrix::dumpStatus(Stream* c) {
+  if (c == nullptr) { c = &console; }
+  c->println("---------------");
+  c->println("Keyboard Status:");
   for (keyswitch_t k = 0; k < numKeys(); k++) {
-    if (isKeyDown(k)) {
-      console.debugf(" Key %d down (%s)\n", k,getKeyLabel(getCode(k)));
+    if (keyPressed(k)) {
+      c->printf(" Key '%s' pressed (switch: %d)\n", getKeyLabel(getCode(k)), k);
+    } else if (isKeyDown(k)) {
+      c->printf(" Key '%s' down (switch: %d)\n", getKeyLabel(getCode(k)), k);
+    } else if (keyReleased(k)) {
+      c->printf(" Key '%s' released (switch: %d)\n", getKeyLabel(getCode(k)), k);
     }
   }
-  console.debugln("");
+  c->println("");
   for (uint8_t i = 0; i < historySize; i++) {
-      console.debugf("  Key History[%d] = %d %s\n", i, getHistoryKey(i), getHistoryPressed(i) ? "down" : "up");
+      c->printf("  Key History[%d] = '%s' %d %s\n", i, getKeyLabel(getHistoryCode(i)),getHistoryKey(i), getHistoryPressed(i) ? "down" : "up");
   }
-  console.debugln("---------------");
+  c->println("---------------");
 }
 

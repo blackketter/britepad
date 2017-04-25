@@ -73,7 +73,7 @@ class KeyMatrix {
     bool doubleTapped(keyswitch_t k);
     bool doubleTapped(keycode_t c);
 
-    void dumpStatus();
+    void dumpStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
   private:
     millis_t lastScan = 0;
     static const millis_t minScanInterval = 5;

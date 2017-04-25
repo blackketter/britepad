@@ -9,9 +9,6 @@ void LaunchBarApp::idle() {
     // multiple taps selects running apps, tapping any other key switches app
     // arrow keys work
   if (keyMatrix.keyPressed((keycode_t)KEY_DELETE)) {
-
-    console.debugf("Launchbar activated by switch %d\n", keyMatrix.getSwitch((keycode_t)KEY_DELETE));
-    keyMatrix.dumpStatus();
     if (!cmdHeld) {
       Keyboard.press(MODIFIERKEY_LEFT_GUI);
     }

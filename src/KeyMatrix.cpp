@@ -5,6 +5,7 @@
 
 KeyMatrix::KeyMatrix() {
   setLayout();  // set to default layout
+  clearHistory();
 }
 
 // Port A is columns, Port B is rows.  Diodes have cathodes (positive) on A
@@ -82,6 +83,7 @@ keyswitch_t KeyMatrix::keysChanged() {
   for (keyswitch_t i = 0; i < total; i++) {
     if (keyChanged(i)) {
       count++;
+      addHistory(i,Uptime::millis(), isKeyDown(i));
     }
   }
   return count;
@@ -280,3 +282,105 @@ void KeyMatrix::setLayout(const keylayout_t* l) {
   currentLayout = l ? l : getDefaultLayout();
   console.debugf(" now: %d (default: %d vs %d)\n",(int)currentLayout, (int)keyMatrix.getDefaultLayout(), (int)getDefaultLayout());
 }
+
+millis_t KeyMatrix::getHistoryTime(uint8_t n) {
+  if (n < historySize) {
+    return historyTime[n];
+  } else {
+    return 0;
+  }
+}
+
+keyswitch_t KeyMatrix::getHistoryKey(uint8_t n) {
+  if (n < historySize) {
+    return historyKey[n];
+  } else {
+    return NO_KEY;
+  }
+}
+
+keycode_t KeyMatrix::getHistoryCode(uint8_t n) {
+  if (n < historySize) {
+    return historyCode[n];
+  } else {
+    return NO_KEY;
+  }
+}
+
+bool KeyMatrix::getHistoryPressed(uint8_t n) {
+  if (n < historySize) {
+    return historyPressed[n];
+  } else {
+    return false;
+  }
+}
+
+void KeyMatrix::addHistory(keyswitch_t k, millis_t t, bool d) {
+  for (uint8_t i = historySize-1; i > 0; i--) {
+    historyPressed[i] = historyPressed[i-1];
+    historyKey[i] = historyKey[i-1];
+    historyCode[i] = historyCode[i-1];
+    historyTime[i] = historyTime[i-1];
+  }
+  historyPressed[0] = d;
+  historyTime[0] = t;
+  historyKey[0] = k;
+  historyCode[0] = getCode(k);
+//  for (uint8_t i = 0; i < historySize; i++) {
+//    console.debugf("History[%d] = %d %s\n", i, getHistoryKey(i), getHistoryPressed(i) ? "down" : "up");
+//  }
+}
+
+void KeyMatrix::clearHistory() {
+  for (uint8_t i = 0; i < historySize; i++) {
+    historyKey[i] = NO_KEY;
+    historyCode[i] = NO_CODE;
+  }
+}
+
+bool KeyMatrix::doubleTapped(keyswitch_t k) {
+  if (
+        (getHistoryKey(3) == k) && getHistoryPressed(3) &&
+        (getHistoryKey(2) == k) && getHistoryReleased(2) &&
+        (getHistoryKey(1) == k) && getHistoryPressed(1) &&
+        (getHistoryKey(0) == k) && getHistoryReleased(0)
+     ) {
+    console.debugf("%d doubleTapped!\n", k);
+    return true;
+  } else {
+    console.debugf("%d not doubleTapped!\n", k);
+    return false;
+  }
+}
+
+bool KeyMatrix::doubleTapped(keycode_t c) {
+  if (
+        (getHistoryCode(3) == c) && getHistoryPressed(3) &&
+        (getHistoryCode(2) == c) && getHistoryReleased(2) &&
+        (getHistoryCode(1) == c) && getHistoryPressed(1) &&
+        (getHistoryCode(0) == c) && getHistoryReleased(0) &&
+        (getHistoryTime(0)-getHistoryTime(3) < doubleTapTime)
+     ) {
+    console.debugf("%d doubleTapped!\n", c);
+    return true;
+  } else {
+    console.debugf("%d not doubleTapped!\n", c);
+    return false;
+  }
+}
+
+void KeyMatrix::dumpStatus() {
+  console.debugln("---------------");
+  console.debugln("Keyboard Status:");
+  for (keyswitch_t k = 0; k < numKeys(); k++) {
+    if (isKeyDown(k)) {
+      console.debugf(" Key %d down (%s)\n", k,getKeyLabel(getCode(k)));
+    }
+  }
+  console.debugln("");
+  for (uint8_t i = 0; i < historySize; i++) {
+      console.debugf("  Key History[%d] = %d %s\n", i, getHistoryKey(i), getHistoryPressed(i) ? "down" : "up");
+  }
+  console.debugln("---------------");
+}
+

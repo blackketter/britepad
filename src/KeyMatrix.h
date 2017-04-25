@@ -32,17 +32,16 @@ class KeyMatrix {
     char getChar(keyswitch_t k);
 
     // returns the number of keys that changed state in the last idle
-    keyswitch_t keysChanged();
     keyswitch_t keysPressed();
     keyswitch_t keysReleased();
 
     // did a given key change?
-    inline bool keyChanged(keyswitch_t k) { return ((changedKeys[k/numRows] >> (k%numRows)) & 0x01); }
-    inline bool keyChanged(keycode_t c) { return keyChanged(getSwitch(c)); }
+    inline bool keyChanged(keyswitch_t k) { return (k != NO_KEY) && ((changedKeys[k/numRows] >> (k%numRows)) & 0x01); }
+    inline bool keyChanged(keycode_t c) { return (c != NO_CODE) && keyChanged(getSwitch(c)); }
     inline bool keyPressed(keyswitch_t k) { return keyChanged(k) && isKeyDown(k); }
     inline bool keyReleased(keyswitch_t k) { return keyChanged(k) && isKeyUp(k); }
-    inline bool keyPressed(keycode_t c) { keyswitch_t k = getSwitch(c); return isKeyDown(k) && keyChanged(k); }
-    inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitch(c); return isKeyUp(k) && keyChanged(k); }
+    inline bool keyPressed(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && isKeyDown(k) && keyChanged(k); }
+    inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && isKeyUp(k) && keyChanged(k); }
 
     // marks key as not changed so that the event is not processed
     inline void clearKeyChange(keyswitch_t k) { changedKeys[k/numRows] = changedKeys[k/numRows] & ~(0x01 << (k%numRows)); }
@@ -63,9 +62,22 @@ class KeyMatrix {
     const icon_t getKeyIcon(keycode_t c);
     const char* getKeyLabel(keycode_t c);
 
+    millis_t getHistoryTime(uint8_t n);
+    keyswitch_t getHistoryKey(uint8_t n);
+    keycode_t getHistoryCode(uint8_t n);
+    bool getHistoryPressed(uint8_t n);
+    bool getHistoryReleased(uint8_t n) { return !getHistoryPressed(n); }
+    void addHistory(keyswitch_t k, millis_t t, bool d);
+    void clearHistory();
+
+    bool doubleTapped(keyswitch_t k);
+    bool doubleTapped(keycode_t c);
+
+    void dumpStatus();
   private:
     millis_t lastScan = 0;
     static const millis_t minScanInterval = 5;
+    static const millis_t doubleTapTime = 500;
 
     static const uint8_t numRows = 6;
     static const uint8_t numColumnsPerMatrix = 7;
@@ -84,5 +96,12 @@ class KeyMatrix {
     void scanMatrix();
     const keylayout_t* currentLayout;
     const keylayout_t* defaultLayout = ergodoxLayout;
+
+    keyswitch_t keysChanged();
+    static const uint8_t historySize = 10;
+    millis_t historyTime[historySize];
+    keyswitch_t historyKey[historySize];
+    keycode_t historyCode[historySize];
+    bool historyPressed[historySize];
 };
 #endif

@@ -66,5 +66,6 @@ void ChromaClockApp::update() {
 
   for (int i = 0; i < slices; i++) {
     drawSlice(i,c[i], r[i]);
+    britepad.idle();
   }
 }

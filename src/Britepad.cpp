@@ -25,13 +25,21 @@ class FPSCommand : public Command {
       if (frameDur > maxFrame) { maxFrame = frameDur; }
       if (now - lastTime > 1000) {
         if (enable) {
-          console.debugf("FPS: %.2f (Max: %dms)\n", ((float)(frames*1000))/(now - lastTime), maxFrame);
+          console.debugf("FPS: %.2f (Max frame: %dms, Max idle: %dms)\n", ((float)(frames*1000))/(now - lastTime), maxFrame, maxIdle);
         }
         lastTime = now;
         frames = 0;
         maxFrame = 0;
+        maxIdle = 0;
       }
       lastFrame = now;
+    }
+
+    void newIdle() {
+      millis_t now = Uptime::millis();
+      millis_t idleDur = now - lastIdle;
+      if (idleDur > maxIdle) { maxIdle = idleDur; }
+      lastIdle = now;
     }
 
   private:
@@ -40,6 +48,9 @@ class FPSCommand : public Command {
     millis_t lastTime;
     millis_t lastFrame;
     millis_t maxFrame;
+
+    millis_t lastIdle;
+    millis_t maxIdle;
 };
 FPSCommand theFPSCommand;
 
@@ -257,6 +268,7 @@ void Britepad::begin() {
 
 void Britepad::idle() {
   if (currApp && !currApp->usesKeyboard()) {
+    theFPSCommand.newIdle();
     keyMatrix.update();
   }
 
@@ -278,6 +290,7 @@ void Britepad::idleApps() {
 
 void Britepad::loop() {
 
+  theFPSCommand.newIdle();
   keyMatrix.update();
   pad.update();
   idleApps();

@@ -46,13 +46,23 @@ void FunctionLayerApp::idle() {
   // switch to the function layer
   if (keyMatrix.keyPressed((keycode_t)KEY_LEFT_FN) ||
       keyMatrix.keyPressed((keycode_t)KEY_RIGHT_FN)) {
-
-    keyMatrix.setLayout(functionLayer);
-
+    if (keyMatrix.getLayout() == functionLayer) {
+      keyMatrix.setLayout();
+    } else {
+      keyMatrix.setLayout(functionLayer);
+    }
   } else if (keyMatrix.keyReleased((keycode_t)KEY_LEFT_FN) ||
              keyMatrix.keyReleased((keycode_t)KEY_RIGHT_FN)) {
+
     if (keyMatrix.isKeyUp((keycode_t)KEY_RIGHT_FN) && keyMatrix.isKeyUp((keycode_t)KEY_LEFT_FN)) {
-      keyMatrix.setLayout();
+      // check for double-tap
+      if ((keyMatrix.doubleTapped((keycode_t)KEY_RIGHT_FN) ||
+           keyMatrix.doubleTapped((keycode_t)KEY_LEFT_FN))) {
+          // double tap!  don't reset the layout
+        } else {
+          keyMatrix.setLayout();
+        }
     }
+
   }
 };

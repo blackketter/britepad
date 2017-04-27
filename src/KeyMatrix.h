@@ -11,9 +11,14 @@ class KeyMatrix {
     KeyMatrix();
     void begin();
 
-    void setLayout(const keylayout_t* l = nullptr);  // pass nullptr to reset to default layout
+    void setMap(const keymap_t* m = nullptr);  // pass nullptr to reset to default map
+    const keymap_t* getMap() { return currentMap; }
+    const keymap_t* getDefaultMap() { return defaultMap; }
+
+    void setLayout(const keylayout_t* l = nullptr);   // pass nullptr to reset to default layout
     const keylayout_t* getLayout() { return currentLayout; }
     const keylayout_t* getDefaultLayout() { return defaultLayout; }
+
 
     keyswitch_t update();  //returns number of keys changed
     void sendKeys();  // send key events to host
@@ -22,14 +27,13 @@ class KeyMatrix {
     uint8_t getWidth();
     uint8_t getHeight();
 
-    // is there a physical key at this location, if so return its keylayout_t, pass null for current layout
-    const keylayout_t* getKey(keyswitch_t k, const keylayout_t* l = nullptr);
+    // is there a physical key at this location, if so return its keylayout_t, pass null for current map
+    const keylayout_t* getKeyLayout(keyswitch_t k);
 
     uint8_t getKeyWidth(keyswitch_t k);
     uint8_t getKeyHeight(keyswitch_t k);
     uint8_t getKeyX(keyswitch_t k);
     uint8_t getKeyY(keyswitch_t k);
-    char getChar(keyswitch_t k);
 
     // returns the number of keys that changed state in the last idle
     keyswitch_t keysPressed();
@@ -94,8 +98,13 @@ class KeyMatrix {
     uint8_t changedKeys[numColumns];
 
     void scanMatrix();
+
+    const keymap_t* currentMap;
+    const keymap_t* defaultMap = ergodoxMap;
+
     const keylayout_t* currentLayout;
     const keylayout_t* defaultLayout = ergodoxLayout;
+
 
     keyswitch_t keysChanged();
     static const uint8_t historySize = 10;

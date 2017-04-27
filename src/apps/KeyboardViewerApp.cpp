@@ -17,7 +17,7 @@ void KeyboardViewerApp::begin(AppMode asMode) {
 //  screen.setTextColor(screen.red);
 
   for (keyswitch_t k = 0; k < totalKeys; k++) {
-    if (keyMatrix.getKey(k, keyMatrix.getDefaultLayout())) {
+    if (keyMatrix.getKeyLayout(k)) {
       coord_t x = screen.clipLeft()+keyMatrix.getKeyX(k)*oneKeyWidth;
       coord_t y = screen.clipTop()+keyMatrix.getKeyY(k)*oneKeyHeight;
       coord_t w = oneKeyWidth*keyMatrix.getKeyWidth(k);
@@ -37,7 +37,7 @@ void KeyboardViewerApp::run() {
 
   idle(); // make sure we know if we're in tutorial mode
 
-  if (tutorialMode && (keyMatrix.getLayout() == keyMatrix.getDefaultLayout())) {
+  if (tutorialMode && (keyMatrix.getMap() == keyMatrix.getDefaultMap())) {
     if (lastApp) {
       launchApp(lastApp, lastMode);
     }
@@ -79,7 +79,7 @@ void KeyboardViewerApp::draw() {
 };
 
 void KeyboardViewerApp::idle() {
-  if (!isCurrentApp() && (keyMatrix.getLayout() != keyMatrix.getDefaultLayout())) {
+  if (!isCurrentApp() && (keyMatrix.getMap() != keyMatrix.getDefaultMap())) {
       BritepadApp* currApp = britepad.currentApp();
       if (currApp && currApp != this) {
         lastApp = currApp;

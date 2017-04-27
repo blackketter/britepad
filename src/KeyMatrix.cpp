@@ -13,7 +13,8 @@ class KeysCommand : public Command {
 KeysCommand theKeysCommand;
 
 KeyMatrix::KeyMatrix() {
-  setLayout();  // set to default layout
+  setMap();  // set to default map
+  setLayout(); // set to default layout
   clearHistory();
 }
 
@@ -138,9 +139,9 @@ keyswitch_t KeyMatrix::update() {
 
 keyswitch_t KeyMatrix::getSwitch(keycode_t c) {
   keyswitch_t i = 0;
-  while (currentLayout[i].key != NO_KEY) {
-    if (currentLayout[i].code == c) {
-      return currentLayout[i].key;
+  while (currentMap[i].key != NO_KEY) {
+    if (currentMap[i].code == c) {
+      return currentMap[i].key;
     } else {
       i++;
     }
@@ -149,19 +150,22 @@ keyswitch_t KeyMatrix::getSwitch(keycode_t c) {
 }
 
 keycode_t KeyMatrix::getCode(keyswitch_t k) {
-  const keylayout_t* l = getKey(k);
-  if (l) {
-    return l->code;
+  keyswitch_t i = 0;
+  while (currentMap[i].key != NO_KEY) {
+    if (currentMap[i].key == k) {
+      return currentMap[i].code;
+    } else {
+      i++;
+    }
   }
- return NO_CODE;
+  return NO_CODE;
 }
 
-const keylayout_t* KeyMatrix::getKey(keyswitch_t k, const keylayout_t* l) {
-  if (l == nullptr) { l = currentLayout; }
+const keylayout_t* KeyMatrix::getKeyLayout(keyswitch_t k) {
   keyswitch_t i = 0;
-  while (l[i].key != NO_KEY) {
-    if (l[i].key == k) {
-      return (&l[i]);
+  while (currentLayout[i].key != NO_KEY) {
+    if (currentLayout[i].key == k) {
+      return (&currentLayout[i]);
     }
     i++;
   }
@@ -192,11 +196,8 @@ uint8_t KeyMatrix::getHeight() {
   return maxHeight;
 }
 
-// todo: make these accurate
-char KeyMatrix::getChar(keyswitch_t k) { return 'x'; }
-
 uint8_t KeyMatrix::getKeyX(keyswitch_t k) {
-  const keylayout_t* l = getKey(k, getDefaultLayout());
+  const keylayout_t* l = getKeyLayout(k);
   if (l) {
     return l->x;
   }
@@ -204,7 +205,7 @@ uint8_t KeyMatrix::getKeyX(keyswitch_t k) {
 }
 
 uint8_t KeyMatrix::getKeyY(keyswitch_t k) {
-  const keylayout_t* l = getKey(k, getDefaultLayout());
+  const keylayout_t* l = getKeyLayout(k);
   if (l) {
     return l->y;
   }
@@ -212,14 +213,14 @@ uint8_t KeyMatrix::getKeyY(keyswitch_t k) {
 }
 
 uint8_t KeyMatrix::getKeyWidth(keyswitch_t k) {
-  const keylayout_t* l = getKey(k, getDefaultLayout());
+  const keylayout_t* l = getKeyLayout(k);
   if (l) {
     return l->w;
   }
   return 0;
 }
 uint8_t KeyMatrix::getKeyHeight(keyswitch_t k) {
-  const keylayout_t* l = getKey(k, getDefaultLayout());
+  const keylayout_t* l = getKeyLayout(k);
   if (l) {
     return l->h;
   }
@@ -290,6 +291,12 @@ void KeyMatrix::setLayout(const keylayout_t* l) {
   console.debugf("setlayout: %d\n",(int)l);
   currentLayout = l ? l : getDefaultLayout();
   console.debugf(" now: %d (default: %d vs %d)\n",(int)currentLayout, (int)keyMatrix.getDefaultLayout(), (int)getDefaultLayout());
+}
+
+void KeyMatrix::setMap(const keymap_t* l) {
+  console.debugf("setmap: %d\n",(int)l);
+  currentMap = l ? l : getDefaultMap();
+  console.debugf(" now: %d (default: %d vs %d)\n",(int)currentMap, (int)keyMatrix.getDefaultMap(), (int)getDefaultMap());
 }
 
 millis_t KeyMatrix::getHistoryTime(uint8_t n) {

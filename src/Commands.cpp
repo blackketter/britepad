@@ -72,7 +72,7 @@ class RunCommand : public Command {
         if (a) {
           c->printf("Running app '%s' - %s...\n",a->id(), a->name());
           britepad.launchApp(a);
-          britepad.disableScreensavers();
+          britepad.resetScreensaver(5*60*1000);  // run it for 5 minutes, then let the screensavers do their work
         } else {
           c->println("Invalid app id");
         }

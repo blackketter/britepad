@@ -102,7 +102,6 @@ void LauncherApp::begin(AppMode asMode) {
   screen.pushFill(DIRECTION_DOWN, bgColor());
 
   drawButtons();
-  britepad.disableScreensavers(0);  // reenable screensavers if they were temporarily disabled
   lastBegin = clock.now();
   console.debugln("done LauncherApp::begin");
 }
@@ -111,6 +110,20 @@ void LauncherApp::drawButtons() {
   console.debugln("drawing buttons");
   buttons->setBounds(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight());
   buttons->draw();
+}
+
+void LauncherApp::idle() {
+  if (!isCurrentApp()) {
+    if (keyMatrix.keyPressed((keycode_t)KEY_HOME)) {
+      britepad.resetScreensaver();
+      keyMatrix.clearKeyChange((keycode_t)KEY_HOME);
+      launch();
+    }
+  } else if (keyMatrix.keyPressed((keycode_t)KEY_ESC)
+          || keyMatrix.keyPressed((keycode_t)KEY_HOME)) {
+      keyMatrix.clearKeyChange((keycode_t)KEY_HOME);
+      exit();
+    }
 }
 
 void LauncherApp::run() {
@@ -123,11 +136,13 @@ void LauncherApp::run() {
   if (launchOnRelease) {
     if (pad.up(SCREEN_PAD)) {
       launchApp(launchOnRelease, screenMode[getCurrentScreen()]);
-      britepad.disableScreensavers();
+      britepad.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
       launchOnRelease = nullptr;
     }
-  } else if (pad.down(LEFT_PAD)
-       || (pad.getGesture() == GESTURE_SWIPE_LEFT)
+  } else if (
+        pad.down(LEFT_PAD)
+     || (pad.getGesture() == GESTURE_SWIPE_LEFT)
+     || keyMatrix.keyPressed((keycode_t)KEY_PAGE_UP)
     ) {
       if (getCurrentScreen() > 0) {
         setCurrentScreen(getCurrentScreen() - 1);
@@ -140,6 +155,7 @@ void LauncherApp::run() {
       }
   } else if (pad.down(RIGHT_PAD)
      || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
+     || keyMatrix.keyPressed((keycode_t)KEY_PAGE_DOWN)
   ) {
     if (getCurrentScreen() < TOTAL_SCREENS - 1) {
       setCurrentScreen(getCurrentScreen()+1);
@@ -150,7 +166,11 @@ void LauncherApp::run() {
     } else {
       sound.bump();
     }
-  } else if (pad.getGesture() == GESTURE_SWIPE_UP) {
+  } else if (
+        (pad.getGesture() == GESTURE_SWIPE_UP)
+     || keyMatrix.keyPressed((keycode_t)KEY_ESC)
+     || keyMatrix.keyPressed((keycode_t)KEY_HOME)
+      ) {
     exit();
   } else if (!pad.didGesture()) {
     AppButton* b = (AppButton*)(buttons->up());

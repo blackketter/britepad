@@ -98,6 +98,13 @@ void BritepadApp::drawInfoBar(bool update) {
   resetClipRect();
 }
 
+void BritepadApp::clearScreen() {
+  //idle because fillScreen is slow
+  britepad.idle();
+  screen.fillScreen(bgColor());
+//  console.debugln("clearScreen");
+  britepad.idle();
+}
 void BritepadApp::drawBars(bool update) {
   drawInfoBar(update);
   drawStatusBar(update);

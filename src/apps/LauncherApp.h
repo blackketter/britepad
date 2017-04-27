@@ -12,6 +12,7 @@ class LauncherApp : public BritepadApp {
     void begin(AppMode asMode);
     void run();
     void end();
+    void idle();
 
     BritepadApp* exitsTo() { return A_MOUSE_APP; }
     const char* name() { return "Launcher"; };
@@ -19,6 +20,7 @@ class LauncherApp : public BritepadApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "laun";
 
+    bool usesKeyboard() { return true; }
     const char* statusBarTitle();
     const char* infoBarText();
 
@@ -79,7 +81,7 @@ class LauncherApp : public BritepadApp {
         "Clocks",
         "Screensavers",
         "Settings",
-        "Keys",
+        "Launcher",
         "Timers",
         "Apps",
       };

@@ -17,10 +17,8 @@ class KeyboardViewerApp : public BritepadApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "keys";
     AppType getAppType() { return INTERACTIVE_APP; }
-    bool wantsToRun() { return tutorialMode; }
-    bool disablesScreensavers() { return manuallyLaunched; }
 
-    bool canBeMouse() { return true; }
+    bool disablesScreensavers() { return true; }
     bool canBeInteractive() { return true; }
 
   private:
@@ -29,7 +27,6 @@ class KeyboardViewerApp : public BritepadApp {
     bool tutorialMode = false;
     BritepadApp* lastApp = nullptr;
     AppMode lastMode;
-    bool manuallyLaunched = false;
 };
 
 #endif

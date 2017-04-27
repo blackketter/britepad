@@ -25,7 +25,7 @@ class FPSCommand : public Command {
       if (frameDur > maxFrame) { maxFrame = frameDur; }
       if (now - lastTime > 1000) {
         if (enable) {
-          console.debugf("FPS: %.2f (Max frame: %dms, Max idle: %dms)\n", ((float)(frames*1000))/(now - lastTime), maxFrame, maxIdle);
+          console.debugf("FPS: %.2f (Max frame: %dms, Max idle: %dms)\n", ((float)(frames*1000))/(now - lastTime), (int)maxFrame, (int)maxIdle);
         }
         lastTime = now;
         frames = 0;
@@ -35,7 +35,7 @@ class FPSCommand : public Command {
       lastFrame = now;
     }
 
-    void newIdle() {
+    void idled() {
       millis_t now = Uptime::millis();
       millis_t idleDur = now - lastIdle;
       if (idleDur > maxIdle) { maxIdle = idleDur; }
@@ -49,9 +49,10 @@ class FPSCommand : public Command {
     millis_t lastFrame;
     millis_t maxFrame;
 
-    millis_t lastIdle;
-    millis_t maxIdle;
+    millis_t lastIdle = 0;
+    millis_t maxIdle = 0;
 };
+
 FPSCommand theFPSCommand;
 
 BritepadApp* appList = nullptr;
@@ -260,21 +261,22 @@ void Britepad::begin() {
     anApp = anApp->getNextApp();
   }
 
-  screen.fillScreen(screen.black);
   screen.setBacklight(screen.maxbrightness);
   backlightTimer.setMillis(ambientUpdateInterval, backlightCallback, (void*)this, true);
   statusBarUpdateTimer.setMillis(1000, statusBarCallback, (void*)this, true);
 }
 
 void Britepad::idle() {
-  if (currApp && !currApp->usesKeyboard()) {
-    theFPSCommand.newIdle();
-    keyMatrix.update();
+  millis_t now = Uptime::millis();
+  if (now - lastIdle < idleInterval) {
+    return;
   }
-
-  idleApps();
+  lastIdle = now;
+  theFPSCommand.idled();
 
   if (currApp && !currApp->usesKeyboard()) {
+    keyMatrix.update();
+    idleApps();
     keyMatrix.sendKeys();
   }
 };
@@ -290,19 +292,23 @@ void Britepad::idleApps() {
 
 void Britepad::loop() {
 
-  theFPSCommand.newIdle();
+  theFPSCommand.idled();
   keyMatrix.update();
   pad.update();
+  if (pad.touched(ANY_PAD)) {
+    resetScreensaver();
+  }
   idleApps();
+
+  if (!currApp) {
+      console.debugln("No currapp!");
+      launchApp(theLauncherApp);
+  }
 
   if (pad.down(TOP_PAD)) {
 //    console.debugln("Toppad down");
-    if (currApp) {
-      BritepadApp* nextApp = currApp->exitsTo();
-      launchApp(nextApp);
-    } else {
-      console.debugln("No currapp!");
-    }
+    BritepadApp* nextApp = currApp->exitsTo();
+    launchApp(nextApp);
   } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.down(SCREEN_PAD) || ((pad.down(ANY_PAD) && !currApp->canBeInteractive())))) {
     console.debugln("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
@@ -319,7 +325,7 @@ void Britepad::loop() {
     if ( pad.down(PROXIMITY_SENSOR) &&
          currApp->isAppMode(SCREENSAVER_MODE) &&
 
-         (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay))
+         (pad.time() > disableScreensaversUntil))
     {
       launchApp(theLauncherApp);
       console.debugln("Proximity detected: showing launcher");
@@ -332,10 +338,10 @@ void Britepad::loop() {
 
          getAppByID(ClockApp::ID) &&
 //       (getAppByID(ClockApp::ID))->getEnabled(SCREENSAVER_MODE) &&  // the proximity clock is always enabled (todo: make this a user pref)
-         (pad.time() - pad.lastTouchedTime(ANY_PAD) > screensaverDelay))
+         (pad.time() > disableScreensaversUntil))
     {
       launchApp(getAppByID(ClockApp::ID), SCREENSAVER_MODE);
-      disableScreensavers(showClockDur);  // disable screensavers for a little while
+      resetScreensaver(showClockDur);  // disable screensavers for a little while
       sound.click();
       console.debugln("Proximity detected: showing clock");
 
@@ -357,7 +363,7 @@ void Britepad::loop() {
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
 
       // is it time for the screensaver to kick in?
-      } else if (!currApp->isAppMode(SCREENSAVER_MODE) && (pad.time() - pad.lastTouchedTime(ANY_SENSOR) > screensaverDelay)) {
+      } else if (!currApp->isAppMode(SCREENSAVER_MODE) && (pad.time() > disableScreensaversUntil)) {
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
       }
     }
@@ -368,19 +374,21 @@ void Britepad::loop() {
 
   launchApp(BritepadApp::STAY_IN_APP);
 
-  if (currApp) {
-    currApp->run();
-    theFPSCommand.newFrame();
-  } else {
-    console.debugln("currApp nullptr!");
-  }
+  currApp->run();
+  theFPSCommand.newFrame();
 
   // make sure the Timers get a chance to call their callbacks
   Timer::idle();
   sound.idle();
   console.idle();
 
-  keyMatrix.sendKeys();
+  if (!currApp->usesKeyboard()) {
+    keyMatrix.sendKeys();
+  } else {
+    if (keyMatrix.keysPressed() || keyMatrix.keysReleased()) {
+      resetScreensaver();
+    }
+  }
 }
 
 time_t Britepad::getScreensaverSwitchInterval() {

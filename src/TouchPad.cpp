@@ -40,15 +40,14 @@ void TouchPad::update() {
   copyTPState(&last, &curr);
 
   curr.time = Uptime::millis();
-//console.debugln("updateAPDS()");
+
   updateAPDS();
   curr.touched[PROXIMITY_SENSOR] = getProximityPresent();
 
   if (ctpWorking) {
     // Retrieve a point
-//console.debugln("ctp.getPoint()");
+    delay(1);
     TS_Point p = ctp.getPoint();
-//console.debugln("ctp.getPoint() done");
 
     curr.x = p.y;
     curr.y = p.x;
@@ -77,7 +76,6 @@ void TouchPad::update() {
     curr.y = last.y;
   }
 
-//console.debugln("touchRead(T_TOUCH_PIN)");
   // read the 4 touch panels
   int t = touchRead(T_TOUCH_PIN);
   int b = touchRead(B_TOUCH_PIN);

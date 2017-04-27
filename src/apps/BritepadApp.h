@@ -69,6 +69,7 @@ class BritepadApp {
     bool canBeAppMode(AppMode b);
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { britepad.launchApp(app, mode); };
     void exit() { launchApp(A_MOUSE_APP); };
+    void launch() { launchApp(this); }
 
     virtual bool canBeScreensaver() { return false; }
     virtual bool canBeInteractive() { return true; }
@@ -110,7 +111,7 @@ class BritepadApp {
   protected:
     virtual bool hasPrefs() { return canBeScreensaver() | canBeMouse(); } // mice and screensavers have prefs
 
-    virtual void clearScreen() { screen.fillScreen(bgColor()); }
+    virtual void clearScreen();
     void resetClipRect();  // resets clip rect to content area
 
     virtual void writePrefs() {  if (hasPrefs()) { uint8_t pref = (uint8_t)_enabled; prefs.write(id(), sizeof(pref), (uint8_t*)&pref); } };

@@ -3,7 +3,8 @@
 KeyboardViewerApp theKeyboardViewerApp;
 
 void KeyboardViewerApp::begin(AppMode asMode) {
-  screen.fillScreen(screen.black);
+  BritepadApp::begin(asMode);
+
   if (buttons) { console.debugln("WARNING: Beginning KeyboardViewerApp with old buttons!"); }
   buttons = new WidgetGroup();
 
@@ -25,9 +26,6 @@ void KeyboardViewerApp::begin(AppMode asMode) {
       buttons->add(b);
     }
   }
-
-  draw();
-  manuallyLaunched = !tutorialMode;
 }
 
 void KeyboardViewerApp::end() {
@@ -39,15 +37,14 @@ void KeyboardViewerApp::run() {
 
   idle(); // make sure we know if we're in tutorial mode
 
-  if (!manuallyLaunched && !tutorialMode) {
+  if (tutorialMode && (keyMatrix.getLayout() == keyMatrix.getDefaultLayout())) {
     if (lastApp) {
       launchApp(lastApp, lastMode);
-//      britepad.disableScreensavers(0);
     }
+    tutorialMode = false;
   }
 
   draw();
-
 };
 
 void KeyboardViewerApp::draw() {
@@ -82,13 +79,13 @@ void KeyboardViewerApp::draw() {
 };
 
 void KeyboardViewerApp::idle() {
-  tutorialMode = false;
-  if (keyMatrix.getLayout() != keyMatrix.getDefaultLayout()) {
-      tutorialMode = true;
+  if (!isCurrentApp() && (keyMatrix.getLayout() != keyMatrix.getDefaultLayout())) {
       BritepadApp* currApp = britepad.currentApp();
       if (currApp && currApp != this) {
         lastApp = currApp;
         lastMode = lastApp->getAppMode();
       }
+      tutorialMode = true;
+      launch();
   }
 }

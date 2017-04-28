@@ -3,35 +3,6 @@
 #include "keylayouts.h"
 #include "widgets/Icons.h"
 
-typedef uint8_t keyswitch_t;
-const keyswitch_t NO_KEY = 0xff;
-
-typedef uint16_t keycode_t;
-const keycode_t NO_CODE = 0;
-
-// some new key codes
-const keycode_t KEY_LEFT_FN = 200;
-const keycode_t KEY_RIGHT_FN = 201;
-
-typedef struct keylayout_t {
-  keyswitch_t key;
-  uint8_t x;
-  uint8_t y;
-  uint8_t w;
-  uint8_t h;
-} keylayout_t;
-
-typedef struct keymap_t {
-  keyswitch_t key;
-  keycode_t code;
-} keymap_t;
-
-typedef struct keyinfo_t {
-  keycode_t code;
-  char c;
-  const char* label;
-  const icon_t icon;
-} keyinfo_t;
 
 const keyinfo_t keyInfo[] = {
 // nonstandard keys

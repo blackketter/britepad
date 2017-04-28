@@ -108,7 +108,7 @@ class TouchPad {
     millis_t lastAPDSupdate = 0;
     millis_t APSDupdateInterval = 10;
 
-    uint16_t ambientLight;
+    uint16_t ambientLight = ambientMax;
     uint8_t proximity;
     ProximityGesture proximityGesture = PROX_NONE;
 

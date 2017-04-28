@@ -14,7 +14,7 @@ class LauncherApp : public BritepadApp {
     void end();
     void idle();
 
-    BritepadApp* exitsTo() { return A_MOUSE_APP; }
+    BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
     const char* name() { return "Launcher"; };
 
     appid_t id() { return ID; };

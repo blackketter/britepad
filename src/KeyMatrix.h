@@ -3,27 +3,63 @@
 
 #include "Clock.h"
 #include "MCP23018.h"
-#include "KeyLayout.h"
-#include "ErgodoxLayout.h"
+#include "Widgets/icon.h"
+
+typedef uint8_t keyswitch_t;
+const keyswitch_t NO_KEY = 0xff;
+
+typedef uint16_t keycode_t;
+const keycode_t NO_CODE = 0;
+
+// some new key codes
+const keycode_t KEY_LEFT_FN = 200;
+const keycode_t KEY_RIGHT_FN = 201;
+
+typedef struct keylayout_t {
+  keyswitch_t key;
+  uint8_t x;
+  uint8_t y;
+  uint8_t w;
+  uint8_t h;
+} keylayout_t;
+
+typedef struct keymap_t {
+  keyswitch_t key;
+  keycode_t code;
+} keymap_t;
+
+typedef struct keyinfo_t {
+  keycode_t code;
+  char c;
+  const char* label;
+  const icon_t icon;
+} keyinfo_t;
+
+typedef struct keyevent_t {
+    millis_t time;
+    keyswitch_t key;
+    keycode_t code;
+    bool pressed;
+} keyevent_t;
 
 class KeyMatrix {
   public:
-    KeyMatrix();
+    KeyMatrix(const keymap_t* defaultMap, const keylayout_t* defaultLayout );
     void begin();
 
     void setMap(const keymap_t* m = nullptr);  // pass nullptr to reset to default map
-    const keymap_t* getMap() { return currentMap; }
-    const keymap_t* getDefaultMap() { return defaultMap; }
+    const keymap_t* getMap() { return _currentMap; }
+    const keymap_t* getDefaultMap() { return _defaultMap; }
 
     void setLayout(const keylayout_t* l = nullptr);   // pass nullptr to reset to default layout
-    const keylayout_t* getLayout() { return currentLayout; }
-    const keylayout_t* getDefaultLayout() { return defaultLayout; }
+    const keylayout_t* getLayout() { return _currentLayout; }
+    const keylayout_t* getDefaultLayout() { return _defaultLayout; }
 
 
     keyswitch_t update();  //returns number of keys changed
     void sendKeys();  // send key events to host
 
-    keyswitch_t numKeys() { return numColumns * numRows; }  // returns the total number of keys in the matrix
+    keyswitch_t numKeys() { return _numColumns * _numRows; }  // returns the total number of keys in the matrix
     uint8_t getWidth();
     uint8_t getHeight();
 
@@ -40,7 +76,7 @@ class KeyMatrix {
     keyswitch_t keysReleased();
 
     // did a given key change?
-    inline bool keyChanged(keyswitch_t k) { return (k != NO_KEY) && ((changedKeys[k/numRows] >> (k%numRows)) & 0x01); }
+    inline bool keyChanged(keyswitch_t k) { return (k != NO_KEY) && ((_changedKeys[k/_numRows] >> (k%_numRows)) & 0x01); }
     inline bool keyChanged(keycode_t c) { return (c != NO_CODE) && keyChanged(getSwitch(c)); }
     inline bool keyPressed(keyswitch_t k) { return keyChanged(k) && isKeyDown(k); }
     inline bool keyReleased(keyswitch_t k) { return keyChanged(k) && isKeyUp(k); }
@@ -48,14 +84,14 @@ class KeyMatrix {
     inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && isKeyUp(k) && keyChanged(k); }
 
     // marks key as not changed so that the event is not processed
-    inline void clearKeyChange(keyswitch_t k) { changedKeys[k/numRows] = changedKeys[k/numRows] & ~(0x01 << (k%numRows)); }
+    inline void clearKeyChange(keyswitch_t k) { _changedKeys[k/_numRows] = _changedKeys[k/_numRows] & ~(0x01 << (k%_numRows)); }
     inline void clearKeyChange(keycode_t c) { clearKeyChange(getSwitch(c)); }
     void clearKeyChanges();
 
     keycode_t getCode(keyswitch_t k);
     keyswitch_t getSwitch(keycode_t c);
 
-    inline bool isKeyDown(keyswitch_t k) { return ((curState[k/numRows] >> (k%numRows)) & 0x01); }
+    inline bool isKeyDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
     inline bool isKeyUp(keyswitch_t k) { return !isKeyDown(k); }
 
     inline bool isKeyDown(keycode_t c) { return isKeyDown(getSwitch(c)); }
@@ -79,38 +115,35 @@ class KeyMatrix {
 
     void dumpStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
   private:
-    millis_t lastScan = 0;
-    static const millis_t minScanInterval = 5;
-    static const millis_t doubleTapTime = 500;
+    millis_t _lastScan = 0;
+    static const millis_t _minScanInterval = 5;
+    static const millis_t _doubleTapTime = 500;
 
-    static const uint8_t numRows = 6;
-    static const uint8_t numColumnsPerMatrix = 7;
-    static const uint8_t numColumns = numColumnsPerMatrix*2;
+    static const uint8_t _numRows = 6;
+    static const uint8_t _numColumnsPerMatrix = 7;
+    static const uint8_t _numColumns = _numColumnsPerMatrix*2;
 
-    static const uint8_t leftAddr = 0;
-    static const uint8_t rightAddr = 7;
+    static const uint8_t _leftAddr = 0;
+    static const uint8_t _rightAddr = 7;
 
-    MCP23018 leftMatrix; // columns 0-6
-    MCP23018 rightMatrix; // columns 7-13
+    MCP23018 _leftMatrix; // columns 0-6
+    MCP23018 _rightMatrix; // columns 7-13
 
-    uint8_t curState[numColumns];  // assumes less than 8 rows
-    uint8_t lastState[numColumns];
-    uint8_t changedKeys[numColumns];
+    uint8_t _curState[_numColumns];  // assumes less than 8 rows
+    uint8_t _lastState[_numColumns];
+    uint8_t _changedKeys[_numColumns];
 
     void scanMatrix();
 
-    const keymap_t* currentMap;
-    const keymap_t* defaultMap = ergodoxMap;
+    const keymap_t* _currentMap;
+    const keymap_t* _defaultMap;
 
-    const keylayout_t* currentLayout;
-    const keylayout_t* defaultLayout = ergodoxLayout;
+    const keylayout_t* _currentLayout;
+    const keylayout_t* _defaultLayout;
 
 
     keyswitch_t keysChanged();
-    static const uint8_t historySize = 10;
-    millis_t historyTime[historySize];
-    keyswitch_t historyKey[historySize];
-    keycode_t historyCode[historySize];
-    bool historyPressed[historySize];
+    static const uint8_t _historySize = 10;
+    keyevent_t _history[_historySize];
 };
 #endif

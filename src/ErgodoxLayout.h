@@ -1,6 +1,6 @@
 #ifndef _ErgodoxLayout_
 #define _ErgodoxLayout_
-#include "KeyLayout.h"
+#include "KeyMatrix.h"
 
 const keylayout_t ergodoxLayout[] = {
 // code, x, y, w, h

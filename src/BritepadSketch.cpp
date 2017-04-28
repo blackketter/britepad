@@ -5,6 +5,7 @@
 
 /* britepad sketch*/
 #include "BritepadShared.h"
+#include "ErgodoxLayout.h"
 
 Screen screen = Screen();
 TouchPad pad = TouchPad(screen.width(), screen.height());
@@ -13,7 +14,7 @@ Britepad britepad = Britepad();
 Preferences prefs = Preferences();
 MousePad mouse = MousePad();
 Console console = Console();
-KeyMatrix keyMatrix = KeyMatrix();
+KeyMatrix keyMatrix = KeyMatrix(ergodoxMap, ergodoxLayout);
 
 //US Pacific Time Zone (Las Vegas, Los Angeles)
 TimeChangeRule usPDT = {"PDT", Second, dowSunday, Mar, 2, -420};
@@ -28,6 +29,9 @@ void setup() {
   // this is the magic trick for scanf to support float
   // not needed right now
   // asm(".global _scanf_float");
+
+  pinMode(AUDIO_SHUTDOWN_PIN, OUTPUT);
+  digitalWrite(AUDIO_SHUTDOWN_PIN, HIGH ); // turn on the amplifier
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(1000);
@@ -59,7 +63,8 @@ void setup() {
   console.debugln("starting keyboard matrix");
   keyMatrix.begin();
 
-  Wire.setClock(400000);
+  Wire.setClock(100000);
+
 
   console.debugln("starting app framework");
   britepad.begin();

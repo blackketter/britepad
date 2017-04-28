@@ -44,8 +44,8 @@ FunctionLayerApp theFunctionLayerApp;
 
 void FunctionLayerApp::idle() {
   // switch to the function layer
-  if (keyMatrix.keyPressed((keycode_t)KEY_LEFT_FN) ||
-      keyMatrix.keyPressed((keycode_t)KEY_RIGHT_FN)) {
+  if ((keyMatrix.keyPressed((keycode_t)KEY_LEFT_FN) && !keyMatrix.isKeyDown((keycode_t)KEY_RIGHT_FN)) ||
+      (keyMatrix.keyPressed((keycode_t)KEY_RIGHT_FN)  && !keyMatrix.isKeyDown((keycode_t)KEY_LEFT_FN)) ) {
     if (keyMatrix.getMap() == functionLayer) {
       keyMatrix.setMap();
     } else {
@@ -63,6 +63,5 @@ void FunctionLayerApp::idle() {
           keyMatrix.setMap();
         }
     }
-
   }
 };

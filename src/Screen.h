@@ -300,7 +300,7 @@ class Screen : public Adafruit_ILI9341
 
 private:
     static const uint32_t BACKLIGHT_FREQUENCY = 50000;
-    uint8_t backlightBrightness = 255;
+    uint8_t backlightBrightness = maxbrightness;
 
 };
 

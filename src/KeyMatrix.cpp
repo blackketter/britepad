@@ -1,6 +1,7 @@
 #include "BritepadShared.h"
 #include "KeyMatrix.h"
 #include "ErgodoxLayout.h"
+#include "KeyLayout.h"
 
 class KeysCommand : public Command {
   public:
@@ -12,7 +13,9 @@ class KeysCommand : public Command {
 };
 KeysCommand theKeysCommand;
 
-KeyMatrix::KeyMatrix() {
+KeyMatrix::KeyMatrix(const keymap_t* defaultMap, const keylayout_t* defaultLayout ) {
+  _defaultLayout = defaultLayout;
+  _defaultMap = defaultMap;
   setMap();  // set to default map
   setLayout(); // set to default layout
   clearHistory();
@@ -20,68 +23,68 @@ KeyMatrix::KeyMatrix() {
 
 // Port A is columns, Port B is rows.  Diodes have cathodes (positive) on A
 void KeyMatrix::begin() {
-  leftMatrix.SetAddress(leftAddr);
-  leftMatrix.SetDirection(0, 0xff);  // port a output, port b input
-  leftMatrix.SetPullups(0,0xff); // port a no pullups, port b pullups
-  leftMatrix.SetPortA(0); // check all columns at once
+  _leftMatrix.SetAddress(_leftAddr);
+  _leftMatrix.SetDirection(0, 0xff);  // port a output, port b input
+  _leftMatrix.SetPullups(0,0xff); // port a no pullups, port b pullups
+  _leftMatrix.SetPortA(0); // check all columns at once
 
-  rightMatrix.SetAddress(rightAddr);
-  rightMatrix.SetDirection(0, 0xff);  // port a output, port b input
-  rightMatrix.SetPullups(0,0xff); // port a no pullups, port b pullups
-  rightMatrix.SetPortA(0); // check all columns at once
+  _rightMatrix.SetAddress(_rightAddr);
+  _rightMatrix.SetDirection(0, 0xff);  // port a output, port b input
+  _rightMatrix.SetPullups(0,0xff); // port a no pullups, port b pullups
+  _rightMatrix.SetPortA(0); // check all columns at once
 }
 
 void KeyMatrix::scanMatrix() {
 
   // save the last state
-  for (int i = 0; i < numColumns; i++) {
-    lastState[i] = curState[i];
+  for (int i = 0; i < _numColumns; i++) {
+    _lastState[i] = _curState[i];
   }
 
   // check to see if any button is down
-  uint8_t l = leftMatrix.GetPortB();
+  uint8_t l = _leftMatrix.GetPortB();
   l = ~l;
 
   // we have a button down (or there's no controller)
   if (l != 0 && l != 255) {
     // scan through each column
     uint8_t col = 0x01;
-    for (int i = 0; i < numColumnsPerMatrix; i++) {
-      leftMatrix.SetPortA(~col);
-      uint8_t b = leftMatrix.GetPortB();
-      curState[i] = ~b;
+    for (int i = 0; i < _numColumnsPerMatrix; i++) {
+      _leftMatrix.SetPortA(~col);
+      uint8_t b = _leftMatrix.GetPortB();
+      _curState[i] = ~b;
       col = col << 1;
     }
-    leftMatrix.SetPortA(0); // be ready to check all columns at once
+    _leftMatrix.SetPortA(0); // be ready to check all columns at once
   } else {
     // no keys are pressed
-    for (int i = 0; i < numColumnsPerMatrix; i++) {
-      curState[i] = 0;
+    for (int i = 0; i < _numColumnsPerMatrix; i++) {
+      _curState[i] = 0;
     }
   }
 
-  uint8_t r = rightMatrix.GetPortB();
+  uint8_t r = _rightMatrix.GetPortB();
   r = ~r;
   // we have a button down (or there's no controller)
   if (r != 0 && r != 255) {
     // scan through each column
     uint8_t col = 0x01;
-    for (int i = 0; i < numColumnsPerMatrix; i++) {
-      rightMatrix.SetPortA(~col);
-      uint8_t b = rightMatrix.GetPortB();
-      curState[i+numColumnsPerMatrix] = ~b;
+    for (int i = 0; i < _numColumnsPerMatrix; i++) {
+      _rightMatrix.SetPortA(~col);
+      uint8_t b = _rightMatrix.GetPortB();
+      _curState[i+_numColumnsPerMatrix] = ~b;
       col = col << 1;
     }
-    rightMatrix.SetPortA(0); // be ready to check all columns at once
+    _rightMatrix.SetPortA(0); // be ready to check all columns at once
   } else {
     // no keys are pressed
-    for (int i = 0; i < numColumnsPerMatrix; i++) {
-      curState[i+numColumnsPerMatrix] = 0;
+    for (int i = 0; i < _numColumnsPerMatrix; i++) {
+      _curState[i+_numColumnsPerMatrix] = 0;
     }
   }
 
-  for (int i = 0; i < numColumns; i++) {
-    changedKeys[i] = lastState[i] ^ curState[i];
+  for (int i = 0; i < _numColumns; i++) {
+    _changedKeys[i] = _lastState[i] ^ _curState[i];
   }
 }
 
@@ -127,10 +130,10 @@ keyswitch_t KeyMatrix::keysReleased() {
 keyswitch_t KeyMatrix::update() {
 
   millis_t now = Uptime::millis();
-  if ((now - lastScan) < minScanInterval) {
+  if ((now - _lastScan) < _minScanInterval) {
     return false;
   } else {
-    lastScan = now;
+    _lastScan = now;
   }
   scanMatrix();
 
@@ -139,9 +142,9 @@ keyswitch_t KeyMatrix::update() {
 
 keyswitch_t KeyMatrix::getSwitch(keycode_t c) {
   keyswitch_t i = 0;
-  while (currentMap[i].key != NO_KEY) {
-    if (currentMap[i].code == c) {
-      return currentMap[i].key;
+  while (_currentMap[i].key != NO_KEY) {
+    if (_currentMap[i].code == c) {
+      return _currentMap[i].key;
     } else {
       i++;
     }
@@ -151,9 +154,9 @@ keyswitch_t KeyMatrix::getSwitch(keycode_t c) {
 
 keycode_t KeyMatrix::getCode(keyswitch_t k) {
   keyswitch_t i = 0;
-  while (currentMap[i].key != NO_KEY) {
-    if (currentMap[i].key == k) {
-      return currentMap[i].code;
+  while (_currentMap[i].key != NO_KEY) {
+    if (_currentMap[i].key == k) {
+      return _currentMap[i].code;
     } else {
       i++;
     }
@@ -163,9 +166,9 @@ keycode_t KeyMatrix::getCode(keyswitch_t k) {
 
 const keylayout_t* KeyMatrix::getKeyLayout(keyswitch_t k) {
   keyswitch_t i = 0;
-  while (currentLayout[i].key != NO_KEY) {
-    if (currentLayout[i].key == k) {
-      return (&currentLayout[i]);
+  while (_currentLayout[i].key != NO_KEY) {
+    if (_currentLayout[i].key == k) {
+      return (&_currentLayout[i]);
     }
     i++;
   }
@@ -267,8 +270,8 @@ const char* KeyMatrix::getKeyLabel(keycode_t c) {
 
 void KeyMatrix::clearKeyChanges() {
   // save the last state
-  for (int i = 0; i < numColumns; i++) {
-    changedKeys[i] = 0;
+  for (int i = 0; i < _numColumns; i++) {
+    _changedKeys[i] = 0;
   }
 }
 
@@ -289,68 +292,65 @@ void KeyMatrix::sendKeys() {
 
 void KeyMatrix::setLayout(const keylayout_t* l) {
   console.debugf("setlayout: %d\n",(int)l);
-  currentLayout = l ? l : getDefaultLayout();
-  console.debugf(" now: %d (default: %d vs %d)\n",(int)currentLayout, (int)keyMatrix.getDefaultLayout(), (int)getDefaultLayout());
+  _currentLayout = l ? l : getDefaultLayout();
+  console.debugf(" now: %d (default: %d vs %d)\n",(int)_currentLayout, (int)keyMatrix.getDefaultLayout(), (int)getDefaultLayout());
 }
 
 void KeyMatrix::setMap(const keymap_t* l) {
   console.debugf("setmap: %d\n",(int)l);
-  currentMap = l ? l : getDefaultMap();
-  console.debugf(" now: %d (default: %d vs %d)\n",(int)currentMap, (int)keyMatrix.getDefaultMap(), (int)getDefaultMap());
+  _currentMap = l ? l : getDefaultMap();
+  console.debugf(" now: %d (default: %d vs %d)\n",(int)_currentMap, (int)keyMatrix.getDefaultMap(), (int)getDefaultMap());
 }
 
 millis_t KeyMatrix::getHistoryTime(uint8_t n) {
-  if (n < historySize) {
-    return historyTime[n];
+  if (n < _historySize) {
+    return _history[n].time;
   } else {
     return 0;
   }
 }
 
 keyswitch_t KeyMatrix::getHistoryKey(uint8_t n) {
-  if (n < historySize) {
-    return historyKey[n];
+  if (n < _historySize) {
+    return _history[n].key;
   } else {
     return NO_KEY;
   }
 }
 
 keycode_t KeyMatrix::getHistoryCode(uint8_t n) {
-  if (n < historySize) {
-    return historyCode[n];
+  if (n < _historySize) {
+    return _history[n].code;
   } else {
     return NO_KEY;
   }
 }
 
 bool KeyMatrix::getHistoryPressed(uint8_t n) {
-  if (n < historySize) {
-    return historyPressed[n];
+  if (n < _historySize) {
+    return _history[n].pressed;
   } else {
     return false;
   }
 }
 
 void KeyMatrix::addHistory(keyswitch_t k, millis_t t, bool d) {
-  for (uint8_t i = historySize-1; i > 0; i--) {
-    historyPressed[i] = historyPressed[i-1];
-    historyKey[i] = historyKey[i-1];
-    historyCode[i] = historyCode[i-1];
-    historyTime[i] = historyTime[i-1];
+  for (uint8_t i = _historySize-1; i > 0; i--) {
+    _history[i] = _history[i-1];
   }
-  historyPressed[0] = d;
-  historyTime[0] = t;
-  historyKey[0] = k;
-  historyCode[0] = getCode(k);
-//  for (uint8_t i = 0; i < historySize; i++) {
+  _history[0].pressed = d;
+  _history[0].time = t;
+  _history[0].key = k;
+  _history[0].code = getCode(k);
+//  for (uint8_t i = 0; i < _historySize; i++) {
 //    console.debugf("History[%d] = %d %s\n", i, getHistoryKey(i), getHistoryPressed(i) ? "down" : "up");
 //  }
 }
 
 void KeyMatrix::clearHistory() {
-  for (uint8_t i = 0; i < historySize; i++) {
-    historyKey[i] = NO_KEY;
-    historyCode[i] = NO_CODE;
+  for (uint8_t i = 0; i < _historySize; i++) {
+    _history[i].key = NO_KEY;
+    _history[i].code = NO_CODE;
   }
 }
 
@@ -375,7 +375,7 @@ bool KeyMatrix::doubleTapped(keycode_t c) {
         (getHistoryCode(2) == c) && getHistoryReleased(2) &&
         (getHistoryCode(1) == c) && getHistoryPressed(1) &&
         (getHistoryCode(0) == c) && getHistoryReleased(0) &&
-        (getHistoryTime(0)-getHistoryTime(3) < doubleTapTime)
+        (getHistoryTime(0)-getHistoryTime(3) < _doubleTapTime)
      ) {
     console.debugf("%d doubleTapped!\n", c);
     return true;
@@ -399,7 +399,7 @@ void KeyMatrix::dumpStatus(Stream* c) {
     }
   }
   c->println("");
-  for (uint8_t i = 0; i < historySize; i++) {
+  for (uint8_t i = 0; i < _historySize; i++) {
       c->printf("  Key History[%d] = '%s' %d %s\n", i, getKeyLabel(getHistoryCode(i)),getHistoryKey(i), getHistoryPressed(i) ? "down" : "up");
   }
   c->println("---------------");

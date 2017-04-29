@@ -12,10 +12,6 @@ void KeyboardViewerApp::begin(AppMode asMode) {
   coord_t oneKeyWidth = screen.clipWidth()/keyMatrix.getWidth();
   coord_t oneKeyHeight = screen.clipHeight()/keyMatrix.getHeight();
 
-//  alignment_t oldAlign = screen.setTextAlign((alignment_t)(ALIGN_HCENTER+ALIGN_VCENTER));
-//  screen.setFont(Arial_12);
-//  screen.setTextColor(screen.red);
-
   for (keyswitch_t k = 0; k < totalKeys; k++) {
     if (keyMatrix.getKeyLayout(k)) {
       coord_t x = screen.clipLeft()+keyMatrix.getKeyX(k)*oneKeyWidth;
@@ -57,7 +53,7 @@ void KeyboardViewerApp::draw() {
 
     const char* title = keyMatrix.getKeyLabel(c);
     const icon_t icon = keyMatrix.getKeyIcon(c);
-    bool down = keyMatrix.isKeyDown(k);
+    bool down = keyMatrix.keyIsDown(k);
 
     if (icon) {
       title = nullptr;
@@ -69,7 +65,7 @@ void KeyboardViewerApp::draw() {
     if (button->getHighlighted() != down) changed = true;
 
     if (changed) {
-      button->setHighlighted(keyMatrix.isKeyDown(k));
+      button->setHighlighted(keyMatrix.keyIsDown(k));
       button->setTitle(title);
       button->setIcon(icon);
       button->draw();
@@ -87,5 +83,6 @@ void KeyboardViewerApp::idle() {
       }
       tutorialMode = true;
       launch();
+      console.debugln("Launching KeyboardViewerApp in tutorial mode...");
   }
 }

@@ -78,10 +78,10 @@ class KeyMatrix {
     // did a given key change?
     inline bool keyChanged(keyswitch_t k) { return (k != NO_KEY) && ((_changedKeys[k/_numRows] >> (k%_numRows)) & 0x01); }
     inline bool keyChanged(keycode_t c) { return (c != NO_CODE) && keyChanged(getSwitch(c)); }
-    inline bool keyPressed(keyswitch_t k) { return keyChanged(k) && isKeyDown(k); }
-    inline bool keyReleased(keyswitch_t k) { return keyChanged(k) && isKeyUp(k); }
-    inline bool keyPressed(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && isKeyDown(k) && keyChanged(k); }
-    inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && isKeyUp(k) && keyChanged(k); }
+    inline bool keyPressed(keyswitch_t k) { return keyChanged(k) && keyIsDown(k); }
+    inline bool keyReleased(keyswitch_t k) { return keyChanged(k) && keyIsUp(k); }
+    inline bool keyPressed(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && keyIsDown(k) && keyChanged(k); }
+    inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && keyIsUp(k) && keyChanged(k); }
 
     // marks key as not changed so that the event is not processed
     inline void clearKeyChange(keyswitch_t k) { _changedKeys[k/_numRows] = _changedKeys[k/_numRows] & ~(0x01 << (k%_numRows)); }
@@ -91,11 +91,11 @@ class KeyMatrix {
     keycode_t getCode(keyswitch_t k);
     keyswitch_t getSwitch(keycode_t c);
 
-    inline bool isKeyDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
-    inline bool isKeyUp(keyswitch_t k) { return !isKeyDown(k); }
+    inline bool keyIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
+    inline bool keyIsUp(keyswitch_t k) { return !keyIsDown(k); }
 
-    inline bool isKeyDown(keycode_t c) { return isKeyDown(getSwitch(c)); }
-    inline bool isKeyUp(keycode_t c) { return !isKeyDown(c); }
+    inline bool keyIsDown(keycode_t c) { return keyIsDown(getSwitch(c)); }
+    inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
 
     const keyinfo_t* getKeyInfo(keycode_t c);
     char getKeyChar(keycode_t c);

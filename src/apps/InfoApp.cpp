@@ -9,7 +9,11 @@ void printInfo(Print* p) {
   uint32_t rtcMillis = (uint32_t)((clock.getRTCMicros()%1000000)/1000);
   uint32_t clockMillis = clock.fracMillis();
 
-  p->printf("Touch: t(%d) l(%d) b(%d) r(%d)\n", touchRead(T_TOUCH_PIN), touchRead(L_TOUCH_PIN), touchRead(B_TOUCH_PIN), touchRead(R_TOUCH_PIN));
+  p->printf("Touch: %c(%d) %c(%d) %c(%d) %c(%d)\n",
+    pad.touched(TOP_PAD) ? 'T':'t', touchRead(T_TOUCH_PIN),
+    pad.touched(LEFT_PAD) ? 'L':'l', touchRead(L_TOUCH_PIN),
+    pad.touched(TOP_PAD) ? 'B':'b', touchRead(B_TOUCH_PIN),
+    pad.touched(RIGHT_PAD) ? 'R':'r', touchRead(R_TOUCH_PIN));
   p->printf("RTC millis:%03d, clock: %03d, diff: %d\n", (uint32_t)rtcMillis, (uint32_t)clockMillis, (int)rtcMillis - (int)clockMillis);
   p->printf("Ambient: %3d\n", pad.getAmbientLight());
   p->printf("Backlight: %3d\n", screen.getBacklight());
@@ -84,7 +88,7 @@ void InfoApp::run() {
   uint8_t raw = pad.getProximityRaw();
   if (raw > max) { max = raw; sound.beep();}
   screen.printf("Points captured: %3d\n", pad.getHistoryCount());
-  screen.printf("Distance:%d,raw:%d,max: %d\n", pad.getProximityDistance(), raw,max);
+  screen.printf("Distance (%d):%d,raw:%d,max: %d\n", pad.touched(PROXIMITY_SENSOR), pad.getProximityDistance(), raw,max);
   screen.printf("FPS: %5.2f\n", 1000.0/(pad.time()-lastUpdate));
   lastUpdate = pad.time();
 

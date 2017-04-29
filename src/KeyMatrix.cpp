@@ -96,7 +96,7 @@ keyswitch_t KeyMatrix::keysChanged() {
   for (keyswitch_t i = 0; i < total; i++) {
     if (keyChanged(i)) {
       count++;
-      addHistory(i,Uptime::millis(), isKeyDown(i));
+      addHistory(i,Uptime::millis(), keyIsDown(i));
     }
   }
   return count;
@@ -278,7 +278,7 @@ void KeyMatrix::clearKeyChanges() {
 void KeyMatrix::sendKeys() {
   for (keyswitch_t i = 0; i < numKeys(); i++) {
     if (keyChanged(i)) {
-      bool down = isKeyDown(i);
+      bool down = keyIsDown(i);
       keycode_t code = getCode(i);
 
       if (down) {
@@ -392,7 +392,7 @@ void KeyMatrix::dumpStatus(Stream* c) {
   for (keyswitch_t k = 0; k < numKeys(); k++) {
     if (keyPressed(k)) {
       c->printf(" Key '%s' pressed (switch: %d)\n", getKeyLabel(getCode(k)), k);
-    } else if (isKeyDown(k)) {
+    } else if (keyIsDown(k)) {
       c->printf(" Key '%s' down (switch: %d)\n", getKeyLabel(getCode(k)), k);
     } else if (keyReleased(k)) {
       c->printf(" Key '%s' released (switch: %d)\n", getKeyLabel(getCode(k)), k);

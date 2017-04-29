@@ -198,6 +198,8 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     currApp->begin(asMode);
     if (asMode == SCREENSAVER_MODE) {
       screensaverStartedTime = pad.time();
+    } else if (asMode == INTERACTIVE_MODE) {
+      resetScreensaver();
     }
   }
 }
@@ -387,8 +389,14 @@ void Britepad::loop() {
   } else {
     if (keyMatrix.keysPressed() || keyMatrix.keysReleased()) {
       resetScreensaver();
+      console.debugln("key pressed, resetting screensaver");
     }
   }
+}
+
+void Britepad::launchApp(BritepadApp* app, AppMode mode) {
+  launchedAppPtr = app;
+  launchedAppMode = mode;
 }
 
 time_t Britepad::getScreensaverSwitchInterval() {

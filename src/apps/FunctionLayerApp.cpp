@@ -1,7 +1,7 @@
 #include "FunctionLayerApp.h"
 #include "KeyMatrix.h"
 
-const keymap_t functionLayer[] = {
+const keymap_t functionLayerMap[] = {
 // row 0
     { 0, KEY_F11 },
     { 6, KEY_F1 },
@@ -44,24 +44,15 @@ FunctionLayerApp theFunctionLayerApp;
 
 void FunctionLayerApp::idle() {
   // switch to the function layer
-  if ((keyMatrix.keyPressed((keycode_t)KEY_LEFT_FN) && !keyMatrix.isKeyDown((keycode_t)KEY_RIGHT_FN)) ||
-      (keyMatrix.keyPressed((keycode_t)KEY_RIGHT_FN)  && !keyMatrix.isKeyDown((keycode_t)KEY_LEFT_FN)) ) {
-    if (keyMatrix.getMap() == functionLayer) {
-      keyMatrix.setMap();
-    } else {
-      keyMatrix.setMap(functionLayer);
+  if (keyMatrix.keyPressed((keycode_t)KEY_LEFT_FN) || keyMatrix.keyPressed((keycode_t)KEY_RIGHT_FN)) {
+    if (keyMatrix.getMap() != functionLayerMap) {
+      keyMatrix.setMap(functionLayerMap);
     }
-  } else if (keyMatrix.keyReleased((keycode_t)KEY_LEFT_FN) ||
-             keyMatrix.keyReleased((keycode_t)KEY_RIGHT_FN)) {
-
-    if (keyMatrix.isKeyUp((keycode_t)KEY_RIGHT_FN) && keyMatrix.isKeyUp((keycode_t)KEY_LEFT_FN)) {
-      // check for double-tap
-      if ((keyMatrix.doubleTapped((keycode_t)KEY_RIGHT_FN) ||
-           keyMatrix.doubleTapped((keycode_t)KEY_LEFT_FN))) {
-          // double tap!  don't reset the map
-        } else {
+  } else if (
+             (keyMatrix.keyReleased((keycode_t)KEY_LEFT_FN) || keyMatrix.keyReleased((keycode_t)KEY_RIGHT_FN)) &&  // released fn key
+              keyMatrix.keyIsUp((keycode_t)KEY_RIGHT_FN) && keyMatrix.keyIsUp((keycode_t)KEY_LEFT_FN) &&           // neither key is still held
+              !keyMatrix.doubleTapped((keycode_t)KEY_RIGHT_FN) && !keyMatrix.doubleTapped((keycode_t)KEY_LEFT_FN)  // and it's not a double-tap
+            ) {
           keyMatrix.setMap();
-        }
-    }
   }
 };

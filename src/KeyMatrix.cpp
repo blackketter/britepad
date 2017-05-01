@@ -137,6 +137,10 @@ keyswitch_t KeyMatrix::update() {
   }
   scanMatrix();
 
+  if (keysPressed()) {
+    sound.click();
+  }
+
   return keysChanged();
 }
 

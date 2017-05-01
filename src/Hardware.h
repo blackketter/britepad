@@ -38,7 +38,7 @@ const pinNumber AUDIO_SHUTDOWN_PIN = 23;
 
 const pinNumber WIRE_SDA_PIN = 18;
 const pinNumber WIRE_SCL_PIN = 19;
-
+const uint32_t  WIRE_SPEED = 400000;
 // screen
 const pinNumber TFT_CS_PIN = 10;
 const pinNumber TFT_DC_PIN = 9;

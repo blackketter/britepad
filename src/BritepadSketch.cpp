@@ -63,7 +63,7 @@ void setup() {
   console.debugln("starting keyboard matrix");
   keyMatrix.begin();
 
-  Wire.setClock(100000);
+  Wire.setClock(WIRE_SPEED);
 
 
   console.debugln("starting app framework");

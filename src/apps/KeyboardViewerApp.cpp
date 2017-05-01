@@ -83,6 +83,6 @@ void KeyboardViewerApp::idle() {
       }
       tutorialMode = true;
       launch();
-      console.debugln("Launching KeyboardViewerApp in tutorial mode...");
+//      console.debugln("Launching KeyboardViewerApp in tutorial mode...");
   }
 }

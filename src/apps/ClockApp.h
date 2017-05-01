@@ -9,7 +9,7 @@ class ClockApp : public ScreensaverApp {
   public:
     void begin(AppMode asMode);
     void run();
-    virtual void update();
+    virtual void update();  // called every updateInterval()
     virtual millis_t updateInterval() { return 1000; }
     virtual Clock& getClock() { return clock; }
 

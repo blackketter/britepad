@@ -7,6 +7,7 @@ class MandelApp : public ScreensaverApp {
   public:
     void run();
     void begin(AppMode asMode);
+    void end();
     bool canBeMouse() { return false; }
     bool canBeInteractive() { return true; }
 
@@ -21,6 +22,7 @@ class MandelApp : public ScreensaverApp {
     coord_t xPixel;
     coord_t yPixel;
     float x1, x2,y1,y2,sx,sy;
+    color_t* _column;
 };
 
 #endif

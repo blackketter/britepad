@@ -23,6 +23,10 @@ Timezone localTimezone(usPDT,usPST);
 Clock clock = Clock();
 
 void setup() {
+
+  // setup hardware
+  watchdogKick();
+
   // this is the magic trick for printf to support float
   asm(".global _printf_float");
 
@@ -34,12 +38,10 @@ void setup() {
   digitalWrite(AUDIO_SHUTDOWN_PIN, HIGH ); // turn on the amplifier
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
-  delay(1000);
+  delay(500);
   console.begin();
-
   console.debugln("britepad starting...");
 
-  delay(1000);
   console.executeCommandLine("i2c");
 
   console.debugln("starting prefs...");
@@ -65,6 +67,7 @@ void setup() {
 
   Wire.setClock(WIRE_SPEED);
 
+  watchdogKick();
 
   console.debugln("starting app framework");
   britepad.begin();
@@ -72,4 +75,5 @@ void setup() {
 
 void loop() {
   britepad.loop();
+  watchdogKick();
 }

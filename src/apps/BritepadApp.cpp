@@ -13,8 +13,8 @@ BritepadApp::BritepadApp()  {
 }
 
 void BritepadApp::resetClipRect() {
-  coord_t top = displaysStatusBar() ? statusBarHeight : 0;
-  coord_t bottom = displaysInfoBar() ? screen.height()-statusBarHeight : screen.height();
+  coord_t top = displaysStatusBar() ? _statusBarHeight : 0;
+  coord_t bottom = displaysInfoBar() ? screen.height()-_statusBarHeight : screen.height();
   screen.setClipRect(0, top, screen.width(), bottom-top);
 }
 
@@ -32,7 +32,7 @@ const uint8_t bellIcon[] = {
 
 void BritepadApp::drawStatusBar(bool update) {
   if (displaysStatusBar()) {
-    screen.setClipRect(0, 0, screen.width(), statusBarHeight);
+    screen.setClipRect(0, 0, screen.width(), _statusBarHeight);
 
     screen.setFont(Arial_8_Bold);
     screen.setTextColor(statusBarFGColor());
@@ -43,7 +43,7 @@ void BritepadApp::drawStatusBar(bool update) {
       // draw title
       const char* title = statusBarTitle();
       screen.setCursor( (screen.clipWidth() - screen.measureTextWidth(title)) / 2,
-                         (statusBarHeight-screen.measureTextHeight(title)) / 2);
+                         (_statusBarHeight-screen.measureTextHeight(title)) / 2);
       screen.drawText(title);
     }
 
@@ -58,7 +58,7 @@ void BritepadApp::drawStatusBar(bool update) {
       char shortTimeSpaced[100];
       sprintf(shortTimeSpaced,"  %s ", shortTime);
       screen.setCursor( (screen.clipRight() - screen.measureTextWidth(shortTimeSpaced) - 2),
-                        (statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
+                        (_statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
 
       AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
@@ -69,7 +69,7 @@ void BritepadApp::drawStatusBar(bool update) {
       clock.shortDate(shortTime);
       sprintf(shortTimeSpaced,"  %s ", shortTime);
       screen.setCursor( screen.clipLeft() + 2,
-                        (statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
+                        (_statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
       screen.drawText(shortTimeSpaced);
     }
 
@@ -79,7 +79,7 @@ void BritepadApp::drawStatusBar(bool update) {
 
 void BritepadApp::drawInfoBar(bool update) {
   if (displaysInfoBar()) {
-    coord_t top = screen.height()-statusBarHeight;
+    coord_t top = screen.height()-_statusBarHeight;
     screen.setClipRect(0, top, screen.width(), screen.height()-top);
 
     screen.setFont(Arial_8_Bold);
@@ -90,7 +90,7 @@ void BritepadApp::drawInfoBar(bool update) {
       screen.fillScreen(infoBarBGColor());
 
       screen.setCursor( (screen.clipWidth() - screen.measureTextWidth(text)) / 2,
-                         top + (statusBarHeight-screen.measureTextHeight(text)) / 2);
+                         top + (_statusBarHeight-screen.measureTextHeight(text)) / 2);
       screen.drawText(text);
     }
 

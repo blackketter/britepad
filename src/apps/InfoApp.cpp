@@ -19,6 +19,7 @@ void printInfo(Print* p) {
   p->printf("Backlight: %3d\n", screen.getBacklight());
   p->printf("Free ram: %10d\n", FreeMem());
   p->printf("Uptime: %f\n", Uptime::micros()/1000000.0);
+  p->println(resetType());
 
 /*
   millis_t n = Uptime::millis();
@@ -79,7 +80,7 @@ void InfoApp::init() {
 void InfoApp::run() {
   BritepadApp::run();
   screen.setTextColor(screen.white, bgColor());
-  screen.setFont(Arial_12);
+  screen.setFont(Arial_10);
   screen.setCursor(screen.clipLeft() + screen.fontGap(), screen.clipTop()+screen.fontGap());
 
   printInfo(&screen);

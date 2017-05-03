@@ -295,15 +295,11 @@ void KeyMatrix::sendKeys() {
 }
 
 void KeyMatrix::setLayout(const keylayout_t* l) {
-  console.debugf("setlayout: %d\n",(int)l);
   _currentLayout = l ? l : getDefaultLayout();
-  console.debugf(" now: %d (default: %d vs %d)\n",(int)_currentLayout, (int)keyMatrix.getDefaultLayout(), (int)getDefaultLayout());
 }
 
 void KeyMatrix::setMap(const keymap_t* l) {
-  console.debugf("setmap: %d\n",(int)l);
   _currentMap = l ? l : getDefaultMap();
-  console.debugf(" now: %d (default: %d vs %d)\n",(int)_currentMap, (int)keyMatrix.getDefaultMap(), (int)getDefaultMap());
 }
 
 millis_t KeyMatrix::getHistoryTime(uint8_t n) {

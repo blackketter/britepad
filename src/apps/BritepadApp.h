@@ -70,6 +70,7 @@ class BritepadApp {
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { britepad.launchApp(app, mode); };
     void exit() { launchApp(A_MOUSE_APP); };
     void launch() { launchApp(this); }
+    bool timeToLeave() { return ((Uptime::millis() - pad.time()) > _maxRunTime); }
 
     virtual bool canBeScreensaver() { return false; }
     virtual bool canBeInteractive() { return true; }
@@ -117,14 +118,15 @@ class BritepadApp {
     virtual void writePrefs() {  if (hasPrefs()) { uint8_t pref = (uint8_t)_enabled; prefs.write(id(), sizeof(pref), (uint8_t*)&pref); } };
     virtual void readPrefs() { if (hasPrefs()) { uint8_t pref = (uint8_t)ANY_MODE; prefs.read(id(),  sizeof(pref), (uint8_t*)&pref); _enabled = (AppMode)pref;} };
 
-    static const coord_t statusBarHeight = 16;
-    static const int32_t defaultLauncherPosition = -1;
+    static const coord_t _statusBarHeight = 16;
+    static const int32_t _defaultLauncherPosition = -1;
+    static const millis_t _maxRunTime = 10;
 
     AppMode _enabled = ANY_MODE;  // bit mask for enabled modes. apps are always enabled by default
     AppMode _currAppMode = INACTIVE_MODE;
 
     Icon _icon;
-    int32_t _launcherPosition = defaultLauncherPosition;
+    int32_t _launcherPosition = _defaultLauncherPosition;
 
   private:
     BritepadApp* _nextApp = nullptr;

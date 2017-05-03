@@ -3,9 +3,15 @@
 
 #include "Arduino.h"
 
+#ifndef WATCHDOG_TIME_MS
+#define WATCHDOG_TIME_MS (2000)
+#endif
+
 typedef int pinNumber;
 bool usbActive();
 uint32_t FreeMem();
+void watchdogKick();
+const char* resetType();
 
 #ifdef TEENSYDUINO
 // touchpad pins

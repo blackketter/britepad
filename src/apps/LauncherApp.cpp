@@ -38,8 +38,8 @@ void LauncherApp::begin(AppMode asMode) {
       for (int curScreen = 0; curScreen < TOTAL_SCREENS; curScreen++) {
         if (a->isAppType(screenTypes[curScreen])) {
           int32_t pos = a->getLauncherPosition();
-          if ((specific && (pos!=defaultLauncherPosition)) || (!specific && (pos==defaultLauncherPosition))) {
-            if (pos==defaultLauncherPosition) { pos = 0; }
+          if ((specific && (pos!=_defaultLauncherPosition)) || (!specific && (pos==_defaultLauncherPosition))) {
+            if (pos==_defaultLauncherPosition) { pos = 0; }
             while (buttons->getButton(pos,curScreen)) {
               pos++;
             }

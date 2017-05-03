@@ -9,7 +9,7 @@ class RandomClockApp : public ClockApp {
   public:
     void begin(AppMode asMode);
     void update();
-    virtual millis_t updateInterval() { return 1; }
+    virtual millis_t updateInterval() { return 20; }
 
     const char* name() { return "Random"; };
 

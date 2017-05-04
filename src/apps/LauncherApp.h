@@ -5,10 +5,22 @@
 #include "BritepadApp.h"
 #include "widgets/ButtonMatrix.h"
 
+typedef uint8_t screenid_t;
+
 typedef int (*appCompareFunction)(BritepadApp*, BritepadApp*);
+
+typedef struct screen_t {
+  screenid_t id;
+  const char* name;
+  const char* info;
+  AppType type;
+  AppMode mode;
+  color_t color;
+} screen_t;
 
 class LauncherApp : public BritepadApp {
   public:
+    LauncherApp();
     void begin(AppMode asMode);
     void run();
     void end();
@@ -34,13 +46,14 @@ class LauncherApp : public BritepadApp {
 
     BritepadApp* nextSortedApp(BritepadApp* last, appCompareFunction compareFunc) { return nullptr;};
 
-    int getCurrentScreen() { return current_screen; }
-    void setCurrentScreen(int n = KEYS_SCREEN);
+    screenid_t getCurrentScreenID() { return current_screen; }
+    void setCurrentScreenID(screenid_t n);
+    screen_t* getCurrentScreen();
     color_t bgColor();
 
     void clearScreen() {} // override the default clear screen because we do transitions
     void drawButtons();
-    int current_screen = HOME_SCREEN;
+    int current_screen;
 
     bool waitForRelease = false;
 
@@ -49,75 +62,7 @@ class LauncherApp : public BritepadApp {
     bool held = false;
     BritepadApp* launchOnRelease = nullptr;
 
-    enum Screens {
-      DEBUG_SCREEN,
-      MICE_SCREEN,
-      CLOCKS_SCREEN,
-      SCREENSAVERS_SCREEN,
-      SETTINGS_SCREEN,
-      KEYS_SCREEN,
-      HOME_SCREEN = KEYS_SCREEN,
-      TIMERS_SCREEN,
-      APPS_SCREEN,
-      TOTAL_SCREENS
-    };
-
     ButtonMatrix* buttons = 0;
-
-    const char* infoText[TOTAL_SCREENS] = {
-        nullptr,
-        "Press and hold to test",
-        "Press and hold to test",
-        "Press and hold to test",
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-    };
-
-    const char* screenNames[TOTAL_SCREENS] = {
-        "Debug",
-        "Mice",
-        "Clocks",
-        "Screensavers",
-        "Settings",
-        "Launcher",
-        "Timers",
-        "Apps",
-      };
-
-    const AppType screenTypes[TOTAL_SCREENS] = {
-        DEBUG_APP,
-        MOUSE_APP,
-        CLOCK_APP,
-        SCREENSAVER_APP,
-        SETTINGS_APP,
-        KEY_APP,
-        TIMER_APP,
-        INTERACTIVE_APP,
-    };
-
-    const AppMode screenMode[TOTAL_SCREENS] = {
-        INTERACTIVE_MODE,
-        MOUSE_MODE,
-        SCREENSAVER_MODE,
-        SCREENSAVER_MODE,
-        INTERACTIVE_MODE,
-        INTERACTIVE_MODE,
-        INTERACTIVE_MODE,
-        INTERACTIVE_MODE,
-    };
-
-    const color_t screenColor[TOTAL_SCREENS] = {
-        screen.lightgrey,
-        screen.black,
-        screen.darkerred,
-        screen.darkeryellow,
-        screen.darkeryellow,
-        screen.darkergreen,
-        screen.darkerblue,
-        screen.darkergrey,
-    };
 };
 
 #endif

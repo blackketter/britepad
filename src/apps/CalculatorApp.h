@@ -12,7 +12,7 @@ class CalculatorApp : public BritepadApp {
     void end();
     void run();
 
-    BritepadApp* exitsTo() { return A_MOUSE_APP; }
+    bool disablesScreensavers() { return true; }
 
     const char* name() { return "Calculator"; }
     appid_t id() { return ID; };

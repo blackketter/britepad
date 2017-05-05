@@ -51,7 +51,6 @@ void LauncherApp::setCurrentScreenID(screenid_t n) {
   // do all the specifically positioned apps, then the default (0) position apps
   for (int specific = 1; specific >= 0; specific--) {
     BritepadApp* a = britepad.getNextApp();
-
     while (a) {
       if (a->isAppType(getCurrentScreen()->type)) {
         int32_t pos = a->getLauncherPosition();
@@ -82,6 +81,13 @@ void LauncherApp::setCurrentScreenID(screenid_t n) {
         }
       }
       a = britepad.getNextApp(a);
+    }
+  }
+
+  for (buttonindex_t i = 0; i < buttons->totalButtons(); i++) {
+    if (buttons->getButton(i,0)) {
+      buttons->setSelected(i);
+      break;
     }
   }
 }
@@ -209,6 +215,10 @@ void LauncherApp::run() {
     exit();
   } else if (!pad.didGesture()) {
     AppButton* b = (AppButton*)(buttons->up());
+    if (!b && (keyMatrix.keyPressed((keycode_t)KEY_SPACE) || keyMatrix.keyPressed((keycode_t)KEY_RETURN))) {
+      b = (AppButton*)buttons->getButton(buttons->getSelected(),0);
+      b->setHighlighted(true);
+    }
     if (b) {
       BritepadApp* launched = ((AppButton*)b)->getApp();
       if (launched->isInvisible()) {
@@ -246,6 +256,45 @@ void LauncherApp::run() {
       }
     }
   }
+
+  buttonindex_t oldSelection = buttons->getSelected();
+  buttonindex_t i = oldSelection;
+  if (keyMatrix.keyPressed((keycode_t)KEY_UP)) {
+    do {
+      i -= h_buttons;
+      if (i < 0) { i += buttons_per_screen; }
+    } while (buttons->getButton(i, 0) == nullptr);
+    buttons->setSelected(i);
+  }
+
+  if (keyMatrix.keyPressed((keycode_t)KEY_DOWN)) {
+    do {
+      i += h_buttons;
+      if (i >= buttons_per_screen) { i -= buttons_per_screen; }
+    } while (buttons->getButton(i, 0) == nullptr);
+    buttons->setSelected(i);
+  }
+
+  if (keyMatrix.keyPressed((keycode_t)KEY_LEFT)) {
+    do {
+      i--;
+      if (i < 0) { i = buttons_per_screen - 1; }
+    } while (buttons->getButton(i, 0) == nullptr);
+    buttons->setSelected(i);
+  }
+
+  if (keyMatrix.keyPressed((keycode_t)KEY_RIGHT)) {
+    do {
+      i++;
+      if (i >= buttons_per_screen) { i = 0; }
+    } while (buttons->getButton(i, 0) == nullptr);
+    buttons->setSelected(i);
+  }
+  if (oldSelection != i) {
+    buttons->draw(i);
+    buttons->draw(oldSelection);
+  }
+
 }
 
 void LauncherApp::end() {

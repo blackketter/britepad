@@ -11,6 +11,9 @@ struct ButtonConfig {
   widgetid_t id;
 };
 
+typedef int buttonindex_t;
+const buttonindex_t NO_BUTTON = -1;
+
 class ButtonMatrix : public Widget {
   public:
     ButtonMatrix() {};
@@ -38,23 +41,26 @@ class ButtonMatrix : public Widget {
     Button* up();
     Button* hold();
     void draw();
+    void draw(buttonindex_t i, int map = 0) { Button* b = getButton(i,map); if (b) { b->draw(); }};
 
     void setMap(int newMap) { currMap = newMap; }
     int getMap() { return currMap; };
 
     Button* getButton(widgetid_t id);
-    Button* getButton(int i, int map = 0) {  if (buttons) { return buttons[i+map*buttonRows*buttonColumns]; } else { return nullptr; } }
+    Button* getButton(buttonindex_t i, int map = 0) {  if (buttons) { return buttons[i+map*buttonRows*buttonColumns]; } else { return nullptr; } }
 
-    void setButton(Button* b, int i, int map = 0);
+    void setButton(Button* b, buttonindex_t i, int map = 0);
 
-    int rowColToIndex(int r, int c) { return r*buttonColumns+c; }
+    buttonindex_t rowColToIndex(int r, int c) { return r*buttonColumns+c; }
 
     virtual void setHighlighted(bool highlight);
+    buttonindex_t totalButtons() { return buttonRows*buttonColumns*buttonMaps; }
+    buttonindex_t getSelected();
+    void setSelected(buttonindex_t button);
 
   protected:
-    int index(int row, int column, int map) { return map*buttonRows*buttonColumns + row*buttonColumns + column; };
-    int totalButtons() { return buttonRows*buttonColumns*buttonMaps; }
-    void updateButtonBounds(int index);
+    buttonindex_t index(int row, int column, int map) { return map*buttonRows*buttonColumns + row*buttonColumns + column; };
+    void updateButtonBounds(buttonindex_t index);
 
     Button** buttons = nullptr;
     int buttonRows = 0;

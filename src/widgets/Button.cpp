@@ -62,6 +62,10 @@ color_t Button::fillColor() {
 
 void Button::drawbg() {
   screen.fillRect(_xpos, _ypos,_width, _height, fillColor());
+  if (selected) {
+    screen.drawRect(_xpos, _ypos,_width, _height, screen.white);
+    screen.drawRect(_xpos+1, _ypos+1,_width-1, _height-1, screen.white);
+  }
 }
 
 void Button::drawIcon() {
@@ -121,9 +125,17 @@ void Button::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight,
 void RoundButton::drawbg() {
   coord_t r = (min(_width, _height)-1)/2;  // round down radius from diameter (fillCircle circles have diameter 2r+1)
   screen.fillCircle( _xpos+_width/2, _ypos+_height/2, r, fillColor());
+  if (selected) {
+    screen.drawCircle( _xpos+_width/2, _ypos+_height/2, r, screen.white);
+    screen.drawCircle( _xpos+_width/2, _ypos+_height/2, r-1, screen.white);
+  }
 };
 
 void RoundedButton::drawbg() {
   screen.fillRoundRect(_xpos, _ypos, _width, _height, radius, fillColor());
+  if (selected) {
+    screen.drawRoundRect(_xpos, _ypos, _width, _height, radius, screen.white);
+    screen.drawRoundRect(_xpos+1, _ypos+1, _width-1, _height-1, radius-1, screen.white);
+  }
 }
 

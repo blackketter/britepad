@@ -7,8 +7,6 @@
 
 typedef uint8_t screenid_t;
 
-typedef int (*appCompareFunction)(BritepadApp*, BritepadApp*);
-
 typedef struct screen_t {
   screenid_t id;
   const char* name;
@@ -26,13 +24,13 @@ class LauncherApp : public BritepadApp {
     void end();
     void idle();
 
+    bool usesKeyboard() { return true; }
     BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
     const char* name() { return "Launcher"; };
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "laun";
 
-    bool usesKeyboard() { return true; }
     const char* statusBarTitle();
     const char* infoBarText();
 
@@ -44,8 +42,6 @@ class LauncherApp : public BritepadApp {
     const static int buttons_per_screen = h_buttons * v_buttons;
     const static int resetScreenTimeout = 10;  // seconds
 
-    BritepadApp* nextSortedApp(BritepadApp* last, appCompareFunction compareFunc) { return nullptr;};
-
     screenid_t getCurrentScreenID() { return current_screen; }
     void setCurrentScreenID(screenid_t n);
     screen_t* getCurrentScreen();
@@ -53,7 +49,7 @@ class LauncherApp : public BritepadApp {
 
     void clearScreen() {} // override the default clear screen because we do transitions
     void drawButtons();
-    int current_screen;
+    screenid_t current_screen;
 
     bool waitForRelease = false;
 

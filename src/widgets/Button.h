@@ -55,6 +55,9 @@ class Button : public Widget {
     virtual bool getHighlighted() { return highlighted; };
     virtual void setHighlighted(bool highlight) { highlighted = highlight; highlightedTime = pad.time(); draw(); };
 
+    bool getSelected() { return selected; };
+    void setSelected(bool select) { selected = select;}
+
   protected:
     virtual void drawbg();
     virtual void drawTitle();
@@ -70,7 +73,8 @@ class Button : public Widget {
     color_t titleCol;
     Icon icon;
     color_t colored;
-    bool highlighted;
+    bool highlighted = false;
+    bool selected = false;
     millis_t highlightedTime;
 };
 

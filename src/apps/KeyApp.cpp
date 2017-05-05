@@ -5,14 +5,17 @@
 
 #include <usb_keyboard.h>
 
-// default screen has quick buttons
-KeyApp volUpKey(volPlusIcon, KEY_MEDIA_VOLUME_INC, screen.bluegreen, 0);
-KeyApp volDownKey(volMinusIcon, KEY_MEDIA_VOLUME_DEC, screen.bluegreen, 4);
-KeyApp muteKey(muteIcon, KEY_MEDIA_MUTE, screen.bluegreen, 8);
+static const color_t defaultColor = Screen::Orange;
+static const color_t volColor = Screen::Olive;
 
-KeyApp rewKey(rewIcon, KEY_MEDIA_PREV_TRACK, screen.orange, 1);
-KeyApp pauseKey(pauseIcon, KEY_MEDIA_PLAY_PAUSE, screen.orange, 2);
-KeyApp ffKey(ffIcon, KEY_MEDIA_NEXT_TRACK, screen.orange, 3);
+// default screen has quick buttons
+KeyApp volUpKey(volPlusIcon, KEY_MEDIA_VOLUME_INC, volColor, 0);
+KeyApp volDownKey(volMinusIcon, KEY_MEDIA_VOLUME_DEC, volColor, 4);
+KeyApp muteKey(muteIcon, KEY_MEDIA_MUTE, volColor, 8);
+
+KeyApp rewKey(rewIcon, KEY_MEDIA_PREV_TRACK, defaultColor, 1);
+KeyApp pauseKey(pauseIcon, KEY_MEDIA_PLAY_PAUSE, defaultColor, 2);
+KeyApp ffKey(ffIcon, KEY_MEDIA_NEXT_TRACK, defaultColor, 3);
 
 // just for testing
 //  KeyApp myNameKey("My Name", "Dean\nBlackketter");

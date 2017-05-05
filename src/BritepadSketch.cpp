@@ -14,7 +14,7 @@ Britepad britepad = Britepad();
 Preferences prefs = Preferences();
 MousePad mouse = MousePad();
 Console console = Console();
-KeyMatrix keyMatrix = KeyMatrix(ergodoxMap, ergodoxLayout);
+KeyMatrix keys = KeyMatrix(ergodoxMap, ergodoxLayout);
 
 //US Pacific Time Zone (Las Vegas, Los Angeles)
 TimeChangeRule usPDT = {"PDT", Second, dowSunday, Mar, 2, -420};
@@ -63,7 +63,7 @@ void setup() {
   clock.updateTime();
 
   console.debugln("starting keyboard matrix");
-  keyMatrix.begin();
+  keys.begin();
 
   Wire.setClock(WIRE_SPEED);
 

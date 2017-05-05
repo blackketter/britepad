@@ -18,6 +18,7 @@ enum AppType {
   INTERACTIVE_APP = 32,
   TIMER_APP = 64,
   KEY_APP = 128,
+  KEYBOARD_APP = 256,
 };
 
 class BritepadApp {
@@ -43,7 +44,6 @@ class BritepadApp {
     bool isID(appid_t match);
     BritepadApp* getAppByID(appid_t getID) { return britepad.getAppByID(getID); }
 
-    virtual color_t buttonColor() { return screen.blue; }
     virtual bool highlighted() { return wantsToRun(); }  // by default, apps are highlighted if they want to be displayed
 
     virtual bool isCurrentApp() { return britepad.currentApp() == this; };
@@ -82,7 +82,7 @@ class BritepadApp {
     virtual int32_t getLauncherPosition() { return _launcherPosition; }
     virtual void setLauncherPosition(int32_t p) { _launcherPosition = p; }
     virtual AppButton* newAppButton();
-    virtual color_t appButtonColor() { return screen.blue; }
+    virtual color_t appButtonColor() { return screen.CadetBlue; }
 
     virtual bool isHidden() { return false; }
 

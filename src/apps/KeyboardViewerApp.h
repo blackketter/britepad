@@ -1,12 +1,13 @@
 #ifndef _KeyboardViewerApp_
 #define _KeyboardViewerApp_
 #include "BritepadApp.h"
+#include "KeyboardApp.h"
 #include "widgets/Button.h"
 #include "widgets/Icons.h"
 #include "widgets/WidgetGroup.h"
 
 
-class KeyboardViewerApp : public BritepadApp {
+class KeyboardViewerApp : public KeyboardApp {
   public:
     void begin(AppMode asMode);
     void end();
@@ -16,7 +17,6 @@ class KeyboardViewerApp : public BritepadApp {
     const char* name() { return "Keys"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "keys";
-    AppType getAppType() { return INTERACTIVE_APP; }
 
     bool disablesScreensavers() { return true; }
     bool canBeInteractive() { return true; }

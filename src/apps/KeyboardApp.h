@@ -5,7 +5,7 @@
 
 class KeyboardApp : public BritepadApp {
 public:
-    AppType getAppType() { return SETTINGS_APP; }
+    AppType getAppType() { return KEYBOARD_APP; }
 };
 
 #endif // _KeyboardApp_

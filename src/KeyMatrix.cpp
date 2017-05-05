@@ -8,7 +8,7 @@ class KeysCommand : public Command {
     const char* getName() { return "keys"; }
     const char* getHelp() { return "display status of key matrix"; }
     void execute(Stream* c, uint8_t paramCount, char** params) {
-      keyMatrix.dumpStatus(c);
+      keys.dumpStatus(c);
     }
 };
 KeysCommand theKeysCommand;

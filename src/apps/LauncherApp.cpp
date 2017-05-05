@@ -8,9 +8,9 @@ enum screenids {
   MICE_SCREEN,
   CLOCKS_SCREEN,
   SCREENSAVERS_SCREEN,
+  KEYBOARD_SCREEN,
   SETTINGS_SCREEN,
-  KEYS_SCREEN,
-  HOME_SCREEN = KEYS_SCREEN,
+  HOME_SCREEN,
   TIMERS_SCREEN,
   APPS_SCREEN,
   TOTAL_SCREENS,
@@ -18,15 +18,16 @@ enum screenids {
 };
 
 screen_t screens[] = {
-  { DEBUG_SCREEN,"Debug",nullptr,DEBUG_APP,INTERACTIVE_MODE,screen.lightgrey},
-  { MICE_SCREEN,"Mice","Press and hold to test",MOUSE_APP,MOUSE_MODE,screen.black},
-  { CLOCKS_SCREEN,"Clocks","Press and hold to test",CLOCK_APP,SCREENSAVER_MODE,screen.darkerred},
-  { SCREENSAVERS_SCREEN,"Screensavers","Press and hold to test",SCREENSAVER_APP,SCREENSAVER_MODE,screen.darkeryellow},
-  { SETTINGS_SCREEN, "Settings",nullptr,SETTINGS_APP,INTERACTIVE_MODE,screen.darkeryellow},
-  { HOME_SCREEN,"Home",nullptr,KEY_APP,INTERACTIVE_MODE,screen.darkergreen},
-  { TIMERS_SCREEN,"Timers",nullptr,TIMER_APP,INTERACTIVE_MODE,screen.darkerblue},
-  { APPS_SCREEN,"Apps",nullptr,INTERACTIVE_APP,INTERACTIVE_MODE,screen.darkergrey},
-  { NO_SCREEN,nullptr,nullptr,INTERACTIVE_APP,INTERACTIVE_MODE,screen.darkergrey}
+  { DEBUG_SCREEN,"Debug",nullptr,DEBUG_APP,INTERACTIVE_MODE,Screen::grey},
+  { MICE_SCREEN,"Mice","Press and hold to test",MOUSE_APP,MOUSE_MODE,Screen::black},
+  { CLOCKS_SCREEN,"Clocks","Press and hold to test",CLOCK_APP,SCREENSAVER_MODE,Screen::darkerred},
+  { KEYBOARD_SCREEN,"Keyboard",nullptr,KEYBOARD_APP,INTERACTIVE_MODE,Screen::DarkOrange},
+  { SCREENSAVERS_SCREEN,"Screensavers","Press and hold to test",SCREENSAVER_APP,SCREENSAVER_MODE,Screen::darkeryellow},
+  { SETTINGS_SCREEN, "Settings",nullptr,SETTINGS_APP,INTERACTIVE_MODE,Screen::darkeryellow},
+  { HOME_SCREEN,"Home",nullptr,KEY_APP,INTERACTIVE_MODE,Screen::darkergreen},
+  { TIMERS_SCREEN,"Timers",nullptr,TIMER_APP,INTERACTIVE_MODE,Screen::darkerblue},
+  { APPS_SCREEN,"Apps",nullptr,INTERACTIVE_APP,INTERACTIVE_MODE,Screen::darkergrey},
+  { NO_SCREEN,nullptr,nullptr,INTERACTIVE_APP,INTERACTIVE_MODE,Screen::darkergrey}
 };
 
 //  LAUNCHERAPP
@@ -155,14 +156,14 @@ void LauncherApp::drawButtons() {
 
 void LauncherApp::idle() {
   if (!isCurrentApp()) {
-    if (keyMatrix.keyPressed((keycode_t)KEY_HOME)) {
+    if (keys.keyPressed((keycode_t)KEY_HOME)) {
       britepad.resetScreensaver();
-      keyMatrix.clearKeyChange((keycode_t)KEY_HOME);
+      keys.clearKeyChange((keycode_t)KEY_HOME);
       launch();
     }
-  } else if (keyMatrix.keyPressed((keycode_t)KEY_ESC)
-          || keyMatrix.keyPressed((keycode_t)KEY_HOME)) {
-      keyMatrix.clearKeyChange((keycode_t)KEY_HOME);
+  } else if (keys.keyPressed((keycode_t)KEY_ESC)
+          || keys.keyPressed((keycode_t)KEY_HOME)) {
+      keys.clearKeyChange((keycode_t)KEY_HOME);
       exit();
     }
 }
@@ -183,7 +184,7 @@ void LauncherApp::run() {
   } else if (
         pad.down(LEFT_PAD)
      || (pad.getGesture() == GESTURE_SWIPE_LEFT)
-     || keyMatrix.keyPressed((keycode_t)KEY_PAGE_UP)
+     || keys.keyPressed((keycode_t)KEY_PAGE_UP)
     ) {
       if (getCurrentScreenID() > 0) {
         setCurrentScreenID(getCurrentScreenID() - 1);
@@ -196,7 +197,7 @@ void LauncherApp::run() {
       }
   } else if (pad.down(RIGHT_PAD)
      || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
-     || keyMatrix.keyPressed((keycode_t)KEY_PAGE_DOWN)
+     || keys.keyPressed((keycode_t)KEY_PAGE_DOWN)
   ) {
     if (getCurrentScreenID() < TOTAL_SCREENS - 1) {
       setCurrentScreenID(getCurrentScreenID()+1);
@@ -209,13 +210,13 @@ void LauncherApp::run() {
     }
   } else if (
         (pad.getGesture() == GESTURE_SWIPE_UP)
-     || keyMatrix.keyPressed((keycode_t)KEY_ESC)
-     || keyMatrix.keyPressed((keycode_t)KEY_HOME)
+     || keys.keyPressed((keycode_t)KEY_ESC)
+     || keys.keyPressed((keycode_t)KEY_HOME)
       ) {
     exit();
   } else if (!pad.didGesture()) {
     AppButton* b = (AppButton*)(buttons->up());
-    if (!b && (keyMatrix.keyPressed((keycode_t)KEY_SPACE) || keyMatrix.keyPressed((keycode_t)KEY_RETURN))) {
+    if (!b && (keys.keyPressed((keycode_t)KEY_SPACE) || keys.keyPressed((keycode_t)KEY_RETURN))) {
       b = (AppButton*)buttons->getButton(buttons->getSelected(),0);
       b->setHighlighted(true);
     }
@@ -259,7 +260,7 @@ void LauncherApp::run() {
 
   buttonindex_t oldSelection = buttons->getSelected();
   buttonindex_t i = oldSelection;
-  if (keyMatrix.keyPressed((keycode_t)KEY_UP)) {
+  if (keys.keyPressed((keycode_t)KEY_UP)) {
     do {
       i -= h_buttons;
       if (i < 0) { i += buttons_per_screen; }
@@ -267,7 +268,7 @@ void LauncherApp::run() {
     buttons->setSelected(i);
   }
 
-  if (keyMatrix.keyPressed((keycode_t)KEY_DOWN)) {
+  if (keys.keyPressed((keycode_t)KEY_DOWN)) {
     do {
       i += h_buttons;
       if (i >= buttons_per_screen) { i -= buttons_per_screen; }
@@ -275,7 +276,7 @@ void LauncherApp::run() {
     buttons->setSelected(i);
   }
 
-  if (keyMatrix.keyPressed((keycode_t)KEY_LEFT)) {
+  if (keys.keyPressed((keycode_t)KEY_LEFT)) {
     do {
       i--;
       if (i < 0) { i = buttons_per_screen - 1; }
@@ -283,7 +284,7 @@ void LauncherApp::run() {
     buttons->setSelected(i);
   }
 
-  if (keyMatrix.keyPressed((keycode_t)KEY_RIGHT)) {
+  if (keys.keyPressed((keycode_t)KEY_RIGHT)||keys.keyPressed((keycode_t)KEY_TAB)) {
     do {
       i++;
       if (i >= buttons_per_screen) { i = 0; }

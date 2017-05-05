@@ -277,9 +277,9 @@ void Britepad::idle() {
   theFPSCommand.idled();
 
   if (currApp && !currApp->usesKeyboard()) {
-    keyMatrix.update();
+    keys.update();
     idleApps();
-    keyMatrix.sendKeys();
+    keys.sendKeys();
   }
 };
 
@@ -295,7 +295,7 @@ void Britepad::idleApps() {
 void Britepad::loop() {
 
   theFPSCommand.idled();
-  keyMatrix.update();
+  keys.update();
   pad.update();
   if (pad.touched(ANY_PAD)) {
     resetScreensaver();
@@ -385,9 +385,9 @@ void Britepad::loop() {
   console.idle();
 
   if (!currApp->usesKeyboard()) {
-    keyMatrix.sendKeys();
+    keys.sendKeys();
   } else {
-    if (keyMatrix.keysPressed() || keyMatrix.keysReleased()) {
+    if (keys.keysPressed() || keys.keysReleased()) {
       resetScreensaver();
       console.debugln("key pressed, resetting screensaver");
     }

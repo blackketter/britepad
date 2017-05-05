@@ -44,15 +44,15 @@ FunctionLayerApp theFunctionLayerApp;
 
 void FunctionLayerApp::idle() {
   // switch to the function layer
-  if (keyMatrix.keyPressed((keycode_t)KEY_LEFT_FN) || keyMatrix.keyPressed((keycode_t)KEY_RIGHT_FN)) {
-    if (keyMatrix.getMap() != functionLayerMap) {
-      keyMatrix.setMap(functionLayerMap);
+  if (keys.keyPressed((keycode_t)KEY_LEFT_FN) || keys.keyPressed((keycode_t)KEY_RIGHT_FN)) {
+    if (keys.getMap() != functionLayerMap) {
+      keys.setMap(functionLayerMap);
     }
   } else if (
-             (keyMatrix.keyReleased((keycode_t)KEY_LEFT_FN) || keyMatrix.keyReleased((keycode_t)KEY_RIGHT_FN)) &&  // released fn key
-              keyMatrix.keyIsUp((keycode_t)KEY_RIGHT_FN) && keyMatrix.keyIsUp((keycode_t)KEY_LEFT_FN) &&           // neither key is still held
-              !keyMatrix.doubleTapped((keycode_t)KEY_RIGHT_FN) && !keyMatrix.doubleTapped((keycode_t)KEY_LEFT_FN)  // and it's not a double-tap
+             (keys.keyReleased((keycode_t)KEY_LEFT_FN) || keys.keyReleased((keycode_t)KEY_RIGHT_FN)) &&  // released fn key
+              keys.keyIsUp((keycode_t)KEY_RIGHT_FN) && keys.keyIsUp((keycode_t)KEY_LEFT_FN) &&           // neither key is still held
+              !keys.doubleTapped((keycode_t)KEY_RIGHT_FN) && !keys.doubleTapped((keycode_t)KEY_LEFT_FN)  // and it's not a double-tap
             ) {
-          keyMatrix.setMap();
+          keys.setMap();
   }
 };

@@ -57,7 +57,8 @@ class KeyMatrix {
 
 
     keyswitch_t update();  //returns number of keys changed
-    void sendKeys();  // send key events to host
+    keyswitch_t sendKeys();  // send key events to host, returns number of key events sent
+    void clearKeys(); // all key events have been processed
 
     keyswitch_t numKeys() { return _numColumns * _numRows; }  // returns the total number of keys in the matrix
     uint8_t getWidth();

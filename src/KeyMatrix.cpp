@@ -36,11 +36,6 @@ void KeyMatrix::begin() {
 
 void KeyMatrix::scanMatrix() {
 
-  // save the last state
-  for (int i = 0; i < _numColumns; i++) {
-    _lastState[i] = _curState[i];
-  }
-
   // check to see if any button is down
   uint8_t l = _leftMatrix.GetPortB();
   l = ~l;
@@ -85,6 +80,13 @@ void KeyMatrix::scanMatrix() {
 
   for (int i = 0; i < _numColumns; i++) {
     _changedKeys[i] = _lastState[i] ^ _curState[i];
+  }
+}
+
+void KeyMatrix::clearKeys() {
+  // save the last state
+  for (int i = 0; i < _numColumns; i++) {
+    _lastState[i] = _curState[i];
   }
 }
 
@@ -279,12 +281,13 @@ void KeyMatrix::clearKeyChanges() {
   }
 }
 
-void KeyMatrix::sendKeys() {
+keyswitch_t KeyMatrix::sendKeys() {
+  keyswitch_t n = 0;
   for (keyswitch_t i = 0; i < numKeys(); i++) {
     if (keyChanged(i)) {
       bool down = keyIsDown(i);
       keycode_t code = getCode(i);
-
+      n++;
       if (down) {
         Keyboard.press(code);
       } else {
@@ -292,6 +295,8 @@ void KeyMatrix::sendKeys() {
       }
     }
   }
+  clearKeys();
+  return n;
 }
 
 void KeyMatrix::setLayout(const keylayout_t* l) {

@@ -279,7 +279,7 @@ void Britepad::idle() {
   if (currApp && !currApp->usesKeyboard()) {
     keys.update();
     idleApps();
-    keys.sendKeys();
+    keyswitch_t n = keys.sendKeys();
   }
 };
 
@@ -387,9 +387,9 @@ void Britepad::loop() {
   if (!currApp->usesKeyboard()) {
     keys.sendKeys();
   } else {
+    keys.clearKeys();  // app has processed its key events
     if (keys.keysPressed() || keys.keysReleased()) {
       resetScreensaver();
-      console.debugln("key pressed, resetting screensaver");
     }
   }
 }

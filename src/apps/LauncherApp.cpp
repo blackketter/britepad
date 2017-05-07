@@ -21,7 +21,7 @@ screen_t screens[] = {
   { DEBUG_SCREEN,"Debug",nullptr,DEBUG_APP,INTERACTIVE_MODE,Screen::grey},
   { MICE_SCREEN,"Mice","Press and hold to test",MOUSE_APP,MOUSE_MODE,Screen::black},
   { CLOCKS_SCREEN,"Clocks","Press and hold to test",CLOCK_APP,SCREENSAVER_MODE,Screen::darkerred},
-  { KEYBOARD_SCREEN,"Keyboard",nullptr,KEYBOARD_APP,INTERACTIVE_MODE,Screen::DarkOrange},
+  { KEYBOARD_SCREEN,"Keyboard",nullptr,KEYBOARD_APP,KEYBOARD_MODE,Screen::DarkOrange},
   { SCREENSAVERS_SCREEN,"Screensavers","Press and hold to test",SCREENSAVER_APP,SCREENSAVER_MODE,Screen::darkeryellow},
   { SETTINGS_SCREEN, "Settings",nullptr,SETTINGS_APP,INTERACTIVE_MODE,Screen::darkeryellow},
   { HOME_SCREEN,"Home",nullptr,KEY_APP,INTERACTIVE_MODE,Screen::darkergreen},
@@ -65,6 +65,9 @@ void LauncherApp::setCurrentScreenID(screenid_t n) {
             Button* b = nullptr;
 
             switch (getCurrentScreen()->mode) {
+              case KEYBOARD_MODE:
+                b = new KeyboardButton(a);
+                break;
               case MOUSE_MODE:
                 b = new MouseButton(a);
                 break;
@@ -155,17 +158,19 @@ void LauncherApp::drawButtons() {
 }
 
 void LauncherApp::idle() {
-  if (!isCurrentApp()) {
-    if (keys.keyPressed((keycode_t)KEY_HOME)) {
-      britepad.resetScreensaver();
-      keys.clearKeyChange((keycode_t)KEY_HOME);
-      launch();
-    }
-  } else if (keys.keyPressed((keycode_t)KEY_ESC)
-          || keys.keyPressed((keycode_t)KEY_HOME)) {
-      keys.clearKeyChange((keycode_t)KEY_HOME);
-      exit();
-    }
+  if (getEnabled(KEYBOARD_MODE)) {
+    if (!isCurrentApp()) {
+      if (keys.keyPressed((keycode_t)KEY_HOME)) {
+        britepad.resetScreensaver();
+        keys.clearKeyChange((keycode_t)KEY_HOME);
+        launch();
+      }
+    } else if (keys.keyPressed((keycode_t)KEY_ESC)
+            || keys.keyPressed((keycode_t)KEY_HOME)) {
+        keys.clearKeyChange((keycode_t)KEY_HOME);
+        exit();
+      }
+  }
 }
 
 void LauncherApp::run() {

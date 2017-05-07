@@ -38,15 +38,22 @@ class SettingsButton : public AppButton {
     }
 };
 
+class KeyboardButton : public SettingsButton {
+  public:
+    KeyboardButton(BritepadApp* a) { setApp(a); setColor(Screen::OrangeRed);}
+    virtual AppMode getAppMode() { return KEYBOARD_MODE; }
+};
+
 class MouseButton : public SettingsButton {
   public:
-    MouseButton(BritepadApp* a) { setApp(a); setColor(screen.yellow);}
+    MouseButton(BritepadApp* a) { setApp(a); setColor(Screen::yellow);}
     virtual AppMode getAppMode() { return MOUSE_MODE; }
 };
 
+
 class ScreensaverButton : public SettingsButton {
   public:
-    ScreensaverButton(BritepadApp* a) { setApp(a); setColor(screen.green);}
+    ScreensaverButton(BritepadApp* a) { setApp(a); setColor(Screen::green);}
     virtual AppMode getAppMode() { return SCREENSAVER_MODE; }
 };
 #endif

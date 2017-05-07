@@ -28,6 +28,8 @@ class LauncherApp : public BritepadApp {
     BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
     const char* name() { return "Launcher"; };
 
+    AppType getAppType() { return KEYBOARD_APP; }  // appears on keyboard screen because it has a hotkey
+
     appid_t id() { return ID; };
     static constexpr appid_t ID = "laun";
 

@@ -75,14 +75,16 @@ void KeyboardViewerApp::draw() {
 };
 
 void KeyboardViewerApp::idle() {
-  if (!isCurrentApp() && (keys.getMap() != keys.getDefaultMap())) {
-      BritepadApp* currApp = britepad.currentApp();
-      if (currApp && currApp != this) {
-        lastApp = currApp;
-        lastMode = lastApp->getAppMode();
-      }
-      tutorialMode = true;
-      launch();
-//      console.debugln("Launching KeyboardViewerApp in tutorial mode...");
+  if (getEnabled(KEYBOARD_MODE)) {
+    if (!isCurrentApp() && (keys.getMap() != keys.getDefaultMap())) {
+        BritepadApp* currApp = britepad.currentApp();
+        if (currApp && currApp != this) {
+          lastApp = currApp;
+          lastMode = lastApp->getAppMode();
+        }
+        tutorialMode = true;
+        launch();
+  //      console.debugln("Launching KeyboardViewerApp in tutorial mode...");
+    }
   }
 }

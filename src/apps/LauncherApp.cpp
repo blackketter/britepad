@@ -186,28 +186,12 @@ void LauncherApp::run() {
      || (pad.getGesture() == GESTURE_SWIPE_LEFT)
      || keys.keyPressed((keycode_t)KEY_PAGE_UP)
     ) {
-      if (getCurrentScreenID() > 0) {
-        setCurrentScreenID(getCurrentScreenID() - 1);
-        sound.swipe(DIRECTION_LEFT);
-        screen.pushFill(DIRECTION_LEFT, bgColor());
-        drawBars();
-        drawButtons();
-      } else {
-        sound.bump();
-      }
+      pushScreen(DIRECTION_LEFT);
   } else if (pad.down(RIGHT_PAD)
      || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
      || keys.keyPressed((keycode_t)KEY_PAGE_DOWN)
   ) {
-    if (getCurrentScreenID() < TOTAL_SCREENS - 1) {
-      setCurrentScreenID(getCurrentScreenID()+1);
-      sound.swipe(DIRECTION_RIGHT);
-      screen.pushFill(DIRECTION_RIGHT, bgColor());
-      drawBars();
-      drawButtons();
-    } else {
-      sound.bump();
-    }
+    pushScreen(DIRECTION_RIGHT);
   } else if (
         (pad.getGesture() == GESTURE_SWIPE_UP)
      || keys.keyPressed((keycode_t)KEY_ESC)
@@ -279,7 +263,10 @@ void LauncherApp::run() {
   if (keys.keyPressed((keycode_t)KEY_LEFT)) {
     do {
       i--;
-      if (i < 0) { i = buttons_per_screen - 1; }
+      if (i < 0) {
+        pushScreen(DIRECTION_LEFT);
+        i = buttons_per_screen - 1;
+      }
     } while (buttons->getButton(i, 0) == nullptr);
     buttons->setSelected(i);
   }
@@ -287,7 +274,10 @@ void LauncherApp::run() {
   if (keys.keyPressed((keycode_t)KEY_RIGHT)||keys.keyPressed((keycode_t)KEY_TAB)) {
     do {
       i++;
-      if (i >= buttons_per_screen) { i = 0; }
+      if (i >= buttons_per_screen) {
+        pushScreen(DIRECTION_RIGHT);
+        i = 0;
+      }
     } while (buttons->getButton(i, 0) == nullptr);
     buttons->setSelected(i);
   }
@@ -296,6 +286,20 @@ void LauncherApp::run() {
     buttons->draw(oldSelection);
   }
 
+}
+
+void LauncherApp::pushScreen(direction_t d) {
+    int move = (d == DIRECTION_RIGHT) ? +1 : -1;
+    screenid_t newScreen = getCurrentScreenID() + move;
+    if (newScreen > 0 && newScreen < TOTAL_SCREENS) {
+      setCurrentScreenID(newScreen);
+      sound.swipe(d);
+      screen.pushFill(d, bgColor());
+      drawBars();
+      drawButtons();
+    } else {
+      sound.bump();
+    }
 }
 
 void LauncherApp::end() {

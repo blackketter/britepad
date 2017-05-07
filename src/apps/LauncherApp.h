@@ -44,6 +44,7 @@ class LauncherApp : public BritepadApp {
 
     screenid_t getCurrentScreenID() { return current_screen; }
     void setCurrentScreenID(screenid_t n);
+    void pushScreen(direction_t d);
     screen_t* getCurrentScreen();
     color_t bgColor();
 

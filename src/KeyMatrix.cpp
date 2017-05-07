@@ -295,7 +295,6 @@ keyswitch_t KeyMatrix::sendKeys() {
       }
     }
   }
-  clearKeys();
   return n;
 }
 

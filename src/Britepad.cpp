@@ -279,7 +279,8 @@ void Britepad::idle() {
   if (currApp && !currApp->usesKeyboard()) {
     keys.update();
     idleApps();
-    keyswitch_t n = keys.sendKeys();
+    keys.sendKeys();
+    keys.clearKeys();
   }
 };
 
@@ -387,11 +388,11 @@ void Britepad::loop() {
   if (!currApp->usesKeyboard()) {
     keys.sendKeys();
   } else {
-    keys.clearKeys();  // app has processed its key events
     if (keys.keysPressed() || keys.keysReleased()) {
       resetScreensaver();
     }
   }
+  keys.clearKeys();  // keys have all been processed for this loop
 }
 
 void Britepad::launchApp(BritepadApp* app, AppMode mode) {

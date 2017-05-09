@@ -1,5 +1,5 @@
-#include "FunctionLayerApp.h"
 #include "KeyMatrix.h"
+#include "KeyboardApp.h"
 
 const keymap_t functionLayerMap[] = {
 // row 0
@@ -40,21 +40,32 @@ const keymap_t functionLayerMap[] = {
     { NO_KEY, NO_CODE }
 };
 
-FunctionLayerApp theFunctionLayerApp;
+class FunctionLayerApp : public KeyboardApp {
 
-void FunctionLayerApp::idle() {
-  if (getEnabled(KEYBOARD_MODE)) {
-    // switch to the function layer
-    if (keys.keyPressed((keycode_t)KEY_LEFT_FN) || keys.keyPressed((keycode_t)KEY_RIGHT_FN)) {
-      if (keys.getMap() != functionLayerMap) {
-        keys.setMap(functionLayerMap);
+  public:
+
+    appid_t id() { return ID; };
+    static constexpr appid_t ID = "lbar";
+    const char* name() { return "Function\nLayer"; };
+
+    void idle() {
+      if (getEnabled(KEYBOARD_MODE)) {
+        // switch to the function layer
+        if (keys.keyPressed((keycode_t)KEY_LEFT_FN) || keys.keyPressed((keycode_t)KEY_RIGHT_FN)) {
+          if (keys.getMap() != functionLayerMap) {
+            keys.setMap(functionLayerMap);
+          }
+        } else if (
+                   (keys.keyReleased((keycode_t)KEY_LEFT_FN) || keys.keyReleased((keycode_t)KEY_RIGHT_FN)) &&  // released fn key
+                    keys.keyIsUp((keycode_t)KEY_RIGHT_FN) && keys.keyIsUp((keycode_t)KEY_LEFT_FN) &&           // neither key is still held
+                    !keys.doubleTapped((keycode_t)KEY_RIGHT_FN) && !keys.doubleTapped((keycode_t)KEY_LEFT_FN)  // and it's not a double-tap
+                  ) {
+                keys.setMap();
+        }
       }
-    } else if (
-               (keys.keyReleased((keycode_t)KEY_LEFT_FN) || keys.keyReleased((keycode_t)KEY_RIGHT_FN)) &&  // released fn key
-                keys.keyIsUp((keycode_t)KEY_RIGHT_FN) && keys.keyIsUp((keycode_t)KEY_LEFT_FN) &&           // neither key is still held
-                !keys.doubleTapped((keycode_t)KEY_RIGHT_FN) && !keys.doubleTapped((keycode_t)KEY_LEFT_FN)  // and it's not a double-tap
-              ) {
-            keys.setMap();
-    }
-  }
+    };
+
+  private:
 };
+
+FunctionLayerApp theFunctionLayerApp;

@@ -31,8 +31,6 @@ void KeyboardViewerApp::end() {
 
 void KeyboardViewerApp::run() {
 
-  idle(); // make sure we know if we're in tutorial mode
-
   if (tutorialMode && (keys.getMap() == keys.getDefaultMap())) {
     if (lastApp) {
       launchApp(lastApp, lastMode);

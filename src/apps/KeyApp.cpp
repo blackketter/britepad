@@ -76,16 +76,16 @@ void KeyApp::run() {
       break;
     }
 
-  if (!isInvisible()) {
+  if (!canBeInvisible()) {
     draw();
   }
 
-  if (!isInvisible()) {
+  if (!canBeInvisible()) {
     exit();
   }
 }
 
-bool KeyApp::isInvisible() {
+bool KeyApp::canBeInvisible() {
   // keyapps that just send one key don't show feedback
   return (mediaKey != 0);
 }

@@ -81,9 +81,7 @@ void KeyMatrix::scanMatrix() {
   for (int i = 0; i < _numColumns; i++) {
     _changedKeys[i] = _lastState[i] ^ _curState[i];
   }
-}
 
-void KeyMatrix::clearKeys() {
   // save the last state
   for (int i = 0; i < _numColumns; i++) {
     _lastState[i] = _curState[i];
@@ -130,13 +128,9 @@ keyswitch_t KeyMatrix::keysReleased() {
 
 
 keyswitch_t KeyMatrix::update() {
+  _lastScan = Uptime::millis();
 
-  millis_t now = Uptime::millis();
-  if ((now - _lastScan) < _minScanInterval) {
-    return false;
-  } else {
-    _lastScan = now;
-  }
+  clearKeyChanges();
   scanMatrix();
 
   if (keysPressed()) {
@@ -365,10 +359,10 @@ bool KeyMatrix::doubleTapped(keyswitch_t k) {
         (getHistoryKey(1) == k) && getHistoryPressed(1) &&
         (getHistoryKey(0) == k) && getHistoryReleased(0)
      ) {
-    console.debugf("%d doubleTapped!\n", k);
+    console.debugf("switch %d doubleTapped!\n", k);
     return true;
   } else {
-    console.debugf("%d not doubleTapped!\n", k);
+    console.debugf("switch %d not doubleTapped!\n", k);
     return false;
   }
 }
@@ -381,10 +375,10 @@ bool KeyMatrix::doubleTapped(keycode_t c) {
         (getHistoryCode(0) == c) && getHistoryReleased(0) &&
         (getHistoryTime(0)-getHistoryTime(3) < _doubleTapTime)
      ) {
-    console.debugf("%d doubleTapped!\n", c);
+    console.debugf("code %d doubleTapped!\n", c);
     return true;
   } else {
-    console.debugf("%d not doubleTapped!\n", c);
+    console.debugf("code %d not doubleTapped!\n", c);
     return false;
   }
 }

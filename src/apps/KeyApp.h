@@ -25,7 +25,7 @@ class KeyApp : public BritepadApp {
     void run();
 
     const char* name() { return nameStr; };
-    bool isInvisible();
+    bool canBeInvisible();
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "1key";

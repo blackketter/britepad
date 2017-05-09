@@ -60,6 +60,7 @@ class LauncherApp : public BritepadApp {
     time_t lastBegin = 0;
     bool held = false;
     BritepadApp* launchOnRelease = nullptr;
+    bool audibleExit = false;
 
     ButtonMatrix* buttons = 0;
 };

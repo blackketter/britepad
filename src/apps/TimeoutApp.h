@@ -55,7 +55,7 @@ class TimeoutApp : public BritepadApp {
       return nameStr;
     };
 
-    bool isInvisible() { return true; };
+    bool canBeInvisible() { return true; };
 
     AppType getAppType() { return SETTINGS_APP; }
 

@@ -145,7 +145,7 @@ void BritepadApp::switchAppMode(AppMode asMode) {
 // initialize app state and clear screen
 void BritepadApp::begin(AppMode asMode) {
   BritepadApp::switchAppMode(asMode);
-  if (!isInvisible()) {
+  if (asMode != INVISIBLE_MODE) {
     drawBars();
     clearScreen();
   }

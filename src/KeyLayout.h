@@ -82,7 +82,7 @@ const keyinfo_t keyInfo[] = {
   { KEY_ESC, 0x1b, "esc", escIcon },
   { KEY_BACKSPACE, 0x08, "bs", backspaceIcon },
   { KEY_TAB, '\t', "tab", tabIcon },
-  { KEY_SPACE, ' ', " ", nullptr },
+  { KEY_SPACE, ' ', " ", spaceIcon },
   { KEY_MINUS, '-', "-", nullptr },
   { KEY_EQUAL, '=', "=", nullptr },
   { KEY_LEFT_BRACE, '{', "{", nullptr },

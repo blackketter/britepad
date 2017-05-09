@@ -4,7 +4,8 @@
 #include "AppButton.h"
 
 enum screenids {
-  DEBUG_SCREEN,
+  FIRST_SCREEN,
+  DEBUG_SCREEN = FIRST_SCREEN,
   MICE_SCREEN,
   CLOCKS_SCREEN,
   SCREENSAVERS_SCREEN,
@@ -13,6 +14,7 @@ enum screenids {
   HOME_SCREEN,
   TIMERS_SCREEN,
   APPS_SCREEN,
+  LAST_SCREEN = APPS_SCREEN,
   TOTAL_SCREENS,
   NO_SCREEN
 };
@@ -87,13 +89,6 @@ void LauncherApp::setCurrentScreenID(screenid_t n) {
       a = britepad.getNextApp(a);
     }
   }
-
-  for (buttonindex_t i = 0; i < buttons->totalButtons(); i++) {
-    if (buttons->getButton(i,0)) {
-      buttons->setSelected(i);
-      break;
-    }
-  }
 }
 
 screen_t* LauncherApp::getCurrentScreen() {
@@ -140,9 +135,7 @@ void LauncherApp::begin(AppMode asMode) {
   // adjust the current screen before beginning
   BritepadApp::begin(asMode);
 
-  if (pad.down(TOP_PAD)) {
-    sound.swipe(DIRECTION_DOWN);
-  }
+  sound.swipe(DIRECTION_DOWN);
 
   screen.pushFill(DIRECTION_DOWN, bgColor());
 
@@ -168,6 +161,7 @@ void LauncherApp::idle() {
     } else if (keys.keyPressed((keycode_t)KEY_ESC)
             || keys.keyPressed((keycode_t)KEY_HOME)) {
         keys.clearKeyChange((keycode_t)KEY_HOME);
+        audibleExit = true;
         exit();
       }
   }
@@ -207,15 +201,17 @@ void LauncherApp::run() {
     AppButton* b = (AppButton*)(buttons->up());
     if (!b && (keys.keyPressed((keycode_t)KEY_SPACE) || keys.keyPressed((keycode_t)KEY_RETURN))) {
       b = (AppButton*)buttons->getButton(buttons->getSelected(),0);
-      b->setHighlighted(true);
+      if (b) {
+        b->setHighlighted(true);
+      }
     }
     if (b) {
       BritepadApp* launched = ((AppButton*)b)->getApp();
-      if (launched->isInvisible()) {
+      if (launched->canBeInvisible()) {
         if (held) {
           held = false;
         } else {
-          launched->begin(INTERACTIVE_MODE);
+          launched->begin(INVISIBLE_MODE);
           launched->run();
           launched->end();
         }
@@ -234,7 +230,7 @@ void LauncherApp::run() {
     b = (AppButton*)buttons->hold();
     if (b && b->getApp()) {
       BritepadApp* launched = ((AppButton*)b)->getApp();
-      if (b->getApp()->isInvisible()) {
+      if (b->getApp()->canBeInvisible()) {
         launched->begin(INTERACTIVE_MODE);
         launched->run();
         launched->end();
@@ -296,7 +292,7 @@ void LauncherApp::run() {
 void LauncherApp::pushScreen(direction_t d) {
     int move = (d == DIRECTION_RIGHT) ? +1 : -1;
     screenid_t newScreen = getCurrentScreenID() + move;
-    if (newScreen > 0 && newScreen < TOTAL_SCREENS) {
+    if (newScreen >= FIRST_SCREEN && newScreen <= LAST_SCREEN) {
       setCurrentScreenID(newScreen);
       sound.swipe(d);
       screen.pushFill(d, bgColor());
@@ -310,8 +306,9 @@ void LauncherApp::pushScreen(direction_t d) {
 void LauncherApp::end() {
   if (buttons) { delete(buttons); buttons = nullptr; }
 
-  if (pad.down(TOP_PAD)) {
+  if (pad.down(TOP_PAD) || audibleExit) {
     sound.swipe(DIRECTION_UP);
+    audibleExit = false;
   }
 
   screen.pushFill(DIRECTION_UP, britepad.getLaunchedApp()->bgColor());

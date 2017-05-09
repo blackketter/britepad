@@ -58,7 +58,6 @@ class KeyMatrix {
 
     keyswitch_t update();  //returns number of keys changed
     keyswitch_t sendKeys();  // send key events to host, returns number of key events sent
-    void clearKeys(); // all key events have been processed
 
     keyswitch_t numKeys() { return _numColumns * _numRows; }  // returns the total number of keys in the matrix
     uint8_t getWidth();
@@ -87,7 +86,6 @@ class KeyMatrix {
     // marks key as not changed so that the event is not processed
     inline void clearKeyChange(keyswitch_t k) { _changedKeys[k/_numRows] = _changedKeys[k/_numRows] & ~(0x01 << (k%_numRows)); }
     inline void clearKeyChange(keycode_t c) { clearKeyChange(getSwitch(c)); }
-    void clearKeyChanges();
 
     keycode_t getCode(keyswitch_t k);
     keyswitch_t getSwitch(keycode_t c);
@@ -135,6 +133,7 @@ class KeyMatrix {
     uint8_t _changedKeys[_numColumns];
 
     void scanMatrix();
+    void clearKeyChanges();
 
     const keymap_t* _currentMap;
     const keymap_t* _defaultMap;

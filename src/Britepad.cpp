@@ -280,7 +280,6 @@ void Britepad::idle() {
     keys.update();
     idleApps();
     keys.sendKeys();
-    keys.clearKeys();
   }
 };
 
@@ -296,11 +295,13 @@ void Britepad::idleApps() {
 void Britepad::loop() {
 
   theFPSCommand.idled();
-  keys.update();
   pad.update();
+
   if (pad.touched(ANY_PAD)) {
     resetScreensaver();
   }
+
+  keys.update();
   idleApps();
 
   if (!currApp) {
@@ -309,9 +310,7 @@ void Britepad::loop() {
   }
 
   if (pad.down(TOP_PAD)) {
-//    console.debugln("Toppad down");
-    BritepadApp* nextApp = currApp->exitsTo();
-    launchApp(nextApp);
+    currApp->exit();
   } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.down(SCREEN_PAD) || ((pad.down(ANY_PAD) && !currApp->canBeInteractive())))) {
     console.debugln("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
@@ -377,6 +376,14 @@ void Britepad::loop() {
 
   launchApp(BritepadApp::STAY_IN_APP);
 
+  if (!currApp->usesKeyboard()) {
+    keys.sendKeys();
+  } else {
+    if (keys.keysPressed() || keys.keysReleased()) {
+      resetScreensaver();
+    }
+  }
+
   currApp->run();
   theFPSCommand.newFrame();
 
@@ -385,14 +392,6 @@ void Britepad::loop() {
   sound.idle();
   console.idle();
 
-  if (!currApp->usesKeyboard()) {
-    keys.sendKeys();
-  } else {
-    if (keys.keysPressed() || keys.keysReleased()) {
-      resetScreensaver();
-    }
-  }
-  keys.clearKeys();  // keys have all been processed for this loop
 }
 
 void Britepad::launchApp(BritepadApp* app, AppMode mode) {

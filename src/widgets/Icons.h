@@ -2,6 +2,11 @@
 #define _Icons_
 #include "widgets/Icon.h"
 
+// icondata format is:
+// 1 byte of width
+// 1 byte of height
+// rest of bytes - packed bitmap of width*height/8 bytes (rounded up to fit all the bits)
+
 const uint8_t optionIcon[] = {
  16, 11,
  0b00000000, 0b00000000,
@@ -34,6 +39,23 @@ const uint8_t commandIcon[] = {
  0b11111101, 0b11111000,
  0b01111000, 0b11110000,
 };
+
+const uint8_t spaceIcon[] = {
+ 11, 13,
+ 0b00000000, 0b00000000,
+ 0b00000000, 0b00000000,
+ 0b00000000, 0b00000000,
+ 0b00000000, 0b00000000,
+ 0b00000000, 0b00000000,
+ 0b00000000, 0b00000000,
+ 0b00000000, 0b00000000,
+ 0b00000000, 0b00000000,
+ 0b00000000, 0b00000000,
+ 0b11000000, 0b01100000,
+ 0b11000000, 0b01100000,
+ 0b11111111, 0b11100000,
+ 0b11111111, 0b11100000,
+ };
 
 const uint8_t playIcon[] = {
  16, 11,

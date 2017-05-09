@@ -47,7 +47,7 @@ class ButtonMatrix : public Widget {
     int getMap() { return currMap; };
 
     Button* getButton(widgetid_t id);
-    Button* getButton(buttonindex_t i, int map = 0) {  if (buttons) { return buttons[i+map*buttonRows*buttonColumns]; } else { return nullptr; } }
+    Button* getButton(buttonindex_t i, int map = 0) {  if (buttons && (i >= 0) && (i < totalButtons())) { return buttons[i+map*buttonRows*buttonColumns]; } else { return nullptr; } }
 
     void setButton(Button* b, buttonindex_t i, int map = 0);
 

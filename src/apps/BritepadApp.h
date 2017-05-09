@@ -28,7 +28,7 @@ class BritepadApp {
     virtual void begin(AppMode asMode);  // initialize app state and draw first screen, allocate any memory needed while running
     virtual void end(); // called after final run(), lets app clean up, releasing any memory temporarily allocated for runs
 
-    virtual void run() { if (isAppMode(MOUSE_MODE)) { mouse.run(); } };  // run current app state repeatedly, returns pointer to next app to run (or one of the constants below)
+    virtual void run() { if (isAppMode(MOUSE_MODE)) { mouse.run(); } };  // run current app state repeatedly
     virtual void switchAppMode(AppMode asMode);  // called when switching between modes
 
     virtual void idle() {};  // give apps an opportuntity to run in the background, useful for processing keyboard events
@@ -68,13 +68,14 @@ class BritepadApp {
     bool isAppMode(AppMode is) { return (is == getAppMode()); }
     bool canBeAppMode(AppMode b);
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE) { britepad.launchApp(app, mode); };
-    void exit() { launchApp(A_MOUSE_APP); };
+    void exit() { launchApp(exitsTo()); };
     void launch() { launchApp(this); }
     bool timeToLeave() { return ((Uptime::millis() - pad.time()) > _maxRunTime); }
 
     virtual bool canBeScreensaver() { return false; }
     virtual bool canBeInteractive() { return true; }
     virtual bool canBeMouse() { return false; }
+    virtual bool canBeInvisible() { return false; }     // has no UI
     virtual bool usesKeyboard() { return false; }
 
     virtual AppType getAppType() { return NO_APP_TYPE; }
@@ -86,7 +87,7 @@ class BritepadApp {
 
     virtual bool isHidden() { return false; }
 
-    virtual bool isInvisible() { return false; };    // has no UI
+    virtual bool isInvisible() { return false; };
 
     virtual color_t bgColor() { return screen.black; }  // background color of app screen
 
@@ -110,7 +111,7 @@ class BritepadApp {
     inline void setPrevApp(BritepadApp* app) {  _prevApp = app; };
 
   protected:
-    virtual bool hasPrefs() { return canBeScreensaver() | canBeMouse(); } // mice and screensavers have prefs
+    virtual bool hasPrefs() { return canBeScreensaver() | canBeMouse() | isAppType(KEYBOARD_APP); } // mice, screensavers and keyboard apps use default prefs for enable/disable
 
     virtual void clearScreen();
     void resetClipRect();  // resets clip rect to content area

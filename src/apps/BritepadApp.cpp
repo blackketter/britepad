@@ -138,6 +138,9 @@ void BritepadApp::switchAppMode(AppMode asMode) {
     if (asMode == MOUSE_MODE) {
       mouse.begin();
     }
+    if (asMode == SCREENSAVER_MODE) {
+      britepad.resetScreensaver();
+    }
   }
   _currAppMode = asMode;
 }

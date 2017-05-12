@@ -22,13 +22,12 @@ class LauncherApp : public BritepadApp {
     void begin(AppMode asMode);
     void run();
     void end();
-    void idle();
 
     bool usesKeyboard() { return true; }
     BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
     const char* name() { return "Launcher"; };
 
-    AppType getAppType() { return KEYBOARD_APP; }  // appears on keyboard screen because it has a hotkey
+    AppType getAppType() { return NO_APP_TYPE; } // doesn't show a button for itself
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "laun";

@@ -26,6 +26,7 @@ class KeyApp : public BritepadApp {
 
     const char* name() { return nameStr; };
     bool canBeInvisible();
+    BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "1key";

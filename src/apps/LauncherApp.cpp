@@ -150,23 +150,6 @@ void LauncherApp::drawButtons() {
   buttons->draw();
 }
 
-void LauncherApp::idle() {
-  if (getEnabled(KEYBOARD_MODE)) {
-    if (!isCurrentApp()) {
-      if (keys.keyPressed((keycode_t)KEY_HOME)) {
-        britepad.resetScreensaver();
-        keys.clearKeyChange((keycode_t)KEY_HOME);
-        launch();
-      }
-    } else if (keys.keyPressed((keycode_t)KEY_ESC)
-            || keys.keyPressed((keycode_t)KEY_HOME)) {
-        keys.clearKeyChange((keycode_t)KEY_HOME);
-        audibleExit = true;
-        exit();
-      }
-  }
-}
-
 void LauncherApp::run() {
 
   if (pad.up(SCREEN_PAD)) { waitForRelease = false; }
@@ -194,7 +177,6 @@ void LauncherApp::run() {
   } else if (
         (pad.getGesture() == GESTURE_SWIPE_UP)
      || keys.keyPressed((keycode_t)KEY_ESC)
-     || keys.keyPressed((keycode_t)KEY_HOME)
       ) {
     exit();
   } else if (!pad.didGesture()) {

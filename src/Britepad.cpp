@@ -309,7 +309,7 @@ void Britepad::loop() {
       launchApp(theLauncherApp);
   }
 
-  if (pad.down(TOP_PAD)) {
+  if (pad.down(TOP_PAD) || keys.keyPressed(KEY_EXIT)) {
     currApp->exit();
   } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.down(SCREEN_PAD) || ((pad.down(ANY_PAD) && !currApp->canBeInteractive())))) {
     console.debugln("waking screensaver");
@@ -391,7 +391,6 @@ void Britepad::loop() {
   Timer::idle();
   sound.idle();
   console.idle();
-
 }
 
 void Britepad::launchApp(BritepadApp* app, AppMode mode) {

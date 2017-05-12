@@ -183,17 +183,24 @@ const keymap_t ergodoxMap[] = {
     { 83, MODIFIERKEY_RIGHT_CTRL },
     { 77, MODIFIERKEY_RIGHT_GUI },
 
-    { 29, KEY_HOME },
+//    { 29, KEY_HOME },
+    { 29, KEY_EXIT },
 
     { 71, KEY_PAGE_UP },
 
     { 23, KEY_BACKSPACE },
-    { 17, KEY_DELETE },
+//    { 17, KEY_DELETE },
+    { 17, KEY_LAUNCHBAR },
     { 11, KEY_END },
 
     { 53, KEY_PAGE_DOWN },
     { 59, KEY_ENTER },
     { 65, KEY_SPACE },
+
+    { TOP_PAD_SWITCH, KEY_EXIT },
+    { BOTTOM_PAD_SWITCH, KEY_BOTTOM_PAD },
+    { LEFT_PAD_SWITCH, KEY_LEFT_PAD },
+    { RIGHT_PAD_SWITCH, KEY_RIGHT_PAD },
 
   // end of table marker
     { NO_KEY, NO_CODE }

@@ -9,7 +9,7 @@ void CountdownApp::switchAppMode(AppMode asMode) {
 }
 
 void CountdownApp::redraw() {
-  coord_t radius = screen.clipWidth()/10;
+  coord_t radius = screen.clipHeight()/10;
   coord_t y = isAppMode(SCREENSAVER_MODE) ? screen.clipTop()+screen.clipHeight()+radius/2 :screen.clipTop()+screen.clipHeight()/4*3;
 
   setButton.init(screen.clipMidWidth(), y, radius, screen.blue, false,"Set");
@@ -29,8 +29,8 @@ void CountdownApp::begin(AppMode asMode) {
     time_t now = clock.getSeconds();
 
     countdownTime.setSeconds(now);
-
   }
+  redraw();
 };
 
 void CountdownApp::setTime(time_t newTime) {

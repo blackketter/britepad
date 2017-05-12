@@ -43,9 +43,8 @@ void StopwatchApp::run() {
 
   BritepadApp::run();
 
-  if (pad.down(BOTTOM_PAD)) {
-    sound.click();
-    if (isAppMode(INTERACTIVE_MODE)) {
+  if (pad.down(BOTTOM_PAD) || pad.down(TOP_PAD) || keys.keyPressed(KEY_EXIT)) {
+     if (isAppMode(INTERACTIVE_MODE)) {
       switchAppMode(MOUSE_MODE);
     } else {
       switchAppMode(INTERACTIVE_MODE);

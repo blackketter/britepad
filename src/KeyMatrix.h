@@ -8,12 +8,25 @@
 typedef uint8_t keyswitch_t;
 const keyswitch_t NO_KEY = 0xff;
 
+const keyswitch_t TOP_PAD_SWITCH = 0xfe;
+const keyswitch_t BOTTOM_PAD_SWITCH = 0xfd;
+const keyswitch_t LEFT_PAD_SWITCH = 0xfc;
+const keyswitch_t RIGHT_PAD_SWITCH = 0xfb;
+
 typedef uint16_t keycode_t;
 const keycode_t NO_CODE = 0;
 
 // some new key codes
 const keycode_t KEY_LEFT_FN = 200;
 const keycode_t KEY_RIGHT_FN = 201;
+
+const keycode_t KEY_TOP_PAD = 202;
+const keycode_t KEY_BOTTOM_PAD = 203;
+const keycode_t KEY_LEFT_PAD = 204;
+const keycode_t KEY_RIGHT_PAD = 205;
+
+const keycode_t KEY_EXIT = 206;
+const keycode_t KEY_LAUNCHBAR = 207;
 
 typedef struct keylayout_t {
   keyswitch_t key;
@@ -70,30 +83,20 @@ class KeyMatrix {
     uint8_t getKeyHeight(keyswitch_t k);
     uint8_t getKeyX(keyswitch_t k);
     uint8_t getKeyY(keyswitch_t k);
+    inline bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
 
     // returns the number of keys that changed state in the last idle
     keyswitch_t keysPressed();
     keyswitch_t keysReleased();
 
     // did a given key change?
-    inline bool keyChanged(keyswitch_t k) { return (k != NO_KEY) && ((_changedKeys[k/_numRows] >> (k%_numRows)) & 0x01); }
-    inline bool keyChanged(keycode_t c) { return (c != NO_CODE) && keyChanged(getSwitch(c)); }
-    inline bool keyPressed(keyswitch_t k) { return keyChanged(k) && keyIsDown(k); }
-    inline bool keyReleased(keyswitch_t k) { return keyChanged(k) && keyIsUp(k); }
-    inline bool keyPressed(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && keyIsDown(k) && keyChanged(k); }
-    inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && keyIsUp(k) && keyChanged(k); }
-
-    // marks key as not changed so that the event is not processed
-    inline void clearKeyChange(keyswitch_t k) { _changedKeys[k/_numRows] = _changedKeys[k/_numRows] & ~(0x01 << (k%_numRows)); }
-    inline void clearKeyChange(keycode_t c) { clearKeyChange(getSwitch(c)); }
+    inline bool keyChanged(keycode_t c) { return (c != NO_CODE) && switchChanged(getSwitch(c)); }
+    inline bool keyPressed(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsDown(k) && switchChanged(k); }
+    inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsUp(k) && switchChanged(k); }
 
     keycode_t getCode(keyswitch_t k);
-    keyswitch_t getSwitch(keycode_t c);
 
-    inline bool keyIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
-    inline bool keyIsUp(keyswitch_t k) { return !keyIsDown(k); }
-
-    inline bool keyIsDown(keycode_t c) { return keyIsDown(getSwitch(c)); }
+    inline bool keyIsDown(keycode_t c) { return switchIsDown(getSwitch(c)); }
     inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
 
     const keyinfo_t* getKeyInfo(keycode_t c);
@@ -109,13 +112,23 @@ class KeyMatrix {
     void addHistory(keyswitch_t k, millis_t t, bool d);
     void clearHistory();
 
-    bool doubleTapped(keyswitch_t k);
     bool doubleTapped(keycode_t c);
 
     void dumpStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
+
   private:
+
+    keyswitch_t getSwitch(keycode_t c);
+
+    inline bool switchChanged(keyswitch_t k) { return (k != NO_KEY) && ((_changedKeys[k/_numRows] >> (k%_numRows)) & 0x01); }
+    inline bool switchPressed(keyswitch_t k) { return switchChanged(k) && switchIsDown(k); }
+    inline bool switchReleased(keyswitch_t k) { return switchChanged(k) && switchIsUp(k); }
+    inline bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
+
     millis_t _lastScan = 0;
-    static const millis_t _minScanInterval = 5;
+    static const millis_t _minScanInterval = 3;
+    static const millis_t _maxScanInterval = 5;
+
     static const millis_t _doubleTapTime = 500;
 
     static const uint8_t _numRows = 6;
@@ -134,6 +147,7 @@ class KeyMatrix {
 
     void scanMatrix();
     void clearKeyChanges();
+    keyswitch_t keysChanged();
 
     const keymap_t* _currentMap;
     const keymap_t* _defaultMap;
@@ -141,8 +155,6 @@ class KeyMatrix {
     const keylayout_t* _currentLayout;
     const keylayout_t* _defaultLayout;
 
-
-    keyswitch_t keysChanged();
     static const uint8_t _historySize = 10;
     keyevent_t _history[_historySize];
 };

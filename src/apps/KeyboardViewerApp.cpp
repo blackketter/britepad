@@ -51,7 +51,7 @@ void KeyboardViewerApp::draw() {
 
     const char* title = keys.getKeyLabel(c);
     const icon_t icon = keys.getKeyIcon(c);
-    bool down = keys.keyIsDown(k);
+    bool down = keys.switchIsDown(k);
 
     if (icon) {
       title = nullptr;
@@ -63,7 +63,7 @@ void KeyboardViewerApp::draw() {
     if (button->getHighlighted() != down) changed = true;
 
     if (changed) {
-      button->setHighlighted(keys.keyIsDown(k));
+      button->setHighlighted(keys.switchIsDown(k));
       button->setTitle(title);
       button->setIcon(icon);
       button->draw();

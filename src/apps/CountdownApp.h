@@ -18,6 +18,7 @@ class CountdownApp : public ScreensaverApp {
     const char* name() { return "T-Minus"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "cntd";
+    AppType getAppType() { return (AppType)(SCREENSAVER_APP | SETTINGS_APP); }
 
     time_t getTime() { return countdownTime.getSeconds(); }
     void setTime(time_t newTime);

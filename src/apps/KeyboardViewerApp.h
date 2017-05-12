@@ -20,6 +20,8 @@ class KeyboardViewerApp : public KeyboardApp {
 
     bool disablesScreensavers() { return true; }
     bool canBeInteractive() { return true; }
+    AppType getAppType() { return (AppType)(KEYBOARD_APP | INTERACTIVE_APP); }
+
 
   private:
     void draw();

@@ -5,7 +5,6 @@ KeyboardViewerApp theKeyboardViewerApp;
 void KeyboardViewerApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);
 
-  if (buttons) { console.debugln("WARNING: Beginning KeyboardViewerApp with old buttons!"); }
   buttons = new WidgetGroup();
 
   keyswitch_t totalKeys = keys.numKeys();
@@ -32,13 +31,13 @@ void KeyboardViewerApp::end() {
 void KeyboardViewerApp::run() {
 
   if (tutorialMode && (keys.getMap() == keys.getDefaultMap())) {
+    tutorialMode = false;
     if (lastApp) {
       launchApp(lastApp, lastMode);
     }
-    tutorialMode = false;
+  } else {
+    draw();
   }
-
-  draw();
 };
 
 void KeyboardViewerApp::draw() {

@@ -49,7 +49,6 @@ class LauncherApp : public BritepadApp {
     screen_t* getCurrentScreen();
     color_t bgColor();
 
-    void clearScreen() {} // override the default clear screen because we do transitions
     void drawButtons();
     screenid_t current_screen;
 

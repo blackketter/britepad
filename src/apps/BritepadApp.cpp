@@ -99,6 +99,7 @@ void BritepadApp::drawInfoBar(bool update) {
 }
 
 void BritepadApp::clearScreen() {
+console.debugln("clearscreen");
   //idle because fillScreen is slow
   coord_t start = screen.clipTop();
   coord_t bottom = screen.clipBottom();
@@ -159,8 +160,10 @@ void BritepadApp::switchAppMode(AppMode asMode) {
 
 // initialize app state and clear screen
 void BritepadApp::begin(AppMode asMode) {
+  AppMode wasMode = _currAppMode;
   BritepadApp::switchAppMode(asMode);
-  if (asMode != INVISIBLE_MODE) {
+  if (asMode != INVISIBLE_MODE && wasMode != INVISIBLE_MODE) {
+    // redraw, but only if we are not going to or coming from an invisible mode
     drawBars();
     clearScreen();
   }

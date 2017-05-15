@@ -55,7 +55,7 @@ class Britepad {
 
     void idleApps();
     millis_t lastIdle = 0;
-    millis_t idleInterval = 5;  // minimum idle interval
+    millis_t idleInterval = 10;  // minimum idle interval
 
     BritepadApp* theLauncherApp;
 

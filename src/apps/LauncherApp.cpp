@@ -188,7 +188,7 @@ void LauncherApp::run() {
       }
     }
     if (b) {
-      BritepadApp* launched = ((AppButton*)b)->getApp();
+      BritepadApp* launched = b->getApp();
       if (launched->canBeInvisible()) {
         if (held) {
           held = false;
@@ -209,15 +209,16 @@ void LauncherApp::run() {
       }
       sound.click();
     }
-    b = (AppButton*)buttons->held();
+    b = (AppButton*)buttons->heldButton();
     if (b && b->getApp()) {
-      BritepadApp* launched = ((AppButton*)b)->getApp();
-      if (b->getApp()->canBeInvisible()) {
-        launched->begin(INTERACTIVE_MODE);
+      BritepadApp* launched = b->getApp();
+      if (launched->canBeInvisible()) {
+        launched->begin(INVISIBLE_MODE);
         launched->run();
         launched->end();
         held = true;
       } else if (!waitForRelease) {
+        console.debugln("wait for release");
         sound.click();
         clearScreen();
         launchOnRelease = b->getApp();

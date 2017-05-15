@@ -359,18 +359,26 @@ void KeyMatrix::clearHistory() {
   }
 }
 
-bool KeyMatrix::doubleTapped(keycode_t c) {
-  if (
-        (getHistoryCode(3) == c) && getHistoryPressed(3) &&
-        (getHistoryCode(2) == c) && getHistoryReleased(2) &&
+bool KeyMatrix::tapped(keycode_t c) {
+  if (  keyReleased(c) &&
         (getHistoryCode(1) == c) && getHistoryPressed(1) &&
         (getHistoryCode(0) == c) && getHistoryReleased(0) &&
-        (getHistoryTime(0)-getHistoryTime(3) < _doubleTapTime)
+        (getHistoryTime(0)-getHistoryTime(1) < _tappedTime)
      ) {
-    console.debugf("code %d doubleTapped!\n", c);
     return true;
   } else {
-    console.debugf("code %d not doubleTapped!\n", c);
+    return false;
+  }
+}
+
+bool KeyMatrix::doubleTapped(keycode_t c) {
+  if ( tapped(c) &&
+        (getHistoryCode(3) == c) && getHistoryPressed(3) &&
+        (getHistoryCode(2) == c) && getHistoryReleased(2) &&
+        (getHistoryTime(0)-getHistoryTime(3) < _doubleTappedTime)
+     ) {
+    return true;
+  } else {
     return false;
   }
 }
@@ -381,11 +389,11 @@ void KeyMatrix::dumpStatus(Stream* c) {
   c->println("Keyboard Status:");
   for (keyswitch_t k = 0; k < numKeys(); k++) {
     if (switchPressed(k)) {
-      c->printf(" Key '%s' pressed (switch: %d)\n", getKeyLabel(getCode(k)), k);
+      c->printf(" Key '%s' was pressed (switch: %d)\n", getKeyLabel(getCode(k)), k);
     } else if (switchIsDown(k)) {
-      c->printf(" Key '%s' down (switch: %d)\n", getKeyLabel(getCode(k)), k);
+      c->printf(" Key '%s' is down (switch: %d)\n", getKeyLabel(getCode(k)), k);
     } else if (switchReleased(k)) {
-      c->printf(" Key '%s' released (switch: %d)\n", getKeyLabel(getCode(k)), k);
+      c->printf(" Key '%s' was released (switch: %d)\n", getKeyLabel(getCode(k)), k);
     }
   }
   c->println("");

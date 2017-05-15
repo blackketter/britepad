@@ -7,7 +7,7 @@ void ThereminApp::run() {
   uint8_t octave = 6;
   uint8_t prox = pad.getProximityDistance();
 
-  if (pad.down(SCREEN_PAD)) {
+  if (pad.pressed(SCREEN_PAD)) {
     // clear screen and draw matrix
     clearScreen();
   } else if (pad.touched(SCREEN_PAD)) {
@@ -28,7 +28,7 @@ void ThereminApp::run() {
     sound.tone(0,0);
     lastProx = 0;
   }
-  if (pad.up(SCREEN_PAD)) {
+  if (pad.released(SCREEN_PAD)) {
     sound.tone(0,0);
   }
 }

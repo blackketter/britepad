@@ -13,9 +13,9 @@ void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool
   setID(id);
 };
 
-bool Button::down() {
+bool Button::pressed() {
   track();
-  if (pad.down(SCREEN_PAD) && hit(pad.x(), pad.y())) {
+  if (pad.pressed(SCREEN_PAD) && hit(pad.x(), pad.y())) {
     sound.click();
     return true;
   } else {
@@ -23,7 +23,7 @@ bool Button::down() {
   }
 }
 
-bool Button::hold() {
+bool Button::held() {
   track();
   if (getHighlighted() && (pad.time() - highlightedTime > holdTime)) {
     return true;
@@ -32,9 +32,9 @@ bool Button::hold() {
   }
 }
 
-bool Button::up() {
+bool Button::released() {
   track();
-  if (pad.up(SCREEN_PAD) && hit(pad.x(), pad.y())) {
+  if (pad.released(SCREEN_PAD) && hit(pad.x(), pad.y())) {
     sound.click();
     return true;
   } else {

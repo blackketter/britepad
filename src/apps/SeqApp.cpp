@@ -20,7 +20,7 @@ void SeqApp::run() {
   const color_t noteOn = screen.blue;
   ScreensaverApp::run();
 
-  if (pad.down(SCREEN_PAD)) {
+  if (pad.pressed(SCREEN_PAD)) {
     int x, y;
     if (dots->hit(pad.x(), pad.y(), &x, &y)) {
       dots->setDot(x,y, dots->getDot(x,y) ^ noteOn);
@@ -28,18 +28,18 @@ void SeqApp::run() {
     }
   }
 
-  if (pad.down(BOTTOM_PAD)) {
+  if (pad.pressed(BOTTOM_PAD)) {
     tick = !tick;
   }
 
-  if (pad.down(LEFT_PAD)) {
+  if (pad.pressed(LEFT_PAD)) {
     bpm -= bpm/25;
     if (bpm < minBpm) {
       bpm = minBpm;
     }
   }
 
-  if (pad.down(RIGHT_PAD)) {
+  if (pad.pressed(RIGHT_PAD)) {
     bpm += bpm/25;
     if (bpm > maxBpm) {
       bpm = maxBpm;
@@ -78,14 +78,14 @@ void SeqApp::run() {
       currCol = 0;
     }
 
-    if (pad.touched(LEFT_PAD) && !pad.down(LEFT_PAD)) {
+    if (pad.touched(LEFT_PAD) && !pad.pressed(LEFT_PAD)) {
       bpm -= bpm/10;
       if (bpm < minBpm) {
         bpm = minBpm;
       }
     }
 
-    if (pad.touched(RIGHT_PAD) && !pad.down(RIGHT_PAD)) {
+    if (pad.touched(RIGHT_PAD) && !pad.pressed(RIGHT_PAD)) {
       bpm += bpm/10;
       if (bpm > maxBpm) {
         bpm = maxBpm;

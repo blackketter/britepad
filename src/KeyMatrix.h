@@ -89,15 +89,19 @@ class KeyMatrix {
     keyswitch_t keysPressed();
     keyswitch_t keysReleased();
 
+    inline bool keyIsDown(keycode_t c) { return switchIsDown(getSwitch(c)); }
+    inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
+
     // did a given key change?
     inline bool keyChanged(keycode_t c) { return (c != NO_CODE) && switchChanged(getSwitch(c)); }
     inline bool keyPressed(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsDown(k) && switchChanged(k); }
     inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsUp(k) && switchChanged(k); }
 
+    bool doubleTapped(keycode_t c);
+    bool tapped(keycode_t c);
+
     keycode_t getCode(keyswitch_t k);
 
-    inline bool keyIsDown(keycode_t c) { return switchIsDown(getSwitch(c)); }
-    inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
 
     const keyinfo_t* getKeyInfo(keycode_t c);
     char getKeyChar(keycode_t c);
@@ -111,8 +115,6 @@ class KeyMatrix {
     bool getHistoryReleased(uint8_t n) { return !getHistoryPressed(n); }
     void addHistory(keyswitch_t k, millis_t t, bool d);
     void clearHistory();
-
-    bool doubleTapped(keycode_t c);
 
     void dumpStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
 
@@ -129,7 +131,8 @@ class KeyMatrix {
     static const millis_t _minScanInterval = 3;
     static const millis_t _maxScanInterval = 5;
 
-    static const millis_t _doubleTapTime = 500;
+    static const millis_t _doubleTappedTime = 500;
+    static const millis_t _tappedTime = 500;
 
     static const uint8_t _numRows = 6;
     static const uint8_t _numColumnsPerMatrix = 7;

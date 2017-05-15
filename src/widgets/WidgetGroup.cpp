@@ -1,4 +1,5 @@
 #include "WidgetGroup.h"
+#include "BritepadShared.h"
 
 WidgetGroup::~WidgetGroup() {
   Widget* i = getNext();
@@ -15,6 +16,8 @@ void WidgetGroup::draw() {
   while (w) {
     w->draw();
     w = w->getNext();
+    console.debugln("draw button");
+    britepad.idle();
   }
 };
 
@@ -31,3 +34,38 @@ Widget* WidgetGroup::getByID(widgetid_t id) {
   return i;
 };
 
+Widget* WidgetGroup::pressedWidget() {
+  Widget* i = getNext();
+  while (i) {
+    if (i->pressed()) {
+      break;
+    } else {
+      i = i->getNext();
+    }
+  }
+  return i;
+}
+
+Widget* WidgetGroup::releasedWidget() {
+  Widget* i = getNext();
+  while (i) {
+    if (i->released()) {
+      break;
+    } else {
+      i = i->getNext();
+    }
+  }
+  return i;
+}
+
+Widget* WidgetGroup::heldWidget() {
+  Widget* i = getNext();
+  while (i) {
+    if (i->held()) {
+      break;
+    } else {
+      i = i->getNext();
+    }
+  }
+  return i;
+}

@@ -66,13 +66,13 @@ void BreakoutApp::newGame() {
 
 void BreakoutApp::run() {
   millis_t millisNow = Uptime::millis();
-  if (lastDraw/millisPerFrame == millisNow/millisPerFrame && !pad.down(ANY_PAD)) {
+  if (lastDraw/millisPerFrame == millisNow/millisPerFrame && !pad.pressed(ANY_PAD)) {
     return;
   }
 
    if (dx == 0 && dy == 0) {
     // game over, man
-      if (pad.down(ANY_PAD)) {
+      if (pad.pressed(ANY_PAD)) {
         newGame();
       } else {
         return;
@@ -186,7 +186,7 @@ void BreakoutApp::run() {
 
   if (newpaddlex != paddlex) {
     coord_t drawx, erasex, draww;
-    if (abs(newpaddlex-paddlex)<paddlew && !pad.down(SCREEN_PAD)) {
+    if (abs(newpaddlex-paddlex)<paddlew && !pad.pressed(SCREEN_PAD)) {
       if (newpaddlex < paddlex) {
         erasex = newpaddlex+paddlew;
         drawx = newpaddlex;

@@ -2,9 +2,7 @@
 #define _KeyboardViewerApp_
 #include "BritepadApp.h"
 #include "KeyboardApp.h"
-#include "widgets/Button.h"
-#include "widgets/Icons.h"
-#include "widgets/WidgetGroup.h"
+#include "widgets/KeyboardWidget.h"
 
 
 class KeyboardViewerApp : public KeyboardApp {
@@ -20,12 +18,12 @@ class KeyboardViewerApp : public KeyboardApp {
 
     bool disablesScreensavers() { return true; }
     bool canBeInteractive() { return true; }
-    AppType getAppType() { return (AppType)(KEYBOARD_APP | INTERACTIVE_APP); }
+    AppType getAppType() { return (AppType)(KEYBOARD_APP | KEY_APP); }  // appear as a setting on the keyboard screen and on the main screen
 
 
   private:
     void draw();
-    WidgetGroup* buttons = nullptr;
+    KeyboardWidget* buttons = nullptr;
     bool tutorialMode = false;
     BritepadApp* lastApp = nullptr;
     AppMode lastMode;

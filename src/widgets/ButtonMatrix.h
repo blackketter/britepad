@@ -37,9 +37,9 @@ class ButtonMatrix : public Widget {
         buttons = nullptr;
       }
     }
-    Button* down();
-    Button* up();
-    Button* hold();
+    Button* pressedButton();
+    Button* releasedButton();
+    Button* heldButton();
     void draw();
     void draw(buttonindex_t i, int map = 0) { Button* b = getButton(i,map); if (b) { b->draw(); }};
 

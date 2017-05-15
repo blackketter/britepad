@@ -30,18 +30,18 @@ void BellApp::init() {
 void BellApp::run() {
 
   stime_t adj = 0;
-  if (button[0].down()) { adj = 60; }
-  if (button[1].down()) { adj = -60; }
+  if (button[0].pressed()) { adj = 60; }
+  if (button[1].pressed()) { adj = -60; }
 
-  if (button[2].down()) { adj = 1; }
-  if (button[3].down()) { adj = -1; }
+  if (button[2].pressed()) { adj = 1; }
+  if (button[3].pressed()) { adj = -1; }
 
   _bell_interval += adj;
 
   if (_bell_interval < 5) { _bell_interval = 5; }
   if (_bell_interval > 99*60) { _bell_interval = 99*60; }
 
-  if (button[4].down()) {
+  if (button[4].pressed()) {
     adj = 1; // force an update of the timer
     _bell_enabled = !_bell_enabled;
     button[4].setTitle(_bell_enabled ? "On" : "Off");

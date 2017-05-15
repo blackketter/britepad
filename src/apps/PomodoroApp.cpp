@@ -19,7 +19,7 @@ void PomodoroApp::run() {
     drawTimeNow = true;
   }
 
-  if (_button.down()) {
+  if (_button.pressed()) {
     sound.click();
 
     if (isRunning()) {

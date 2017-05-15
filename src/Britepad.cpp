@@ -309,9 +309,9 @@ void Britepad::loop() {
       launchApp(theLauncherApp);
   }
 
-  if (pad.down(TOP_PAD) || keys.keyPressed(KEY_EXIT)) {
+  if (pad.pressed(TOP_PAD) || keys.keyPressed(KEY_EXIT)) {
     currApp->exit();
-  } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.down(SCREEN_PAD) || ((pad.down(ANY_PAD) && !currApp->canBeInteractive())))) {
+  } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.pressed(SCREEN_PAD) || ((pad.pressed(ANY_PAD) && !currApp->canBeInteractive())))) {
     console.debugln("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
     if (currApp->canBeMouse() && currApp->getEnabled(MOUSE_MODE) && usbActive()) {
@@ -324,7 +324,7 @@ void Britepad::loop() {
 
   } else if (pad.time() > disableScreensaversUntil && !currApp->disablesScreensavers()) {
 
-    if ( pad.down(PROXIMITY_SENSOR) &&
+    if ( pad.pressed(PROXIMITY_SENSOR) &&
          currApp->isAppMode(SCREENSAVER_MODE) &&
 
          (pad.time() > disableScreensaversUntil))
@@ -332,7 +332,7 @@ void Britepad::loop() {
       launchApp(theLauncherApp);
       console.debugln("Proximity detected: showing launcher");
 
-    } else if ( pad.down(PROXIMITY_SENSOR) &&
+    } else if ( pad.pressed(PROXIMITY_SENSOR) &&
          currApp->isAppMode(SCREENSAVER_MODE) &&
 
          !currApp->displaysClock() &&

@@ -12,7 +12,7 @@ void GestureApp::run() {
   screen.setFont(Arial_14);
   screen.setCursor(screen.clipLeft(), screen.clipTop());
 
-  if (pad.up(BOTTOM_PAD)) {
+  if (pad.released(BOTTOM_PAD)) {
     learning = !learning;
     clearScreen();
     if (learning) {
@@ -22,7 +22,7 @@ void GestureApp::run() {
     }
   }
 
-  if (pad.down(SCREEN_PAD)) {
+  if (pad.pressed(SCREEN_PAD)) {
     clearScreen();
     lastPoint.x = pad.x();
     lastPoint.y = pad.y();
@@ -35,7 +35,7 @@ void GestureApp::run() {
     lastPoint.y = pad.y();
   }
 
-  if (pad.up(SCREEN_PAD)) {
+  if (pad.released(SCREEN_PAD)) {
     if (learning) {
       if (learned.capture()) {
         printData(learned);

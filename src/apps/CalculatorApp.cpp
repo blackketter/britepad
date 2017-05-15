@@ -256,12 +256,12 @@ void CalculatorApp::end() {
 }
 
 void CalculatorApp::run() {
-  Button* hit = buttons->down();
+  Button* hit = buttons->pressedButton();
   if (hit) {
     handleKey(hit->getID());
   }
 
-  if (pad.down(SCREEN_PAD) && pad.y() < screen.clipTop()+displayHeight) {
+  if (pad.pressed(SCREEN_PAD) && pad.y() < screen.clipTop()+displayHeight) {
       handleKey(send);
   }
 }

@@ -11,13 +11,13 @@ SetTimerApp::SetTimerApp(int32_t pos) : BritepadApp() {
 void SetTimerApp::run() {
 
   stime_t adj = 0;
-  if (button[0].down()) { adj = 60; }
-  if (button[1].down()) { adj = -60; }
+  if (button[0].pressed()) { adj = 60; }
+  if (button[1].pressed()) { adj = -60; }
 
-  if (button[2].down()) { adj = 1; }
-  if (button[3].down()) { adj = -1; }
+  if (button[2].pressed()) { adj = 1; }
+  if (button[3].pressed()) { adj = -1; }
 
-  if (button[4].down()) {
+  if (button[4].pressed()) {
     theTimerApp.setTime(_customTimerDuration);
     launchApp(&theTimerApp);
   }

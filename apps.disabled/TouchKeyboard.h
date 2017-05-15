@@ -12,8 +12,8 @@ class TouchKeyboard : public Widget {
     virtual void track();
     virtual void draw();
 
-    virtual uint8_t down();  // returns value of key pressed down or 0 if none.  as side effect tracks keys and does redraw
-    virtual uint8_t up();
+    virtual uint8_t pressed();  // returns value of key pressed down or 0 if none.  as side effect tracks keys and does redraw
+    virtual uint8_t released();
 
   protected:
 

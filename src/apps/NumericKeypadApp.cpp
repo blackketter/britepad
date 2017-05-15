@@ -38,7 +38,7 @@ void NumericKeypadApp::run() {
       }
     }
   } else {
-    b = buttons->up();
+    b = buttons->releasedButton();
   }
 
   if (b) {

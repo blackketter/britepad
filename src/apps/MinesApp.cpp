@@ -151,7 +151,7 @@ void MinesApp::end() {
 void MinesApp::run() {
   int xhit, yhit;
   if (gameOver) {
-    if (pad.up()) {
+    if (pad.released()) {
       end();
       begin(INTERACTIVE_MODE);
     } else {
@@ -167,12 +167,12 @@ void MinesApp::run() {
     if (mines) {mines--;}
   }
 
-  if (pad.up(BOTTOM_PAD)) {
+  if (pad.released(BOTTOM_PAD)) {
     playTune = !playTune;
     sound.tuneVolume(playTune ? 1.0 : 0);
   }
 
-  if (pad.up() && field->hit(pad.x(),pad.y(), &xhit, &yhit) && !flagging) {
+  if (pad.released() && field->hit(pad.x(),pad.y(), &xhit, &yhit) && !flagging) {
 
     // lay the mines, but not close to the first tap
     if (firstTap) {
@@ -247,7 +247,7 @@ void MinesApp::run() {
   String mineString(mines);
   minesLeft.draw(mineString);
 
-  if (pad.up()) {
+  if (pad.released()) {
     flagging = false;
   }
   if (mines) {

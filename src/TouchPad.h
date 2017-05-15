@@ -43,8 +43,8 @@ class TouchPad {
     void update();
     bool touched(int pad = SCREEN_PAD);  // is the pad being touched?
     bool changed(int pad = SCREEN_PAD);  // has the pad touch state changed since the last update?
-    bool down(int pad = SCREEN_PAD);     // has the pad been touched since the last update?
-    bool up(int pad = SCREEN_PAD);       // has the pad been released since the last update?
+    bool pressed(int pad = SCREEN_PAD);     // has the pad been touched since the last update?
+    bool released(int pad = SCREEN_PAD);       // has the pad been released since the last update?
     millis_t lastDownTime(int pad = SCREEN_PAD); // last time the pad was down
     millis_t lastUpTime(int pad = SCREEN_PAD);   // last time the pad was released
     millis_t lastTouchedTime(int pad = SCREEN_PAD); // last time the pad was touched

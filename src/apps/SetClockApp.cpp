@@ -112,17 +112,17 @@ void SetClockApp::run() {
   hasRun = true;
   stime_t adj = 0;
   bool redraw = false;
-  if (button[hr1_up].down()) { adj = setDate ? clock.secsPerYear : clock.secsPerHour; }
-  if (button[hr1_down].down()) { adj = setDate ? -clock.secsPerYear : -clock.secsPerHour; }
+  if (button[hr1_up].pressed()) { adj = setDate ? clock.secsPerYear : clock.secsPerHour; }
+  if (button[hr1_down].pressed()) { adj = setDate ? -clock.secsPerYear : -clock.secsPerHour; }
 
-  if (button[min10_up].down()) { adj = setDate ? clock.daysInMonth(clock.month())*clock.secsPerDay : 60*10; }
-  if (button[min10_down].down()) { adj = setDate ? -clock.daysInMonth(clock.month() == 1 ? 12 : clock.month()-1) * clock.secsPerDay : -60*10; }
+  if (button[min10_up].pressed()) { adj = setDate ? clock.daysInMonth(clock.month())*clock.secsPerDay : 60*10; }
+  if (button[min10_down].pressed()) { adj = setDate ? -clock.daysInMonth(clock.month() == 1 ? 12 : clock.month()-1) * clock.secsPerDay : -60*10; }
 
-  if (button[min1_up].down()) { adj = setDate ? clock.secsPerDay : 60; }
-  if (button[min1_down].down()) { adj = setDate ? -clock.secsPerDay : -60; }
+  if (button[min1_up].pressed()) { adj = setDate ? clock.secsPerDay : 60; }
+  if (button[min1_down].pressed()) { adj = setDate ? -clock.secsPerDay : -60; }
 
-  if (button[am_pm].down()) { adj = setDate ? : (theTime->isAM() ? 12*60*60 : -12*60*60); }
-  if (button[mode_set].down()) {
+  if (button[am_pm].pressed()) { adj = setDate ? : (theTime->isAM() ? 12*60*60 : -12*60*60); }
+  if (button[mode_set].pressed()) {
     modeButtonPressed();
     button[mode_set].setTitle(modeButtonText());
     button[mode_set].setColor(modeButtonColor());

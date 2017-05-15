@@ -32,9 +32,9 @@ class Button : public Widget {
     }
     virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr, widgetid_t id = 0);
 
-    virtual bool down();
-    virtual bool up();
-    virtual bool hold();
+    virtual bool pressed();
+    virtual bool released();
+    virtual bool held();
 
     virtual void setColor(color_t newColor) {  colored = newColor; }
     virtual color_t getColor() { return colored; }

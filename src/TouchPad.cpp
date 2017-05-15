@@ -89,17 +89,17 @@ void TouchPad::update() {
 
   // calculate lastup and lastdown times
   for (int i = 0; i < SENSOR_COUNT; i++) {
-    if (down(i)) {
+    if (pressed(i)) {
       lastDownT[i] = curr.time;
     }
 
-    if (up(i)) {
+    if (released(i)) {
       lastUpT[i] = curr.time;
     }
   }
 
   // save the last down coordinates
-  if (down(SCREEN_PAD)) {
+  if (pressed(SCREEN_PAD)) {
     lastDownXPos = curr.x;
     lastDownYPos = curr.y;
     historyCount = 0;
@@ -130,7 +130,7 @@ void TouchPad::update() {
 //      console.debugln("Exceeded history size");
     }
   }
-  if (!up(SCREEN_PAD)) {
+  if (!released(SCREEN_PAD)) {
     gesturesSearched = nullptr;
     lastGesture = Gesture::NO_GESTURE;
   }
@@ -140,7 +140,7 @@ void TouchPad::update() {
 // todo: save this capture and reuse in getGesture()
 bool TouchPad::didGesture() {
   Gesture newGesture;
-  return (up() && newGesture.capture());
+  return (released() && newGesture.capture());
 }
 
 bool TouchPad::isGesturing() {
@@ -151,7 +151,7 @@ bool TouchPad::isGesturing() {
 }
 
 gesture_t TouchPad::getGesture(const gestureData_t* gestureList) {
-  if ( gesturesSearched == gestureList || !up() ) { return lastGesture; }
+  if ( gesturesSearched == gestureList || !released() ) { return lastGesture; }
 
   Gesture newGesture;
 
@@ -354,10 +354,10 @@ bool TouchPad::changed(int pad) {
 
 }
 
-bool TouchPad::down(int pad) {
+bool TouchPad::pressed(int pad) {
   if (pad >= ANY_PAD) {
     for (int i = 0; i < (pad == ANY_PAD ? TOUCH_PAD_COUNT : SENSOR_COUNT); i++) {
-      if (down(i))
+      if (pressed(i))
         return true;
     }
     return false;
@@ -366,10 +366,10 @@ bool TouchPad::down(int pad) {
   return changed(pad) && touched(pad);
 }
 
-bool TouchPad::up(int pad) {
+bool TouchPad::released(int pad) {
   if (pad >= ANY_PAD) {
     for (int i = 0; i < (pad == ANY_PAD ? TOUCH_PAD_COUNT : SENSOR_COUNT); i++) {
-      if (up(pad))
+      if (released(pad))
         return true;
     }
     return false;

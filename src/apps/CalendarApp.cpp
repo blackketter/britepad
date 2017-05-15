@@ -3,7 +3,7 @@
 CalendarApp theCalendarApp;
 
 void CalendarApp::run() {
-  if (pad.down(LEFT_PAD) || (pad.getGesture() == GESTURE_SWIPE_LEFT)) {
+  if (pad.pressed(LEFT_PAD) || (pad.getGesture() == GESTURE_SWIPE_LEFT)) {
     month--;
     if (month < 1) {
       month = 12;
@@ -13,7 +13,7 @@ void CalendarApp::run() {
     drawBars();
     draw();
   }
-  if (pad.down(RIGHT_PAD) || (pad.getGesture() == GESTURE_SWIPE_RIGHT)) {
+  if (pad.pressed(RIGHT_PAD) || (pad.getGesture() == GESTURE_SWIPE_RIGHT)) {
     month++;
     if (month > 12) {
       month = 1;

@@ -40,7 +40,7 @@ void CountdownApp::setTime(time_t newTime) {
 
 void CountdownApp::run() {
 
-  if (pad.down(BOTTOM_PAD)) {
+  if (pad.pressed(BOTTOM_PAD)) {
     sound.click();
     if (isAppMode(SCREENSAVER_MODE)) {
       switchAppMode(INTERACTIVE_MODE);
@@ -50,7 +50,7 @@ void CountdownApp::run() {
   }
 
   if (isAppMode(INTERACTIVE_MODE)) {
-    if (setButton.down()) {
+    if (setButton.pressed()) {
       sound.click();
       britepad.launchApp(&setApp);
     }

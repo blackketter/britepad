@@ -26,6 +26,10 @@ class Widget {
     widgetid_t getID() { return _id; }
     void setID(widgetid_t newID) { _id = newID; }
 
+    virtual bool pressed() { return false; }
+    virtual bool released() { return false; };
+    virtual bool held() { return false; };
+
     // todo: make setting the visibility cause a redraw or erase
     virtual void setVisible(bool visibility) { _visible = visibility; }
     virtual bool getVisible() { return _visible; }

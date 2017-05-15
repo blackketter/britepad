@@ -33,7 +33,7 @@ void LifeApp::run() {
   switch (getAppMode()) {
     case MOUSE_MODE:
     case INTERACTIVE_MODE:
-      if (pad.down(SCREEN_PAD) && generation) {
+      if (pad.pressed(SCREEN_PAD) && generation) {
         wipe();
       }
       if (pad.touched(SCREEN_PAD)) {

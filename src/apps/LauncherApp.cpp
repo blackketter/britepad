@@ -152,24 +152,24 @@ void LauncherApp::drawButtons() {
 
 void LauncherApp::run() {
 
-  if (pad.up(SCREEN_PAD)) { waitForRelease = false; }
+  if (pad.released(SCREEN_PAD)) { waitForRelease = false; }
 
   lastRun = clock.now();
 
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
-    if (pad.up(SCREEN_PAD)) {
+    if (pad.released(SCREEN_PAD)) {
       launchApp(launchOnRelease, getCurrentScreen()->mode);
       britepad.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
       launchOnRelease = nullptr;
     }
   } else if (
-        pad.down(LEFT_PAD)
+        pad.pressed(LEFT_PAD)
      || (pad.getGesture() == GESTURE_SWIPE_LEFT)
      || keys.keyPressed((keycode_t)KEY_PAGE_UP)
     ) {
       pushScreen(DIRECTION_LEFT);
-  } else if (pad.down(RIGHT_PAD)
+  } else if (pad.pressed(RIGHT_PAD)
      || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
      || keys.keyPressed((keycode_t)KEY_PAGE_DOWN)
   ) {
@@ -180,7 +180,7 @@ void LauncherApp::run() {
       ) {
     exit();
   } else if (!pad.didGesture()) {
-    AppButton* b = (AppButton*)(buttons->up());
+    AppButton* b = (AppButton*)buttons->releasedButton();
     if (!b && (keys.keyPressed((keycode_t)KEY_SPACE) || keys.keyPressed((keycode_t)KEY_RETURN))) {
       b = (AppButton*)buttons->getButton(buttons->getSelected(),0);
       if (b) {
@@ -209,7 +209,7 @@ void LauncherApp::run() {
       }
       sound.click();
     }
-    b = (AppButton*)buttons->hold();
+    b = (AppButton*)buttons->held();
     if (b && b->getApp()) {
       BritepadApp* launched = ((AppButton*)b)->getApp();
       if (b->getApp()->canBeInvisible()) {
@@ -288,7 +288,7 @@ void LauncherApp::pushScreen(direction_t d) {
 void LauncherApp::end() {
   if (buttons) { delete(buttons); buttons = nullptr; }
 
-  if (pad.down(TOP_PAD) || audibleExit) {
+  if (pad.pressed(TOP_PAD) || audibleExit) {
     sound.swipe(DIRECTION_UP);
     audibleExit = false;
   }

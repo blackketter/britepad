@@ -64,12 +64,12 @@ void ButtonMatrix::draw() {
   }
 }
 
-Button* ButtonMatrix::down() {
+Button* ButtonMatrix::pressedButton() {
 
   for (int r = 0; r < buttonRows; r++) {
     for (int c = 0; c < buttonColumns; c++) {
       int i = index(r,c,currMap);
-      if (buttons[i] && buttons[i]->down()) {
+      if (buttons[i] && buttons[i]->pressed()) {
         return buttons[i];
       }
     }
@@ -78,12 +78,12 @@ Button* ButtonMatrix::down() {
 }
 
 
-Button* ButtonMatrix::up() {
+Button* ButtonMatrix::releasedButton() {
 
   for (int r = 0; r < buttonRows; r++) {
     for (int c = 0; c < buttonColumns; c++) {
       buttonindex_t i = index(r,c,currMap);
-      if (buttons[i] && buttons[i]->up()) {
+      if (buttons[i] && buttons[i]->released()) {
         return buttons[i];
       }
     }
@@ -91,12 +91,12 @@ Button* ButtonMatrix::up() {
   return nullptr;
 }
 
-Button* ButtonMatrix::hold() {
+Button* ButtonMatrix::heldButton() {
 
   for (int r = 0; r < buttonRows; r++) {
     for (int c = 0; c < buttonColumns; c++) {
       buttonindex_t i = index(r,c,currMap);
-      if (buttons[i] && buttons[i]->hold()) {
+      if (buttons[i] && buttons[i]->held()) {
         return buttons[i];
       }
     }

@@ -6,7 +6,7 @@ BubblesApp theBubblesApp;
 void BubblesApp::run() {
   ScreensaverApp::run();
   int r;
-  if (pad.down()) {
+  if (pad.pressed()) {
     clearScreen();
   }
   if (pad.touched(SCREEN_PAD)) {

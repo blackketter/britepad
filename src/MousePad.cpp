@@ -28,10 +28,10 @@ void MousePad::end() {
 void MousePad::run() {
 
   // todo: make these sounds more descriptive
-  if (pad.down(RIGHT_PAD)) { sound.click(); }
-  if (pad.up(RIGHT_PAD)) { sound.click(); }
-  if (pad.down(LEFT_PAD)) { sound.click(); }
-  if (pad.up(LEFT_PAD)) { sound.click(); }
+  if (pad.pressed(RIGHT_PAD)) { sound.click(); }
+  if (pad.released(RIGHT_PAD)) { sound.click(); }
+  if (pad.pressed(LEFT_PAD)) { sound.click(); }
+  if (pad.released(LEFT_PAD)) { sound.click(); }
 
   // right panel
   if (pad.changed(RIGHT_PAD)) {
@@ -65,16 +65,16 @@ void MousePad::run() {
   }
 
   // bottom panel
-  if (pad.down(BOTTOM_PAD)) {
+  if (pad.pressed(BOTTOM_PAD)) {
     Mouse.press();
     sound.click();
-  } else if (pad.up(BOTTOM_PAD)) {
+  } else if (pad.released(BOTTOM_PAD)) {
     Mouse.release();
     sound.click();
   }
 
   // left panel
-  if (pad.down(LEFT_PAD)) {
+  if (pad.pressed(LEFT_PAD)) {
     // left has been pressed
 //    console.debugln("Left panel pressed");
     Keyboard.press(MODIFIERKEY_GUI);
@@ -93,7 +93,7 @@ void MousePad::run() {
     }
   }
 
-  if (pad.up(LEFT_PAD)) {
+  if (pad.released(LEFT_PAD)) {
     if (!pad.touched(RIGHT_PAD)) {
       Keyboard.release(MODIFIERKEY_GUI);
     }
@@ -137,7 +137,7 @@ void MousePad::run() {
             lastScroll = pad.time();
           }
         }
-      } else if (!pad.down(SCREEN_PAD)) {
+      } else if (!pad.pressed(SCREEN_PAD)) {
         if (isAbsolute()) {
           Mouse.screenSize(screen_h, screen_v, isMac);
 
@@ -202,7 +202,7 @@ void MousePad::run() {
     // screen not touched
 
     // screen tap released
-    if (pad.up(SCREEN_PAD)) {
+    if (pad.released(SCREEN_PAD)) {
       millis_t downtime = pad.time() - pad.lastDownTime(SCREEN_PAD);
 
       if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < 20 && (abs(pad.lastDownY() - pad.y()) < 20)) ) {

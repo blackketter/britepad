@@ -100,11 +100,23 @@ void BritepadApp::drawInfoBar(bool update) {
 
 void BritepadApp::clearScreen() {
   //idle because fillScreen is slow
-  britepad.idle();
-  screen.fillScreen(bgColor());
-//  console.debugln("clearScreen");
-  britepad.idle();
+  coord_t start = screen.clipTop();
+  coord_t bottom = screen.clipBottom();
+  coord_t left = screen.clipLeft();
+  coord_t width = screen.clipWidth();
+  coord_t height = screen.height() / 10;  // do it in 10 segments to give time to idle
+  bool done = false;
+  do {
+    if ((height+start)>bottom) {
+      height = bottom - start;
+      done = true;
+    }
+    screen.fillRect(left,start,width,height, bgColor());
+    start += height;
+    britepad.idle();
+  } while (!done);
 }
+
 void BritepadApp::drawBars(bool update) {
   drawInfoBar(update);
   drawStatusBar(update);

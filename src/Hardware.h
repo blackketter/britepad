@@ -7,11 +7,13 @@
 #define WATCHDOG_TIME_MS (2000)
 #endif
 
-typedef int pinNumber;
+// system hardware utilities
 bool usbActive();
 uint32_t FreeMem();
 void watchdogKick();
 const char* resetType();
+
+typedef int pinNumber;
 
 #ifdef TEENSYDUINO
 // touchpad pins
@@ -42,9 +44,11 @@ const pinNumber CTP_INT_PIN = 14;
 // audio amplifier shutdown (active low)
 const pinNumber AUDIO_SHUTDOWN_PIN = 23;
 
+// i2c bus config
 const pinNumber WIRE_SDA_PIN = 18;
 const pinNumber WIRE_SCL_PIN = 19;
 const uint32_t  WIRE_SPEED = 400000;
+
 // screen
 const pinNumber TFT_CS_PIN = 10;
 const pinNumber TFT_DC_PIN = 9;

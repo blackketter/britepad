@@ -50,7 +50,7 @@ void SpiroApp::drawInfo() {
 void SpiroApp::run() {
   ScreensaverApp::run();
 
-  if (pad.down(BOTTOM_PAD)) {
+  if (pad.pressed(BOTTOM_PAD)) {
     displayInfo = !displayInfo;
     drawInfo();
   }

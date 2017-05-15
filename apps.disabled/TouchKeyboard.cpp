@@ -81,9 +81,9 @@ void TouchKeyboard::draw() {
   }
 }
 
-uint8_t TouchKeyboard::down() {
+uint8_t TouchKeyboard::pressed() {
   uint8_t keydown = 0;
-  if (pad.down(SCREEN_PAD)) {
+  if (pad.pressed(SCREEN_PAD)) {
     keydown = key(pad.x(), pad.y());
     if (keydown) { sound.click(); }
   }
@@ -96,10 +96,10 @@ void TouchKeyboard::setKeySet(KeySet newSet) {
   draw();
 }
 
-uint8_t TouchKeyboard::up() {
+uint8_t TouchKeyboard::released() {
   uint8_t keyup = 0;
 
-  if (pad.up(SCREEN_PAD)) {
+  if (pad.released(SCREEN_PAD)) {
     keyup = key(pad.x(), pad.y());
     if (keyup) { sound.click(); }
     switch (keyup) {

@@ -166,22 +166,22 @@ void LauncherApp::run() {
   } else if (
         pad.pressed(LEFT_PAD)
      || (pad.getGesture() == GESTURE_SWIPE_LEFT)
-     || keys.keyPressed((keycode_t)KEY_PAGE_UP)
+     || keys.keyPressed(KEY_PAGE_UP)
     ) {
       pushScreen(DIRECTION_LEFT);
   } else if (pad.pressed(RIGHT_PAD)
      || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
-     || keys.keyPressed((keycode_t)KEY_PAGE_DOWN)
+     || keys.keyPressed(KEY_PAGE_DOWN)
   ) {
     pushScreen(DIRECTION_RIGHT);
   } else if (
         (pad.getGesture() == GESTURE_SWIPE_UP)
-     || keys.keyPressed((keycode_t)KEY_ESC)
+     || keys.keyPressed(KEY_ESC)
       ) {
     exit();
   } else if (!pad.didGesture()) {
     AppButton* b = (AppButton*)buttons->releasedButton();
-    if (!b && (keys.keyPressed((keycode_t)KEY_SPACE) || keys.keyPressed((keycode_t)KEY_RETURN))) {
+    if (!b && (keys.keyPressed(KEY_SPACE) || keys.keyPressed(KEY_RETURN))) {
       b = (AppButton*)buttons->getButton(buttons->getSelected(),0);
       if (b) {
         b->setHighlighted(true);
@@ -228,7 +228,7 @@ void LauncherApp::run() {
 
   buttonindex_t oldSelection = buttons->getSelected();
   buttonindex_t i = oldSelection;
-  if (keys.keyPressed((keycode_t)KEY_UP)) {
+  if (keys.keyPressed(KEY_UP)) {
     do {
       i -= h_buttons;
       if (i < 0) { i += buttons_per_screen; }
@@ -236,7 +236,7 @@ void LauncherApp::run() {
     buttons->setSelected(i);
   }
 
-  if (keys.keyPressed((keycode_t)KEY_DOWN)) {
+  if (keys.keyPressed(KEY_DOWN)) {
     do {
       i += h_buttons;
       if (i >= buttons_per_screen) { i -= buttons_per_screen; }
@@ -244,7 +244,7 @@ void LauncherApp::run() {
     buttons->setSelected(i);
   }
 
-  if (keys.keyPressed((keycode_t)KEY_LEFT)) {
+  if (keys.keyPressed(KEY_LEFT)) {
     do {
       i--;
       if (i < 0) {
@@ -255,7 +255,7 @@ void LauncherApp::run() {
     buttons->setSelected(i);
   }
 
-  if (keys.keyPressed((keycode_t)KEY_RIGHT)||keys.keyPressed((keycode_t)KEY_TAB)) {
+  if (keys.keyPressed(KEY_RIGHT)||keys.keyPressed(KEY_TAB)) {
     do {
       i++;
       if (i >= buttons_per_screen) {

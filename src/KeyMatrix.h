@@ -97,8 +97,8 @@ class KeyMatrix {
     inline bool keyPressed(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsDown(k) && switchChanged(k); }
     inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsUp(k) && switchChanged(k); }
 
-    bool doubleTapped(keycode_t c);
-    bool tapped(keycode_t c);
+    bool keyDoubleTapped(keycode_t c);
+    bool keyTapped(keycode_t c);
 
     keycode_t getCode(keyswitch_t k);
 

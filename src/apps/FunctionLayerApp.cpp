@@ -51,14 +51,14 @@ class FunctionLayerApp : public KeyboardApp {
     void idle() {
       if (getEnabled(KEYBOARD_MODE)) {
         // switch to the function layer
-        if (keys.keyPressed((keycode_t)KEY_LEFT_FN) || keys.keyPressed((keycode_t)KEY_RIGHT_FN)) {
+        if (keys.keyPressed(KEY_LEFT_FN) || keys.keyPressed(KEY_RIGHT_FN)) {
           if (keys.getMap() != functionLayerMap) {
             keys.setMap(functionLayerMap);
           }
         } else if (
-                   (keys.keyReleased((keycode_t)KEY_LEFT_FN) || keys.keyReleased((keycode_t)KEY_RIGHT_FN)) &&  // released fn key
-                    keys.keyIsUp((keycode_t)KEY_RIGHT_FN) && keys.keyIsUp((keycode_t)KEY_LEFT_FN) &&           // neither key is still held
-                    !keys.doubleTapped((keycode_t)KEY_RIGHT_FN) && !keys.doubleTapped((keycode_t)KEY_LEFT_FN)  // and it's not a double-tap
+                   (keys.keyReleased(KEY_LEFT_FN) || keys.keyReleased(KEY_RIGHT_FN)) &&  // released fn key
+                    keys.keyIsUp(KEY_RIGHT_FN) && keys.keyIsUp(KEY_LEFT_FN) &&           // neither key is still held
+                    !keys.keyDoubleTapped(KEY_RIGHT_FN) && !keys.keyDoubleTapped(KEY_LEFT_FN)  // and it's not a double-tap
                   ) {
                 keys.setMap();
         }

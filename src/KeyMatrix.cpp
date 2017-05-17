@@ -359,7 +359,7 @@ void KeyMatrix::clearHistory() {
   }
 }
 
-bool KeyMatrix::tapped(keycode_t c) {
+bool KeyMatrix::keyTapped(keycode_t c) {
   if (  keyReleased(c) &&
         (getHistoryCode(1) == c) && getHistoryPressed(1) &&
         (getHistoryCode(0) == c) && getHistoryReleased(0) &&
@@ -371,8 +371,8 @@ bool KeyMatrix::tapped(keycode_t c) {
   }
 }
 
-bool KeyMatrix::doubleTapped(keycode_t c) {
-  if ( tapped(c) &&
+bool KeyMatrix::keyDoubleTapped(keycode_t c) {
+  if ( keyTapped(c) &&
         (getHistoryCode(3) == c) && getHistoryPressed(3) &&
         (getHistoryCode(2) == c) && getHistoryReleased(2) &&
         (getHistoryTime(0)-getHistoryTime(3) < _doubleTappedTime)

@@ -44,13 +44,13 @@ class TimeoutApp : public BritepadApp {
     const char* name() {
       time_t switchInterval = britepad.getScreensaverSwitchInterval();
       if (switchInterval == 0) {
-        return "Don't Auto\nSwitch";
+        return "Don't Auto Switch";
       }
 
       if (switchInterval <= 60) {
-        sprintf(nameStr, "Switch\n%d seconds", (int)switchInterval);
+        sprintf(nameStr, "Switch %d seconds", (int)switchInterval);
       } else {
-        sprintf(nameStr, "Switch\n%d minutes", (int)switchInterval/60);
+        sprintf(nameStr, "Switch %d minutes", (int)switchInterval/60);
       }
       return nameStr;
     };

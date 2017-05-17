@@ -87,6 +87,10 @@ class Screen : public Adafruit_ILI9341
     void drawLinex(point_t& f, point_t& t, color_t c) { drawLine(f.x,f.y,t.x,t.y,c); }
 
     void drawTextF(const char* format, ...);
+    void drawString(String& t) {  drawText(t.c_str()); }
+    void softWrapText(String& out, const char* in);
+    const font_t* getFont() { return font; }
+
   	void drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color);
 
     void pushFill(direction_t dir, color_t color);

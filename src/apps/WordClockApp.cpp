@@ -101,7 +101,7 @@ void WordClockApp::update() {
 
     screen.setFont(Arial_20_Bold);
     screen.setTextColor(currentColor++, bgColor());
-    screen.setCursor(screen.clipMidWidth(), screen.clipTop());
+    screen.setCursor(screen.clipMidWidth(), screen.clipMidHeight());
     screen.setTextAlign((alignment_t)(ALIGN_VCENTER|ALIGN_HCENTER));
 
     if (now.minute() == 0) {
@@ -135,7 +135,9 @@ void WordClockApp::update() {
     }
 
 //    const char* oldWrap = screen.setTextSoftWrapChars(" -");
-    screen.drawText(words.c_str());
+    String wrapped;
+    screen.softWrapText(wrapped, words.c_str());
+    screen.drawString(wrapped);
     screen.setTextAlign();
 //    screen.setTextSoftWrapChars(oldWrap);
 }

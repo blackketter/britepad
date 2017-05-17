@@ -99,7 +99,6 @@ void BritepadApp::drawInfoBar(bool update) {
 }
 
 void BritepadApp::clearScreen() {
-console.debugln("clearscreen");
   //idle because fillScreen is slow
   coord_t start = screen.clipTop();
   coord_t bottom = screen.clipBottom();

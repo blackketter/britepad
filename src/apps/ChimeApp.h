@@ -17,7 +17,7 @@ class ChimeApp : public MuteApp {
       prefs.write(id(), sizeof(_chimeEnabled), &_chimeEnabled);
    }
 
-    const char* name() { return _chimeEnabled ? "Chime\nOn" : "Chime\nOff"; };
+    const char* name() { return _chimeEnabled ? "Chime On" : "Chime Off"; };
 
     virtual bool highlighted() { return !_chimeEnabled; }
 

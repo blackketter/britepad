@@ -6,8 +6,10 @@
 class SeqApp : public DotsDisplayApp {
   public:
     void run();
+    void begin(AppMode isMode) { DotsDisplayApp::begin(isMode); keys.setClick(false); }
+    void end() { DotsDisplayApp::end(); keys.setClick(true); }
 
-    const char* name() { return "Sequencer"; };
+    const char* name() { return "Seq"; };
     static constexpr appid_t ID = "seqr";
     appid_t id() { return ID; };
 
@@ -16,6 +18,7 @@ class SeqApp : public DotsDisplayApp {
     bool canBeMouse() { return false; }
     bool canBeInteractive() { return true; }
     AppType getAppType() { return INTERACTIVE_APP; }
+    bool usesKeyboard() { return true; }
 
   protected:
     virtual int getDotsWide() { return 12; }

@@ -137,7 +137,7 @@ keyswitch_t KeyMatrix::update() {
     _lastScan = Uptime::millis();
     scanMatrix();
 
-    if (keysPressed()) {
+    if (_click && keysPressed()) {
       sound.click();
     }
 

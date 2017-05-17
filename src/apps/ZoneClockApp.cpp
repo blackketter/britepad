@@ -13,9 +13,7 @@ ZoneClockApp::ZoneClockApp(const char* name, TimeChangeRule dstStart, TimeChange
 };
 
 const char* ZoneClockApp::name() {
-  char shortTime[10];
-  _zoneClock.shortTime(shortTime);
-  sprintf(_nameStr, "%s\n%s", _offsetName, shortTime);
+  sprintf(_nameStr, "%s %d:%02d\xa0%s", _offsetName, _zoneClock.hourFormat12(), _zoneClock.minute(), _zoneClock.isAM() ? "am":"pm");
   return _nameStr;
 };
 

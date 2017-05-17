@@ -5,8 +5,8 @@
 // APPBUTTON
 class AppButton : public RoundButton {
   public:
-    AppButton() {};
-    AppButton(BritepadApp* a) { setApp(a); }
+    AppButton() { setFrameInset(5); setWrapTitle(true); };
+    AppButton(BritepadApp* a) { setApp(a); setFrameInset(5); setWrapTitle(true); }
     ~AppButton() {};
     BritepadApp* getApp() { return (BritepadApp*)getID(); }
     void setApp(BritepadApp* a) { setID((widgetid_t)a); }
@@ -22,7 +22,7 @@ class AppButton : public RoundButton {
       return c;
     }
     virtual color_t     getTitleColor() { return Screen::black; }
-    virtual font_t      getTitleFont()  { return strchr(getTitle(), '\n') ? Arial_8_Bold : Arial_9_Bold; }
+    virtual font_t      getTitleFont()  { return Arial_9_Bold; }
     virtual AppMode     getAppMode()    { return INTERACTIVE_MODE; }
 };
 

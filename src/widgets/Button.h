@@ -48,6 +48,9 @@ class Button : public Widget {
     virtual font_t getTitleFont() { return titleFont; }
     virtual color_t getTitleColor() { return titleCol; }
 
+    void setFrameInset(coord_t frameInset) { _frameInset = frameInset; }
+    void setWrapTitle(bool wrap) { _wrapTitle = wrap; }
+
     virtual void track();
 
     void draw();
@@ -71,6 +74,8 @@ class Button : public Widget {
     const char* titleStr;
     font_t titleFont;
     color_t titleCol;
+    coord_t _frameInset = 0;
+    bool _wrapTitle = false;
     Icon icon;
     color_t colored;
     bool highlighted = false;

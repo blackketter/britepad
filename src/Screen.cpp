@@ -76,6 +76,50 @@ void Screen::drawTextF(const char* format, ...) {
   drawText(foo);
 }
 
+void Screen::softWrapText(String& out, const char* in) {
+  const char* wrapChars = " -/";
+
+  uint16_t curWidth = 0;
+  const char* cursor = in;
+  const char* curLine = cursor;
+  const char* lastBreak = 0;
+
+  while (*cursor != 0) {
+    uint16_t w, h;
+    measureChar(*cursor, &w, &h);
+    curWidth+=w;
+    if (curWidth>clipWidth()) {
+      if (lastBreak == 0) {
+        lastBreak = cursor;
+      }
+      while (curLine < lastBreak) {
+        out.append(*curLine);
+        curLine++;
+      }
+      out.append('\n');
+
+      lastBreak = 0;
+      curWidth = 0;
+      cursor = curLine;
+      while (*cursor == ' ') {
+        cursor++;
+        curLine++;
+      }
+    } else {
+      if (strchr(wrapChars, *cursor)) {
+        lastBreak = cursor;
+        if (*cursor != ' ') {
+          lastBreak++;
+        }
+      }
+      cursor++;
+    }
+  }
+  if (cursor > curLine) {
+    out.append(curLine);
+  }
+}
+
 // note: this does the whole screen, not just the clip area
 void Screen::pushFill(direction_t dir, color_t color) {
   const coord_t stepSize = 4;

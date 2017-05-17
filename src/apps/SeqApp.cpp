@@ -28,18 +28,18 @@ void SeqApp::run() {
     }
   }
 
-  if (pad.pressed(BOTTOM_PAD)) {
+  if (pad.pressed(BOTTOM_PAD) || keys.keyPressed(KEY_SPACE)) {
     tick = !tick;
   }
 
-  if (pad.pressed(LEFT_PAD)) {
+  if (pad.pressed(LEFT_PAD) || keys.keyPressed(KEY_DOWN)) {
     bpm -= bpm/25;
     if (bpm < minBpm) {
       bpm = minBpm;
     }
   }
 
-  if (pad.pressed(RIGHT_PAD)) {
+  if (pad.pressed(RIGHT_PAD) || keys.keyPressed(KEY_UP)) {
     bpm += bpm/25;
     if (bpm > maxBpm) {
       bpm = maxBpm;

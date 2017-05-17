@@ -46,7 +46,7 @@ class FunctionLayerApp : public KeyboardApp {
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "lbar";
-    const char* name() { return "Function\nLayer"; };
+    const char* name() { return "Function Layer"; };
 
     void idle() {
       if (getEnabled(KEYBOARD_MODE)) {

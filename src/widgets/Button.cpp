@@ -104,7 +104,19 @@ void Button::drawTitle() {
   screen.setTextColor(getTitleColor());
   screen.setCursor( _xpos+_width/2, _ypos+_height/2);
   screen.setTextAlign(alignment_t(ALIGN_HCENTER|ALIGN_VCENTER));
-  screen.drawText(drawStr);
+
+  rect_t r = { (coord_t)(_xpos+_frameInset), (coord_t)(_ypos+_frameInset), (coord_t)(_width-_frameInset*2), (coord_t)(_height-_frameInset*2)};
+  screen.pushClipRect(&r);
+  if (_wrapTitle) {
+    String wrapped;
+    screen.softWrapText(wrapped,drawStr);
+    screen.drawString(wrapped);
+  } else {
+    screen.drawText(drawStr);
+  }
+
+  screen.pushClipRect(&r);
+
   screen.setTextAlign();
 }
 

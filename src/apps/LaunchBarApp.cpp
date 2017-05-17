@@ -8,7 +8,7 @@ class LaunchBarApp : public KeyboardApp {
   public:
     appid_t id() { return ID; };
     static constexpr appid_t ID = "lbar";
-    const char* name() { return "Launch\nBar"; };
+    const char* name() { return "Launch Bar"; };
 
     void idle() {
       if (getEnabled(KEYBOARD_MODE)) {

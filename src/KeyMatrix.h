@@ -116,6 +116,9 @@ class KeyMatrix {
     void addHistory(keyswitch_t k, millis_t t, bool d);
     void clearHistory();
 
+    void setClick(bool clickOn) { _click = clickOn; }
+    bool getClick() { return _click; }
+
     void dumpStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
 
   private:
@@ -160,5 +163,7 @@ class KeyMatrix {
 
     static const uint8_t _historySize = 10;
     keyevent_t _history[_historySize];
+
+    bool _click = true;
 };
 #endif

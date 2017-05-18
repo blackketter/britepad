@@ -19,6 +19,12 @@ enum screenids {
   NO_SCREEN
 };
 
+keycode_t launchKeys[] = {
+KEY_Q, KEY_W, KEY_E, KEY_R,
+KEY_A, KEY_S, KEY_D, KEY_F,
+KEY_Z, KEY_X, KEY_C, KEY_V
+};
+
 screen_t screens[] = {
   { DEBUG_SCREEN,"Debug",nullptr,DEBUG_APP,INTERACTIVE_MODE,Screen::grey},
   { MICE_SCREEN,"Mice","Press and hold to test",MOUSE_APP,MOUSE_MODE,Screen::black},
@@ -155,6 +161,12 @@ void LauncherApp::run() {
   if (pad.released(SCREEN_PAD)) { waitForRelease = false; }
 
   lastRun = clock.now();
+    for (int i = 0; i < buttons_per_screen; i++) {
+      if (keys.keyPressed(launchKeys[i]) && buttons->getButton(i)) {
+        buttons->getButton(i)->setHighlighted(true);
+        break;
+      }
+    }
 
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
@@ -179,8 +191,19 @@ void LauncherApp::run() {
      || keys.keyPressed(KEY_ESC)
       ) {
     exit();
-  } else if (!pad.didGesture()) {
+  } else {
     AppButton* b = (AppButton*)buttons->releasedButton();
+
+    if (!b) {
+      for (int i = 0; i < buttons_per_screen; i++) {
+        if (keys.keyReleased(launchKeys[i]) && buttons->getButton(i)) {
+          b = (AppButton*)buttons->getButton(i);
+          b->setHighlighted(false);
+          break;
+        }
+      }
+    }
+
     if (!b && (keys.keyPressed(KEY_SPACE) || keys.keyPressed(KEY_RETURN))) {
       b = (AppButton*)buttons->getButton(buttons->getSelected(),0);
       if (b) {
@@ -218,7 +241,6 @@ void LauncherApp::run() {
         launched->end();
         held = true;
       } else if (!waitForRelease) {
-        console.debugln("wait for release");
         sound.click();
         clearScreen();
         launchOnRelease = b->getApp();

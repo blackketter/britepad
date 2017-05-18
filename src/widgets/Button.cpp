@@ -44,13 +44,15 @@ bool Button::released() {
 
 void Button::track() {
   bool h = hit(pad.x(), pad.y());
+  bool t = pad.touched(SCREEN_PAD);
+  bool r = pad.released(SCREEN_PAD);
 
   if (highlighted) {
-    if (!pad.touched(SCREEN_PAD) || !h) {
+    if (r || (t && !h)) {
       setHighlighted(false);
     }
   } else {
-    if (pad.touched(SCREEN_PAD) && h) {
+    if (t && h) {
       setHighlighted(true);
     }
   }

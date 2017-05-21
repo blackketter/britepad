@@ -11,6 +11,14 @@ void PomodoroApp::begin(AppMode asMode) {
   }
   drawButton();
   drawTime();
+  _firstRun = true;
+}
+
+void PomodoroApp::switchAppMode(AppMode asMode) {
+  BritepadApp::switchAppMode(asMode);
+  clearScreen();
+  drawButton();
+  drawTime();
 }
 
 void PomodoroApp::run() {
@@ -68,11 +76,11 @@ void PomodoroApp::drawTime() {
   const char* label = "Stopped";
   if (isWorking()) {
     textColor = screen.green;
-    label = "    Go    ";
+    label = "     Go!     ";
   }
   if (isResting()) {
     textColor = screen.blue;
-    label = "   Rest   ";
+    label = "    Rest    ";
   }
 
   screen.setTextColor(textColor, bgColor());
@@ -110,6 +118,6 @@ void PomodoroApp::alarm() {
 
 void PomodoroApp::reset() {
   _timer.cancel();
-  _isWorking = true;
+  _isWorking = false;
 }
 

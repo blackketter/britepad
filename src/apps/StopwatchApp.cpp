@@ -18,6 +18,7 @@ void StopwatchApp::begin(AppMode asMode) {
   }
   redrawButtons();
   redrawTime();
+  firstRun = true;
 }
 
 void StopwatchApp::switchAppMode(AppMode asMode) {
@@ -43,19 +44,20 @@ void StopwatchApp::run() {
 
   BritepadApp::run();
 
-  if (pad.pressed(BOTTOM_PAD) || pad.pressed(TOP_PAD) || keys.keyPressed(KEY_EXIT)) {
+  if (!firstRun && (pad.pressed(BOTTOM_PAD) || pad.pressed(TOP_PAD) || keys.keyPressed(KEY_EXIT))) {
      if (isAppMode(INTERACTIVE_MODE)) {
       switchAppMode(MOUSE_MODE);
     } else {
       switchAppMode(INTERACTIVE_MODE);
     }
   }
+  firstRun = false;
 
   if (isAppMode(INTERACTIVE_MODE)) {
     if (pauseButton.pressed()) {
       sound.click();
 
-      if (!isPaused() && !isReset()) {
+      if (isRunning()) {
         // pause
         pause();
         pauseButton.setColor(screen.green);

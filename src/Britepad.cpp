@@ -98,7 +98,7 @@ BritepadApp* Britepad::randomApp(AppMode m) {
 
   // if an app wants to be this mode, then give it a chance
   BritepadApp* wants = wantsToRun();
-  if (wants) {
+  if (wants && wants->canBeAppMode(m)) {
     return wants;
   }
 
@@ -198,8 +198,14 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     currApp->begin(asMode);
     if (asMode == SCREENSAVER_MODE) {
       screensaverStartedTime = pad.time();
+      console.debugln(" screensaver mode");
     } else if (asMode == INTERACTIVE_MODE) {
       resetScreensaver();
+      console.debugln(" interactive mode");
+    } else if (asMode == MOUSE_MODE) {
+      console.debugln(" mouse mode");
+    } else {
+      console.debugf(" mode: %d\n", asMode);
     }
   }
 }
@@ -315,8 +321,10 @@ void Britepad::loop() {
     console.debugln("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
     if (currApp->canBeMouse() && currApp->getEnabled(MOUSE_MODE) && usbActive()) {
+      console.debugln("switching current app to MOUSE_MODE");
       currApp->switchAppMode(MOUSE_MODE);
     } else if (usbActive()) {
+      console.debugln("launching A_MOUSE_APP");
       launchApp(BritepadApp::A_MOUSE_APP, MOUSE_MODE);
     } else {
       launchApp(theLauncherApp);

@@ -85,17 +85,17 @@ class KeyMatrix {
     uint8_t getKeyY(keyswitch_t k);
     inline bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
 
-    // returns the number of keys that changed state in the last idle
-    keyswitch_t keysPressed();
-    keyswitch_t keysReleased();
-
     inline bool keyIsDown(keycode_t c) { return switchIsDown(getSwitch(c)); }
     inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
 
     // did a given key change?
-    inline bool keyChanged(keycode_t c) { return (c != NO_CODE) && switchChanged(getSwitch(c)); }
-    inline bool keyPressed(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsDown(k) && switchChanged(k); }
-    inline bool keyReleased(keycode_t c) { keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsUp(k) && switchChanged(k); }
+    bool keyChanged(keycode_t c);
+    bool keyPressed(keycode_t c);
+    bool keyReleased(keycode_t c);
+
+    // returns the number of keys that changed state in the last idle
+    keyswitch_t keysPressed();
+    keyswitch_t keysReleased();
 
     bool keyDoubleTapped(keycode_t c);
     bool keyTapped(keycode_t c);
@@ -125,7 +125,7 @@ class KeyMatrix {
 
     keyswitch_t getSwitch(keycode_t c);
 
-    inline bool switchChanged(keyswitch_t k) { return (k != NO_KEY) && ((_changedKeys[k/_numRows] >> (k%_numRows)) & 0x01); }
+    bool switchChanged(keyswitch_t k);
     inline bool switchPressed(keyswitch_t k) { return switchChanged(k) && switchIsDown(k); }
     inline bool switchReleased(keyswitch_t k) { return switchChanged(k) && switchIsUp(k); }
     inline bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }

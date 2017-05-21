@@ -88,6 +88,9 @@ void KeyMatrix::scanMatrix() {
   }
 }
 
+//////////////////////////////////////
+// REWRITE THESE
+
 // returns the number of keys that changed state in the last update
 keyswitch_t KeyMatrix::keysChanged() {
   keyswitch_t count = 0;
@@ -126,6 +129,21 @@ keyswitch_t KeyMatrix::keysReleased() {
   return count;
 }
 
+bool KeyMatrix::switchChanged(keyswitch_t k) {
+  return (k != NO_KEY) && ((_changedKeys[k/_numRows] >> (k%_numRows)) & 0x01);
+}
+
+bool KeyMatrix::keyChanged(keycode_t c) {
+  return (c != NO_CODE) && switchChanged(getSwitch(c));
+}
+bool KeyMatrix::keyPressed(keycode_t c) {
+  keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsDown(k) && switchChanged(k);
+}
+
+bool KeyMatrix::keyReleased(keycode_t c) {
+  keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsUp(k) && switchChanged(k);
+}
+/////////////////////////////
 
 keyswitch_t KeyMatrix::update() {
 

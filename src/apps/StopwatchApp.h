@@ -18,7 +18,7 @@ class StopwatchApp : public BritepadApp {
     bool wantsToRun() { return !isReset(); }
     BritepadApp* exitsTo() { return isAppMode(INTERACTIVE_MODE) ? BACK_APP : STAY_IN_APP; }
 
-    bool disablesScreensavers() { return isAppMode(INTERACTIVE_MODE) && wantsToRun(); }
+    virtual bool canBeScreensaver() { return isRunning(); }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stpw";
@@ -31,6 +31,7 @@ class StopwatchApp : public BritepadApp {
     virtual void resume() { startMillis = Uptime::millis() + startMillis; }
     virtual void reset() { startMillis = -1; }
     virtual bool isReset() { return (startMillis == -1); }
+    virtual bool isRunning() { return !isPaused() && !isReset(); };
     virtual void drawTime();
 
     void redrawTime() { lastDrawMillis = 0; };
@@ -41,6 +42,7 @@ class StopwatchApp : public BritepadApp {
     RoundButton resetButton;
 
     millis_t lastDrawMillis;
+    bool firstRun;
 
 };
 

@@ -4,49 +4,8 @@
 #include "Clock.h"
 #include "MCP23018.h"
 #include "Widgets/icon.h"
-
-typedef uint8_t keyswitch_t;
-const keyswitch_t NO_KEY = 0xff;
-
-const keyswitch_t TOP_PAD_SWITCH = 0xfe;
-const keyswitch_t BOTTOM_PAD_SWITCH = 0xfd;
-const keyswitch_t LEFT_PAD_SWITCH = 0xfc;
-const keyswitch_t RIGHT_PAD_SWITCH = 0xfb;
-
-typedef uint16_t keycode_t;
-const keycode_t NO_CODE = 0;
-
-// some new key codes
-const keycode_t KEY_LEFT_FN = 200;
-const keycode_t KEY_RIGHT_FN = 201;
-
-const keycode_t KEY_TOP_PAD = 202;
-const keycode_t KEY_BOTTOM_PAD = 203;
-const keycode_t KEY_LEFT_PAD = 204;
-const keycode_t KEY_RIGHT_PAD = 205;
-
-const keycode_t KEY_EXIT = 206;
-const keycode_t KEY_LAUNCHBAR = 207;
-
-typedef struct keylayout_t {
-  keyswitch_t key;
-  uint8_t x;
-  uint8_t y;
-  uint8_t w;
-  uint8_t h;
-} keylayout_t;
-
-typedef struct keymap_t {
-  keyswitch_t key;
-  keycode_t code;
-} keymap_t;
-
-typedef struct keyinfo_t {
-  keycode_t code;
-  char c;
-  const char* label;
-  const icon_t icon;
-} keyinfo_t;
+#include "KeyInfo.h"
+#include "KeyLayout.h"
 
 typedef struct keyevent_t {
     millis_t time;
@@ -102,10 +61,10 @@ class KeyMatrix {
 
     keycode_t getCode(keyswitch_t k);
 
-
     const keyinfo_t* getKeyInfo(keycode_t c);
     char getKeyChar(keycode_t c);
     const icon_t getKeyIcon(keycode_t c);
+    bool getKeyModifier(keycode_t c);
     const char* getKeyLabel(keycode_t c);
 
     millis_t getHistoryTime(uint8_t n);

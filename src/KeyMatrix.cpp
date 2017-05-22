@@ -1,17 +1,7 @@
 #include "BritepadShared.h"
 #include "KeyMatrix.h"
 #include "ErgodoxLayout.h"
-#include "KeyLayout.h"
-
-class KeysCommand : public Command {
-  public:
-    const char* getName() { return "keys"; }
-    const char* getHelp() { return "display status of key matrix"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
-      keys.dumpStatus(c);
-    }
-};
-KeysCommand theKeysCommand;
+#include "KeyInfo.h"
 
 KeyMatrix::KeyMatrix(const keymap_t* defaultMap, const keylayout_t* defaultLayout ) {
   _defaultLayout = defaultLayout;
@@ -284,6 +274,15 @@ const icon_t KeyMatrix::getKeyIcon(keycode_t c) {
   }
 }
 
+bool KeyMatrix::getKeyModifier(keycode_t c) {
+  const keyinfo_t* info = getKeyInfo(c);
+  if (info) {
+    return info->modifier;
+  } else {
+    return false;
+  }
+}
+
 const char* KeyMatrix::getKeyLabel(keycode_t c) {
   const keyinfo_t* info = getKeyInfo(c);
   if (info) {
@@ -400,6 +399,17 @@ bool KeyMatrix::keyDoubleTapped(keycode_t c) {
     return false;
   }
 }
+
+class KeysCommand : public Command {
+  public:
+    const char* getName() { return "keys"; }
+    const char* getHelp() { return "display status of key matrix"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) {
+      keys.dumpStatus(c);
+    }
+};
+KeysCommand theKeysCommand;
+
 
 void KeyMatrix::dumpStatus(Stream* c) {
   if (c == nullptr) { c = &console; }

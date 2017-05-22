@@ -112,7 +112,6 @@ class KeyMatrix {
 
     void scanMatrix();
     void clearKeyChanges();
-    keyswitch_t keysChanged();
 
     const keymap_t* _currentMap;
     const keymap_t* _defaultMap;

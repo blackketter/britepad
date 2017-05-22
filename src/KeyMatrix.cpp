@@ -78,62 +78,70 @@ void KeyMatrix::scanMatrix() {
   }
 }
 
-//////////////////////////////////////
-// REWRITE THESE
-
-// returns the number of keys that changed state in the last update
-keyswitch_t KeyMatrix::keysChanged() {
-  keyswitch_t count = 0;
-  keyswitch_t total = numKeys();
-
-  for (keyswitch_t i = 0; i < total; i++) {
-    if (switchChanged(i)) {
-      count++;
-      addHistory(i,Uptime::millis(), switchIsDown(i));
-    }
-  }
-  return count;
-}
-
 keyswitch_t KeyMatrix::keysPressed() {
   keyswitch_t count = 0;
-  keyswitch_t total = numKeys();
-
-  for (keyswitch_t i = 0; i < total; i++) {
-    if (switchPressed(i)) {
+  for (int i = 0; i < _historySize; i++) {
+    if (getHistoryTime(i) < _lastScan)
+      break;
+    if (getHistoryPressed(i))
       count++;
-    }
   }
   return count;
 }
 
 keyswitch_t KeyMatrix::keysReleased() {
   keyswitch_t count = 0;
-  keyswitch_t total = numKeys();
-
-  for (keyswitch_t i = 0; i < total; i++) {
-    if (switchReleased(i)) {
+  for (int i = 0; i < _historySize; i++) {
+    if (getHistoryTime(i) < _lastScan)
+      break;
+    if (getHistoryReleased(i))
       count++;
-    }
   }
   return count;
 }
 
 bool KeyMatrix::switchChanged(keyswitch_t k) {
-  return (k != NO_KEY) && ((_changedKeys[k/_numRows] >> (k%_numRows)) & 0x01);
+  keyswitch_t count = 0;
+  for (int i = 0; i < _historySize; i++) {
+    if (getHistoryTime(i) < _lastScan)
+      break;
+    if (getHistoryKey(i) == k)
+      count++;
+  }
+  return count;
 }
 
 bool KeyMatrix::keyChanged(keycode_t c) {
-  return (c != NO_CODE) && switchChanged(getSwitch(c));
-}
-bool KeyMatrix::keyPressed(keycode_t c) {
-  keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsDown(k) && switchChanged(k);
+  keyswitch_t count = 0;
+  for (int i = 0; i < _historySize; i++) {
+    if (getHistoryTime(i) < _lastScan)
+      break;
+    if (getHistoryCode(i) == c)
+      count++;
+  }
+  return count;
 }
 
-bool KeyMatrix::keyReleased(keycode_t c) {
-  keyswitch_t k = getSwitch(c); return (c!=NO_CODE) && switchIsUp(k) && switchChanged(k);
+bool KeyMatrix::keyPressed(keycode_t c) {
+  keyswitch_t count = 0;
+  for (int i = 0; i < _historySize; i++) {
+    if (getHistoryTime(i) < _lastScan)
+      break;
+    if ((getHistoryCode(i) == c) && getHistoryPressed(i))
+      count++;
+  }
+  return count;
 }
-/////////////////////////////
+bool KeyMatrix::keyReleased(keycode_t c) {
+  keyswitch_t count = 0;
+  for (int i = 0; i < _historySize; i++) {
+    if (getHistoryTime(i) < _lastScan)
+      break;
+    if ((getHistoryCode(i) == c) && getHistoryReleased(i))
+      count++;
+  }
+  return count;
+}
 
 keyswitch_t KeyMatrix::update() {
 
@@ -145,11 +153,21 @@ keyswitch_t KeyMatrix::update() {
     _lastScan = Uptime::millis();
     scanMatrix();
 
+    keyswitch_t count = 0;
+    keyswitch_t total = numKeys();
+
+    for (keyswitch_t i = 0; i < total; i++) {
+      if ((i != NO_KEY) && ((_changedKeys[i/_numRows] >> (i%_numRows)) & 0x01)) {
+        count++;
+        addHistory(i,_lastScan, switchIsDown(i));
+      }
+    }
+
     if (_click && keysPressed()) {
       sound.click();
     }
 
-    return keysChanged();
+    return count;
   } else {
     return 0;
   }

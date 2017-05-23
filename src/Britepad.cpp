@@ -282,9 +282,10 @@ void Britepad::idle() {
   lastIdle = now;
   theFPSCommand.idled();
 
+  keys.update();
+  idleApps();
+
   if (currApp && !currApp->usesKeyboard()) {
-    keys.update();
-    idleApps();
     keys.sendKeys();
   }
 };
@@ -393,6 +394,10 @@ void Britepad::loop() {
   }
 
   currApp->run();
+  if (currApp->usesKeyboard()) {
+    keys.flush();
+  }
+
   theFPSCommand.newFrame();
 
   // make sure the Timers get a chance to call their callbacks

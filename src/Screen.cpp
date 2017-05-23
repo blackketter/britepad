@@ -1,5 +1,6 @@
 #include "Screen.h"
 #include "Utilities.h"
+#include "BritepadShared.h"
 
 void Screen::setBacklight(uint8_t brightness) {
   backlightBrightness = brightness;
@@ -129,13 +130,15 @@ void Screen::pushFill(direction_t dir, color_t color) {
     case DIRECTION_UP:
       for (coord_t i = height() - stepSize; i >= 0; i -= stepSize) {
         fillRect(0, i, width(), stepSize, color);
-        delay(1);
+        britepad.idle();
+//delay(1);
       }
       break;
     case DIRECTION_DOWN:
       for (coord_t i = 0; i < height(); i += stepSize) {
         fillRect(0, i, width(), stepSize, color);
-        delay(1);
+        britepad.idle();
+//        delay(1);
       }
       break;
     case DIRECTION_LEFT:
@@ -143,7 +146,8 @@ void Screen::pushFill(direction_t dir, color_t color) {
       for (coord_t i = 0; i < width(); i += stepSize) {
         fillRect(width()-stepSize-i, 0, stepSize, height(), color);
         screen.setScroll(i+stepSize);
-        delay(1);
+        britepad.idle();
+//        delay(1);
       }
       pushClipRect(&r);
       break;
@@ -152,7 +156,8 @@ void Screen::pushFill(direction_t dir, color_t color) {
       for (coord_t i = 0; i < width(); i+= stepSize) {
         fillRect(i, 0, stepSize, height(), color);
         screen.setScroll(width()-stepSize-i);
-        delay(1);
+        britepad.idle();
+//        delay(1);
       }
       pushClipRect(&r);
       break;

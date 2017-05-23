@@ -72,6 +72,7 @@ class KeyMatrix {
     keycode_t getHistoryCode(uint8_t n);
     bool getHistoryPressed(uint8_t n);
     bool getHistoryReleased(uint8_t n) { return !getHistoryPressed(n); }
+
     void addHistory(keyswitch_t k, millis_t t, bool d);
     void clearHistory();
 
@@ -80,6 +81,7 @@ class KeyMatrix {
 
     void dumpStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
 
+    void flush();
   private:
 
     keyswitch_t getSwitch(keycode_t c);
@@ -90,6 +92,7 @@ class KeyMatrix {
     inline bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
 
     millis_t _lastScan = 0;
+    millis_t _lastFlush = 0;
     static const millis_t _minScanInterval = 3;
     static const millis_t _maxScanInterval = 5;
 

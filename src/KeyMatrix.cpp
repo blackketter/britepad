@@ -81,7 +81,7 @@ void KeyMatrix::scanMatrix() {
 keyswitch_t KeyMatrix::keysPressed() {
   keyswitch_t count = 0;
   for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastScan)
+    if (getHistoryTime(i) < _lastFlush)
       break;
     if (getHistoryPressed(i))
       count++;
@@ -92,7 +92,7 @@ keyswitch_t KeyMatrix::keysPressed() {
 keyswitch_t KeyMatrix::keysReleased() {
   keyswitch_t count = 0;
   for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastScan)
+    if (getHistoryTime(i) < _lastFlush)
       break;
     if (getHistoryReleased(i))
       count++;
@@ -103,7 +103,7 @@ keyswitch_t KeyMatrix::keysReleased() {
 bool KeyMatrix::switchChanged(keyswitch_t k) {
   keyswitch_t count = 0;
   for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastScan)
+    if (getHistoryTime(i) < _lastFlush)
       break;
     if (getHistoryKey(i) == k)
       count++;
@@ -114,7 +114,7 @@ bool KeyMatrix::switchChanged(keyswitch_t k) {
 bool KeyMatrix::keyChanged(keycode_t c) {
   keyswitch_t count = 0;
   for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastScan)
+    if (getHistoryTime(i) < _lastFlush)
       break;
     if (getHistoryCode(i) == c)
       count++;
@@ -125,17 +125,18 @@ bool KeyMatrix::keyChanged(keycode_t c) {
 bool KeyMatrix::keyPressed(keycode_t c) {
   keyswitch_t count = 0;
   for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastScan)
+    if (getHistoryTime(i) < _lastFlush)
       break;
     if ((getHistoryCode(i) == c) && getHistoryPressed(i))
       count++;
   }
   return count;
 }
+
 bool KeyMatrix::keyReleased(keycode_t c) {
   keyswitch_t count = 0;
   for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastScan)
+    if (getHistoryTime(i) < _lastFlush)
       break;
     if ((getHistoryCode(i) == c) && getHistoryReleased(i))
       count++;
@@ -148,7 +149,6 @@ keyswitch_t KeyMatrix::update() {
   clearKeyChanges();
 
   millis_t now = Uptime::millis();
-
   if (now - _lastScan > _minScanInterval) {
     _lastScan = Uptime::millis();
     scanMatrix();
@@ -159,12 +159,12 @@ keyswitch_t KeyMatrix::update() {
     for (keyswitch_t i = 0; i < total; i++) {
       if ((i != NO_KEY) && ((_changedKeys[i/_numRows] >> (i%_numRows)) & 0x01)) {
         count++;
-        addHistory(i,_lastScan, switchIsDown(i));
+        bool d = switchIsDown(i);
+        addHistory(i,_lastScan, d);
+        if (d && _click) {
+          sound.click();
+        }
       }
-    }
-
-    if (_click && keysPressed()) {
-      sound.click();
     }
 
     return count;
@@ -318,20 +318,24 @@ void KeyMatrix::clearKeyChanges() {
 }
 
 keyswitch_t KeyMatrix::sendKeys() {
-  keyswitch_t n = 0;
-  for (keyswitch_t i = 0; i < numKeys(); i++) {
-    if (switchChanged(i)) {
-      bool down = switchIsDown(i);
-      keycode_t code = getCode(i);
-      n++;
-      if (down) {
-        Keyboard.press(code);
-      } else {
-        Keyboard.release(code);
-      }
+  keyswitch_t count = 0;
+  for (keyswitch_t i = 0; i < _historySize; i++) {
+    if (getHistoryTime(i) < _lastFlush)
+      break;
+    keycode_t c = getHistoryCode(i);
+    if (getHistoryPressed(i)) {
+      Keyboard.press(c);
+    } else {
+      Keyboard.release(c);
     }
+    count++;
   }
-  return n;
+  flush();
+  return count;
+}
+
+void KeyMatrix::flush() {
+  _lastFlush = Uptime::millis();
 }
 
 void KeyMatrix::setLayout(const keylayout_t* l) {
@@ -381,10 +385,9 @@ void KeyMatrix::addHistory(keyswitch_t k, millis_t t, bool d) {
   _history[0].pressed = d;
   _history[0].time = t;
   _history[0].key = k;
-  _history[0].code = getCode(k);
-//  for (uint8_t i = 0; i < _historySize; i++) {
-//    console.debugf("History[%d] = %d %s\n", i, getHistoryKey(i), getHistoryPressed(i) ? "down" : "up");
-//  }
+  keycode_t c = getCode(k);
+  _history[0].code = c;
+//console.debugf("addHistory: key: %d code: %d down: %d\n",k,c,d);
 }
 
 void KeyMatrix::clearHistory() {

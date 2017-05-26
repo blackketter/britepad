@@ -283,10 +283,11 @@ void Britepad::idle() {
   theFPSCommand.idled();
 
   keys.update();
+
   idleApps();
 
   if (currApp && !currApp->usesKeyboard()) {
-    keys.sendKeys();
+      keys.sendKeys();
   }
 };
 

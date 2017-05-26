@@ -100,6 +100,16 @@ keyswitch_t KeyMatrix::keysReleased() {
   return count;
 }
 
+keyswitch_t KeyMatrix::keysChanged() {
+  keyswitch_t count = 0;
+  for (int i = 0; i < _historySize; i++) {
+    if (getHistoryTime(i) < _lastFlush)
+      break;
+      count++;
+  }
+  return count;
+}
+
 bool KeyMatrix::switchChanged(keyswitch_t k) {
   keyswitch_t count = 0;
   for (int i = 0; i < _historySize; i++) {
@@ -160,7 +170,7 @@ keyswitch_t KeyMatrix::update() {
       if ((i != NO_KEY) && ((_changedKeys[i/_numRows] >> (i%_numRows)) & 0x01)) {
         count++;
         bool d = switchIsDown(i);
-        addHistory(i,_lastScan, d);
+        addHistory(i,getCode(i),_lastScan, d);
         if (d && _click) {
           sound.click();
         }
@@ -319,16 +329,21 @@ void KeyMatrix::clearKeyChanges() {
 
 keyswitch_t KeyMatrix::sendKeys() {
   keyswitch_t count = 0;
-  for (keyswitch_t i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastFlush)
-      break;
-    keycode_t c = getHistoryCode(i);
-    if (getHistoryPressed(i)) {
-      Keyboard.press(c);
-    } else {
-      Keyboard.release(c);
+  for (int i = _historySize-1;i >= 0; i--) {
+    if (getHistoryTime(i) > _lastFlush) {
+      //console.debugf("%d _lastflush\n", _lastFlush);
+      keycode_t c = getHistoryCode(i);
+      if (c != NO_CODE) {
+        if (getHistoryPressed(i)) {
+          Keyboard.press(c);
+          //console.debugf("%d key press[%d]: %d\n", (int)getHistoryTime(i), i, c);
+        } else {
+          Keyboard.release(c);
+          //console.debugf("%d key release[%d] %d\n", (int)getHistoryTime(i), i, c);
+        }
+      }
+      count++;
     }
-    count++;
   }
   flush();
   return count;
@@ -378,22 +393,39 @@ bool KeyMatrix::getHistoryPressed(uint8_t n) {
   }
 }
 
-void KeyMatrix::addHistory(keyswitch_t k, millis_t t, bool d) {
+void KeyMatrix::addHistory(keyswitch_t k, keycode_t c, millis_t t, bool d) {
   for (uint8_t i = _historySize-1; i > 0; i--) {
     _history[i] = _history[i-1];
   }
   _history[0].pressed = d;
   _history[0].time = t;
   _history[0].key = k;
-  keycode_t c = getCode(k);
   _history[0].code = c;
-//console.debugf("addHistory: key: %d code: %d down: %d\n",k,c,d);
+  //console.debugf("%d addHistory: key: %d code: %d down: %d\n",(int)t, k,c,d);
 }
 
 void KeyMatrix::clearHistory() {
   for (uint8_t i = 0; i < _historySize; i++) {
     _history[i].key = NO_KEY;
     _history[i].code = NO_CODE;
+    _history[i].time = 0;
+  }
+}
+
+void KeyMatrix::deleteHistory(uint8_t n) {
+  if (n < _historySize) {
+    // leave the event in the queue, just make it not a key
+    _history[n].code = NO_CODE;
+    _history[n].key = NO_KEY;
+  }
+}
+
+void KeyMatrix::deleteHistory(keycode_t c, bool pressed) {
+  for (int i = 0; i < _historySize; i++) {
+    if ((getHistoryPressed(i) == pressed) && (getHistoryCode(i) == c)) {
+      deleteHistory(i);
+      break;
+    }
   }
 }
 
@@ -419,6 +451,17 @@ bool KeyMatrix::keyDoubleTapped(keycode_t c) {
   } else {
     return false;
   }
+}
+
+bool KeyMatrix::keyIsModifier(keycode_t c) {
+  int i = 0;
+  while (modifierKeys[i] != NO_CODE) {
+    if (modifierKeys[i] == c) {
+      return true;
+    }
+    i++;
+  }
+  return false;
 }
 
 class KeysCommand : public Command {

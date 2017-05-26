@@ -71,6 +71,7 @@ class BritepadApp {
     void exit() { launchApp(exitsTo()); };
     void launch() { launchApp(this); }
     bool timeToLeave() { return ((Uptime::millis() - pad.time()) > _maxRunTime); }
+    void delay(millis_t d);  // an idle aware delay
 
     virtual bool canBeScreensaver() { return false; }
     virtual bool canBeInteractive() { return true; }

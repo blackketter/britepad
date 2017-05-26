@@ -18,7 +18,9 @@ class KeyboardViewerApp : public KeyboardApp {
 
     bool disablesScreensavers() { return true; }
     bool canBeInteractive() { return true; }
-    AppType getAppType() { return (AppType)(KEYBOARD_APP | KEY_APP); }  // appear as a setting on the keyboard screen and on the main screen
+
+    // appear as a setting on the keyboard screen and on the main screen
+    AppType getAppType() { return (AppType)(KEYBOARD_APP | KEY_APP); }
 
 
   private:

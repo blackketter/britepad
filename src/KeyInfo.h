@@ -18,6 +18,20 @@ const keycode_t KEY_RIGHT_PAD = 205;
 const keycode_t KEY_EXIT = 206;
 const keycode_t KEY_LAUNCHBAR = 207;
 
+const keycode_t modifierKeys[] = {
+  MODIFIERKEY_LEFT_SHIFT,
+  MODIFIERKEY_LEFT_GUI,
+  MODIFIERKEY_LEFT_ALT,
+  MODIFIERKEY_LEFT_CTRL,
+//  KEY_LEFT_FN,
+  MODIFIERKEY_RIGHT_SHIFT,
+  MODIFIERKEY_RIGHT_GUI,
+  MODIFIERKEY_RIGHT_ALT,
+  MODIFIERKEY_RIGHT_CTRL,
+//  KEY_RIGHT_FN,
+  NO_CODE
+};
+
 typedef struct keyinfo_t {
   keycode_t code;
   char c;

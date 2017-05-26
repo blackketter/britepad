@@ -117,6 +117,15 @@ void BritepadApp::clearScreen() {
   } while (!done);
 }
 
+void BritepadApp::delay(millis_t d) {
+  // do calculations in micros_t for more accuracy
+  micros_t end = Uptime::micros() + d*1000;
+  do {
+    britepad.idle();
+    yield();
+  } while (Uptime::micros() <= end);
+}
+
 void BritepadApp::drawBars(bool update) {
   drawInfoBar(update);
   drawStatusBar(update);

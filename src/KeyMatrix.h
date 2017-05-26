@@ -47,6 +47,8 @@ class KeyMatrix {
     inline bool keyIsDown(keycode_t c) { return switchIsDown(getSwitch(c)); }
     inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
 
+    bool keyIsModifier(keycode_t c);
+
     // did a given key change?
     bool keyChanged(keycode_t c);
     bool keyPressed(keycode_t c);
@@ -55,6 +57,7 @@ class KeyMatrix {
     // returns the number of keys that changed state in the last idle
     keyswitch_t keysPressed();
     keyswitch_t keysReleased();
+    keyswitch_t keysChanged();
 
     bool keyDoubleTapped(keycode_t c);
     bool keyTapped(keycode_t c);
@@ -73,8 +76,10 @@ class KeyMatrix {
     bool getHistoryPressed(uint8_t n);
     bool getHistoryReleased(uint8_t n) { return !getHistoryPressed(n); }
 
-    void addHistory(keyswitch_t k, millis_t t, bool d);
+    void addHistory(keyswitch_t k, keycode_t c, millis_t t, bool d);
     void clearHistory();
+    void deleteHistory(uint8_t n);
+    void deleteHistory(keycode_t c, bool pressed);
 
     void setClick(bool clickOn) { _click = clickOn; }
     bool getClick() { return _click; }

@@ -183,6 +183,23 @@ keyswitch_t KeyMatrix::update() {
   }
 }
 
+keycode_t KeyMatrix::lookupOverlay(keycode_t c) {
+  keycode_t to = ANY_CODE;
+  if (_currentOverlay) {
+    int i = 0;
+    to = _currentOverlay[i].to;
+    while (_currentOverlay[i].from != NO_CODE) {
+      if (_currentOverlay[i].from == c) {
+        break;
+      }
+      i++;
+      to = _currentOverlay[i].to;
+    }
+  }
+  if (to == ANY_CODE) { to = c; }
+  return to;
+}
+
 keyswitch_t KeyMatrix::getSwitch(keycode_t c) {
   keyswitch_t i = 0;
   while (_currentMap[i].key != NO_KEY) {
@@ -199,7 +216,7 @@ keycode_t KeyMatrix::getCode(keyswitch_t k) {
   keyswitch_t i = 0;
   while (_currentMap[i].key != NO_KEY) {
     if (_currentMap[i].key == k) {
-      return _currentMap[i].code;
+      return lookupOverlay(_currentMap[i].code);
     } else {
       i++;
     }

@@ -22,5 +22,9 @@ typedef struct keymap_t {
   keycode_t code;
 } keymap_t;
 
+typedef struct keyoverlay_t {
+  keycode_t from;  // in an overlay array, make the last item NO_CODE to indicate the end
+  keycode_t to;    //   the final .to value should be NO_CODE if the overlay is opaque, ANY_CODE if it is transparent
+} keyoverlay_t;
 
 #endif  // _KeyLayout_

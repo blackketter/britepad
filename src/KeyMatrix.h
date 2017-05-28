@@ -23,6 +23,10 @@ class KeyMatrix {
     const keymap_t* getMap() { return _currentMap; }
     const keymap_t* getDefaultMap() { return _defaultMap; }
 
+    const keyoverlay_t* getOverlay() { return _currentOverlay; }
+    const void setOverlay(const keyoverlay_t* o = nullptr) { _currentOverlay = o; }
+    keycode_t lookupOverlay(keycode_t c);
+
     void setLayout(const keylayout_t* l = nullptr);   // pass nullptr to reset to default layout
     const keylayout_t* getLayout() { return _currentLayout; }
     const keylayout_t* getDefaultLayout() { return _defaultLayout; }
@@ -123,6 +127,8 @@ class KeyMatrix {
 
     const keymap_t* _currentMap;
     const keymap_t* _defaultMap;
+
+    const keyoverlay_t* _currentOverlay;
 
     const keylayout_t* _currentLayout;
     const keylayout_t* _defaultLayout;

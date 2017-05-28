@@ -7,6 +7,7 @@ typedef uint16_t keycode_t;
 
 // some new key codes
 const keycode_t NO_CODE = 0;
+const keycode_t ANY_CODE = 1;
 const keycode_t KEY_LEFT_FN = 200;
 const keycode_t KEY_RIGHT_FN = 201;
 
@@ -23,12 +24,12 @@ const keycode_t modifierKeys[] = {
   MODIFIERKEY_LEFT_GUI,
   MODIFIERKEY_LEFT_ALT,
   MODIFIERKEY_LEFT_CTRL,
-//  KEY_LEFT_FN,
+  KEY_LEFT_FN,
   MODIFIERKEY_RIGHT_SHIFT,
   MODIFIERKEY_RIGHT_GUI,
   MODIFIERKEY_RIGHT_ALT,
   MODIFIERKEY_RIGHT_CTRL,
-//  KEY_RIGHT_FN,
+  KEY_RIGHT_FN,
   NO_CODE
 };
 

@@ -16,7 +16,7 @@ void KeyboardViewerApp::end() {
 
 void KeyboardViewerApp::run() {
 
-  if (tutorialMode && (keys.getMap() == keys.getDefaultMap())) {
+  if (tutorialMode && !keys.getOverlay()) {
     tutorialMode = false;
     if (lastApp) {
       launchApp(lastApp, lastMode);
@@ -32,7 +32,7 @@ void KeyboardViewerApp::draw() {
 
 void KeyboardViewerApp::idle() {
   if (getEnabled(KEYBOARD_MODE)) {
-    if (!isCurrentApp() && (keys.getMap() != keys.getDefaultMap())) {
+    if (!isCurrentApp() && keys.getOverlay()) {
         BritepadApp* currApp = britepad.currentApp();
         if (currApp && currApp != this) {
           lastApp = currApp;

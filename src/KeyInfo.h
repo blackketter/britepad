@@ -18,6 +18,7 @@ const keycode_t KEY_RIGHT_PAD = 205;
 
 const keycode_t KEY_EXIT = 206;
 const keycode_t KEY_LAUNCHBAR = 207;
+const keycode_t MAX_SOFT_KEY = 255;
 
 const keycode_t modifierKeys[] = {
   MODIFIERKEY_LEFT_SHIFT,

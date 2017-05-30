@@ -31,7 +31,6 @@ class KeyMatrix {
     const keylayout_t* getLayout() { return _currentLayout; }
     const keylayout_t* getDefaultLayout() { return _defaultLayout; }
 
-
     keyswitch_t update();  //returns number of keys changed
     keyswitch_t sendKeys();  // send key events to host, returns number of key events sent
 
@@ -68,6 +67,8 @@ class KeyMatrix {
 
     keycode_t getCode(keyswitch_t k);
 
+    bool isSoftKeyCode(keycode_t c) { return c <= MAX_SOFT_KEY; }
+
     const keyinfo_t* getKeyInfo(keycode_t c);
     char getKeyChar(keycode_t c);
     const icon_t getKeyIcon(keycode_t c);
@@ -84,9 +85,6 @@ class KeyMatrix {
     void clearHistory();
     void deleteHistory(uint8_t n);
     void deleteHistory(keycode_t c, bool pressed);
-
-    void setKeyClick(bool clickOn) { _click = clickOn; }
-    bool getKeyClick() { return _click; }
 
     void printStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
 

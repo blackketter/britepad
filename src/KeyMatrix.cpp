@@ -171,9 +171,6 @@ keyswitch_t KeyMatrix::update() {
         count++;
         bool d = switchIsDown(i);
         addHistory(i,getCode(i),_lastScan, d);
-        if (d && _click) {
-          sound.click();
-        }
       }
     }
 
@@ -350,7 +347,7 @@ keyswitch_t KeyMatrix::sendKeys() {
     if (getHistoryTime(i) > _lastFlush) {
       //console.debugf("%d _lastflush\n", _lastFlush);
       keycode_t c = getHistoryCode(i);
-      if (c != NO_CODE) {
+      if (!isSoftKeyCode(c)) {
         if (getHistoryPressed(i)) {
           Keyboard.press(c);
           //console.debugf("%d key press[%d]: %d\n", (int)getHistoryTime(i), i, c);

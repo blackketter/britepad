@@ -1,7 +1,7 @@
-/*
 #include "KeyMatrix.h"
 #include "KeyboardApp.h"
 
+/*
 typedef struct keysound_t {
   keycode_t code,
   float freq
@@ -20,31 +20,38 @@ keysound_t keySounds[] =
 {  KEYRIGHT_FN
 {  NO_CODE, 0.0 }
 }
-class KeyboardSoundsApp : public KeyboardApp {
+*/
+class KeyboardSoundsApp : public BritepadApp {
   public:
     appid_t id() { return ID; };
-    static constexpr appid_t ID = "lbar";
-    const char* name() { return "Key\nSounds"; };
+    static constexpr appid_t ID = "ksnd";
+    const char* name() { return _soundsEnabled ? "Key Sounds On" : "Key Sounds Off"; };
+    AppType getAppType() { return SETTINGS_APP; }
+//    virtual bool highlighted() { return !_soundsEnabled; }
+    bool canBeInvisible() { return true; };
+
+    void init() {
+      prefs.read(id(), sizeof(_soundsEnabled), &_soundsEnabled);
+    };
+
+    void run() {
+      _soundsEnabled = !_soundsEnabled;
+      console.debugf("Sounds Enabled: %d\n",_soundsEnabled);
+      prefs.write(id(), sizeof(_soundsEnabled), &_soundsEnabled);
+   }
+
 
     void idle() {
-      if (getEnabled(KEYBOARD_MODE)) {
+      if (_soundsEnabled) {
 
-        if (keys.keyPressed(KEY_LEFT_FN) ||
-            keys.keyPressed(KEY_RIGHT_FN)) {
-          if (keys.getMap() != KeyboardSoundsMap) {
-            keys.setMap(KeyboardSoundsMap);
-          }
-        } else if (
-                   (keys.keyReleased(KEY_LEFT_FN) || keys.keyReleased(KEY_RIGHT_FN)) &&  // released fn key
-                    keys.keyIsUp(KEY_RIGHT_FN) && keys.keyIsUp(KEY_LEFT_FN) &&           // neither key is still held
-                    !keys.keyDoubleTapped(KEY_RIGHT_FN) && !keys.keyDoubleTapped(KEY_LEFT_FN)  // and it's not a double-tap
-                  ) {
-                keys.setMap();
+        if (keys.keysPressed()) {
+          sound.click();
         }
       }
-    };
+    }
+
   private:
+    uint8_t _soundsEnabled = 1;
 };
 
 KeyboardSoundsApp theKeyboardSoundsApp;
-*/

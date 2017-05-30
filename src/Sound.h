@@ -8,8 +8,8 @@ typedef const uint8_t* tune_t;
 
 class Sound {
   public:
-    const float MIDDLE_C_FREQ = 261.6;
-    const float A440_FREQ = 440.0;
+    static constexpr float MIDDLE_C_FREQ = 261.6;
+    static constexpr float A440_FREQ = 440.0;
 
     Sound();
     void idle();

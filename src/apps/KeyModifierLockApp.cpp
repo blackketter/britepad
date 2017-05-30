@@ -32,6 +32,7 @@ class ModifierLockApp : public KeyboardApp {
           if (modifier && pressed) {
             if (state == unlocked) {
               setLockState(code, toLock);
+              setModifierState(code, true);
             }
           }
 
@@ -42,6 +43,7 @@ class ModifierLockApp : public KeyboardApp {
             } else if (state == locked) {
               setLockState(code, unlocked);
             }
+            setModifierState(code, false);
           }
         }
 
@@ -62,6 +64,18 @@ class ModifierLockApp : public KeyboardApp {
             keys.addHistory(NO_KEY, modifierKeys[i], Uptime::millis(), false);
             state[i] = unlocked;
           }
+        }
+
+        float pitch = Sound::MIDDLE_C_FREQ;
+        for (int i = 0; i < modifierCount; i++) {
+          if (getModifierState(i)) {
+            pitch = pitch * (3.0/2.);  // the more modifier keys held, we raise the frequency by a perfect fifth
+          }
+        }
+        if (pitch == Sound::MIDDLE_C_FREQ) {
+          sound.tone(pitch, 0.0);
+        } else {
+          sound.tone(pitch,0.5);
         }
       }
     };
@@ -91,6 +105,14 @@ class ModifierLockApp : public KeyboardApp {
       state[getModifierIndex(c)] = l;
     };
 
+    void setModifierState(keycode_t c, bool s) {
+      modifierState[getModifierIndex(c)] = s;
+    };
+
+    bool getModifierState(int i) {
+     return state[i] == locked || state[i] == toLock || modifierState[i];
+    }
+
     int getModifierIndex(keycode_t c) {
       for (int j = 0; j < modifierCount; j++) {
         if (c == modifierKeys[j]) {
@@ -102,6 +124,7 @@ class ModifierLockApp : public KeyboardApp {
 
     static const int modifierCount = sizeof(modifierKeys)/sizeof(keycode_t);
     lockState state[modifierCount];
+    bool modifierState[modifierCount];
     millis_t lastKey;
     static const millis_t lockTimeout = 2000;
 };

@@ -27,7 +27,7 @@ void SplashApp::begin(AppMode asMode) {
 
 
 void SplashApp::run() {
-  if (Uptime::millis() - firstRun > splashDuration) {
+  if (Uptime::millis() - firstRun > splashDuration || keys.keysPressed()) {
     launchApp(A_SCREENSAVER_APP, SCREENSAVER_MODE);
   }
 

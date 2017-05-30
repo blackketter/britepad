@@ -275,20 +275,23 @@ void Britepad::begin() {
 }
 
 void Britepad::idle() {
-  millis_t now = Uptime::millis();
-  if (now - lastIdle < idleInterval) {
-    return;
-  }
-  lastIdle = now;
-  theFPSCommand.idled();
-
-  keys.update();
-
-  idleApps();
 
   if (currApp && !currApp->usesKeyboard()) {
-      keys.sendKeys();
+    millis_t now = Uptime::millis();
+    if (now - lastIdle < idleInterval) {
+      return;
+    }
+
+    lastIdle = now;
+    theFPSCommand.idled();
+
+    keys.update();
+
+    idleApps();
+
+    keys.sendKeys();
   }
+
 };
 
 void Britepad::idleApps() {
@@ -302,22 +305,18 @@ void Britepad::idleApps() {
 
 void Britepad::loop() {
 
-  theFPSCommand.idled();
   pad.update();
 
   if (pad.touched(ANY_PAD)) {
     resetScreensaver();
   }
 
-  keys.update();
-  idleApps();
-
   if (!currApp) {
       console.debugln("No currapp!");
       launchApp(theLauncherApp);
   }
 
-  if (pad.pressed(TOP_PAD) || keys.keyPressed(KEY_EXIT)) {
+  if (pad.pressed(TOP_PAD)) {
     currApp->exit();
   } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.pressed(SCREEN_PAD) || ((pad.pressed(ANY_PAD) && !currApp->canBeInteractive())))) {
     console.debugln("waking screensaver");
@@ -386,15 +385,19 @@ void Britepad::loop() {
 
   launchApp(BritepadApp::STAY_IN_APP);
 
-  if (!currApp->usesKeyboard()) {
-    keys.sendKeys();
-  } else {
+  if (currApp->usesKeyboard()) {
+    keys.update();
+    theFPSCommand.idled();
+    idleApps();
     if (keys.keysPressed() || keys.keysReleased()) {
       resetScreensaver();
     }
+  } else {
+    idle();
   }
 
   currApp->run();
+
   if (currApp->usesKeyboard()) {
     keys.flush();
   }
@@ -421,4 +424,3 @@ time_t Britepad::getScreensaverSwitchInterval() {
 void Britepad::setScreensaverSwitchInterval(time_t newInterval) {
    prefs.write(screensaverSwitchIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
 }
-

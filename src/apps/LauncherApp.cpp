@@ -168,9 +168,13 @@ void LauncherApp::run() {
       }
     }
 
+  if (!launchOnRelease && (keys.keyReleased(KEY_SPACE) || keys.keyReleased(KEY_RETURN))) {
+    buttons->setHighlighted(false);
+  }
+
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
-    if (pad.released(SCREEN_PAD)) {
+    if (pad.released(SCREEN_PAD) || keys.keyReleased(KEY_SPACE) || keys.keyReleased(KEY_RETURN)) {
       launchApp(launchOnRelease, getCurrentScreen()->mode);
       britepad.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
       launchOnRelease = nullptr;
@@ -287,6 +291,7 @@ void LauncherApp::run() {
     } while (buttons->getButton(i, 0) == nullptr);
     buttons->setSelected(i);
   }
+
   if (oldSelection != i) {
     buttons->draw(i);
     buttons->draw(oldSelection);
@@ -318,4 +323,10 @@ void LauncherApp::end() {
 
   screen.pushFill(DIRECTION_UP, britepad.getLaunchedApp()->bgColor());
   BritepadApp::end();
+}
+
+void LauncherApp::idle() {
+  if (keys.keyPressed(KEY_EXIT)) {
+    britepad.currentApp()->exit();
+  }
 }

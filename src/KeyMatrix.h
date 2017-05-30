@@ -85,10 +85,10 @@ class KeyMatrix {
     void deleteHistory(uint8_t n);
     void deleteHistory(keycode_t c, bool pressed);
 
-    void setClick(bool clickOn) { _click = clickOn; }
-    bool getClick() { return _click; }
+    void setKeyClick(bool clickOn) { _click = clickOn; }
+    bool getKeyClick() { return _click; }
 
-    void dumpStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
+    void printStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
 
     void flush();
   private:

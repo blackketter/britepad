@@ -6,8 +6,8 @@
 class SeqApp : public DotsDisplayApp {
   public:
     void run();
-    void begin(AppMode isMode) { DotsDisplayApp::begin(isMode); keys.setClick(false); }
-    void end() { DotsDisplayApp::end(); keys.setClick(true); }
+    void begin(AppMode isMode) { DotsDisplayApp::begin(isMode); keys.setKeyClick(false); }
+    void end() { DotsDisplayApp::end(); keys.setKeyClick(true); }
 
     const char* name() { return "Seq"; };
     static constexpr appid_t ID = "seqr";

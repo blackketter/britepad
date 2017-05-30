@@ -486,13 +486,13 @@ class KeysCommand : public Command {
     const char* getName() { return "keys"; }
     const char* getHelp() { return "display status of key matrix"; }
     void execute(Stream* c, uint8_t paramCount, char** params) {
-      keys.dumpStatus(c);
+      keys.printStatus(c);
     }
 };
 KeysCommand theKeysCommand;
 
 
-void KeyMatrix::dumpStatus(Stream* c) {
+void KeyMatrix::printStatus(Stream* c) {
   if (c == nullptr) { c = &console; }
   c->println("---------------");
   c->println("Keyboard Status:");

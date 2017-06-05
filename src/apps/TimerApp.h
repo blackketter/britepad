@@ -11,6 +11,7 @@ class TimerApp : public StopwatchApp {
     void end();
     void begin(AppMode asMode);
     bool wantsToRun() { return isRunning() || alarm_sounded; }
+    bool canBeScreensaver() { return wantsToRun(); }
     bool disablesScreensavers() { return false; }
     bool isHidden() { return true; }
 

@@ -136,7 +136,10 @@ void ButtonMatrix::setHighlighted(bool highlight) {
 
 void ButtonMatrix::setButton(Button* b, buttonindex_t i, int map) {
   buttonindex_t p = i+map*buttonRows*buttonColumns;
-
+  if (p >= buttonMaps*buttonColumns*buttonRows) {
+    console.debugln("BUTTON OUT OF RANGE, NOT ADDING TO MATRIX");
+    return;
+  }
   if (buttons[p]) {
     delete(buttons[p]);
   }

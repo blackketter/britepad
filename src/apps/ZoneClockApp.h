@@ -8,7 +8,7 @@ class ZoneClockApp : public ClockApp {
     const char* name();
     virtual void update();
 
-    virtual bool isAppType(AppType t) { return t & (KEY_APP | CLOCK_APP); }  // have it appear both places
+    virtual bool isAppType(AppType t) { return t & CLOCK_APP; }  // have it appear both places
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "zone";

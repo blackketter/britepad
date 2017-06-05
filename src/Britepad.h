@@ -57,8 +57,6 @@ class Britepad {
     millis_t lastIdle = 0;
     millis_t idleInterval = 10;  // minimum idle interval
 
-    BritepadApp* theLauncherApp;
-
     static const millis_t screensaverDelay = 10000;
     static const millis_t ambientUpdateInterval = 100;
     static const millis_t showClockDur = 2000;

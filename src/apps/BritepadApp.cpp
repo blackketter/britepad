@@ -1,7 +1,7 @@
 #include "BritepadApp.h"
 #include "AlarmApp.h"
 #include "widgets/Icon.h"
-#include "AppButton.h"
+#include "widgets/AppButton.h"
 
 BritepadApp* BritepadApp::STAY_IN_APP = (BritepadApp*)0;
 BritepadApp* BritepadApp::BACK_APP = (BritepadApp*)2;

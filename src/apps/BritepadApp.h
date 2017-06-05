@@ -39,7 +39,7 @@ class BritepadApp {
     static BritepadApp* A_SCREENSAVER_APP; // go to a screensaver
 
     virtual const char* name() = 0;
-    virtual Icon getIcon() { return _icon; };
+    virtual Icon getIcon() { return nullptr; };
     virtual appid_t id() = 0;
     bool isID(appid_t match);
     BritepadApp* getAppByID(appid_t getID) { return britepad.getAppByID(getID); }
@@ -127,7 +127,6 @@ class BritepadApp {
     AppMode _enabled = ANY_MODE;  // bit mask for enabled modes. apps are always enabled by default
     AppMode _currAppMode = INACTIVE_MODE;
 
-    Icon _icon;
     int32_t _launcherPosition = _defaultLauncherPosition;
 
   private:

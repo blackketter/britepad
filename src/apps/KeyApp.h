@@ -4,7 +4,7 @@
 #include "BritepadApp.h"
 #include "BritepadShared.h"
 #include "widgets/Icon.h"
-#include "AppButton.h"
+#include "widgets/AppButton.h"
 
 typedef int mediakey_t;
 
@@ -35,6 +35,7 @@ class KeyApp : public BritepadApp {
 
     AppButton* newAppButton() { AppButton* b = new AppButton(this); return b; }
     color_t appButtonColor() { return button_color; }
+    Icon getIcon() { return _icon; }
 
   protected:
 
@@ -48,6 +49,7 @@ class KeyApp : public BritepadApp {
     bool repeating = false;
     const millis_t keyRepeat = 125;
     const millis_t keyStartRepeat = 1000;
-};
+    Icon _icon;
+    };
 
 #endif

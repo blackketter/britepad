@@ -255,9 +255,6 @@ void Britepad::updateStatusBar() {
 
 void Britepad::begin() {
 
-  // we defer the creation of the launcher to guarantee it's last and all the other apps have been created
-  theLauncherApp = new LauncherApp;
-
   // assumes that the splashapp has been created and added to list
   launchApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
   setApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
@@ -313,7 +310,7 @@ void Britepad::loop() {
 
   if (!currApp) {
       console.debugln("No currapp!");
-      launchApp(theLauncherApp);
+      launchApp(getAppByID(LauncherApp::ID));
   }
 
   if (pad.pressed(TOP_PAD)) {
@@ -328,7 +325,7 @@ void Britepad::loop() {
       console.debugln("launching A_MOUSE_APP");
       launchApp(BritepadApp::A_MOUSE_APP, MOUSE_MODE);
     } else {
-      launchApp(theLauncherApp);
+      launchApp(getAppByID(LauncherApp::ID));
     }
 
   } else if (pad.time() > disableScreensaversUntil && !currApp->disablesScreensavers()) {
@@ -338,7 +335,7 @@ void Britepad::loop() {
 
          (pad.time() > disableScreensaversUntil))
     {
-      launchApp(theLauncherApp);
+      launchApp(getAppByID(LauncherApp::ID));
       console.debugln("Proximity detected: showing launcher");
 
     } else if ( pad.pressed(PROXIMITY_SENSOR) &&

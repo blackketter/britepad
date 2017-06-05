@@ -1,7 +1,7 @@
 #include "BritepadShared.h"
 #include "LauncherApp.h"
 #include "ScreensaverApp.h"
-#include "AppButton.h"
+#include "widgets/AppButton.h"
 
 enum screenids {
   FIRST_SCREEN,
@@ -330,3 +330,5 @@ void LauncherApp::idle() {
     britepad.currentApp()->exit();
   }
 }
+
+LauncherApp theLauncherApp;

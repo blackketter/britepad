@@ -80,3 +80,16 @@ class RunCommand : public Command {
 };
 RunCommand theRunCommand;
 
+class PrefsCommand : public Command {
+  public:
+    const char* getName() { return "prefs"; }
+    const char* getHelp() { return "dump prefs data"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) {
+      const uint8_t* data = prefs.data();
+      size_t len = prefs.used();
+      for (size_t i = 0; i < len; i++) {
+        c->printf("Prefs[%04d] = %02x '%c'\n", i, data[i], data[i]);
+      }
+    }
+};
+PrefsCommand thePrefsCommand;

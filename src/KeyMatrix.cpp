@@ -8,7 +8,6 @@ KeyMatrix::KeyMatrix(const keymap_t* defaultMap, const keylayout_t* defaultLayou
   _defaultMap = defaultMap;
   setMap();  // set to default map
   setLayout(); // set to default layout
-  clearHistory();
 }
 
 // Port A is columns, Port B is rows.  Diodes have cathodes (positive) on A
@@ -78,82 +77,6 @@ void KeyMatrix::scanMatrix() {
   }
 }
 
-keyswitch_t KeyMatrix::keysPressed() {
-  keyswitch_t count = 0;
-  for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastFlush)
-      break;
-    if (getHistoryPressed(i))
-      count++;
-  }
-  return count;
-}
-
-keyswitch_t KeyMatrix::keysReleased() {
-  keyswitch_t count = 0;
-  for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastFlush)
-      break;
-    if (getHistoryReleased(i))
-      count++;
-  }
-  return count;
-}
-
-keyswitch_t KeyMatrix::keysChanged() {
-  keyswitch_t count = 0;
-  for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastFlush)
-      break;
-      count++;
-  }
-  return count;
-}
-
-bool KeyMatrix::switchChanged(keyswitch_t k) {
-  keyswitch_t count = 0;
-  for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastFlush)
-      break;
-    if (getHistoryKey(i) == k)
-      count++;
-  }
-  return count;
-}
-
-bool KeyMatrix::keyChanged(keycode_t c) {
-  keyswitch_t count = 0;
-  for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastFlush)
-      break;
-    if (getHistoryCode(i) == c)
-      count++;
-  }
-  return count;
-}
-
-bool KeyMatrix::keyPressed(keycode_t c) {
-  keyswitch_t count = 0;
-  for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastFlush)
-      break;
-    if ((getHistoryCode(i) == c) && getHistoryPressed(i))
-      count++;
-  }
-  return count;
-}
-
-bool KeyMatrix::keyReleased(keycode_t c) {
-  keyswitch_t count = 0;
-  for (int i = 0; i < _historySize; i++) {
-    if (getHistoryTime(i) < _lastFlush)
-      break;
-    if ((getHistoryCode(i) == c) && getHistoryReleased(i))
-      count++;
-  }
-  return count;
-}
-
 keyswitch_t KeyMatrix::update() {
 
   clearKeyChanges();
@@ -170,10 +93,13 @@ keyswitch_t KeyMatrix::update() {
       if ((i != NO_KEY) && ((_changedKeys[i/_numRows] >> (i%_numRows)) & 0x01)) {
         count++;
         bool d = switchIsDown(i);
-        addHistory(i,getCode(i),_lastScan, d);
+        addEvent(i,getCode(i),_lastScan, d);
       }
     }
 
+    if (count) {
+//      console.debugf("update found %d key events\n",count);
+    }
     return count;
   } else {
     return 0;
@@ -341,30 +267,67 @@ void KeyMatrix::clearKeyChanges() {
   }
 }
 
-keyswitch_t KeyMatrix::sendKeys() {
-  keyswitch_t count = 0;
-  for (int i = _historySize-1;i >= 0; i--) {
-    if (getHistoryTime(i) > _lastFlush) {
-      //console.debugf("%d _lastflush\n", _lastFlush);
-      keycode_t c = getHistoryCode(i);
-      if (!isSoftKeyCode(c)) {
-        if (getHistoryPressed(i)) {
-          Keyboard.press(c);
-          //console.debugf("%d key press[%d]: %d\n", (int)getHistoryTime(i), i, c);
-        } else {
-          Keyboard.release(c);
-          //console.debugf("%d key release[%d] %d\n", (int)getHistoryTime(i), i, c);
-        }
-      }
-      count++;
-    }
+KeyEvent* KeyMatrix::getNextEvent() {
+  KeyEvent* next = _lastEvent;
+  if (next == nullptr) {
+    next = firstEvent();
+  } else {
+    next = _lastEvent->getNext();
   }
-  flush();
+  if (next) {
+    _lastEvent = next;
+  }
+  return next;
+}
+
+keyswitch_t KeyMatrix::sendKeys() {
+  KeyEvent* event = getNextEvent();
+  keyswitch_t count = 0;
+
+  while (event) {
+    sendKey(event->code(), event->pressed());
+    event = getNextEvent();
+    count++;
+  }
   return count;
 }
 
-void KeyMatrix::flush() {
-  _lastFlush = Uptime::millis();
+void KeyMatrix::sendKey(keycode_t code, boolean pressed) {
+  if (!isSoftKeyCode(code)) {
+    if (pressed) {
+      Keyboard.press(code);
+//      console.debugf("key press[%d]\n", code);
+    } else {
+      Keyboard.release(code);
+//      console.debugf("key release[%d]\n", code);
+    }
+  }
+}
+
+void KeyMatrix::truncateHistory() {
+  KeyEvent* curr = _events;
+
+  // find the nth event
+  for (int i = 0; i < _maxEventHistory; i++) {
+    if (curr == nullptr) {
+//      console.debugln("not enough events");
+      return;
+    }
+    curr = curr->getPrev();
+  }
+
+  // if there is one, remove the reference to it to truncate
+  if (curr) {
+    curr->getNext()->setPrev(nullptr);
+  }
+
+  // delete it and all the ones after it
+  while (curr) {
+    KeyEvent* last = curr;
+    curr = curr->getPrev();
+    delete last;
+//    console.debugln("deleted old event");
+  }
 }
 
 void KeyMatrix::setLayout(const keylayout_t* l) {
@@ -375,79 +338,31 @@ void KeyMatrix::setMap(const keymap_t* l) {
   _currentMap = l ? l : getDefaultMap();
 }
 
-millis_t KeyMatrix::getHistoryTime(uint8_t n) {
-  if (n < _historySize) {
-    return _history[n].time;
-  } else {
-    return 0;
+void KeyMatrix::addEvent(keyswitch_t k, keycode_t c, millis_t t, bool d) {
+//  console.debugf("addEvent: switch: %d, code: %d, pressed: %d\n",k,c,d);
+  KeyEvent* e = new KeyEvent(k,c,t,d);
+  if (_events) {
+    _events->setNext(e);
+    e->setPrev(_events);
   }
-}
+  _events = e;
+//  console.debugln("idling on new event");
+  britepad.idleApps(e);
 
-keyswitch_t KeyMatrix::getHistoryKey(uint8_t n) {
-  if (n < _historySize) {
-    return _history[n].key;
-  } else {
-    return NO_KEY;
-  }
-}
+//  console.debugln("truncating");
+  truncateHistory();
 
-keycode_t KeyMatrix::getHistoryCode(uint8_t n) {
-  if (n < _historySize) {
-    return _history[n].code;
-  } else {
-    return NO_KEY;
-  }
-}
+//  console.debugln("done addEvent");
 
-bool KeyMatrix::getHistoryPressed(uint8_t n) {
-  if (n < _historySize) {
-    return _history[n].pressed;
-  } else {
-    return false;
-  }
-}
-
-void KeyMatrix::addHistory(keyswitch_t k, keycode_t c, millis_t t, bool d) {
-  for (uint8_t i = _historySize-1; i > 0; i--) {
-    _history[i] = _history[i-1];
-  }
-  _history[0].pressed = d;
-  _history[0].time = t;
-  _history[0].key = k;
-  _history[0].code = c;
-  //console.debugf("%d addHistory: key: %d code: %d down: %d\n",(int)t, k,c,d);
-}
-
-void KeyMatrix::clearHistory() {
-  for (uint8_t i = 0; i < _historySize; i++) {
-    _history[i].key = NO_KEY;
-    _history[i].code = NO_CODE;
-    _history[i].time = 0;
-  }
-}
-
-void KeyMatrix::deleteHistory(uint8_t n) {
-  if (n < _historySize) {
-    // leave the event in the queue, just make it not a key
-    _history[n].code = NO_CODE;
-    _history[n].key = NO_KEY;
-  }
-}
-
-void KeyMatrix::deleteHistory(keycode_t c, bool pressed) {
-  for (int i = 0; i < _historySize; i++) {
-    if ((getHistoryPressed(i) == pressed) && (getHistoryCode(i) == c)) {
-      deleteHistory(i);
-      break;
-    }
-  }
 }
 
 bool KeyMatrix::keyTapped(keycode_t c) {
-  if (  keyReleased(c) &&
-        (getHistoryCode(1) == c) && getHistoryPressed(1) &&
-        (getHistoryCode(0) == c) && getHistoryReleased(0) &&
-        (getHistoryTime(0)-getHistoryTime(1) < _tappedTime)
+  KeyEvent* h0 = history(0);
+  KeyEvent* h1 = history(1);
+  if (h0 && h1 &&
+        (h1->code() == c) && h1->pressed() &&
+        (h0->code() == c) && h0->released() &&
+        (h0->time() - h1->time() < _tappedTime)
      ) {
     return true;
   } else {
@@ -456,26 +371,19 @@ bool KeyMatrix::keyTapped(keycode_t c) {
 }
 
 bool KeyMatrix::keyDoubleTapped(keycode_t c) {
-  if ( keyTapped(c) &&
-        (getHistoryCode(3) == c) && getHistoryPressed(3) &&
-        (getHistoryCode(2) == c) && getHistoryReleased(2) &&
-        (getHistoryTime(0)-getHistoryTime(3) < _doubleTappedTime)
+  KeyEvent* h0 = history(0);
+  KeyEvent* h2 = history(2);
+  KeyEvent* h3 = history(3);
+  if ( h0 && h2 && h3 &&
+         keyTapped(c) &&
+        (h3->code() == c) && h3->pressed() &&
+        (h2->code() == c) && h2->released() &&
+        (h0->time() - h3->time() < _doubleTappedTime)
      ) {
     return true;
   } else {
     return false;
   }
-}
-
-bool KeyMatrix::keyIsModifier(keycode_t c) {
-  int i = 0;
-  while (modifierKeys[i] != NO_CODE) {
-    if (modifierKeys[i] == c) {
-      return true;
-    }
-    i++;
-  }
-  return false;
 }
 
 class KeysCommand : public Command {
@@ -494,17 +402,18 @@ void KeyMatrix::printStatus(Stream* c) {
   c->println("---------------");
   c->println("Keyboard Status:");
   for (keyswitch_t k = 0; k < numKeys(); k++) {
-    if (switchPressed(k)) {
-      c->printf(" Key '%s' was pressed (switch: %d)\n", getKeyLabel(getCode(k)), k);
-    } else if (switchIsDown(k)) {
+    if (switchIsDown(k)) {
       c->printf(" Key '%s' is down (switch: %d)\n", getKeyLabel(getCode(k)), k);
-    } else if (switchReleased(k)) {
-      c->printf(" Key '%s' was released (switch: %d)\n", getKeyLabel(getCode(k)), k);
     }
   }
   c->println("");
-  for (uint8_t i = 0; i < _historySize; i++) {
-      c->printf("  Key History[%d] = '%s' %d %s\n", i, getKeyLabel(getHistoryCode(i)),getHistoryKey(i), getHistoryPressed(i) ? "down" : "up");
+
+  KeyEvent* event = _events;
+  int i = 0;
+  while (event) {
+    c->printf("  Key event[%d] = '%s' code:%d switch:%d %s\n", i, getKeyLabel(event->code()),event->code(), event->key(), event->pressed() ? "down" : "up");
+    event = event->getPrev();
+    i++;
   }
   c->println("---------------");
 }

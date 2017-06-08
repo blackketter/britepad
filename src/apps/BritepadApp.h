@@ -31,7 +31,7 @@ class BritepadApp {
     virtual void run() { if (isAppMode(MOUSE_MODE)) { mouse.run(); } };  // run current app state repeatedly
     virtual void switchAppMode(AppMode asMode);  // called when switching between modes
 
-    virtual void idle() {};  // give apps an opportuntity to run in the background, useful for processing keyboard events
+    virtual void idle(KeyEvent* key) {};  // give apps an opportuntity to run in the background, useful for processing keyboard events
 
     static BritepadApp* STAY_IN_APP;
     static BritepadApp* A_MOUSE_APP; // typically the MouseApp, but might be a timer when it's running
@@ -111,7 +111,9 @@ class BritepadApp {
     inline void setNextApp(BritepadApp* app) {  _nextApp = app; };
     inline void setPrevApp(BritepadApp* app) {  _prevApp = app; };
 
+
   protected:
+    KeyEvent* getNextEvent() { return keys.getNextEvent(); }
     virtual bool hasPrefs() { return canBeScreensaver() | canBeMouse() | isAppType(KEYBOARD_APP); } // mice, screensavers and keyboard apps use default prefs for enable/disable
 
     virtual void clearScreen();
@@ -130,6 +132,7 @@ class BritepadApp {
     int32_t _launcherPosition = _defaultLauncherPosition;
 
   private:
+
     BritepadApp* _nextApp = nullptr;
     BritepadApp* _prevApp = nullptr;
 };

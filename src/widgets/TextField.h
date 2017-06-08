@@ -17,10 +17,13 @@ class TextField : public Widget
 
     virtual void init(coord_t x, coord_t y, coord_t w, coord_t h, font_t f, color_t fgColor, color_t bgColor, alignment_t a = ALIGN_DEFAULT);
 
-    void draw() { draw(nullptr); }
+    void draw() { if (_text.length()) { draw(_text); } else { draw(nullptr); } };
     void draw(const char* t);
     void draw(String& s) { draw(s.c_str());}
 
+    bool key(KeyEvent* k);
+
+    void setText(String& s) { _text = s; }
     void setColor(color_t fgColor, color_t bgColor) { _fColor = fgColor; _bColor = bgColor; };
     void setColor(color_t c) { _fColor = _bColor = c; };
     void setFColor(color_t c) { _fColor = c; }
@@ -36,6 +39,7 @@ class TextField : public Widget
     color_t _fColor;
     color_t _bColor;
     alignment_t _align;
+    String _text;
 };
 #endif
 

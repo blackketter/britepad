@@ -30,8 +30,9 @@ void KeyboardViewerApp::draw() {
   buttons->draw();
 };
 
-void KeyboardViewerApp::idle() {
+void KeyboardViewerApp::idle(KeyEvent* key) {
   if (getEnabled(KEYBOARD_MODE)) {
+//    console.debugln("keyboardviewerapp idle");
     if (!isCurrentApp() && keys.getOverlay()) {
         BritepadApp* currApp = britepad.currentApp();
         if (currApp && currApp != this) {
@@ -40,7 +41,7 @@ void KeyboardViewerApp::idle() {
         }
         tutorialMode = true;
         launch();
-  //      console.debugln("Launching KeyboardViewerApp in tutorial mode...");
+        console.debugln("Launching KeyboardViewerApp in tutorial mode...");
     }
   }
 }

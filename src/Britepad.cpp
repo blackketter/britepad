@@ -283,19 +283,15 @@ void Britepad::idle() {
     theFPSCommand.idled();
 
     keys.update();
-
-    idleApps();
-
     keys.sendKeys();
   }
 
 };
 
-void Britepad::idleApps() {
-  // idle apps
+void Britepad::idleApps(KeyEvent* e) {
   BritepadApp* anApp = appList;
   while (anApp != nullptr) {
-    anApp->idle();
+    anApp->idle(e);
     anApp = anApp->getNextApp();
   }
 }
@@ -383,21 +379,16 @@ void Britepad::loop() {
   launchApp(BritepadApp::STAY_IN_APP);
 
   if (currApp->usesKeyboard()) {
-    keys.update();
-    theFPSCommand.idled();
-    idleApps();
-    if (keys.keysPressed() || keys.keysReleased()) {
+    int events = keys.update();
+    if (events) {
       resetScreensaver();
     }
+    theFPSCommand.idled();
   } else {
     idle();
   }
 
   currApp->run();
-
-  if (currApp->usesKeyboard()) {
-    keys.flush();
-  }
 
   theFPSCommand.newFrame();
 

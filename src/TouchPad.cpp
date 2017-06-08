@@ -256,15 +256,15 @@ void TouchPad::updateAPDS() {
       //  console.debugf("max: %c\n", d);
       }
 
-      if (!upBegin && up > proxGestureBeginThreshold) { upBegin = now; console.debug("upBegin\n"); }
-      if (!downBegin && down > proxGestureBeginThreshold) { downBegin = now; console.debug("downBegin\n");}
-      if (!leftBegin && left > proxGestureBeginThreshold) { leftBegin = now; console.debug("leftBegin\n");}
-      if (!rightBegin && right > proxGestureBeginThreshold) { rightBegin = now; console.debug("rightBegin\n");}
+      if (!upBegin && up > proxGestureBeginThreshold) { upBegin = now; }
+      if (!downBegin && down > proxGestureBeginThreshold) { downBegin = now; }
+      if (!leftBegin && left > proxGestureBeginThreshold) { leftBegin = now; }
+      if (!rightBegin && right > proxGestureBeginThreshold) { rightBegin = now; }
 
-      if (upBegin && !upEnd && up < proxGestureEndTheshold) { upEnd = now; console.debug("upEnd\n");}
-      if (downBegin && !downEnd && down < proxGestureEndTheshold) { downEnd = now; console.debug("downEnd\n");}
-      if (leftBegin && !leftEnd && left < proxGestureEndTheshold) { leftEnd = now; console.debug("leftEnd\n");}
-      if (rightBegin && !rightEnd && right < proxGestureEndTheshold) { rightEnd = now; console.debug("rightEnd\n");}
+      if (upBegin && !upEnd && up < proxGestureEndTheshold) { upEnd = now; }
+      if (downBegin && !downEnd && down < proxGestureEndTheshold) { downEnd = now; }
+      if (leftBegin && !leftEnd && left < proxGestureEndTheshold) { leftEnd = now; }
+      if (rightBegin && !rightEnd && right < proxGestureEndTheshold) { rightEnd = now; }
       i++;
     }
 

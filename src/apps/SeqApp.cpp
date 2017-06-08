@@ -20,6 +20,8 @@ void SeqApp::run() {
   const color_t noteOn = screen.blue;
   ScreensaverApp::run();
 
+  KeyEvent* key = getNextEvent();
+
   if (pad.pressed(SCREEN_PAD)) {
     int x, y;
     if (dots->hit(pad.x(), pad.y(), &x, &y)) {
@@ -28,18 +30,18 @@ void SeqApp::run() {
     }
   }
 
-  if (pad.pressed(BOTTOM_PAD) || keys.keyPressed(KEY_SPACE)) {
+  if (pad.pressed(BOTTOM_PAD) || (key && key->pressed(KEY_SPACE))) {
     tick = !tick;
   }
 
-  if (pad.pressed(LEFT_PAD) || keys.keyPressed(KEY_DOWN)) {
+  if (pad.pressed(LEFT_PAD) || (key && key->pressed(KEY_DOWN))) {
     bpm -= bpm/25;
     if (bpm < minBpm) {
       bpm = minBpm;
     }
   }
 
-  if (pad.pressed(RIGHT_PAD) || keys.keyPressed(KEY_UP)) {
+  if (pad.pressed(RIGHT_PAD) || (key && key->pressed(KEY_UP))) {
     bpm += bpm/25;
     if (bpm > maxBpm) {
       bpm = maxBpm;

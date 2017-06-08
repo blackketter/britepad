@@ -42,6 +42,7 @@ class Britepad {
     time_t getScreensaverSwitchInterval();
     void setScreensaverSwitchInterval(time_t newInterval);
     void resetScreensaver(millis_t dur = screensaverDelay) { disableScreensaversUntil = Uptime::millis() + dur; }
+    void idleApps(KeyEvent* e);
 
   private:
     BritepadApp* currApp = nullptr;
@@ -53,7 +54,6 @@ class Britepad {
     BritepadApp* wantsToRun();
     BritepadApp* randomApp(AppMode m);
 
-    void idleApps();
     millis_t lastIdle = 0;
     millis_t idleInterval = 10;  // minimum idle interval
 
@@ -74,7 +74,6 @@ class Britepad {
     millis_t disableScreensaversUntil = 0;
 
     const char* screensaverSwitchIntervalPref = "scri";
-
 };
 
 #endif

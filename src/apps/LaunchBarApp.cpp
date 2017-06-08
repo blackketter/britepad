@@ -10,31 +10,31 @@ class LaunchBarApp : public KeyboardApp {
     static constexpr appid_t ID = "lbar";
     const char* name() { return "Launch Bar"; };
 
-    void idle() {
+    void idle(KeyEvent* key) {
       if (getEnabled(KEYBOARD_MODE)) {
         static millis_t cmdHeld = 0;
 
           // a little logic here for Launchbar:
           // multiple taps selects running apps, tapping any other key switches apptoday
           // arrow keys work
-        if (keys.keyPressed(KEY_LAUNCHBAR)) {
+        if (key->pressed(KEY_LAUNCHBAR)) {
           if (!cmdHeld) {
             Keyboard.press(MODIFIERKEY_LEFT_GUI);
           }
           Keyboard.press(KEY_SPACE);
           Keyboard.release(KEY_SPACE);
-        } else if (keys.keyReleased(KEY_LAUNCHBAR)) {
+        } else if (key->released(KEY_LAUNCHBAR)) {
           cmdHeld = Uptime::millis();
         } else if (cmdHeld &&
-                   !keys.keyPressed(KEY_LAUNCHBAR) &&
-                   (keys.keysPressed() || (Uptime::millis()-cmdHeld > releaseTimeout))
+                   !key->pressed(KEY_LAUNCHBAR) &&
+                   (key->pressed() || (Uptime::millis()-cmdHeld > releaseTimeout))
                   ) {
 
           // arrow keys keep the gui key held, otherwise we release
-          if ((keys.keyPressed(KEY_UP) ||
-                keys.keyPressed(KEY_DOWN) ||
-                keys.keyPressed(KEY_LEFT) ||
-                keys.keyPressed(KEY_RIGHT)
+          if ((key->pressed(KEY_UP) ||
+                key->pressed(KEY_DOWN) ||
+                key->pressed(KEY_LEFT) ||
+                key->pressed(KEY_RIGHT)
               )) {
             cmdHeld = Uptime::millis();
           } else {

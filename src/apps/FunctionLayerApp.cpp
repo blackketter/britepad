@@ -39,17 +39,15 @@ class FunctionLayerApp : public KeyboardApp {
     static constexpr appid_t ID = "lbar";
     const char* name() { return "Function Layer"; };
 
-    void idle() {
+    void idle(KeyEvent* key) {
       if (getEnabled(KEYBOARD_MODE)) {
         // switch to the function layer
-        if (keys.keyPressed(KEY_LEFT_FN) || keys.keyPressed(KEY_RIGHT_FN)) {
+        if (key->pressed(KEY_LEFT_FN) || key->pressed(KEY_RIGHT_FN)) {
           if (keys.getOverlay() != functionOverlay) {
             keys.setOverlay(functionOverlay);
           }
         } else if (
-                   (keys.keyReleased(KEY_LEFT_FN) || keys.keyReleased(KEY_RIGHT_FN))  // released fn key
-//                    && keys.keyIsUp(KEY_RIGHT_FN) && keys.keyIsUp(KEY_LEFT_FN)           // neither key is still held
-//                    && !keys.keyDoubleTapped(KEY_RIGHT_FN) && !keys.keyDoubleTapped(KEY_LEFT_FN)  // and it's not a double-tap
+                   (key->released(KEY_LEFT_FN) || key->released(KEY_RIGHT_FN))  // released fn key
                   ) {
                 keys.setOverlay();
         }

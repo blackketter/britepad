@@ -41,10 +41,10 @@ class KeyboardSoundsApp : public BritepadApp {
    }
 
 
-    void idle() {
+    void idle(KeyEvent* key) {
       if (_soundsEnabled) {
 
-        if (keys.keysPressed()) {
+        if (key->pressed()) {
           sound.click();
         }
       }

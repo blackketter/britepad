@@ -22,7 +22,7 @@ class LauncherApp : public BritepadApp {
     void begin(AppMode asMode);
     void run();
     void end();
-    void idle();
+    void idle(KeyEvent* key);
 
     bool usesKeyboard() { return true; }
     BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }

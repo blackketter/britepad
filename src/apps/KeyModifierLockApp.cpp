@@ -1,68 +1,92 @@
 #include "KeyMatrix.h"
 #include "KeyboardApp.h"
 
-class ModifierLockApp : public KeyboardApp {
+void unlockTimerCallback(void* app);
+
+const keycode_t modifierKeys[] = {
+  MODIFIERKEY_LEFT_SHIFT,
+  MODIFIERKEY_LEFT_GUI,
+  MODIFIERKEY_LEFT_ALT,
+  MODIFIERKEY_LEFT_CTRL,
+  KEY_LEFT_FN,
+  MODIFIERKEY_RIGHT_SHIFT,
+  MODIFIERKEY_RIGHT_GUI,
+  MODIFIERKEY_RIGHT_ALT,
+  MODIFIERKEY_RIGHT_CTRL,
+  KEY_RIGHT_FN,
+  NO_CODE
+};
+
+class KeyModifierLockApp : public KeyboardApp {
 
   public:
     appid_t id() { return ID; };
     static constexpr appid_t ID = "modl";
     const char* name() { return "Modifier Lock"; };
 
-    void idle() {
+    void idle(KeyEvent* key) {
+
       if (getEnabled(KEYBOARD_MODE)) {
 
-        int c = keys.keysChanged();
-        if (c) { lastKey = Uptime::millis(); }
+       // on each key event, reset the unlock timer
+       unlockTimer.setMillis(lockTimeout, unlockTimerCallback, (void*)this);
 
-        // go through the keys oldest to newest
-        for (int i = c-1; i >= 0; i--) {
-          keycode_t code = keys.getHistoryCode(i);
-          bool pressed = keys.getHistoryPressed(i);
-          bool released = !pressed;
-          bool modifier = keys.keyIsModifier(code);
-          lockState state = getLockState(code);
+       lockState state = getLockState(key->code());
 
-          console.debugf("modifier[%d]: code:%d pressed:%d modifier:%d\n", i,code,pressed,modifier);
+        if (key->isModifier()) {
+//          console.debugf("modifier: code:%d pressed:%d modifier:%d\n", key->code(),key->pressed(),key->isModifier());
+        }
 
-          if (!modifier && pressed) {
-            flipLockStates(locked,toUnlock);
-            flipLockStates(toLock,unlocked);
-          }
+        if (!key->isModifier() && key->pressed()) {
+          unlockAll();
+        }
 
-          if (modifier && pressed) {
-            if (state == unlocked) {
-              setLockState(code, toLock);
-              setModifierState(code, true);
-            }
-          }
-
-          if (modifier && released) {
-            if (state == toLock) {
-              setLockState(code, locked);
-              keys.deleteHistory(code, false);
-            } else if (state == locked) {
-              setLockState(code, unlocked);
-            }
-            setModifierState(code, false);
+        if (key->isModifier() && key->pressed()) {
+          if (state == unlocked) {
+            setLockState(key->code(), toLock);
+            setModifierState(key->code(), true);
           }
         }
 
-        // time out locks
-        if (c) {
-          lastKey = Uptime::millis();
-          console.debugln("reset unlock timeout");
-        } else if (lastKey && ((Uptime::millis() - lastKey) > lockTimeout)){
+        if (key->isModifier() && key->released()) {
+          if (state == toLock) {
+            setLockState(key->code(), locked);
+            key->clear();
+          } else if (state == locked) {
+            setLockState(key->code(), unlocked);
+          }
+          setModifierState(key->code(), false);
+        }
+
+//        console.debugln("reset unlock timeout");
+        sendUpdates();
+      }
+    };
+
+    void unlock() {
+      unlockAll();
+      sendUpdates();
+    }
+
+  private:
+    enum lockState {
+      unlocked,
+      locked,
+      toUnlock,
+      toLock,
+    };
+
+    void unlockAll() {
           flipLockStates(locked, toUnlock);
           flipLockStates(toLock, unlocked);
-          lastKey = 0;
-          console.debugln("unlock timeout");
-        }
+    }
 
+    void sendUpdates() {
         for (int i = 0; i < modifierCount; i++) {
           if (state[i] == toUnlock) {
-            console.debugf("unlocking %d\n",modifierKeys[i]);
-            keys.addHistory(NO_KEY, modifierKeys[i], Uptime::millis(), false);
             state[i] = unlocked;
+//            console.debugf("unlocking %d\n",modifierKeys[i]);
+            keys.addEvent(NO_KEY, modifierKeys[i], Uptime::millis(), false);
           }
         }
 
@@ -77,16 +101,7 @@ class ModifierLockApp : public KeyboardApp {
         } else {
           sound.tone(pitch,0.5);
         }
-      }
-    };
-
-  private:
-    enum lockState {
-      unlocked,
-      locked,
-      toUnlock,
-      toLock,
-    };
+    }
 
     void flipLockStates(lockState from, lockState to) {
       for (int j = 0; j < modifierCount; j++) {
@@ -101,7 +116,7 @@ class ModifierLockApp : public KeyboardApp {
     };
 
     void setLockState(keycode_t c, lockState l) {
-      console.debugf("setting %d lock state to %d\n",c, l);
+      //console.debugf("setting %d lock state to %d\n",c, l);
       state[getModifierIndex(c)] = l;
     };
 
@@ -125,8 +140,12 @@ class ModifierLockApp : public KeyboardApp {
     static const int modifierCount = sizeof(modifierKeys)/sizeof(keycode_t);
     lockState state[modifierCount];
     bool modifierState[modifierCount];
-    millis_t lastKey;
+    Timer unlockTimer;
     static const millis_t lockTimeout = 2000;
 };
 
-ModifierLockApp theModifierLockApp;
+void unlockTimerCallback(void* app) {
+  ((KeyModifierLockApp*)app)->unlock();
+}
+
+KeyModifierLockApp theKeyModifierLockApp;

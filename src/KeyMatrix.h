@@ -6,13 +6,7 @@
 #include "Widgets/icon.h"
 #include "KeyInfo.h"
 #include "KeyLayout.h"
-
-typedef struct keyevent_t {
-    millis_t time;
-    keyswitch_t key;
-    keycode_t code;
-    bool pressed;
-} keyevent_t;
+#include "KeyEvent.h"
 
 class KeyMatrix {
   public:
@@ -33,6 +27,8 @@ class KeyMatrix {
 
     keyswitch_t update();  //returns number of keys changed
     keyswitch_t sendKeys();  // send key events to host, returns number of key events sent
+    void sendKey(keycode_t code, boolean pressed);
+    KeyEvent* getNextEvent();
 
     keyswitch_t numKeys() { return _numColumns * _numRows; }  // returns the total number of keys in the matrix
     uint8_t getWidth();
@@ -46,21 +42,7 @@ class KeyMatrix {
     uint8_t getKeyX(keyswitch_t k);
     uint8_t getKeyY(keyswitch_t k);
     inline bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
-
-    inline bool keyIsDown(keycode_t c) { return switchIsDown(getSwitch(c)); }
-    inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
-
-    bool keyIsModifier(keycode_t c);
-
-    // did a given key change?
-    bool keyChanged(keycode_t c);
-    bool keyPressed(keycode_t c);
-    bool keyReleased(keycode_t c);
-
-    // returns the number of keys that changed state in the last idle
-    keyswitch_t keysPressed();
-    keyswitch_t keysReleased();
-    keyswitch_t keysChanged();
+    inline bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
 
     bool keyDoubleTapped(keycode_t c);
     bool keyTapped(keycode_t c);
@@ -75,28 +57,19 @@ class KeyMatrix {
     bool getKeyModifier(keycode_t c);
     const char* getKeyLabel(keycode_t c);
 
-    millis_t getHistoryTime(uint8_t n);
-    keyswitch_t getHistoryKey(uint8_t n);
-    keycode_t getHistoryCode(uint8_t n);
-    bool getHistoryPressed(uint8_t n);
-    bool getHistoryReleased(uint8_t n) { return !getHistoryPressed(n); }
-
-    void addHistory(keyswitch_t k, keycode_t c, millis_t t, bool d);
-    void clearHistory();
-    void deleteHistory(uint8_t n);
-    void deleteHistory(keycode_t c, bool pressed);
+    void truncateHistory();
+    void addEvent(keyswitch_t k, keycode_t c, millis_t t, bool d);
+    KeyEvent* history(int i) { KeyEvent* e = _events; while (e && i) { e = e->getPrev(); i--; }; return e; }
+    KeyEvent* firstEvent() { KeyEvent* e = _events; while (e) { if (e->getPrev() == nullptr) break; e = e->getPrev(); } return e; }
 
     void printStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
 
-    void flush();
   private:
 
     keyswitch_t getSwitch(keycode_t c);
 
-    bool switchChanged(keyswitch_t k);
-    inline bool switchPressed(keyswitch_t k) { return switchChanged(k) && switchIsDown(k); }
-    inline bool switchReleased(keyswitch_t k) { return switchChanged(k) && switchIsUp(k); }
-    inline bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
+    inline bool keyIsDown(keycode_t c) { return switchIsDown(getSwitch(c)); }
+    inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
 
     millis_t _lastScan = 0;
     millis_t _lastFlush = 0;
@@ -131,8 +104,10 @@ class KeyMatrix {
     const keylayout_t* _currentLayout;
     const keylayout_t* _defaultLayout;
 
-    static const uint8_t _historySize = 10;
-    keyevent_t _history[_historySize];
+    KeyEvent* _events = nullptr;
+    KeyEvent* _lastEvent = nullptr;
+
+    static const int _maxEventHistory = 20;
 
     bool _click = true;
 };

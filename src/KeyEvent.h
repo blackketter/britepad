@@ -17,7 +17,6 @@ class KeyEvent {
     millis_t time() { return _time; }
     keyswitch_t key() { return _key; }
     keycode_t code() { return _code; }
-    char character();
     bool pressed() { return _pressed; }
     bool pressed(keycode_t c) { return _pressed && (c==_code); }
     bool released() { return !_pressed; }

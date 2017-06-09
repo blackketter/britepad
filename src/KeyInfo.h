@@ -243,4 +243,6 @@ const keyinfo_t keyInfo[] = {
   { NO_CODE, 0, nullptr, nullptr }
 };
 
+const keycode_t TOTALCODES = sizeof(keyInfo)/sizeof(keyInfo[0]) - 1;  // how many unique codes (not including the end of table marker
+
 #endif // _KeyInfo_

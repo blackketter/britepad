@@ -21,9 +21,12 @@ class TextField : public Widget
     void draw(const char* t);
     void draw(String& s) { draw(s.c_str());}
 
-    bool key(KeyEvent* k);
+    virtual bool key(KeyEvent* k);
 
     void setText(String& s) { _text = s; }
+    void getText(String& s) { s = _text; };
+    void setMaxTextLength(uint16_t len) { _maxLength = len; };
+
     void setColor(color_t fgColor, color_t bgColor) { _fColor = fgColor; _bColor = bgColor; };
     void setColor(color_t c) { _fColor = _bColor = c; };
     void setFColor(color_t c) { _fColor = c; }
@@ -40,6 +43,7 @@ class TextField : public Widget
     color_t _bColor;
     alignment_t _align;
     String _text;
+    uint16_t _maxLength = UINT16_MAX;
 };
 #endif
 

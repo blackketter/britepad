@@ -10,10 +10,25 @@ typedef struct macro_t {
 
 class MacroApp : public BritepadApp {
   public:
-    MacroApp( uint8_t num ) { _macroNum = num; _name += num; }
+    MacroApp( uint8_t num ) {
+      _macroNum = num;
+    }
+
+    uint8_t getNum() { return _macroNum; }
+
     appid_t id() { return ID; };
     static constexpr appid_t ID = "macr";
-    const char* name() { return _name.c_str(); };
+    const char* name() {
+      String prefID(ID);
+      prefID += "n";
+      prefID += _macroNum;
+      if (prefs.read(prefID, _name) == 0) {
+        _name = "Macro ";
+        _name += _macroNum;
+      }
+      return _name.c_str();
+    };
+
     bool canBeInvisible() { return true; }
     BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
 
@@ -24,6 +39,7 @@ class MacroApp : public BritepadApp {
         return screen.grey;
       }
     }
+
     void run() {
       String prefID(ID);
       prefID += _macroNum;
@@ -71,6 +87,14 @@ class MacroApp : public BritepadApp {
       } else {
         return false;
       }
+    }
+
+    void setName(String& name) {
+      _name = name;
+      String prefID(ID);
+      prefID += "n";
+      prefID += _macroNum;
+      prefs.write(prefID, _name);
     }
 
     bool endRecording(bool save) {

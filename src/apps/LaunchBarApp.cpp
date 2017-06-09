@@ -1,9 +1,15 @@
 #include "KeyboardApp.h"
 
+
+void releaseTimerCallback(void* app) {
+  Keyboard.release(MODIFIERKEY_LEFT_GUI);
+}
+
 class LaunchBarApp : public KeyboardApp {
 
   private:
     static const millis_t releaseTimeout = 1000;
+    Timer releaseTimer;
 
   public:
     appid_t id() { return ID; };
@@ -12,22 +18,21 @@ class LaunchBarApp : public KeyboardApp {
 
     void idle(KeyEvent* key) {
       if (getEnabled(KEYBOARD_MODE)) {
-        static millis_t cmdHeld = 0;
 
           // a little logic here for Launchbar:
           // multiple taps selects running apps, tapping any other key switches apptoday
           // arrow keys work
         if (key->pressed(KEY_LAUNCHBAR)) {
-          if (!cmdHeld) {
+          if (!releaseTimer.isRunning()) {
             Keyboard.press(MODIFIERKEY_LEFT_GUI);
           }
           Keyboard.press(KEY_SPACE);
-          Keyboard.release(KEY_SPACE);
         } else if (key->released(KEY_LAUNCHBAR)) {
-          cmdHeld = Uptime::millis();
-        } else if (cmdHeld &&
+          releaseTimer.setMillis(releaseTimeout, releaseTimerCallback, (void*)this);
+          Keyboard.release(KEY_SPACE);
+        } else if (releaseTimer.isRunning() &&
                    !key->pressed(KEY_LAUNCHBAR) &&
-                   (key->pressed() || (Uptime::millis()-cmdHeld > releaseTimeout))
+                   key->pressed()
                   ) {
 
           // arrow keys keep the gui key held, otherwise we release
@@ -36,10 +41,10 @@ class LaunchBarApp : public KeyboardApp {
                 key->pressed(KEY_LEFT) ||
                 key->pressed(KEY_RIGHT)
               )) {
-            cmdHeld = Uptime::millis();
+            releaseTimer.setMillis(releaseTimeout, releaseTimerCallback, (void*)this);
           } else {
-            Keyboard.release(MODIFIERKEY_LEFT_GUI);
-            cmdHeld = 0;
+            releaseTimer.cancel();
+            releaseTimerCallback(this);
           }
         }
       }

@@ -13,6 +13,10 @@ void TextField::draw(const char* t) {
   getBounds(r);
   screen.pushClipRect(&r);
 
+  if (_bColor != _fColor) {
+    screen.fillScreen(_bColor);
+  }
+
   if (t) {
 
     coord_t x, y;
@@ -41,14 +45,27 @@ void TextField::draw(const char* t) {
     screen.setTextColor(_fColor,_bColor);
     screen.drawText(t);
     screen.setTextAlign();
-  } else {
-    // fill the whole clipped area
-    screen.fillScreen(_bColor);
   }
 
   screen.pushClipRect(&r);
 }
 
 bool TextField::key(KeyEvent* k) {
-
+  if (k && k->pressed()) {
+    console.debugln("got key");
+    char c = keys.getKeyChar(k->code());
+    if (isprint(c) && _text.length()<_maxLength) { // printable character
+      console.debugf("adding char %c\n",c);
+      _text.concat(c);
+      draw();
+      return true;
+    } if (c == 0x08) { // backspace
+      console.debugf("backspace\n");
+      _text.remove(_text.length()-1);
+      draw(nullptr);
+      draw();
+      return true;
+    }
+  }
+  return false;
 }

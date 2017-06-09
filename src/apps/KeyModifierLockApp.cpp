@@ -28,8 +28,10 @@ class KeyModifierLockApp : public KeyboardApp {
 
       if (getEnabled(KEYBOARD_MODE)) {
 
-       // on each key event, reset the unlock timer
-       unlockTimer.setMillis(lockTimeout, unlockTimerCallback, (void*)this);
+       // on each key press event, reset the unlock timer
+       if (key->pressed()) {
+         unlockTimer.setMillis(lockTimeout, unlockTimerCallback, (void*)this);
+       }
 
        lockState state = getLockState(key->code());
 

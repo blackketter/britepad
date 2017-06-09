@@ -213,20 +213,41 @@ uint8_t KeyMatrix::getKeyHeight(keyswitch_t k) {
   return 0;
 }
 
-const keyinfo_t* KeyMatrix::getKeyInfo(keycode_t c) {
+int KeyMatrix::getKeyInfoIndex(keycode_t c) {
   int i = 0;
   while (keyInfo[i].code != NO_CODE) {
     if (keyInfo[i].code == c) {
-      return &keyInfo[i];
+      return i;
     }
     i++;
   }
-  return nullptr;
+  return i;
+}
+
+const keyinfo_t* KeyMatrix::getKeyInfo(keycode_t c) {
+
+  int i = getKeyInfoIndex(c);
+
+  if (keyInfo[i].code == NO_CODE) {
+    return nullptr;
+  } else {
+    return &keyInfo[i];
+  }
 }
 
 char KeyMatrix::getKeyChar(keycode_t c) {
   const keyinfo_t* info = getKeyInfo(c);
   if (info) {
+    bool shifted = keyIsDown(MODIFIERKEY_LEFT_SHIFT) || keyIsDown(MODIFIERKEY_RIGHT_SHIFT);
+    if (shifted) {
+      int i = 0;
+      while (shiftedKeys[i].code != NO_CODE) {
+        if (shiftedKeys[i].code == c) {
+          return shiftedKeys[i].c;
+        }
+        i++;
+      }
+    }
     return info->c;
   } else {
     return 0;
@@ -242,7 +263,7 @@ const icon_t KeyMatrix::getKeyIcon(keycode_t c) {
   }
 }
 
-bool KeyMatrix::getKeyModifier(keycode_t c) {
+modifierkey_t KeyMatrix::getKeyModifier(keycode_t c) {
   const keyinfo_t* info = getKeyInfo(c);
   if (info) {
     return info->modifier;

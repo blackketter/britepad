@@ -100,7 +100,7 @@ class BritepadApp {
     virtual color_t statusBarFGColor() { return screen.luminance(statusBarBGColor()) > 127 ? screen.black : screen.white; } // color of text, graphics on status bar
     virtual const char* statusBarTitle() { return name(); }
 
-    void drawInfoBar(bool update);
+    void drawInfoBar(bool update = false);
     virtual bool displaysInfoBar() { return infoBarText() != nullptr; };
     virtual color_t infoBarBGColor() { return bgColor(); }
     virtual color_t infoBarFGColor() { return screen.luminance(infoBarBGColor()) > 127 ? screen.grey : screen.lightgrey; }  // info text is faded, by default

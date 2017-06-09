@@ -52,9 +52,10 @@ class KeyMatrix {
     bool isSoftKeyCode(keycode_t c) { return c <= MAX_SOFT_KEY; }
 
     const keyinfo_t* getKeyInfo(keycode_t c);
+    int getKeyInfoIndex(keycode_t c);
     char getKeyChar(keycode_t c);
     const icon_t getKeyIcon(keycode_t c);
-    bool getKeyModifier(keycode_t c);
+    modifierkey_t getKeyModifier(keycode_t c);
     const char* getKeyLabel(keycode_t c);
 
     void truncateHistory();

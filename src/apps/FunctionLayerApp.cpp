@@ -42,12 +42,12 @@ class FunctionLayerApp : public KeyboardApp {
     void idle(KeyEvent* key) {
       if (getEnabled(KEYBOARD_MODE)) {
         // switch to the function layer
-        if (key->pressed(KEY_LEFT_FN) || key->pressed(KEY_RIGHT_FN)) {
+        if (key->pressed(KEY_LEFT_FN)) {
           if (keys.getOverlay() != functionOverlay) {
             keys.setOverlay(functionOverlay);
           }
         } else if (
-                   (key->released(KEY_LEFT_FN) || key->released(KEY_RIGHT_FN))  // released fn key
+                   (key->released(KEY_LEFT_FN))  // released fn key
                   ) {
                 keys.setOverlay();
         }

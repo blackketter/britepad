@@ -12,6 +12,7 @@ enum AppMode {
   INACTIVE_MODE = 8,
   KEYBOARD_MODE = 16,
   INVISIBLE_MODE = 32,
+  SETUP_MODE = 64,
   ANY_MODE = 255
 };
 

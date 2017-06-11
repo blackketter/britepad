@@ -3,21 +3,6 @@
 #include "ScreensaverApp.h"
 #include "widgets/AppButton.h"
 
-enum screenids {
-  FIRST_SCREEN,
-  DEBUG_SCREEN = FIRST_SCREEN,
-  MICE_SCREEN,
-  CLOCKS_SCREEN,
-  SCREENSAVERS_SCREEN,
-  KEYBOARD_SCREEN,
-  SETTINGS_SCREEN,
-  HOME_SCREEN,
-  TIMERS_SCREEN,
-  APPS_SCREEN,
-  LAST_SCREEN = APPS_SCREEN,
-  TOTAL_SCREENS,
-  NO_SCREEN
-};
 
 keycode_t launchKeys[] = {
 KEY_Q, KEY_W, KEY_E, KEY_R,
@@ -35,6 +20,7 @@ screen_t screens[] = {
   { HOME_SCREEN,"Home",nullptr,KEY_APP,INTERACTIVE_MODE,Screen::darkergreen},
   { TIMERS_SCREEN,"Timers",nullptr,TIMER_APP,INTERACTIVE_MODE,Screen::darkerblue},
   { APPS_SCREEN,"Apps",nullptr,INTERACTIVE_APP,INTERACTIVE_MODE,Screen::darkergrey},
+  { MACROS_SCREEN, "Macros",nullptr, MACROS_APP,INTERACTIVE_MODE,Screen::darkergreen},
   { NO_SCREEN,nullptr,nullptr,INTERACTIVE_APP,INTERACTIVE_MODE,Screen::darkergrey}
 };
 
@@ -124,7 +110,10 @@ void LauncherApp::begin(AppMode asMode) {
   Keyboard.press(KEY_LEFT_SHIFT);
   Keyboard.release(KEY_LEFT_SHIFT);
 
-  if (clock.now() - lastBegin < 2) {
+  if (launch_screen != NO_SCREEN) {
+    setCurrentScreenID(launch_screen);
+    launch_screen= NO_SCREEN;
+  } else if (clock.now() - lastBegin < 2) {
     // launching twice quickly resets to default screen
     setCurrentScreenID(HOME_SCREEN);
   } else if (clock.now() - lastRun > resetScreenTimeout) {
@@ -177,7 +166,8 @@ void LauncherApp::run() {
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
     if (pad.released(SCREEN_PAD) || (key && (key->released(KEY_SPACE) || key->released(KEY_RETURN)))) {
-      launchApp(launchOnRelease, getCurrentScreen()->mode);
+      AppMode runMode = launchOnRelease->canBeSetup() ? SETUP_MODE : getCurrentScreen()->mode;
+      launchApp(launchOnRelease, runMode);
       britepad.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
       launchOnRelease = nullptr;
     }
@@ -241,7 +231,7 @@ void LauncherApp::run() {
     b = (AppButton*)buttons->heldButton();
     if (b && b->getApp()) {
       BritepadApp* launched = b->getApp();
-      if (launched->canBeInvisible()) {
+      if (!launched->canBeSetup() && launched->canBeInvisible()) {
         launched->begin(INVISIBLE_MODE);
         launched->run();
         launched->end();
@@ -330,6 +320,15 @@ void LauncherApp::end() {
 void LauncherApp::idle(KeyEvent* key) {
   if (key->pressed(KEY_EXIT)) {
     britepad.currentApp()->exit();
+  } else if (key->pressed(KEY_RIGHT_FN)) {
+    if (!isCurrentApp()) {
+      setLaunchScreen(MACROS_SCREEN);
+      launch();
+    }
+  } else if (key->released(KEY_RIGHT_FN)) {
+    if (isCurrentApp()) {
+      exit();
+    }
   }
 }
 

@@ -143,6 +143,8 @@ bool BritepadApp::canBeAppMode(AppMode b) {
       return canBeMouse();
     case INTERACTIVE_MODE:
       return canBeInteractive();
+    case SETUP_MODE:
+      return canBeSetup();
     case INACTIVE_MODE:
       return true;
     default:

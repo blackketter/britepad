@@ -7,7 +7,7 @@
 class Britepad;
 class AppButton;
 
-// Apps are of particular types, which may (for example) have them automatically placed on a screen
+// Apps are of particular types, which may (for example) have them automatically placed on the launcher
 enum AppType {
   NO_APP_TYPE = 0,
   DEBUG_APP = 1,
@@ -19,6 +19,7 @@ enum AppType {
   TIMER_APP = 64,
   KEY_APP = 128,
   KEYBOARD_APP = 256,
+  MACROS_APP = 512,
 };
 
 class BritepadApp {
@@ -76,6 +77,7 @@ class BritepadApp {
     virtual bool canBeScreensaver() { return false; }
     virtual bool canBeInteractive() { return true; }
     virtual bool canBeMouse() { return false; }
+    virtual bool canBeSetup() { return false; }
     virtual bool canBeInvisible() { return false; }     // has no UI
     virtual bool usesKeyboard() { return false; }
 

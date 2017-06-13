@@ -10,7 +10,7 @@ class KeyboardViewerApp : public KeyboardApp {
     void begin(AppMode asMode);
     void end();
     void run();
-    void idle(KeyEvent* key);
+    void event(KeyEvent* key);
 
     const char* name() { return "Keys"; };
     appid_t id() { return ID; };

@@ -43,7 +43,8 @@ class Britepad {
     time_t getScreensaverSwitchInterval();
     void setScreensaverSwitchInterval(time_t newInterval);
     void resetScreensaver(millis_t dur = screensaverDelay) { disableScreensaversUntil = Uptime::millis() + dur; }
-    void idleApps(KeyEvent* e);
+    void event(KeyEvent* e);
+    void eventEarly(KeyEvent* e);
 
   private:
     BritepadApp* currApp = nullptr;

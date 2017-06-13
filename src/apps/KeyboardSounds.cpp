@@ -41,7 +41,7 @@ class KeyboardSoundsApp : public BritepadApp {
    }
 
 
-    void idle(KeyEvent* key) {
+    void eventEarly(KeyEvent* key) {
       if (_soundsEnabled) {
 
         if (key->pressed()) {

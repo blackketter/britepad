@@ -143,7 +143,7 @@ void Sound::bell(millis_t ms, float freq)
     envelopes[beeper].noteOn();
     AudioInterrupts();
     envelopeTimer[beeper].setMillis(ms, &noteOff, (void*)(&envelopes[beeper]));
-    console.debugf("bell (%d) freq: %f\n", beeper, freq);
+//    console.debugf("bell (%d) freq: %f\n", beeper, freq);
   }
 }
 

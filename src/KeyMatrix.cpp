@@ -297,6 +297,7 @@ KeyEvent* KeyMatrix::getNextEvent() {
   }
   if (next) {
     _lastEvent = next;
+    britepad.event(next);
   }
   return next;
 }
@@ -368,7 +369,7 @@ void KeyMatrix::addEvent(keyswitch_t k, keycode_t c, millis_t t, bool d) {
   }
   _events = e;
 //  console.debugln("idling on new event");
-  britepad.idleApps(e);
+  britepad.eventEarly(e);
 
 //  console.debugln("truncating");
   truncateHistory();

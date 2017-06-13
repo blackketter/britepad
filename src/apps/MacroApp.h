@@ -137,7 +137,7 @@ class MacroApp : public BritepadApp {
       console.debugln("start recording");
     }
 
-    void idle(KeyEvent* key) {
+    void event(KeyEvent* key) {
       if (isCurrentApp() && isRecording()) {
         recordEvent(key);
       }

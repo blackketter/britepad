@@ -16,7 +16,7 @@ class LaunchBarApp : public KeyboardApp {
     static constexpr appid_t ID = "lbar";
     const char* name() { return "Launch Bar"; };
 
-    void idle(KeyEvent* key) {
+    void event(KeyEvent* key) {
       if (getEnabled(KEYBOARD_MODE)) {
 
           // a little logic here for Launchbar:

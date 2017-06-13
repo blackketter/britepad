@@ -30,7 +30,7 @@ void KeyboardViewerApp::draw() {
   buttons->draw();
 };
 
-void KeyboardViewerApp::idle(KeyEvent* key) {
+void KeyboardViewerApp::event(KeyEvent* key) {
   if (getEnabled(KEYBOARD_MODE)) {
 //    console.debugln("keyboardviewerapp idle");
     if (!isCurrentApp() && keys.getOverlay()) {

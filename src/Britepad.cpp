@@ -194,20 +194,20 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
   if (currApp) {
     currApp->drawBars();
-    console.debugf("Begin: %s\n", currApp->name());
-    currApp->begin(asMode);
+    console.debugf("Begin: %s in ", currApp->name());
     if (asMode == SCREENSAVER_MODE) {
+      console.println("screensaver mode");
       screensaverStartedTime = pad.time();
-      console.debugln(" screensaver mode");
     } else if (asMode == INTERACTIVE_MODE) {
+      console.println("interactive mode");
       resetScreensaver();
-      console.debugln(" interactive mode");
     } else if (asMode == MOUSE_MODE) {
-      console.debugln(" mouse mode");
+      console.println("mouse mode");
     } else {
-      console.debugf(" mode: %d\n", asMode);
+      console.printf("mode: %d\n", asMode);
     }
-  }
+    currApp->begin(asMode);
+    }
 }
 
 
@@ -288,10 +288,18 @@ void Britepad::idle() {
 
 };
 
-void Britepad::idleApps(KeyEvent* e) {
+void Britepad::event(KeyEvent* e) {
   BritepadApp* anApp = appList;
   while (anApp != nullptr) {
-    anApp->idle(e);
+    anApp->event(e);
+    anApp = anApp->getNextApp();
+  }
+}
+
+void Britepad::eventEarly(KeyEvent* e) {
+  BritepadApp* anApp = appList;
+  while (anApp != nullptr) {
+    anApp->eventEarly(e);
     anApp = anApp->getNextApp();
   }
 }

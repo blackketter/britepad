@@ -140,7 +140,7 @@ void LauncherApp::begin(AppMode asMode) {
 }
 
 void LauncherApp::drawButtons() {
-  console.debugln("drawing buttons");
+//  console.debugln("drawing buttons");
   buttons->setBounds(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight());
   buttons->draw();
 }
@@ -317,7 +317,7 @@ void LauncherApp::end() {
   BritepadApp::end();
 }
 
-void LauncherApp::idle(KeyEvent* key) {
+void LauncherApp::event(KeyEvent* key) {
   if (key->pressed(KEY_EXIT)) {
     britepad.currentApp()->exit();
   } else if (key->pressed(KEY_RIGHT_FN)) {

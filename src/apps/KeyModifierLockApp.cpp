@@ -34,7 +34,7 @@ class KeyModifierLockApp : public KeyboardApp {
        }
 
         if (!key->isModifier()) {
-          if (key->released()) {
+          if (key->released() && !key->isMouseKey()) {
             unlockAll();
           }
         } else {

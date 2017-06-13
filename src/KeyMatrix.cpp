@@ -323,6 +323,56 @@ void KeyMatrix::sendKey(keycode_t code, boolean pressed) {
       Keyboard.release(code);
 //      console.debugf("key release[%d]\n", code);
     }
+  } else {
+    switch (code) {
+      case KEY_MOUSE_MOVE_UP:
+        if (pressed) Mouse.move(0, -10);
+        break;
+      case KEY_MOUSE_MOVE_DOWN:
+        if (pressed) Mouse.move(0, 10);
+        break;
+      case KEY_MOUSE_MOVE_LEFT:
+        if (pressed) Mouse.move(-10, 0);
+        break;
+      case KEY_MOUSE_MOVE_RIGHT:
+        if (pressed) Mouse.move(10, 0);
+        break;
+      case KEY_MOUSE_BUTTON_LEFT:
+        pressed ? Mouse.press(MOUSE_LEFT) : Mouse.release(MOUSE_LEFT);
+        break;
+      case KEY_MOUSE_BUTTON_MIDDLE:
+        pressed ? Mouse.press(MOUSE_MIDDLE) : Mouse.release(MOUSE_MIDDLE);
+        break;
+      case KEY_MOUSE_BUTTON_RIGHT:
+        pressed ? Mouse.press(MOUSE_RIGHT) : Mouse.release(MOUSE_RIGHT);
+        break;
+      case KEY_MOUSE_BUTTON_BACK:
+        pressed ? Mouse.press(MOUSE_BACK) : Mouse.release(MOUSE_BACK);
+        break;
+      case KEY_MOUSE_BUTTON_FORWARD:
+        pressed ? Mouse.press(MOUSE_FORWARD) : Mouse.release(MOUSE_FORWARD);
+        break;
+      case KEY_MOUSE_SCROLL_UP:
+        if (pressed) Mouse.scroll(-1, 0);
+        break;
+      case KEY_MOUSE_SCROLL_DOWN:
+        if (pressed) Mouse.scroll(1, 0);
+        break;
+      case KEY_MOUSE_SCROLL_LEFT:
+        if (pressed) Mouse.scroll(0, -1);
+        break;
+      case KEY_MOUSE_SCROLL_RIGHT:
+        if (pressed) Mouse.scroll(0, 1);
+        break;
+      case MODIFIERKEY_MOUSE:
+        break;
+      case MODIFIERKEY_MOUSE_SCROLL:
+        break;
+      default:
+        // ignore
+        break;
+
+    }
   }
 }
 

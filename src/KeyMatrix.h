@@ -17,8 +17,8 @@ class KeyMatrix {
     const keymap_t* getMap() { return _currentMap; }
     const keymap_t* getDefaultMap() { return _defaultMap; }
 
-    const keyoverlay_t* getOverlay() { return _currentOverlay; }
     const void setOverlay(const keyoverlay_t* o = nullptr) { _currentOverlay = o; }
+    const keyoverlay_t* getOverlay() { return _currentOverlay; }
     keycode_t lookupOverlay(keycode_t c);
 
     void setLayout(const keylayout_t* l = nullptr);   // pass nullptr to reset to default layout
@@ -26,9 +26,9 @@ class KeyMatrix {
     const keylayout_t* getDefaultLayout() { return _defaultLayout; }
 
     keyswitch_t update();  //returns number of keys changed
+
     keyswitch_t sendKeys();  // send key events to host, returns number of key events sent
     void sendKey(keycode_t code, boolean pressed);
-    KeyEvent* getNextEvent();
 
     keyswitch_t numKeys() { return _numColumns * _numRows; }  // returns the total number of keys in the matrix
     uint8_t getWidth();
@@ -41,24 +41,21 @@ class KeyMatrix {
     uint8_t getKeyHeight(keyswitch_t k);
     uint8_t getKeyX(keyswitch_t k);
     uint8_t getKeyY(keyswitch_t k);
+    keycode_t getCode(keyswitch_t k);
+
     inline bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
     inline bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
 
     bool keyDoubleTapped(keycode_t c);
     bool keyTapped(keycode_t c);
 
-    keycode_t getCode(keyswitch_t k);
-
     bool isSoftKeyCode(keycode_t c) { return c <= MAX_SOFT_KEY; }
-
-    const keyinfo_t* getKeyInfo(keycode_t c);
-    int getKeyInfoIndex(keycode_t c);
     char getKeyChar(keycode_t c);
     const icon_t getKeyIcon(keycode_t c);
     modifierkey_t getKeyModifier(keycode_t c);
     const char* getKeyLabel(keycode_t c);
 
-    void truncateHistory();
+    KeyEvent* getNextEvent();
     void addEvent(keyswitch_t k, keycode_t c, millis_t t, bool d);
     KeyEvent* history(int i) { KeyEvent* e = _events; while (e && i) { e = e->getPrev(); i--; }; return e; }
     KeyEvent* firstEvent() { KeyEvent* e = _events; while (e) { if (e->getPrev() == nullptr) break; e = e->getPrev(); } return e; }
@@ -68,6 +65,9 @@ class KeyMatrix {
   private:
 
     keyswitch_t getSwitch(keycode_t c);
+    void truncateHistory();
+    const keyinfo_t* getKeyInfo(keycode_t c);
+    int getKeyInfoIndex(keycode_t c);
 
     inline bool keyIsDown(keycode_t c) { return switchIsDown(getSwitch(c)); }
     inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }

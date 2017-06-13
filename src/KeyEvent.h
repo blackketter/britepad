@@ -38,6 +38,10 @@ class KeyEvent {
       return false;
     }
 
+    bool isMouseKey() {
+      return _code >= MIN_MOUSE_KEY && _code <= MAX_MOUSE_KEY;
+    }
+
   private:
     millis_t _time;
     keyswitch_t _key;

@@ -18,6 +18,26 @@ const keycode_t KEY_RIGHT_PAD = 205;
 
 const keycode_t KEY_EXIT = 206;
 const keycode_t KEY_LAUNCHBAR = 207;
+
+const keycode_t MIN_MOUSE_KEY             = 208;
+const keycode_t KEY_MOUSE_MOVE_UP         = 208;
+const keycode_t KEY_MOUSE_MOVE_DOWN       = 209;
+const keycode_t KEY_MOUSE_MOVE_LEFT       = 210;
+const keycode_t KEY_MOUSE_MOVE_RIGHT      = 211;
+const keycode_t KEY_MOUSE_BUTTON_LEFT     = 212;
+const keycode_t KEY_MOUSE_BUTTON_MIDDLE   = 213;
+const keycode_t KEY_MOUSE_BUTTON_RIGHT    = 214;
+const keycode_t KEY_MOUSE_BUTTON_BACK     = 215;
+const keycode_t KEY_MOUSE_BUTTON_FORWARD  = 216;
+const keycode_t KEY_MOUSE_SCROLL_UP       = 217;
+const keycode_t KEY_MOUSE_SCROLL_DOWN     = 218;
+const keycode_t KEY_MOUSE_SCROLL_LEFT     = 219;
+const keycode_t KEY_MOUSE_SCROLL_RIGHT    = 220;
+const keycode_t MAX_MOUSE_KEY             = 220;
+
+const keycode_t MODIFIERKEY_MOUSE         = 221;
+const keycode_t MODIFIERKEY_MOUSE_SCROLL  = 222;
+
 const keycode_t MAX_SOFT_KEY = 255;
 
 typedef uint8_t modifierkey_t;
@@ -28,7 +48,9 @@ enum modifierKeys {
   MODIFIER_GUI = 2,
   MODIFIER_ALT = 4,
   MODIFIER_CTRL = 8,
-  MODIFIER_FN = 16
+  MODIFIER_FN = 16,
+  MODIFIER_MOUSE = 32,
+  MODIFIER_MOUSE_SCROLL = 64
 };
 
 typedef struct modifiedkey_t {
@@ -99,6 +121,23 @@ const keyinfo_t keyInfo[] = {
 // nonstandard keys
   { KEY_LEFT_FN, 0, "fn", nullptr, MODIFIER_FN },
   { KEY_RIGHT_FN, 0, "fn", nullptr, MODIFIER_FN },
+
+  { KEY_MOUSE_MOVE_UP, 0, "mouse up", mouseUpIcon, false },
+  { KEY_MOUSE_MOVE_DOWN, 0, "mouse down", mouseDownIcon, false },
+  { KEY_MOUSE_MOVE_LEFT, 0, "mouse left", mouseLeftIcon, false },
+  { KEY_MOUSE_MOVE_RIGHT, 0, "mouse right", mouseRightIcon, false },
+  { KEY_MOUSE_BUTTON_LEFT, 0, "mouse button left", mouseButtonLeftIcon, false },
+  { KEY_MOUSE_BUTTON_MIDDLE, 0, "mouse button middle", mouseButtonMiddleIcon, false },
+  { KEY_MOUSE_BUTTON_RIGHT, 0, "mouse button right", mouseButtonRightIcon, false },
+  { KEY_MOUSE_BUTTON_BACK, 0, "mouse button back", mouseButtonBackIcon, false },
+  { KEY_MOUSE_BUTTON_FORWARD, 0, "mouse button fwd", mouseButtonFwdIcon, false },
+  { KEY_MOUSE_SCROLL_UP, 0, "mouse scroll up", mouseScrollUpIcon, false },
+  { KEY_MOUSE_SCROLL_DOWN, 0, "mouse scroll down", mouseScrollDownIcon, false },
+  { KEY_MOUSE_SCROLL_LEFT, 0, "mouse scroll left", mouseScrollLeftIcon, false },
+  { KEY_MOUSE_SCROLL_RIGHT, 0, "mouse scroll right", mouseScrollRightIcon, false },
+  { MODIFIERKEY_MOUSE, 0, "mouse", mouseIcon, MODIFIER_MOUSE },
+  { MODIFIERKEY_MOUSE_SCROLL, 0, "mouse scroll", mouseScrollIcon, MODIFIER_MOUSE_SCROLL },
+
 // standard keys
   { MODIFIERKEY_LEFT_CTRL, 0, "ctrl", controlIcon, MODIFIER_CTRL },
   { MODIFIERKEY_LEFT_SHIFT, 0, "shift", shiftIcon, MODIFIER_SHIFT },

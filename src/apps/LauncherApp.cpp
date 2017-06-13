@@ -136,7 +136,7 @@ void LauncherApp::begin(AppMode asMode) {
 
   drawButtons();
   lastBegin = clock.now();
-  console.debugln("done LauncherApp::begin");
+//  console.debugln("done LauncherApp::begin");
 }
 
 void LauncherApp::drawButtons() {

@@ -3,11 +3,14 @@
 #include "ErgodoxLayout.h"
 #include "KeyInfo.h"
 
+void repeatTimerCallback(void* km) { ((KeyMatrix*)km)->repeat(); };
+
 KeyMatrix::KeyMatrix(const keymap_t* defaultMap, const keylayout_t* defaultLayout ) {
   _defaultLayout = defaultLayout;
   _defaultMap = defaultMap;
   setMap();  // set to default map
   setLayout(); // set to default layout
+  _repeatTimer.setMillis(_repeatInterval, repeatTimerCallback, this, true);
 }
 
 // Port A is columns, Port B is rows.  Diodes have cathodes (positive) on A
@@ -318,10 +321,10 @@ void KeyMatrix::sendKey(keycode_t code, boolean pressed) {
   if (!isSoftKeyCode(code)) {
     if (pressed) {
       Keyboard.press(code);
-//      console.debugf("key press[%d]\n", code);
+      //console.debugf("key press[%d]\n", code);
     } else {
       Keyboard.release(code);
-//      console.debugf("key release[%d]\n", code);
+      //console.debugf("key release[%d]\n", code);
     }
   } else {
     switch (code) {
@@ -373,6 +376,33 @@ void KeyMatrix::sendKey(keycode_t code, boolean pressed) {
         break;
 
     }
+  }
+}
+
+const keycode_t mouseRepeatKeys[] = {
+  KEY_MOUSE_MOVE_UP,
+  KEY_MOUSE_MOVE_DOWN,
+  KEY_MOUSE_MOVE_LEFT,
+  KEY_MOUSE_MOVE_RIGHT,
+  KEY_MOUSE_SCROLL_UP,
+  KEY_MOUSE_SCROLL_DOWN,
+  KEY_MOUSE_SCROLL_LEFT,
+  KEY_MOUSE_SCROLL_RIGHT,
+  NO_CODE
+};
+
+void KeyMatrix::repeat() {
+//  console.debugln("KeyMatrix::repeat()");
+  int i = 0;
+  keycode_t c = mouseRepeatKeys[i];
+  while (c != NO_CODE) {
+    KeyEvent* e = lastEvent(c);
+    if (e && e->pressed() && (Uptime::millis() - e->time() > _repeatStart)) {
+//      console.debugf(" repeating code:%d\n",c);
+      sendKey(c,0);
+      sendKey(c,1);
+    }
+    c = mouseRepeatKeys[i++];
   }
 }
 

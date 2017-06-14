@@ -63,6 +63,9 @@ class FunctionLayerApp : public KeyboardApp {
         if (key->pressed(KEY_LEFT_FN)) {
           if (keys.getOverlay() != functionOverlay) {
             keys.setOverlay(functionOverlay);
+            // jiggle the mouse to make cursor show up
+            Mouse.move(-1, 0);
+            Mouse.move(1, 0);
           }
         } else if (
                    (key->released(KEY_LEFT_FN))  // released fn key

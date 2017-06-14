@@ -29,18 +29,16 @@ class KeyModifierLockApp : public KeyboardApp {
       if (getEnabled(KEYBOARD_MODE)) {
 
        // on each key press event, reset the unlock timer
-       if (key->pressed()) {
-         unlockTimer.setMillis(lockTimeout, unlockTimerCallback, (void*)this);
-       }
+       unlockTimer.setMillis(lockTimeout, unlockTimerCallback, (void*)this);
 
         if (!key->isModifier()) {
-          if (key->released() && !key->isMouseKey()) {
+          if (!key->isMouseKey()) {
             unlockAll();
           }
         } else {
           lockState state = getLockState(key->code());
 
-//          console.debugf("modifier: code:%d pressed:%d modifier:%d state: %d\n", key->code(),key->pressed(),key->isModifier(), state);
+          //console.debugf("modifier: code:%d pressed:%d modifier:%d state: %d\n", key->code(),key->pressed(),key->isModifier(), state);
 
           if (key->pressed()) {
             if (state == unlocked) {
@@ -58,7 +56,7 @@ class KeyModifierLockApp : public KeyboardApp {
           }
         }
 
-//        console.debugln("reset unlock timeout");
+        //console.debugln("reset unlock timeout");
         sendUpdates();
       }
     };
@@ -77,15 +75,16 @@ class KeyModifierLockApp : public KeyboardApp {
     };
 
     void unlockAll() {
-          flipLockStates(locked, toUnlock);
-          flipLockStates(toLock, unlocked);
+      //console.debugln("unlock all!");
+      flipLockStates(locked, toUnlock);
+      flipLockStates(toLock, unlocked);
     }
 
     void sendUpdates() {
         for (int i = 0; i < modifierCount; i++) {
           if (state[i] == toUnlock) {
             state[i] = unlocked;
-//            console.debugf("unlocking %d\n",modifierKeys[i]);
+            //console.debugf("unlocking %d\n",modifierKeys[i]);
             keys.addEvent(NO_KEY, modifierKeys[i], Uptime::millis(), false);
           }
         }
@@ -113,12 +112,12 @@ class KeyModifierLockApp : public KeyboardApp {
 
     lockState getLockState(keycode_t c) {
       lockState l = state[getModifierIndex(c)];
-//      console.debugf("getting %d lock state of %d\n",c, l);
+      //console.debugf("getting %d lock state of %d\n",c, l);
       return l;
     };
 
     void setLockState(keycode_t c, lockState l) {
-//      console.debugf("setting %d lock state to %d\n",c, l);
+      //console.debugf("setting %d lock state to %d\n",c, l);
       state[getModifierIndex(c)] = l;
     };
 
@@ -147,7 +146,7 @@ class KeyModifierLockApp : public KeyboardApp {
 };
 
 void unlockTimerCallback(void* app) {
-//  console.debugln("unlock timer callback");
+  //console.debugln("unlock timer callback");
   ((KeyModifierLockApp*)app)->unlock();
 }
 

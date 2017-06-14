@@ -7,6 +7,7 @@
 #include "KeyInfo.h"
 #include "KeyLayout.h"
 #include "KeyEvent.h"
+#include "Timer.h"
 
 class KeyMatrix {
   public:
@@ -59,6 +60,9 @@ class KeyMatrix {
     void addEvent(keyswitch_t k, keycode_t c, millis_t t, bool d);
     KeyEvent* history(int i) { KeyEvent* e = _events; while (e && i) { e = e->getPrev(); i--; }; return e; }
     KeyEvent* firstEvent() { KeyEvent* e = _events; while (e) { if (e->getPrev() == nullptr) break; e = e->getPrev(); } return e; }
+    KeyEvent* lastEvent(keycode_t c) { KeyEvent* e = _events; while (e) { if (e->code() == c) break; e = e->getPrev();  }; return e; }
+
+    void repeat();  // only called by timer callback function
 
     void printStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
 
@@ -105,10 +109,13 @@ class KeyMatrix {
     const keylayout_t* _currentLayout;
     const keylayout_t* _defaultLayout;
 
+    static const int _maxEventHistory = 20;
     KeyEvent* _events = nullptr;
     KeyEvent* _lastEvent = nullptr;
 
-    static const int _maxEventHistory = 20;
+    Timer _repeatTimer;
+    static const millis_t _repeatInterval = 50;
+    static const millis_t _repeatStart = 500;
 
     bool _click = true;
 };

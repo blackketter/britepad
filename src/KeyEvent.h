@@ -41,6 +41,9 @@ class KeyEvent {
     bool isMouseKey() {
       return _code >= MIN_MOUSE_KEY && _code <= MAX_MOUSE_KEY;
     }
+    bool isMouseMoveKey() {
+      return (_code == KEY_MOUSE_MOVE_UP || _code == KEY_MOUSE_MOVE_DOWN || _code == KEY_MOUSE_MOVE_LEFT || _code == KEY_MOUSE_MOVE_RIGHT);
+    }
 
   private:
     millis_t _time;

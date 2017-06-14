@@ -329,16 +329,52 @@ void KeyMatrix::sendKey(keycode_t code, boolean pressed) {
   } else {
     switch (code) {
       case KEY_MOUSE_MOVE_UP:
-        if (pressed) Mouse.move(0, -10);
+        if (pressed) {
+          if (_mouseUpDownAccel >= 0) {
+            _mouseUpDownAccel = -10;
+          } else if (_mouseUpDownAccel > -100) {
+            _mouseUpDownAccel += _mouseUpDownAccel / 10;
+          }
+          Mouse.move(0, _mouseUpDownAccel);
+        } else {
+          _mouseUpDownAccel = 0;
+        }
         break;
       case KEY_MOUSE_MOVE_DOWN:
-        if (pressed) Mouse.move(0, 10);
+        if (pressed) {
+          if (_mouseUpDownAccel <= 0) {
+            _mouseUpDownAccel = 10;
+          } else if (_mouseUpDownAccel < 100) {
+            _mouseUpDownAccel += _mouseUpDownAccel / 10;
+          }
+          Mouse.move(0, _mouseUpDownAccel);
+        } else {
+          _mouseUpDownAccel = 0;
+        }
         break;
       case KEY_MOUSE_MOVE_LEFT:
-        if (pressed) Mouse.move(-10, 0);
+        if (pressed) {
+          if (_mouseLeftRightAccel >= 0) {
+            _mouseLeftRightAccel = -10;
+          } else if (_mouseLeftRightAccel > -100) {
+            _mouseLeftRightAccel += _mouseLeftRightAccel / 10;
+          }
+          Mouse.move(_mouseLeftRightAccel, 0);
+        } else {
+          _mouseLeftRightAccel = 0;
+        }
         break;
       case KEY_MOUSE_MOVE_RIGHT:
-        if (pressed) Mouse.move(10, 0);
+        if (pressed) {
+          if (_mouseLeftRightAccel <= 0) {
+            _mouseLeftRightAccel = 10;
+          } else if (_mouseLeftRightAccel < 100) {
+            _mouseLeftRightAccel += _mouseLeftRightAccel / 10;
+          }
+          Mouse.move(_mouseLeftRightAccel, 0);
+        } else {
+          _mouseLeftRightAccel = 0;
+        }
         break;
       case KEY_MOUSE_BUTTON_LEFT:
         pressed ? Mouse.press(MOUSE_LEFT) : Mouse.release(MOUSE_LEFT);
@@ -395,12 +431,14 @@ void KeyMatrix::repeat() {
 //  console.debugln("KeyMatrix::repeat()");
   int i = 0;
   keycode_t c = mouseRepeatKeys[i];
+  millis_t now = Uptime::millis();
   while (c != NO_CODE) {
     KeyEvent* e = lastEvent(c);
-    if (e && e->pressed() && (Uptime::millis() - e->time() > _repeatStart)) {
+    if (e && e->pressed() && ((now - e->time() > _repeatStart) || ((now - _lastRepeat) < _repeatStart))) {
 //      console.debugf(" repeating code:%d\n",c);
-      sendKey(c,0);
+      if (!e->isMouseMoveKey()) { sendKey(c,0); }
       sendKey(c,1);
+      _lastRepeat = now;
     }
     c = mouseRepeatKeys[i++];
   }

@@ -28,7 +28,7 @@ class KeyModifierLockApp : public KeyboardApp {
 
       if (getEnabled(KEYBOARD_MODE)) {
 
-       // on each key press event, reset the unlock timer
+       // on each key event, reset the unlock timer
        unlockTimer.setMillis(lockTimeout, unlockTimerCallback, (void*)this);
 
         if (!key->isModifier()) {
@@ -41,6 +41,7 @@ class KeyModifierLockApp : public KeyboardApp {
           //console.debugf("modifier: code:%d pressed:%d modifier:%d state: %d\n", key->code(),key->pressed(),key->isModifier(), state);
 
           if (key->pressed()) {
+            unlockTimer.cancel();
             if (state == unlocked) {
               setLockState(key->code(), toLock);
               setModifierState(key->code(), true);
@@ -49,10 +50,18 @@ class KeyModifierLockApp : public KeyboardApp {
             if (state == toLock) {
               setLockState(key->code(), locked);
               key->clear();
+              setModifierState(key->code(), false);
             } else if (state == locked) {
+//              setLockState(key->code(), unlocked);
+//              setModifierState(key->code(), false);
+              setLockState(key->code(), doubleLocked);
+              key->clear();
+            } else if (state == doubleLocked) {
               setLockState(key->code(), unlocked);
+              setModifierState(key->code(), false);
+            } else {
+              setModifierState(key->code(), false);
             }
-            setModifierState(key->code(), false);
           }
         }
 
@@ -72,6 +81,7 @@ class KeyModifierLockApp : public KeyboardApp {
       locked,
       toUnlock,
       toLock,
+      doubleLocked,
     };
 
     void unlockAll() {

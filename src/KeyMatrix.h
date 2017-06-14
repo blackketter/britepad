@@ -116,6 +116,9 @@ class KeyMatrix {
     Timer _repeatTimer;
     static const millis_t _repeatInterval = 50;
     static const millis_t _repeatStart = 500;
+    millis_t _lastRepeat = 0;
+    int8_t _mouseLeftRightAccel = 0;
+    int8_t _mouseUpDownAccel = 0;
 
     bool _click = true;
 };

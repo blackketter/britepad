@@ -61,6 +61,8 @@ class KeyMatrix {
     KeyEvent* history(int i) { KeyEvent* e = _events; while (e && i) { e = e->getPrev(); i--; }; return e; }
     KeyEvent* firstEvent() { KeyEvent* e = _events; while (e) { if (e->getPrev() == nullptr) break; e = e->getPrev(); } return e; }
     KeyEvent* lastEvent(keycode_t c) { KeyEvent* e = _events; while (e) { if (e->code() == c) break; e = e->getPrev();  }; return e; }
+    bool keyIsDown(keycode_t c) { KeyEvent* e = lastEvent(c); return (e && e->pressed()); }
+    inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
 
     void repeat();  // only called by timer callback function
 
@@ -72,9 +74,6 @@ class KeyMatrix {
     void truncateHistory();
     const keyinfo_t* getKeyInfo(keycode_t c);
     int getKeyInfoIndex(keycode_t c);
-
-    inline bool keyIsDown(keycode_t c) { return switchIsDown(getSwitch(c)); }
-    inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
 
     millis_t _lastScan = 0;
     millis_t _lastFlush = 0;

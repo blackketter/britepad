@@ -66,6 +66,7 @@ class LauncherApp : public BritepadApp {
     screenid_t getCurrentScreenID() { return current_screen; }
     void setCurrentScreenID(screenid_t n);
     void pushScreen(direction_t d);
+    void goToScreen(screenid_t s);
     screen_t* getCurrentScreen();
     color_t bgColor();
 
@@ -80,6 +81,7 @@ class LauncherApp : public BritepadApp {
     bool held = false;
     BritepadApp* launchOnRelease = nullptr;
     bool audibleExit = false;
+    bool exitOnRelease = false;
 
     ButtonMatrix* buttons = 0;
 };

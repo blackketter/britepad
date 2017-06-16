@@ -215,6 +215,7 @@ void LauncherApp::run() {
           launched->begin(INVISIBLE_MODE);
           launched->run();
           launched->end();
+          exitOnRelease = true;
         }
         b->draw();
       } else {
@@ -246,42 +247,57 @@ void LauncherApp::run() {
 
   buttonindex_t oldSelection = buttons->getSelected();
   buttonindex_t i = oldSelection;
-  if (key && key->pressed(KEY_UP)) {
-    do {
-      i -= h_buttons;
-      if (i < 0) { i += buttons_per_screen; }
-    } while (buttons->getButton(i, 0) == nullptr);
-    buttons->setSelected(i);
-  }
 
-  if (key && key->pressed(KEY_DOWN)) {
-    do {
-      i += h_buttons;
-      if (i >= buttons_per_screen) { i -= buttons_per_screen; }
-    } while (buttons->getButton(i, 0) == nullptr);
-    buttons->setSelected(i);
-  }
+  if (key) {
+    if (key->pressed(KEY_UP)) {
+      do {
+        i -= h_buttons;
+        if (i < 0) { i += buttons_per_screen; }
+      } while (buttons->getButton(i, 0) == nullptr);
+      buttons->setSelected(i);
+    }
 
-  if (key && key->pressed(KEY_LEFT)) {
-    do {
-      i--;
-      if (i < 0) {
-        pushScreen(DIRECTION_LEFT);
-        i = buttons_per_screen - 1;
+    if (key->pressed(KEY_DOWN)) {
+      do {
+        i += h_buttons;
+        if (i >= buttons_per_screen) { i -= buttons_per_screen; }
+      } while (buttons->getButton(i, 0) == nullptr);
+      buttons->setSelected(i);
+    }
+
+    if (key->pressed(KEY_LEFT)) {
+      do {
+        i--;
+        if (i < 0) {
+          pushScreen(DIRECTION_LEFT);
+          i = buttons_per_screen - 1;
+        }
+      } while (buttons->getButton(i, 0) == nullptr);
+      buttons->setSelected(i);
+    }
+
+    if (key->pressed(KEY_RIGHT)||key->pressed(KEY_TAB)) {
+      do {
+        i++;
+        if (i >= buttons_per_screen) {
+          pushScreen(DIRECTION_RIGHT);
+          i = 0;
+        }
+      } while (buttons->getButton(i, 0) == nullptr);
+      buttons->setSelected(i);
+    }
+
+    if (key->pressed(KEY_RIGHT_FN)) {
+      if (getCurrentScreenID() != MACROS_SCREEN) {
+        goToScreen(MACROS_SCREEN);
+      } else {
+        exit();
       }
-    } while (buttons->getButton(i, 0) == nullptr);
-    buttons->setSelected(i);
-  }
+    }
 
-  if (key && (key->pressed(KEY_RIGHT)||key->pressed(KEY_TAB))) {
-    do {
-      i++;
-      if (i >= buttons_per_screen) {
-        pushScreen(DIRECTION_RIGHT);
-        i = 0;
-      }
-    } while (buttons->getButton(i, 0) == nullptr);
-    buttons->setSelected(i);
+    if (exitOnRelease && (key->released(KEY_RIGHT_FN) || key->released(KEY_EXIT))) {
+      exit();
+    }
   }
 
   if (oldSelection != i) {
@@ -291,15 +307,22 @@ void LauncherApp::run() {
 
 }
 
+void LauncherApp::goToScreen(screenid_t s) {
+  screenid_t curr = getCurrentScreenID();
+  if (s != getCurrentScreenID()) {
+    direction_t d = s > curr ? DIRECTION_RIGHT : DIRECTION_LEFT;
+    setCurrentScreenID(s);
+    sound.swipe(d);
+    screen.pushFill(d, bgColor());
+    drawBars();
+    drawButtons();
+  }
+}
 void LauncherApp::pushScreen(direction_t d) {
     int move = (d == DIRECTION_RIGHT) ? +1 : -1;
     screenid_t newScreen = getCurrentScreenID() + move;
     if (newScreen >= FIRST_SCREEN && newScreen <= LAST_SCREEN) {
-      setCurrentScreenID(newScreen);
-      sound.swipe(d);
-      screen.pushFill(d, bgColor());
-      drawBars();
-      drawButtons();
+      goToScreen(newScreen);
     } else {
       sound.bump();
     }
@@ -313,6 +336,8 @@ void LauncherApp::end() {
     audibleExit = false;
   }
 
+  exitOnRelease = false;
+
   screen.pushFill(DIRECTION_UP, britepad.getLaunchedApp()->bgColor());
   BritepadApp::end();
 }
@@ -324,10 +349,6 @@ void LauncherApp::event(KeyEvent* key) {
     if (!isCurrentApp()) {
       setLaunchScreen(MACROS_SCREEN);
       launch();
-    }
-  } else if (key->released(KEY_RIGHT_FN)) {
-    if (isCurrentApp()) {
-      exit();
     }
   }
 }

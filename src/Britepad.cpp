@@ -420,3 +420,14 @@ time_t Britepad::getScreensaverSwitchInterval() {
 void Britepad::setScreensaverSwitchInterval(time_t newInterval) {
    prefs.write(screensaverSwitchIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
 }
+
+time_t Britepad::getScreensaverStartInterval() {
+  time_t i = defaultScreensaverStartInterval;
+  prefs.read(screensaverStartIntervalPref, sizeof(i), (uint8_t*)&i);
+  return i;
+}
+
+void Britepad::setScreensaverStartInterval(time_t newInterval) {
+   prefs.write(screensaverStartIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
+   resetScreensaver();
+}

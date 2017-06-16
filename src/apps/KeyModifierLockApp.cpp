@@ -28,12 +28,14 @@ class KeyModifierLockApp : public KeyboardApp {
 
       if (getEnabled(KEYBOARD_MODE)) {
 
-       // on each key event, reset the unlock timer
+       // on each key event, restart the unlock timer
        unlockTimer.setMillis(lockTimeout, unlockTimerCallback, (void*)this);
 
         if (!key->isModifier()) {
           if (!key->isMouseKey()) {
             unlockAll();
+          } else {
+            mouseKeyHit = true;
           }
         } else {
           lockState state = getLockState(key->code());
@@ -44,23 +46,24 @@ class KeyModifierLockApp : public KeyboardApp {
             unlockTimer.cancel();
             if (state == unlocked) {
               setLockState(key->code(), toLock);
-              setModifierState(key->code(), true);
             }
           } else {
             if (state == toLock) {
-              setLockState(key->code(), locked);
-              key->clear();
-              setModifierState(key->code(), false);
+              if (mouseKeyHit) {
+                unlockAll();
+                mouseKeyHit = false;
+              } else {
+                setLockState(key->code(), locked);
+                key->clear();
+              }
             } else if (state == locked) {
 //              setLockState(key->code(), unlocked);
-//              setModifierState(key->code(), false);
               setLockState(key->code(), doubleLocked);
               key->clear();
             } else if (state == doubleLocked) {
-              setLockState(key->code(), unlocked);
-              setModifierState(key->code(), false);
-            } else {
-              setModifierState(key->code(), false);
+              flipLockStates(doubleLocked, toUnlock);
+              flipLockStates(locked, toUnlock);
+              flipLockStates(toLock, unlocked);
             }
           }
         }
@@ -85,7 +88,7 @@ class KeyModifierLockApp : public KeyboardApp {
     };
 
     void unlockAll() {
-      //console.debugln("unlock all!");
+      //console.debugln("unlock all!");hhh
       flipLockStates(locked, toUnlock);
       flipLockStates(toLock, unlocked);
     }
@@ -131,12 +134,8 @@ class KeyModifierLockApp : public KeyboardApp {
       state[getModifierIndex(c)] = l;
     };
 
-    void setModifierState(keycode_t c, bool s) {
-      modifierState[getModifierIndex(c)] = s;
-    };
-
     bool getModifierState(int i) {
-     return state[i] == locked || state[i] == toLock || modifierState[i];
+     return state[i] == locked || state[i] == toLock || state[i] == doubleLocked;
     }
 
     int getModifierIndex(keycode_t c) {
@@ -150,9 +149,9 @@ class KeyModifierLockApp : public KeyboardApp {
 
     static const int modifierCount = sizeof(modifierKeys)/sizeof(keycode_t);
     lockState state[modifierCount];
-    bool modifierState[modifierCount];
     Timer unlockTimer;
     static const millis_t lockTimeout = 2000;
+    bool mouseKeyHit = false;
 };
 
 void unlockTimerCallback(void* app) {

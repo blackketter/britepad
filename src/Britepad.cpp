@@ -273,7 +273,6 @@ void Britepad::begin() {
 
 void Britepad::idle() {
 
-  if (currApp && !currApp->usesKeyboard()) {
     millis_t now = Uptime::millis();
     if (now - lastIdle < idleInterval) {
       return;
@@ -283,8 +282,9 @@ void Britepad::idle() {
     theFPSCommand.idled();
 
     keys.update();
-    keys.sendKeys();
-  }
+    if (currApp && !currApp->usesKeyboard()) {
+      keys.sendKeys();
+    }
 
 };
 

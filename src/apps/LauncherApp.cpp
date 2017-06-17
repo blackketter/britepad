@@ -48,6 +48,7 @@ void LauncherApp::setCurrentScreenID(screenid_t n) {
     BritepadApp* a = britepad.getNextApp();
     while (a) {
       if (a->isAppType(getCurrentScreen()->type)) {
+        britepad.idle();
         int32_t pos = a->getLauncherPosition();
         if ((specific && (pos!=_defaultLauncherPosition)) || (!specific && (pos==_defaultLauncherPosition))) {
           if (pos==_defaultLauncherPosition) { pos = 0; }
@@ -99,16 +100,21 @@ LauncherApp::LauncherApp() {
 }
 
 void LauncherApp::begin(AppMode asMode) {
+  //console.debugln("start LauncherApp::begin");
+
 
   // go through all the apps and add them to the appropriate screens
 
-  // first, sort the list alphabetically
+  //console.debugln("sort apps");
+// first, sort the list alphabetically
   britepad.sortApps();
 
   // this should wake up the host, which is great for entering passwords
   // but might have some side effects
   Keyboard.press(KEY_LEFT_SHIFT);
   Keyboard.release(KEY_LEFT_SHIFT);
+
+  //console.debugln("start setscreen");
 
   if (launch_screen != NO_SCREEN) {
     setCurrentScreenID(launch_screen);
@@ -132,17 +138,19 @@ void LauncherApp::begin(AppMode asMode) {
 
   sound.swipe(DIRECTION_DOWN);
 
+  //console.debugln("start pushfill");
   screen.pushFill(DIRECTION_DOWN, bgColor());
 
   drawButtons();
   lastBegin = clock.now();
-//  console.debugln("done LauncherApp::begin");
+  //console.debugln("done LauncherApp::begin");
 }
 
 void LauncherApp::drawButtons() {
-//  console.debugln("drawing buttons");
+  //console.debugln("drawing buttons");
   buttons->setBounds(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight());
   buttons->draw();
+  //console.debugln("done drawing buttons");
 }
 
 void LauncherApp::run() {

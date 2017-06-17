@@ -101,7 +101,7 @@ keyswitch_t KeyMatrix::update() {
     }
 
     if (count) {
-//      console.debugf("update found %d key events\n",count);
+      //console.debugf("update found %d key events\n",count);
     }
     return count;
   } else {
@@ -428,14 +428,13 @@ const keycode_t mouseRepeatKeys[] = {
 };
 
 void KeyMatrix::repeat() {
-//  console.debugln("KeyMatrix::repeat()");
   int i = 0;
   keycode_t c = mouseRepeatKeys[i];
   millis_t now = Uptime::millis();
   while (c != NO_CODE) {
     KeyEvent* e = lastEvent(c);
     if (e && e->pressed() && ((now - e->time() > _repeatStart) || ((now - _lastRepeat) < _repeatStart))) {
-//      console.debugf(" repeating code:%d\n",c);
+      //console.debugf(" repeating code:%d\n",c);
       if (!e->isMouseMoveKey()) { sendKey(c,0); }
       sendKey(c,1);
       _lastRepeat = now;
@@ -450,7 +449,7 @@ void KeyMatrix::truncateHistory() {
   // find the nth event
   for (int i = 0; i < _maxEventHistory; i++) {
     if (curr == nullptr) {
-//      console.debugln("not enough events");
+      //console.debugln("not enough events");
       return;
     }
     curr = curr->getPrev();
@@ -466,7 +465,7 @@ void KeyMatrix::truncateHistory() {
     KeyEvent* last = curr;
     curr = curr->getPrev();
     delete last;
-//    console.debugln("deleted old event");
+    //console.debugln("deleted old event");
   }
 }
 
@@ -479,20 +478,20 @@ void KeyMatrix::setMap(const keymap_t* l) {
 }
 
 void KeyMatrix::addEvent(keyswitch_t k, keycode_t c, millis_t t, bool d) {
-//  console.debugf("addEvent: switch: %d, code: %d, pressed: %d\n",k,c,d);
+  //console.debugf("addEvent: switch: %d, code: %d, pressed: %d\n",k,c,d);
   KeyEvent* e = new KeyEvent(k,c,t,d);
   if (_events) {
     _events->setNext(e);
     e->setPrev(_events);
   }
   _events = e;
-//  console.debugln("idling on new event");
+  //console.debugln("idling on new event");
   britepad.eventEarly(e);
 
-//  console.debugln("truncating");
+  //console.debugln("truncating");
   truncateHistory();
 
-//  console.debugln("done addEvent");
+  //console.debugln("done addEvent");
 
 }
 

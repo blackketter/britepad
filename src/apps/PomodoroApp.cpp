@@ -11,7 +11,6 @@ void PomodoroApp::begin(AppMode asMode) {
   }
   drawButton();
   drawTime();
-  _firstRun = true;
 }
 
 void PomodoroApp::switchAppMode(AppMode asMode) {

@@ -43,7 +43,6 @@ class StopwatchApp : public BritepadApp {
     RoundButton resetButton;
 
     millis_t lastDrawMillis;
-    bool firstRun;
 
 };
 

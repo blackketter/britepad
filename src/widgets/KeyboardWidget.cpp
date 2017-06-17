@@ -31,7 +31,7 @@ void KeyboardWidget::draw() {
 
     const char* title = _keymatrix->getKeyLabel(c);
     const icon_t icon = _keymatrix->getKeyIcon(c);
-    bool down = _keymatrix->switchIsDown(k);
+    bool down = _keymatrix->keyIsDown(c);
 
     if (icon) {
       title = nullptr;
@@ -43,7 +43,7 @@ void KeyboardWidget::draw() {
     if (button->getHighlighted() != down) changed = true;
 
     if (changed) {
-      button->setHighlighted(_keymatrix->switchIsDown(k));
+      button->setHighlighted(down);
       button->setTitle(title);
       button->setIcon(icon);
       button->draw();

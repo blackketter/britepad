@@ -44,8 +44,6 @@ class KeyMatrix {
     uint8_t getKeyY(keyswitch_t k);
     keycode_t getCode(keyswitch_t k);
 
-    inline bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
-    inline bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
 
     bool keyDoubleTapped(keycode_t c);
     bool keyTapped(keycode_t c);
@@ -74,6 +72,8 @@ class KeyMatrix {
     void truncateHistory();
     const keyinfo_t* getKeyInfo(keycode_t c);
     int getKeyInfoIndex(keycode_t c);
+    inline bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
+    inline bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
 
     millis_t _lastScan = 0;
     millis_t _lastFlush = 0;

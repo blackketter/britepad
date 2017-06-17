@@ -35,10 +35,11 @@ class BritepadApp {
     virtual void event(KeyEvent* key) {};  // give apps an opportuntity to run in the background, useful for processing keyboard events before they go to the currently running app or off to host
     virtual void eventEarly(KeyEvent* key) {};  // give apps an opportunity to process events early, before event(), useful for munging events
 
-    static BritepadApp* STAY_IN_APP;
-    static BritepadApp* A_MOUSE_APP; // typically the MouseApp, but might be a timer when it's running
-    static BritepadApp* BACK_APP;  // return to launcher
-    static BritepadApp* A_SCREENSAVER_APP; // go to a screensaver
+    static constexpr BritepadApp* STAY_IN_APP = (BritepadApp*)0;
+    static constexpr BritepadApp* SWITCH_TO_INTERACTIVE_MODE = (BritepadApp*)1; // stay in app, but switch mode
+    static constexpr BritepadApp* A_MOUSE_APP = (BritepadApp*)2; // typically the MouseApp, but might be a timer when it's running
+    static constexpr BritepadApp* A_SCREENSAVER_APP = (BritepadApp*)3; // go to a screensaver
+    static constexpr BritepadApp* EXIT_APP = (BritepadApp*)4;  // return to launcher
 
     virtual const char* name() = 0;
     virtual Icon getIcon() { return nullptr; };
@@ -52,7 +53,7 @@ class BritepadApp {
 
     virtual bool disablesScreensavers() { return false; }
     virtual bool wantsToRun() { return false; }  // return true if you want to be switched to (canBeMODENAME() doesn't have to be true)
-    virtual BritepadApp* exitsTo() { return BACK_APP; }  // when exiting the app, typically by the TOP_PAD, where should it go by default (BACK_APP is to LauncherApp, MOUSE_APP is to a mouse capable app)
+    virtual BritepadApp* exitsTo() { return EXIT_APP; }  // when exiting the app, typically by the TOP_PAD, where should it go by default (EXIT_APP is to LauncherApp, MOUSE_APP is to a mouse capable app)
     virtual bool displaysClock() { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
     virtual bool timeVisible() { return displaysClock() || displaysStatusBar(); }
 

@@ -160,13 +160,16 @@ BritepadApp* Britepad::getNextApp(BritepadApp* anApp) {
 void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   if (newApp == BritepadApp::STAY_IN_APP) {
     return;
+  } else if (newApp == BritepadApp::SWITCH_TO_INTERACTIVE_MODE) {
+    currApp->switchAppMode(INTERACTIVE_MODE);
+    return;
   } else if (newApp == BritepadApp::A_MOUSE_APP) {
     newApp = randomApp(MOUSE_MODE);
     asMode = MOUSE_MODE;
   } else if (newApp == BritepadApp::A_SCREENSAVER_APP) {
     newApp = randomApp(SCREENSAVER_MODE);
     asMode = SCREENSAVER_MODE;
-  } else if (newApp == BritepadApp::BACK_APP) {
+  } else if (newApp == BritepadApp::EXIT_APP) {
     newApp = getAppByID(LauncherApp::ID);
     asMode = INTERACTIVE_MODE;
   }

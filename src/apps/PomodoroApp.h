@@ -14,7 +14,7 @@ class PomodoroApp : public BritepadApp {
 
     bool wantsToRun() { return isRunning(); }
     bool canBeScreensaver() { return isRunning(); }
-//    BritepadApp* exitsTo() { return isAppMode(INTERACTIVE_MODE) ? BACK_APP : STAY_IN_APP; }
+//    BritepadApp* exitsTo() { return isAppMode(INTERACTIVE_MODE) ? EXIT_APP : STAY_IN_APP; }
 //    bool disablesScreensavers() { return isAppMode(INTERACTIVE_MODE) && wantsToRun(); }
     void switchAppMode(AppMode asMode);
 

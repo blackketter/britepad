@@ -16,9 +16,10 @@ class StopwatchApp : public BritepadApp {
     const char* name() { return "Stopwatch"; };
     bool displaysStatusBar() { return true; }
     bool wantsToRun() { return !isReset(); }
-    BritepadApp* exitsTo() { return isAppMode(INTERACTIVE_MODE) ? BACK_APP : STAY_IN_APP; }
+    BritepadApp* exitsTo() { return isAppMode(INTERACTIVE_MODE) ? EXIT_APP : SWITCH_TO_INTERACTIVE_MODE; }
 
     virtual bool canBeScreensaver() { return isRunning(); }
+    virtual bool canBeMouse() { return isRunning(); }
 
     appid_t id() { return ID; };
     static constexpr appid_t ID = "stpw";

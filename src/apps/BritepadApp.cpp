@@ -3,11 +3,6 @@
 #include "widgets/Icon.h"
 #include "widgets/AppButton.h"
 
-BritepadApp* BritepadApp::STAY_IN_APP = (BritepadApp*)0;
-BritepadApp* BritepadApp::BACK_APP = (BritepadApp*)2;
-BritepadApp* BritepadApp::A_MOUSE_APP = (BritepadApp*)1;
-BritepadApp* BritepadApp::A_SCREENSAVER_APP = (BritepadApp*)3;
-
 BritepadApp::BritepadApp()  {
   Britepad::addApp(this);
 }
@@ -153,6 +148,7 @@ bool BritepadApp::canBeAppMode(AppMode b) {
 }
 
 void BritepadApp::switchAppMode(AppMode asMode) {
+
   if (_currAppMode != asMode) {
     if (_currAppMode == MOUSE_MODE) {
       mouse.end();

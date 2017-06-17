@@ -44,12 +44,8 @@ void StopwatchApp::run() {
 
   BritepadApp::run();
 
-  KeyEvent* key = getNextEvent();
-
-  if (!firstRun && (pad.pressed(BOTTOM_PAD) || pad.pressed(TOP_PAD) || (key && key->pressed(KEY_EXIT)))) {
-     if (isAppMode(INTERACTIVE_MODE)) {
-      switchAppMode(MOUSE_MODE);
-    } else {
+  if (!firstRun && (pad.pressed(BOTTOM_PAD) || pad.pressed(TOP_PAD))) {
+     if (isAppMode(MOUSE_MODE)) {
       switchAppMode(INTERACTIVE_MODE);
     }
   }

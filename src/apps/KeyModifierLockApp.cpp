@@ -33,6 +33,10 @@ class KeyModifierLockApp : public KeyboardApp {
 
         if (!key->isModifier()) {
           if (!key->isMouseKey()) {
+            if (anyLocked() && key->pressed(KEY_ESC)) {
+              flipLockStates(doubleLocked, toUnlock);
+              key->clear();
+            }
             unlockAll();
           } else {
             mouseKeyHit = true;
@@ -146,6 +150,16 @@ class KeyModifierLockApp : public KeyboardApp {
       }
       return -1;
     }
+
+    bool anyLocked() {
+      for (int i = 0; i < modifierCount; i++) {
+        if (getModifierState(i)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
 
     static const int modifierCount = sizeof(modifierKeys)/sizeof(keycode_t);
     lockState state[modifierCount];

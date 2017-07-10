@@ -80,8 +80,8 @@ class KeyMatrix {
     static const millis_t _minScanInterval = 3;
     static const millis_t _maxScanInterval = 5;
 
-    static const millis_t _doubleTappedTime = 500;
-    static const millis_t _tappedTime = 500;
+    static const millis_t _doubleTappedTime = 250;
+    static const millis_t _tappedTime = 250;
 
     static const uint8_t _numRows = 6;
     static const uint8_t _numColumnsPerMatrix = 7;

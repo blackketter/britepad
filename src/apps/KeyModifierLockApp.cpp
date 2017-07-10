@@ -28,8 +28,8 @@ class KeyModifierLockApp : public KeyboardApp {
 
       if (getEnabled(KEYBOARD_MODE)) {
 
-       // on each key event, restart the unlock timer
-       unlockTimer.setMillis(lockTimeout, unlockTimerCallback, (void*)this);
+        // on each key event, restart the unlock timer
+        unlockTimer.setMillis(lockTimeout, unlockTimerCallback, (void*)this);
 
         if (!key->isModifier()) {
           if (!key->isMouseKey()) {
@@ -56,9 +56,11 @@ class KeyModifierLockApp : public KeyboardApp {
               if (mouseKeyHit) {
                 unlockAll();
                 mouseKeyHit = false;
-              } else {
+              } else if (keys.keyTapped(key->code())) {
                 setLockState(key->code(), locked);
                 key->clear();
+              } else {
+                setLockState(key->code(), unlocked);
               }
             } else if (state == locked) {
 //              setLockState(key->code(), unlocked);
@@ -164,7 +166,7 @@ class KeyModifierLockApp : public KeyboardApp {
     static const int modifierCount = sizeof(modifierKeys)/sizeof(keycode_t);
     lockState state[modifierCount];
     Timer unlockTimer;
-    static const millis_t lockTimeout = 2000;
+    static const millis_t lockTimeout = 1000;
     bool mouseKeyHit = false;
 };
 

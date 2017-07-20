@@ -204,7 +204,7 @@ const keyinfo_t keyInfo[] = {
   { KEY_8, '8', "8", nullptr, false },
   { KEY_9, '9', "9", nullptr, false },
   { KEY_0, '0', "0", nullptr, false },
-  { KEY_ENTER, 0, "return", returnIcon, false },
+  { KEY_ENTER, '\n', "return", returnIcon, false },
   { KEY_ESC, 0x1b, "esc", escIcon, false },
   { KEY_BACKSPACE, 0x08, "bs", backspaceIcon, false },
   { KEY_TAB, '\t', "tab", tabIcon, false },

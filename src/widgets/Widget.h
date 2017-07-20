@@ -28,6 +28,9 @@ class Widget {
     widgetid_t getID() { return _id; }
     void setID(widgetid_t newID) { _id = newID; }
 
+    keycode_t getKey() { return _key; }
+    void setKey(keycode_t key) { _key = key; }
+
     virtual bool pressed() { return false; }
     virtual bool released() { return false; };
     virtual bool held() { return false; };
@@ -55,6 +58,7 @@ class Widget {
     coord_t _height = 0;
     bool _visible = true;
     bool _enabled = true;
+    keycode_t _key = 0;
     Widget* _previous = nullptr;
     Widget* _next = nullptr;
 };

@@ -1,6 +1,6 @@
 #include "widgets/Button.h"
 
-void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData, widgetid_t id) {
+void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData, widgetid_t id, keycode_t key) {
   setBounds(x,y,w,h);
 
   setColor(color);
@@ -11,7 +11,22 @@ void Button::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool
   _visible = true;
   icon.setData(iconData);
   setID(id);
+  setKey(key);
 };
+
+void Button::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData) {
+  _xpos = x - r;
+  _ypos = y - r;
+  _width = r*2;
+  _height = r*2;
+  setColor(color);
+  highlighted = highlight;
+  titleStr = title;
+  titleFont = f;
+  titleCol = titleColor;
+  _visible = true;
+  icon.setData(iconData);
+}
 
 bool Button::pressed() {
   track();
@@ -120,20 +135,6 @@ void Button::drawTitle() {
   screen.pushClipRect(&r);
 
   screen.setTextAlign();
-}
-
-void Button::init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight, const char* title, font_t f, color_t titleColor, icon_t iconData) {
-  _xpos = x - r;
-  _ypos = y - r;
-  _width = r*2;
-  _height = r*2;
-  setColor(color);
-  highlighted = highlight;
-  titleStr = title;
-  titleFont = f;
-  titleCol = titleColor;
-  _visible = true;
-  icon.setData(iconData);
 }
 
 void RoundButton::drawbg() {

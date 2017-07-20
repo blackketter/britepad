@@ -478,8 +478,9 @@ void KeyMatrix::setMap(const keymap_t* l) {
 }
 
 void KeyMatrix::addEvent(keyswitch_t k, keycode_t c, millis_t t, bool d) {
-  //console.debugf("addEvent: switch: %d, code: %d, pressed: %d\n",k,c,d);
-  KeyEvent* e = new KeyEvent(k,c,t,d);
+  console.debugf("addEvent: switch: %d, code: %d, pressed: %d\n",k,c,d);
+  char ch = getKeyChar(c);
+  KeyEvent* e = new KeyEvent(k,c,ch,t,d);
   if (_events) {
     _events->setNext(e);
     e->setPrev(_events);
@@ -550,7 +551,7 @@ void KeyMatrix::printStatus(Stream* c) {
   KeyEvent* event = _events;
   int i = 0;
   while (event) {
-    c->printf("  Key event[%d] = '%s' code:%d switch:%d %s\n", i, getKeyLabel(event->code()),event->code(), event->key(), event->pressed() ? "down" : "up");
+    c->printf("  Key event[%2d] =%8d.%03d '%s' code:%d switch:%d %s\n", i, ((int)(event->time()))/1000, ((int)(event->time()))%1000, getKeyLabel(event->code()),event->code(), event->key(), event->pressed() ? "down" : "up");
     event = event->getPrev();
     i++;
   }

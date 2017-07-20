@@ -21,6 +21,8 @@ void PomodoroApp::switchAppMode(AppMode asMode) {
 }
 
 void PomodoroApp::run() {
+  BritepadApp::run();
+
   bool drawTimeNow = false;
   if (Uptime::millis() - _lastDraw > _redrawInterval) {
     drawTimeNow = true;

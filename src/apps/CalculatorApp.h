@@ -12,7 +12,8 @@ class CalculatorApp : public BritepadApp {
     void end();
     void run();
 
-    bool disablesScreensavers() { return true; }
+    bool usesKeyboard() { return true; }
+    BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
 
     const char* name() { return "Calculator"; }
     appid_t id() { return ID; };

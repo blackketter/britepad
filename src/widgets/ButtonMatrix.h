@@ -9,6 +9,7 @@ struct ButtonConfig {
   color_t labelColor;
   icon_t icon;
   widgetid_t id;
+  keycode_t key;
 };
 
 typedef int buttonindex_t;
@@ -40,6 +41,9 @@ class ButtonMatrix : public Widget {
     Button* pressedButton();
     Button* releasedButton();
     Button* heldButton();
+
+    Button* keyButton(KeyEvent* event);
+
     void draw();
     void draw(buttonindex_t i, int map = 0) { Button* b = getButton(i,map); if (b) { b->draw(); }};
 

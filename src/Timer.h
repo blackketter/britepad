@@ -10,6 +10,7 @@ typedef void (*timerCallback_t)(void*);
 class Timer {
   public:
     Timer() {};
+    ~Timer();
 
     void setSecs(time_t setTime, timerCallback_t callback = nullptr, void* callbackData = nullptr, bool repeat = false);
     void setMillis(millis_t millisDur, timerCallback_t callback = nullptr, void* callbackData = nullptr, bool repeat = false);
@@ -33,27 +34,30 @@ class Timer {
     bool isPaused();       // is paused
     bool isRunning();        // is the timer running?  (i.e. is not paused and is set)
     bool hasPassed();         // is the timer in the past
-    bool isReset() { return ((millisTime == 0) && (clockTime == 0)); }
+    bool isReset() { return ((_millisTime == 0) && (_clockTime == 0)); }
 
     static void idle();    // idle so callbacks get a chance to run
+    static Timer* first() { return _first; }
+    void* data() { return _cbd; }
+    Timer* next() { return _next; }
 
-  private:
-    Timer* next = nullptr;
-    Timer* prev = nullptr;
-
-    time_t clockTime = 0;
-
-    millis_t millisTime = 0;
-    millis_t millisDur = 0;
-    bool repeatTimer;
-
-    timerCallback_t cb = nullptr;
-    void* cbd = nullptr;
-
+  protected:
     void insert(timerCallback_t callback, void* callbackData);
     void remove();
 
-    static Timer* first;
+    Timer* _next = nullptr;
+    Timer* _prev = nullptr;
+
+    time_t _clockTime = 0;
+
+    millis_t _millisTime = 0;
+    millis_t _millisDur = 0;
+    bool _repeatTimer;
+
+    timerCallback_t _cb = nullptr;
+    void* _cbd = nullptr;
+
+    static Timer* _first;
 
 };
 

@@ -5,10 +5,11 @@
 
 class KeyEvent {
   public:
-    KeyEvent(keyswitch_t key, keycode_t code, millis_t time, bool pressed) {
+    KeyEvent(keyswitch_t key, keycode_t code, char character, millis_t time, bool pressed) {
       _time = time;
       _key = key;
       _code = code;
+      _char = character;
       _pressed = pressed;
       _prev = nullptr;
       _next = nullptr;
@@ -17,6 +18,9 @@ class KeyEvent {
     millis_t time() { return _time; }
     keyswitch_t key() { return _key; }
     keycode_t code() { return _code; }
+    bool code(keycode_t c) { return c == _code; }
+    char character() { return _char; }
+    bool character(char c) { return c == _char; }
     bool pressed() { return _pressed; }
     bool pressed(keycode_t c) { return _pressed && (c==_code); }
     bool released() { return !_pressed; }
@@ -26,6 +30,17 @@ class KeyEvent {
     void setPrev(KeyEvent* prev) { _prev = prev; }
     void setNext(KeyEvent* next) { _next = next; }
     void clear() { _code = NO_CODE; _key = NO_KEY; }
+
+    char shifted() {
+      int i = 0;
+      while (shiftedKeys[i].code != NO_CODE) {
+        if (shiftedKeys[i].code == _code) {
+          return shiftedKeys[i].c;
+        }
+        i++;
+      }
+      return 0;
+    }
 
     modifierkey_t isModifier() {
       int i = 0;
@@ -49,6 +64,7 @@ class KeyEvent {
     millis_t _time;
     keyswitch_t _key;
     keycode_t _code;
+    char _char;
     bool _pressed;
     KeyEvent* _prev;
     KeyEvent* _next;

@@ -2,14 +2,18 @@
 #include "Timer.h"
 #include "Clock.h"
 
-Timer* Timer::first = nullptr;
+Timer* Timer::_first = nullptr;
+
+Timer::~Timer() {
+  remove();
+};
 
 // fixme: handle other clocks besides "clock"
 void Timer::setClockTime(time_t clockTimeSet, timerCallback_t callback, void* callbackData) {
   cancel();
   insert(callback, callbackData);
-  clockTime = clockTimeSet;
-  millisDur = (clockTimeSet-clock.now())*1000;
+  _clockTime = clockTimeSet;
+  _millisDur = (clockTimeSet-clock.now())*1000;
 }
 
 void Timer::setSecs(time_t secs, timerCallback_t callback, void* callbackData, bool repeat) {
@@ -18,22 +22,22 @@ void Timer::setSecs(time_t secs, timerCallback_t callback, void* callbackData, b
 
 void Timer::setMillis(millis_t millisDuration, timerCallback_t callback, void* callbackData, bool repeat) {
   cancel();
-  clockTime = 0;
+  _clockTime = 0;
   insert(callback, callbackData);
-  repeatTimer = repeat;
-  millisDur = millisDuration;
-  millisTime = Uptime::millis() + millisDur;
+  _repeatTimer = repeat;
+  _millisDur = millisDuration;
+  _millisTime = Uptime::millis() + _millisDur;
 }
 
 millis_t Timer::remainingMillis() {
   millis_t remainingMillis = 0;
-  if (millisTime) {
+  if (_millisTime) {
     if (isPaused()) {
-      return -millisTime;
+      return -_millisTime;
     } else {
-      return (millisTime - Uptime::millis());
+      return (_millisTime - Uptime::millis());
     }
-  } else if (clockTime) {
+  } else if (_clockTime) {
     // todo make this more accurate using the difference between millis() and now()
     return remainingSecs() * 1000;
   }
@@ -42,13 +46,13 @@ millis_t Timer::remainingMillis() {
 
 time_t Timer::remainingSecs() {
   millis_t remainingSecs = 0;
-  if (millisTime) {
+  if (_millisTime) {
     return remainingMillis()/1000;
-  } else if (clockTime) {
+  } else if (_clockTime) {
     if (isPaused()) {
-      return -clockTime;
+      return -_clockTime;
     } else {
-      return (clockTime - clock.now());
+      return (_clockTime - clock.now());
     }
   }
   return remainingSecs;
@@ -63,15 +67,15 @@ millis_t Timer::timeInMillis() {
 }
 
 time_t Timer::durationSecs() {
-  if (millisDur) {
-    return millisDur/1000;
+  if (_millisDur) {
+    return _millisDur/1000;
   } else {
     return 0;
   }
 }
 millis_t Timer::durationMillis() {
-  if (millisDur) {
-    return millisDur;
+  if (_millisDur) {
+    return _millisDur;
   } else {
     return 0;
   }
@@ -81,12 +85,12 @@ bool Timer::hasPassed() {
 
   if (isPaused()) { return false; }
 
-  if (millisTime) {
-    if (Uptime::millis() >= millisTime) {
+  if (_millisTime) {
+    if (Uptime::millis() >= _millisTime) {
       return true;
     }
-  } else if (clockTime) {
-    if (clock.now() >= clockTime) {
+  } else if (_clockTime) {
+    if (clock.now() >= _clockTime) {
       return true;
     }
   }
@@ -94,14 +98,14 @@ bool Timer::hasPassed() {
 }
 
 bool Timer::isRunning() {
-  return (millisTime > 0) || (clockTime > 0);
+  return (_millisTime > 0) || (_clockTime > 0);
 }
 
 void Timer::cancel() {
-  millisTime = 0;
-  clockTime = 0;
-  millisDur = 0;
-  repeatTimer = 0;
+  _millisTime = 0;
+  _clockTime = 0;
+  _millisDur = 0;
+  _repeatTimer = 0;
   remove();
 }
 
@@ -111,10 +115,10 @@ void Timer::pause() {
     return;
   }
 
-  if (millisTime) {
-    millisTime = -(millisTime - Uptime::millis());
-  } else if (clockTime) {
-    clockTime = -(clockTime - clock.now());
+  if (_millisTime) {
+    _millisTime = -(_millisTime - Uptime::millis());
+  } else if (_clockTime) {
+    _clockTime = -(_clockTime - clock.now());
   }
 }
 
@@ -122,34 +126,34 @@ void Timer::resume() {
   if (!isPaused()) {
     return;
   }
-  if (millisTime) {
-    millisTime = Uptime::millis() - millisTime;
-  } else if (clockTime) {
-    clockTime = clock.now() - clockTime;
+  if (_millisTime) {
+    _millisTime = Uptime::millis() - _millisTime;
+  } else if (_clockTime) {
+    _clockTime = clock.now() - _clockTime;
   }
 }
 
 bool Timer::isPaused() {
-  return (millisTime < 0) || (clockTime < 0);
+  return (_millisTime < 0) || (_clockTime < 0);
 }
 
 void Timer::idle() {
-  Timer* t = first;
+  Timer* t = _first;
 
   while (t) {
     if (t->hasPassed()) {
 
       // save callback data so we can call the timer after it's been removed.
       // this way the callback function can reuse the timer.
-      timerCallback_t callback = t->cb;
-      void* callbackdata = t->cbd;
+      timerCallback_t callback = t->_cb;
+      void* callbackdata = t->_cbd;
 
-      if (t->repeatTimer) {
-        t->millisTime += t->millisDur;
-        t = t->next;
+      if (t->_repeatTimer) {
+        t->_millisTime += t->_millisDur;
+        t = t->_next;
       } else {
-        Timer* nextup = t->next;
-        t->cancel();  // remove the timer and reset its timing values
+        Timer* nextup = t->_next;
+        t->remove();  // remove the timer and reset its timing values
         t = nextup;
       }
 
@@ -158,7 +162,7 @@ void Timer::idle() {
       }
 
     } else {
-      t = t->next;
+      t = t->_next;
     }
   }
 }
@@ -166,41 +170,40 @@ void Timer::idle() {
 void Timer::insert(timerCallback_t callback, void* callbackData) {
   remove();
   if (callback) {
-    next = first;
-    prev = nullptr;
-    if (first) {
-      first->prev = this;
+    _next = _first;
+    _prev = nullptr;
+    if (_first) {
+      _first->_prev = this;
     }
-    first = this;
-    cb = callback;
-    cbd = callbackData;
+    _first = this;
+    _cb = callback;
+    _cbd = callbackData;
   }
 }
 
 void Timer::remove() {
-  if (cb) {
-    Timer* t = first;
+  if (_cb) {
+    Timer* t = _first;
 
     while (t != nullptr) {
       if (t == this) {
-        if (this->prev) {
-          prev->next = next;
+        if (this->_prev) {
+          _prev->_next = _next;
         } else {
-          first = next;
+          _first = _next;
         }
-        if (this->next) {
-          next->prev = prev;
+        if (this->_next) {
+          _next->_prev = _prev;
         }
         t = nullptr;
       } else {
-        t = t->next;
+        t = t->_next;
       }
     }
 
-    prev = nullptr;
-    next = nullptr;
-    cb = nullptr;
-    cbd = nullptr;
-    repeatTimer = 0;
+    _prev = nullptr;
+    _next = nullptr;
+    _cb = nullptr;
+    _cbd = nullptr;
   }
 }

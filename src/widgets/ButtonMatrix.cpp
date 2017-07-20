@@ -26,7 +26,7 @@ void ButtonMatrix::init(coord_t x, coord_t y, coord_t width, coord_t height, int
           buttonindex_t i = index(r,c,m);
           buttons[i] = newButton();
           if (configuration) {
-            buttons[i]->init(b_x, b_y, b_w, b_h, configuration[i].bgColor, false, configuration[i].labelText, configuration[i].labelFont, configuration[i].labelColor, configuration[i].icon, configuration[i].id);
+            buttons[i]->init(b_x, b_y, b_w, b_h, configuration[i].bgColor, false, configuration[i].labelText, configuration[i].labelFont, configuration[i].labelColor, configuration[i].icon, configuration[i].id, configuration[i].key);
           } else {
             buttons[i]->init(b_x, b_y, b_w, b_h);
           }
@@ -119,6 +119,33 @@ Button* ButtonMatrix::getButton(widgetid_t id) {
     }
   }
   return nullptr;
+}
+
+Button* ButtonMatrix::keyButton(KeyEvent* event) {
+  if (event == nullptr) return nullptr;
+
+  keycode_t code = event->code();
+  char character = event->character();
+
+  Button* b = nullptr;
+
+  for (int r = 0; r < buttonRows; r++) {
+    for (int c = 0; c < buttonColumns; c++) {
+      int i = index(r,c,currMap);
+      if (buttons[i]) {
+        keycode_t k = buttons[i]->getKey();
+        if (code == k || character == k) {
+          b = buttons[i];
+          break;
+        }
+      }
+    }
+    if (b) break;
+  }
+  if (b) {
+    b->setHighlighted(event->pressed());
+  }
+  return b;
 }
 
 void ButtonMatrix::setHighlighted(bool highlight) {

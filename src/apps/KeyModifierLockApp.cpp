@@ -165,7 +165,7 @@ class KeyModifierLockApp : public KeyboardApp {
 
     static const int modifierCount = sizeof(modifierKeys)/sizeof(keycode_t);
     lockState state[modifierCount];
-    Timer unlockTimer;
+    CallbackTimer unlockTimer;
     static const millis_t lockTimeout = 1000;
     bool mouseKeyHit = false;
 };

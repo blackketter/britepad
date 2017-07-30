@@ -72,9 +72,9 @@ class Britepad {
     static const millis_t checkWantsToBeScreensaverInterval = 1000;
     millis_t lastCheckWantsToBeScreensaver = 0;
 
-    Timer     backlightTimer;
+    CallbackTimer     backlightTimer;
 
-    Timer     statusBarUpdateTimer;
+    CallbackTimer     statusBarUpdateTimer;
 
     millis_t screensaverStartedTime = 0;
     millis_t disableScreensaversUntil = 0;

@@ -31,7 +31,7 @@ class ChimeApp : public MuteApp {
   private:
 
     uint8_t _chimeEnabled;
-    Timer _chimeTimer;
+    CallbackTimer _chimeTimer;
     int _chimesRemaining = 0;
     static const millis_t _chimeInterval = 500;
 };

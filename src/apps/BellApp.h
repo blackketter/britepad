@@ -35,7 +35,7 @@ class BellApp : public BritepadApp {
     static const int buttoncount = 5;
     time_t _last_run;
 
-    Timer _bell_timer;
+    CallbackTimer _bell_timer;
 
     RoundButton button[buttoncount];
 };

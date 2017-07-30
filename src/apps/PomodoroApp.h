@@ -44,7 +44,7 @@ class PomodoroApp : public BritepadApp {
     const millis_t _redrawInterval = 1000;
 
     millis_t _lastDraw = 0;
-    Timer _timer;
+    CallbackTimer _timer;
     RoundButton _button;
     bool _isWorking = false;
 };

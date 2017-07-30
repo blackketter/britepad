@@ -26,6 +26,7 @@ extern Britepad britepad;
 
 #include "Clock.h"
 extern Clock clock;
+extern Timezone localTimezone;
 
 #include "Timer.h"
 

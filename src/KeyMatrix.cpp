@@ -478,7 +478,18 @@ void KeyMatrix::setMap(const keymap_t* l) {
 }
 
 void KeyMatrix::addEvent(keyswitch_t k, keycode_t c, millis_t t, bool d) {
-  console.debugf("addEvent: switch: %d, code: %d, pressed: %d\n",k,c,d);
+//  console.debugf("addEvent: switch: %d, code: %d, pressed: %d\n",k,c,d);
+
+/*
+  if (d && keyIsDown(c)) {
+    console.debugln(" ignoring duplicate key down event");
+    return;
+  } else if (!d && keyIsUp(c)) {
+    console.debugln(" ignoring duplicate key up event");
+    return;
+  }
+*/
+
   char ch = getKeyChar(c);
   KeyEvent* e = new KeyEvent(k,c,ch,t,d);
   if (_events) {

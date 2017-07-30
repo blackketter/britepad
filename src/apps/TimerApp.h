@@ -42,7 +42,7 @@ class TimerApp : public StopwatchApp {
     const millis_t redrawInterval = 500;
 
     coord_t last_width;
-    Timer mytimer;
+    CallbackTimer mytimer;
     int beeps;
     time_t timer_dur = 0;
     time_t alarm_sounded = 0;

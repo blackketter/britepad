@@ -12,6 +12,7 @@ class AlarmApp : public BritepadApp {
     void run();
     bool wantsToRun() { return alarmSounding(); }
     void end() { BritepadApp::end(); setAlarmEnabled(false); alarmSounded = false;}
+    virtual bool canBeScreensaver() { return alarmSounding(); }
 
     void setAlarmTime(time_t newTime);
     time_t getAlarmTime() { return nextAlarm.getSeconds(); };
@@ -34,7 +35,7 @@ class AlarmApp : public BritepadApp {
     millis_t lastUpdate = 0;
     color_t currentColor = screen.red;
     Time nextAlarm;
-    Timer beepTimer;
+    CallbackTimer beepTimer;
     bool alarmEnabled = false;
     bool alarmSounded = false;
     void saveSettings();

@@ -9,7 +9,7 @@ class LaunchBarApp : public KeyboardApp {
 
   private:
     static const millis_t releaseTimeout = 1000;
-    Timer releaseTimer;
+    CallbackTimer releaseTimer;
 
   public:
     appid_t id() { return ID; };

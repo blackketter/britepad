@@ -9,24 +9,24 @@ Timer::~Timer() {
 };
 
 // fixme: handle other clocks besides "clock"
-void Timer::setClockTime(time_t clockTimeSet, timerCallback_t callback, void* callbackData) {
+void Timer::setClockTime(time_t clockTimeSet) {
   cancel();
-  insert(callback, callbackData);
   _clockTime = clockTimeSet;
   _millisDur = (clockTimeSet-clock.now())*1000;
+  insert();
 }
 
-void Timer::setSecs(time_t secs, timerCallback_t callback, void* callbackData, bool repeat) {
-  setMillis(secs*1000, callback, callbackData, repeat);
-}
-
-void Timer::setMillis(millis_t millisDuration, timerCallback_t callback, void* callbackData, bool repeat) {
+void Timer::setMillis(millis_t millisDuration, bool repeat) {
   cancel();
   _clockTime = 0;
-  insert(callback, callbackData);
   _repeatTimer = repeat;
   _millisDur = millisDuration;
   _millisTime = Uptime::millis() + _millisDur;
+  insert();
+}
+
+void Timer::setSecs(time_t secs, bool repeat) {
+  setMillis(secs*1000, repeat);
 }
 
 millis_t Timer::remainingMillis() {
@@ -67,18 +67,11 @@ millis_t Timer::timeInMillis() {
 }
 
 time_t Timer::durationSecs() {
-  if (_millisDur) {
-    return _millisDur/1000;
-  } else {
-    return 0;
-  }
+  return _millisDur/1000;
 }
+
 millis_t Timer::durationMillis() {
-  if (_millisDur) {
     return _millisDur;
-  } else {
-    return 0;
-  }
 }
 
 bool Timer::hasPassed() {
@@ -139,15 +132,11 @@ bool Timer::isPaused() {
 
 void Timer::idle() {
   Timer* t = _first;
-
+  Timer* lastup = nullptr;
   while (t) {
+    lastup = t;
+
     if (t->hasPassed()) {
-
-      // save callback data so we can call the timer after it's been removed.
-      // this way the callback function can reuse the timer.
-      timerCallback_t callback = t->_cb;
-      void* callbackdata = t->_cbd;
-
       if (t->_repeatTimer) {
         t->_millisTime += t->_millisDur;
         t = t->_next;
@@ -156,54 +145,96 @@ void Timer::idle() {
         t->remove();  // remove the timer and reset its timing values
         t = nextup;
       }
-
-      if (callback) {
-        (callback)(callbackdata);
-      }
-
+      lastup->callback();
     } else {
-      t = t->_next;
+      // if we're past the last millis-based clock, then shortcut out
+      if (t->_clockTime == 0) {
+        break;
+      }
     }
+
+    t = t->_next;
   }
 }
 
-void Timer::insert(timerCallback_t callback, void* callbackData) {
-  remove();
-  if (callback) {
-    _next = _first;
+void Timer::insert() {
+
+  if (_first == nullptr) {
+    _next = nullptr;
     _prev = nullptr;
-    if (_first) {
-      _first->_prev = this;
-    }
     _first = this;
-    _cb = callback;
-    _cbd = callbackData;
+    return;
+  }
+
+  Timer* t = _first;
+  while (1) {
+    if (_millisTime > t->_millisTime) {
+      if (t->_next) {
+        t = t->_next;
+      } else {
+        _next = nullptr;
+        t->_next = this;
+        return;
+      }
+    } else {
+      _prev = t->_prev;
+      if (_prev) {
+        _prev->_next = this;
+      } else {
+        _first = this;
+      }
+      t->_prev = this;
+      _next = t;
+      return;
+    }
   }
 }
 
 void Timer::remove() {
-  if (_cb) {
-    Timer* t = _first;
 
-    while (t != nullptr) {
-      if (t == this) {
-        if (this->_prev) {
-          _prev->_next = _next;
-        } else {
-          _first = _next;
-        }
-        if (this->_next) {
-          _next->_prev = _prev;
-        }
-        t = nullptr;
-      } else {
-        t = t->_next;
-      }
-    }
-
-    _prev = nullptr;
-    _next = nullptr;
-    _cb = nullptr;
-    _cbd = nullptr;
+  // no timer
+  if (!_first) {
+    return;
   }
+
+  // this timer isn't in the list
+  if ((_prev == 0) && (_first != this)) {
+    return;
+  }
+
+  // make the previous or head point to the next one
+  if (_prev) {
+    _prev->_next = _next;
+  } else {
+    _first = _next;
+  }
+
+  // make the next one (if there is one) point back to the old previous one
+  if (_next) {
+    _next->_prev = _prev;
+  }
+
+  _prev = nullptr;
+  _next = nullptr;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+void CallbackTimer::setClockTime(time_t clockTimeSet, timerCallback_t callback, void* callbackData) {
+  _cb = callback;
+  setData(callbackData);
+  Timer::setClockTime(clockTimeSet);
+}
+
+void CallbackTimer::setSecs(time_t secs, timerCallback_t callback, void* callbackData, bool repeat) {
+  _cb = callback;
+  setData(callbackData);
+  Timer::setSecs(secs,repeat);
+}
+
+void CallbackTimer::setMillis(millis_t millisDuration, timerCallback_t callback, void* callbackData, bool repeat) {
+  _cb = callback;
+  setData(callbackData);
+  Timer::setMillis(millisDuration,repeat);
+}
+
+

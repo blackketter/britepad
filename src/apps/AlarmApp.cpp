@@ -47,6 +47,8 @@ void AlarmApp::beep() {
 }
 
 void AlarmApp::updateTimer() {
+  console.debugln("alarm app updatetimer");
+
   if (alarmEnabled && nextAlarm.getSeconds()) {
     beepTimer.setClockTime(nextAlarm.getSeconds(), timerCallback, (void*)this);
   } else {
@@ -55,6 +57,7 @@ void AlarmApp::updateTimer() {
 }
 
 void AlarmApp::init() {
+//    nextAlarm.setZone(&localTimezone);
     alarmSettings settings;
     if (prefs.read(id(), sizeof(alarmSettings), (uint8_t*)&settings)) {
       nextAlarm.setSeconds(settings.time);

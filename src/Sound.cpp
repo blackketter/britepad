@@ -18,7 +18,7 @@ AudioSynthWaveform       waveforms[SYNTH_COUNT];
 
 // envelopes for the synths
 AudioEffectEnvelope      envelopes[SYNTH_COUNT];
-Timer                    envelopeTimer[SYNTH_COUNT];
+CallbackTimer            envelopeTimer[SYNTH_COUNT];
 AudioEffectFade          fades[SYNTH_COUNT];
 
 void noteOff(void* envelope) {

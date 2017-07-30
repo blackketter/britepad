@@ -60,7 +60,7 @@ class KeyMatrix {
     KeyEvent* firstEvent() { KeyEvent* e = _events; while (e) { if (e->getPrev() == nullptr) break; e = e->getPrev(); } return e; }
     KeyEvent* lastEvent(keycode_t c) { KeyEvent* e = _events; while (e) { if (e->code() == c) break; e = e->getPrev();  }; return e; }
     bool keyIsDown(keycode_t c) { KeyEvent* e = lastEvent(c); return (e && e->pressed()); }
-    inline bool keyIsUp(keycode_t c) { return !keyIsDown(c); }
+    inline bool keyIsUp(keycode_t c) { KeyEvent* e = lastEvent(c); return (!e || !e->pressed()); }
 
     void repeat();  // only called by timer callback function
 
@@ -112,7 +112,7 @@ class KeyMatrix {
     KeyEvent* _events = nullptr;
     KeyEvent* _lastEvent = nullptr;
 
-    Timer _repeatTimer;
+    CallbackTimer _repeatTimer;
     static const millis_t _repeatInterval = 50;
     static const millis_t _repeatStart = 500;
     millis_t _lastRepeat = 0;

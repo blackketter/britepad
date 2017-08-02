@@ -132,28 +132,24 @@ bool Timer::isPaused() {
 
 void Timer::idle() {
   Timer* t = _first;
-  Timer* lastup = nullptr;
   while (t) {
-    lastup = t;
 
     if (t->hasPassed()) {
+      Timer* nextup = t->_next;
+      t->remove();
+      t->callback();
       if (t->_repeatTimer) {
         t->_millisTime += t->_millisDur;
-        t = t->_next;
-      } else {
-        Timer* nextup = t->_next;
-        t->remove();  // remove the timer and reset its timing values
-        t = nextup;
+        t->insert();
       }
-      lastup->callback();
+      t = nextup;
     } else {
       // if we're past the last millis-based clock, then shortcut out
       if (t->_clockTime == 0) {
         break;
       }
+      t = t->_next;
     }
-
-    t = t->_next;
   }
 }
 

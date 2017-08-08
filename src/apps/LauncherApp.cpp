@@ -303,7 +303,7 @@ void LauncherApp::run() {
       }
     }
 
-    if (exitOnRelease && (key->released(KEY_RIGHT_FN) || key->released(KEY_EXIT))) {
+    if ((exitOnRelease || (getCurrentScreenID() == MACROS_SCREEN)) && (key->released(KEY_RIGHT_FN) || key->released(KEY_EXIT))) {
       exit();
     }
   }

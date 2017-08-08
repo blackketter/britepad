@@ -82,31 +82,33 @@ void KeyMatrix::scanMatrix() {
 
 keyswitch_t KeyMatrix::update() {
 
+  keyswitch_t count = 0;
+
   clearKeyChanges();
 
   millis_t now = Uptime::millis();
-  if (now - _lastScan > _minScanInterval) {
-    _lastScan = Uptime::millis();
+  if (now > _nextScan) {
     scanMatrix();
 
-    keyswitch_t count = 0;
     keyswitch_t total = numKeys();
 
     for (keyswitch_t i = 0; i < total; i++) {
       if ((i != NO_KEY) && ((_changedKeys[i/_numRows] >> (i%_numRows)) & 0x01)) {
         count++;
         bool d = switchIsDown(i);
-        addEvent(i,getCode(i),_lastScan, d);
+        addEvent(i,getCode(i),now, d);
       }
     }
 
-    if (count) {
-      //console.debugf("update found %d key events\n",count);
-    }
-    return count;
-  } else {
-    return 0;
   }
+  if (count) {
+    //console.debugf("update found %d key events\n",count);
+    _nextScan = now + _debounceInterval;
+  } else {
+    _nextScan = now + _minScanInterval;
+  }
+  return count;
+
 }
 
 keycode_t KeyMatrix::lookupOverlay(keycode_t c) {

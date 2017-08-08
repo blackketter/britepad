@@ -36,7 +36,7 @@ class Timer {
     static void idle();    // idle so callbacks get a chance to run
     static Timer* first() { return _first; }
     Timer* next() { return _next; }
-
+    static void printInfo(Print* p);
   protected:
     void insert();
     void remove();

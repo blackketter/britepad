@@ -12,7 +12,6 @@ void SetAlarmApp::modeButtonPressed() {
 };
 
 void SetAlarmApp::begin(AppMode asMode) {
-
   AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
   if (alarm) {
     console.debugf("getting alarm time of %d\n", alarm->getAlarmTime());
@@ -23,7 +22,6 @@ void SetAlarmApp::begin(AppMode asMode) {
   SetClockApp::begin(asMode);
 }
 
-
 void SetAlarmApp::end() {
 
   AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
@@ -33,4 +31,13 @@ void SetAlarmApp::end() {
   }
 
   SetClockApp::end();
+}
+
+bool SetAlarmApp::isAlarmEnabled() {
+  AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
+  if (alarm) {
+    return alarm->getAlarmEnabled();
+  } else {
+    return false;
+  }
 }

@@ -133,86 +133,82 @@ bool Timer::isPaused() {
 void Timer::idle() {
   Timer* t = _first;
   while (t) {
-
     if (t->hasPassed()) {
+      //pu.debugf("timer has passed %d\n",t);
       Timer* nextup = t->_next;
       t->remove();
       t->callback();
       if (t->_repeatTimer) {
+        //console.debugf("reinserting repeat timer %d\n", t);
         t->_millisTime += t->_millisDur;
         t->insert();
       }
       t = nextup;
     } else {
-      // if we're past the last millis-based clock, then shortcut out
-      if (t->_clockTime == 0) {
-        break;
-      }
       t = t->_next;
     }
   }
 }
 
 void Timer::insert() {
+   //console.debugf("Inserting timer %d\n",this);
 
-  if (_first == nullptr) {
-    _next = nullptr;
-    _prev = nullptr;
-    _first = this;
-    return;
+  if (_first != nullptr) {
+    _first->_prev = this;
   }
 
-  Timer* t = _first;
-  while (1) {
-    if (_millisTime > t->_millisTime) {
-      if (t->_next) {
-        t = t->_next;
-      } else {
-        _next = nullptr;
-        t->_next = this;
-        return;
-      }
-    } else {
-      _prev = t->_prev;
-      if (_prev) {
-        _prev->_next = this;
-      } else {
-        _first = this;
-      }
-      t->_prev = this;
-      _next = t;
-      return;
-    }
-  }
+  _next = _first;
+  _prev = nullptr;
+  _first = this;
 }
 
 void Timer::remove() {
+  //console.debugf("removing timer %d\n",this);
 
-  // no timer
-  if (!_first) {
-    return;
-  }
-
-  // this timer isn't in the list
-  if ((_prev == 0) && (_first != this)) {
-    return;
-  }
-
-  // make the previous or head point to the next one
-  if (_prev) {
-    _prev->_next = _next;
-  } else {
-    _first = _next;
-  }
-
-  // make the next one (if there is one) point back to the old previous one
   if (_next) {
     _next->_prev = _prev;
   }
 
-  _prev = nullptr;
+  if (_prev) {
+    _prev->_next = _next;
+  } else {
+    if (_first == this) {
+      _first = _next;
+    }
+  }
+
   _next = nullptr;
+  _prev = nullptr;
 }
+
+void Timer::printInfo(Print* p) {
+  int i = 0;
+  Timer* t = _first;
+  while (t) {
+    i++;
+    p->printf(" Timer: %d :\n",t);
+    p->printf("  Remaining: %d\n", t->remainingMillis());
+    p->printf("  Millis: %d\n", (int)t->_millisTime);
+    p->printf("  Clocktime: %d\n", t->_clockTime);
+    p->println(t->_repeatTimer ? "  Repeating" : "  Not repeating");
+    p->println(t->isPaused() ? "  Paused" : "  Not paused");
+    t = t->_next;
+  }
+  p->printf("Timer count:%d\n", i);
+}
+
+
+
+class TimersCommand : public Command {
+  public:
+    const char* getName() { return "timers"; }
+    const char* getHelp() { return "Print Timer Info"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) {
+      Timer::printInfo(c);
+    }
+};
+
+TimersCommand theTimersCommand;
 
 ////////////////////////////////////////////////////////////////////////////////
 void CallbackTimer::setClockTime(time_t clockTimeSet, timerCallback_t callback, void* callbackData) {

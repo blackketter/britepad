@@ -17,10 +17,11 @@ class SetAlarmApp : public SetClockApp {
     static constexpr appid_t ID = "salm";
 
   protected:
-    virtual bool highlighted() { return alarmEnabled; }
+    virtual bool highlighted() { return isAlarmEnabled(); }
     virtual font_t modeButtonFont() { return Arial_18_Bold; }
     virtual const char* modeButtonText() { return alarmEnabled ? "on" : "off"; }
     virtual void modeButtonPressed();
+    bool isAlarmEnabled();
 
   private:
     bool alarmEnabled = false;

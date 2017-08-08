@@ -13,7 +13,7 @@ class ClockApp : public ScreensaverApp {
     virtual millis_t updateInterval() { return 1000; }
     virtual Clock& getClock() { return clock; }
 
-    bool displaysClock() { return true; };
+    virtual bool displaysClock() { return true; };
 
     AppType getAppType() { return CLOCK_APP; }
 

@@ -75,10 +75,11 @@ class KeyMatrix {
     inline bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
     inline bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
 
-    millis_t _lastScan = 0;
-    millis_t _lastFlush = 0;
+    millis_t _nextScan = 0;
     static const millis_t _minScanInterval = 3;
-    static const millis_t _maxScanInterval = 5;
+    static const millis_t _debounceInterval = 5;
+
+    millis_t _lastFlush = 0;
 
     static const millis_t _doubleTappedTime = 250;
     static const millis_t _tappedTime = 250;

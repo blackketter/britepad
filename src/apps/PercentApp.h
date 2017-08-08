@@ -15,6 +15,7 @@ class PercentApp : public ClockApp {
     const char* name() { return "Percent"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "percent";
+    virtual bool displaysClock() { return false; };
 
   protected:
     virtual int getDotsWide() { return 12; }

@@ -69,9 +69,6 @@ class Britepad {
     static const time_t defaultScreensaverSwitchInterval = 30;
     static const time_t defaultScreensaverStartInterval = 10;
 
-    static const millis_t checkWantsToBeScreensaverInterval = 1000;
-    millis_t lastCheckWantsToBeScreensaver = 0;
-
     CallbackTimer     backlightTimer;
 
     CallbackTimer     statusBarUpdateTimer;

@@ -34,6 +34,7 @@ class BritepadApp {
 
     virtual void event(KeyEvent* key) {};  // give apps an opportuntity to run in the background, useful for processing keyboard events before they go to the currently running app or off to host
     virtual void eventEarly(KeyEvent* key) {};  // give apps an opportunity to process events early, before event(), useful for munging events
+    virtual void timeChanged() {};  // notify app that wall clock time has been adjusted
 
     static constexpr BritepadApp* STAY_IN_APP = (BritepadApp*)0;
     static constexpr BritepadApp* SWITCH_TO_INTERACTIVE_MODE = (BritepadApp*)1; // stay in app, but switch mode

@@ -90,7 +90,7 @@ int Sound::freeSynth() {
 void Sound::click() {
   int beeper = freeSynth();
   if (beeper != NO_SYNTH) {
-    console.debugln("click");
+    //console.debugln("click");
     AudioNoInterrupts();
     fades[beeper].fadeIn(0);
     envelopes[beeper].delay(0);
@@ -110,7 +110,7 @@ void Sound::beep(millis_t ms, float freq)
  {
   int beeper = freeSynth();
   if (beeper != NO_SYNTH) {
-    console.debugf("beep (%d) freq: %f\n", beeper, freq);
+    //console.debugf("beep (%d) freq: %f\n", beeper, freq);
     AudioNoInterrupts();
     fades[beeper].fadeIn(0);
     envelopes[beeper].delay(0);
@@ -130,7 +130,7 @@ void Sound::bell(millis_t ms, float freq)
  {
   int beeper = freeSynth();
   if (beeper != NO_SYNTH) {
-    console.debugf("bell (%d) freq: %f\n", beeper, freq);
+    //console.debugf("bell (%d) freq: %f\n", beeper, freq);
     AudioNoInterrupts();
     fades[beeper].fadeIn(0);
     envelopes[beeper].delay(0);

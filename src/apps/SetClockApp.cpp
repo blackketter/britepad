@@ -1,7 +1,6 @@
 #include "BritepadShared.h"
 #include "SetClockApp.h"
 #include "TimerApp.h"
-#include "ChimeApp.h"
 
 SetClockApp theSetClockApp;
 
@@ -92,10 +91,7 @@ void SetClockApp::begin(AppMode asMode) {
 
 void SetClockApp::end() {
   theTime->endSetTime();
-  ChimeApp* a = (ChimeApp*)getAppByID(ChimeApp::ID);  
-  if (a) {
-    a->resetChime();
-  } 
+  britepad.timeChanged();
 
   BritepadApp::end();
 }

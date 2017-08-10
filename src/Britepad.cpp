@@ -307,6 +307,14 @@ void Britepad::eventEarly(KeyEvent* e) {
   }
 }
 
+void Britepad::timeChanged() {
+  BritepadApp* anApp = appList;
+  while (anApp != nullptr) {
+    anApp->timeChanged();
+    anApp = anApp->getNextApp();
+  }
+}
+
 void Britepad::loop() {
 
   pad.update();

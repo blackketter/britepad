@@ -51,15 +51,15 @@ void ChimeApp::resetChime() {
     // how many chimes at the next hour
     _chimesRemaining = clock.hourFormat12() + 1;
     if (_chimesRemaining == 13) { _chimesRemaining = 1; }
-    console.debugf("%d chimes set up\n", _chimesRemaining);
+    //console.debugf("%d chimes set up\n", _chimesRemaining);
   } else {
-    console.debugln("chime not set up");
+    //console.debugln("chime not set up");
   }
 }
 
 
 void ChimeApp::chimerCallback() {
-  console.debugf("Chimes: %d\n", _chimesRemaining);
+  //console.debugf("Chimes: %d\n", _chimesRemaining);
   if (_chimesRemaining == 0) {
     resetChime();
   } else {

@@ -4,18 +4,6 @@
 #include "MousePad.h"
 #include "usb_mouse.h"
 
-// Mouse parameters
-//  move maximum number of points
-#define MOUSE_MAX_MOVE (100)
-
-// a tap is less than this many millis
-#define MOUSE_TAP_DUR (150)
-#define MOUSE_TAP_UP_DUR (200)
-#define MOUSE_DRAG_DUR (300)
-#define MOUSE_RELEASE_DRAG_DUR (1000)
-
-#define SCROLL_EDGE_MARGIN (10)
-
 void MousePad::begin() {
   Mouse.begin();
 }
@@ -122,14 +110,11 @@ void MousePad::run() {
       // if the touch is in the edge, then we scroll
       if (pad.x() > (pad.getWidth() - SCROLL_EDGE_MARGIN)) {
         if (pad.deltay() != 0) {
-          static millis_t lastScroll = pad.time();
-          static int16_t accumScroll = 0;
-          const int16_t scrollFactor = 16;
 
           accumScroll += pad.deltay();
 
           // limit scroll messages to max 25ms intervals and some movement
-          if (pad.time() - lastScroll > 25 && abs(accumScroll) > scrollFactor) {
+          if (pad.time() - lastScroll > scrollInterval && abs(accumScroll) > scrollFactor) {
             int8_t mouseScrollUnits = accumScroll/scrollFactor;
             Mouse.scroll(-mouseScrollUnits); // negative because we use new natural scrolling
             // todo: notify scroll
@@ -205,7 +190,7 @@ void MousePad::run() {
     if (pad.released(SCREEN_PAD)) {
       millis_t downtime = pad.time() - pad.lastDownTime(SCREEN_PAD);
 
-      if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < 20 && (abs(pad.lastDownY() - pad.y()) < 20)) ) {
+      if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < MOUSE_TAP_MOVEMENT_MAX && (abs(pad.lastDownY() - pad.y()) < MOUSE_TAP_MOVEMENT_MAX)) ) {
 
         if (pad.x() > (pad.getWidth() - SCROLL_EDGE_MARGIN)) {
           if (pad.y() < pad.getHeight()/2) {

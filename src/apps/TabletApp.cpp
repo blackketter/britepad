@@ -1,11 +1,8 @@
-#ifndef _TabletApp_
-#define _TabletApp_
-
 #include "BritepadApp.h"
 
 class TabletApp : public BritepadApp {
   public:
-    void begin(AppMode asMode) { mouse.setAbsolute(true); BritepadApp::begin(asMode); }
+    void begin(AppMode asMode) { mouse.setAbsolute(true); BritepadApp::begin(asMode); switchAppMode(MOUSE_MODE); }
     void end() {  mouse.setAbsolute(false); BritepadApp::end(); }
 
     void run() {
@@ -14,6 +11,8 @@ class TabletApp : public BritepadApp {
           screen.fillCircle(pad.x(), pad.y(), penRadius, currentColor++);
       }
     }
+
+    bool canBeMouse() { return isCurrentApp(); }  // switch to mouse mode only if we're already running (interactively)
 
     // interactive = mouse mode for this app
     void switchAppMode(AppMode newMode) { if (newMode == INTERACTIVE_MODE) { newMode = MOUSE_MODE; } BritepadApp::switchAppMode(newMode); }
@@ -30,4 +29,4 @@ class TabletApp : public BritepadApp {
     static const coord_t penRadius = 5;
 };
 
-#endif
+TabletApp theTabletApp;

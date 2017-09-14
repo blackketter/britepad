@@ -32,14 +32,18 @@ class KeyModifierLockApp : public KeyboardApp {
         unlockTimer.setMillis(lockTimeout, unlockTimerCallback, (void*)this);
 
         if (!key->isModifier()) {
-          if (!key->isMouseKey()) {
+          if (key->released()) {
+            if (!key->isMouseKey()) {
+              unlockAll();
+            } else {
+              mouseKeyHit = true;
+            }
+          } else {
             if (anyLocked() && key->pressed(KEY_ESC)) {
               flipLockStates(doubleLocked, toUnlock);
               key->clear();
+              unlockAll();
             }
-            unlockAll();
-          } else {
-            mouseKeyHit = true;
           }
         } else {
           lockState state = getLockState(key->code());
@@ -56,7 +60,7 @@ class KeyModifierLockApp : public KeyboardApp {
               if (mouseKeyHit) {
                 unlockAll();
                 mouseKeyHit = false;
-              } else if (keys.keyTapped(key->code())) {
+              } else if (keyEvents.keyTapped(key->code())) {
                 setLockState(key->code(), locked);
                 key->clear();
               } else {
@@ -104,7 +108,7 @@ class KeyModifierLockApp : public KeyboardApp {
           if (state[i] == toUnlock) {
             state[i] = unlocked;
             //console.debugf("unlocking %d\n",modifierKeys[i]);
-            keys.addEvent(NO_KEY, modifierKeys[i], Uptime::millis(), false);
+            keyEvents.addEvent(NO_KEY, modifierKeys[i], Uptime::millis(), false);
           }
         }
 

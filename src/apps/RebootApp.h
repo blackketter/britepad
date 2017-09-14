@@ -78,7 +78,7 @@ class ReloadApp : public RebootApp {
     const char* name() { return "Reload"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "rlod";
-    void event(KeyEvent* k) { if (k->pressed(KEY_ENTER) && keys.keyIsDown(KEY_P) && keys.keyIsDown(KEY_U)) { launch(); }};
+    void event(KeyEvent* k) { if (k->pressed(KEY_ENTER) && keyEvents.keyIsDown(KEY_P) && keyEvents.keyIsDown(KEY_U)) { launch(); }};
 
 };
 #endif

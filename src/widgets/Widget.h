@@ -9,10 +9,10 @@ typedef uint32_t widgetid_t;
 class Widget {
 
   public:
-    virtual ~Widget() {};  // does not delete list
+    virtual ~Widget();
     virtual void setBounds(coord_t x, coord_t y, coord_t w, coord_t h) { _xpos = x; _ypos = y; _width = w; _height = h; }
     virtual bool hit(coord_t x, coord_t y) { return _visible && (x >= _xpos) && (x <= _xpos+_width) && (y > _ypos) && (y <= _ypos + _height); }
-    virtual void draw() = 0;
+    virtual void draw();
     virtual bool key(KeyEvent* k) { return false; };
 
     coord_t getWidth() { return _width; }
@@ -31,10 +31,6 @@ class Widget {
     keycode_t getKey() { return _key; }
     void setKey(keycode_t key) { _key = key; }
 
-    virtual bool pressed() { return false; }
-    virtual bool released() { return false; };
-    virtual bool held() { return false; };
-
     // todo: make setting the visibility cause a redraw or erase
     virtual void setVisible(bool visibility) { _visible = visibility; }
     virtual bool getVisible() { return _visible; }
@@ -42,13 +38,17 @@ class Widget {
     virtual bool getEnabled() { return _enabled; }
 
     // manage linked list of widgets
-    Widget* getPrevious() { return _previous; }
     Widget* getNext() { return _next; }
     void setNext(Widget* n) { _next = n; }
-    void setPrevious(Widget* p) { _previous = p; }
+    void addWidget(Widget* w);
+    virtual Widget* getByID(widgetid_t id);
+    virtual Widget* pressedWidget();
+    virtual Widget* releasedWidget();
+    virtual Widget* heldWidget();
 
-    void add(Widget* w);
-    void remove(Widget* w);
+    virtual bool pressed() { return pressedWidget() != nullptr; }
+    virtual bool released() { return releasedWidget() != nullptr; }
+    virtual bool held() { return heldWidget() != nullptr; }
 
   protected:
     widgetid_t _id = 0;
@@ -59,7 +59,6 @@ class Widget {
     bool _visible = true;
     bool _enabled = true;
     keycode_t _key = 0;
-    Widget* _previous = nullptr;
     Widget* _next = nullptr;
 };
 

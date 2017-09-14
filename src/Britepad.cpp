@@ -3,12 +3,17 @@
 #include "Britepad.h"
 #include "Types.h"
 #include "Timer.h"
+#include "USBHost.h"
+#include "USBMouse.h"
+
 
 #include "apps/LauncherApp.h"
 #include "apps/ClockApp.h"
 #include "apps/SplashApp.h"
 
 #define PROXIMITY_DEAD_TIME (1000)
+
+
 
 class FPSCommand : public Command {
   public:
@@ -197,18 +202,21 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
 
   if (currApp) {
     currApp->drawBars();
-    console.debugf("Begin: %s in ", currApp->name());
-    if (asMode == SCREENSAVER_MODE) {
-      console.println("screensaver mode");
-      screensaverStartedTime = pad.time();
-    } else if (asMode == INTERACTIVE_MODE) {
-      console.println("interactive mode");
-      resetScreensaver();
-    } else if (asMode == MOUSE_MODE) {
-      console.println("mouse mode");
-    } else {
-      console.printf("mode: %d\n", asMode);
+    const char* modeString = "unknown";
+    switch (asMode) {
+      case SCREENSAVER_MODE:
+        modeString = "screensaver";
+        break;
+      case INTERACTIVE_MODE:
+        modeString = "interactive";
+        break;
+      case MOUSE_MODE:
+        modeString = "mouse";
+        break;
+      default:
+        break;
     }
+    console.debugf("Begin: %s in %s mode\n", currApp->name(), modeString);
     currApp->begin(asMode);
     }
 }
@@ -272,6 +280,9 @@ void Britepad::begin() {
   screen.setBacklight(screen.maxbrightness);
   backlightTimer.setMillis(ambientUpdateInterval, backlightCallback, (void*)this, true);
   statusBarUpdateTimer.setMillis(1000, statusBarCallback, (void*)this, true);
+
+	usbHost.begin();
+	usbMouse.begin();
 }
 
 void Britepad::idle() {
@@ -284,10 +295,16 @@ void Britepad::idle() {
     lastIdle = now;
     theFPSCommand.idled();
 
+    usbHost.Task();
+    usbMouse.run();
     keys.update();
+
     if (currApp && !currApp->usesKeyboard()) {
-      keys.sendKeys();
+      keyEvents.sendKeys();
     }
+    if (currApp && currApp->isAppMode(MOUSE_MODE)) {
+      mouse.run();
+    };  // run current app state repeatedly
 
 };
 

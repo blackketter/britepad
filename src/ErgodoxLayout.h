@@ -197,12 +197,7 @@ const keymap_t ergodoxMap[] = {
     { 59, KEY_ENTER },
     { 65, KEY_SPACE },
 
-    { TOP_PAD_SWITCH, KEY_EXIT },
-    { BOTTOM_PAD_SWITCH, KEY_BOTTOM_PAD },
-    { LEFT_PAD_SWITCH, KEY_LEFT_PAD },
-    { RIGHT_PAD_SWITCH, KEY_RIGHT_PAD },
-
-  // end of table marker
+ // end of table marker
     { NO_KEY, NO_CODE }
 };
 

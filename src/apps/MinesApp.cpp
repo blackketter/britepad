@@ -1,3 +1,5 @@
+#if FLASH_SIZE > (1024*256)
+
 #include "MinesApp.h"
 #include "Sound.h"
 
@@ -255,3 +257,4 @@ void MinesApp::run() {
   }
 }
 
+#endif

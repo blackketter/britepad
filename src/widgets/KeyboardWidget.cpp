@@ -5,19 +5,28 @@ KeyboardWidget::KeyboardWidget(KeyMatrix* keymatrix, coord_t x, coord_t y, coord
   _keymatrix = keymatrix;
   setBounds(x,y,w,h);
 
-  keyswitch_t totalKeys = _keymatrix->numKeys();
   coord_t oneKeyWidth = w/_keymatrix->getWidth();
   coord_t oneKeyHeight = h/_keymatrix->getHeight();
+  console.debugf("w: %d h: %d / matrix w: %d matrix h: %d\n", w, h, _keymatrix->getWidth(), _keymatrix->getHeight());
+  if (oneKeyWidth > oneKeyHeight) { oneKeyWidth = oneKeyHeight; }
+  if (oneKeyHeight > oneKeyWidth) { oneKeyHeight = oneKeyWidth; }
 
-  for (keyswitch_t k = 0; k < totalKeys; k++) {
+  int i = 0;
+  keyswitch_t k = _keymatrix->getNthKey(i);
+  console.debugf("matrix: %d, oneKeyWidth: %d oneKeyHeight: %d\n", _keymatrix, oneKeyWidth, oneKeyHeight);
+  console.debugf("first key: %d\n", k);
+  while (k != NO_KEY) {
+    console.debugf("adding key: %d\n", k);
     if (_keymatrix->getKeyLayout(k)) {
       coord_t button_x = x+_keymatrix->getKeyX(k)*oneKeyWidth;
       coord_t button_y = y+_keymatrix->getKeyY(k)*oneKeyHeight;
       coord_t button_w = oneKeyWidth*_keymatrix->getKeyWidth(k);
       coord_t button_h = oneKeyWidth*_keymatrix->getKeyHeight(k);
       Button* b = new Button(button_x+1, button_y+1, button_w-1, button_h-1, defaultColor, false, "", Arial_10_Bold, defaultLabelColor, nullptr, (widgetid_t)k);
-      add(b);
+      addWidget(b);
     }
+    i++;
+    k = _keymatrix->getNthKey(i);
   }
 }
 
@@ -31,7 +40,7 @@ void KeyboardWidget::draw() {
 
     const char* title = _keymatrix->getKeyLabel(c);
     const icon_t icon = _keymatrix->getKeyIcon(c);
-    bool down = _keymatrix->keyIsDown(c);
+    bool down = _keymatrix->switchIsDown(k) || keyEvents.keyIsDown(c);
 
     if (icon) {
       title = nullptr;
@@ -49,7 +58,7 @@ void KeyboardWidget::draw() {
       button->draw();
       if (i == 2) {
         i = 0;
-        // idle every 3rd button
+        // drawing may be slow, so idle every 3rd button
         britepad.idle();
       } else {
         i++;

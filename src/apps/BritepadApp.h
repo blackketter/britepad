@@ -3,6 +3,7 @@
 
 #include "BritepadShared.h"
 #include "widgets/Icon.h"
+#include "widgets/Widget.h"
 
 class Britepad;
 class AppButton;
@@ -22,14 +23,14 @@ enum AppType {
   MACROS_APP = 512,
 };
 
-class BritepadApp {
+class BritepadApp : public Widget {
   public:
     BritepadApp();
     virtual void init() {};  // initialize app immediately after boot
     virtual void begin(AppMode asMode);  // initialize app state and draw first screen, allocate any memory needed while running
     virtual void end(); // called after final run(), lets app clean up, releasing any memory temporarily allocated for runs
 
-    virtual void run() { if (isAppMode(MOUSE_MODE)) { mouse.run(); } };  // run current app state repeatedly
+    virtual void run() {};
     virtual void switchAppMode(AppMode asMode);  // called when switching between modes
 
     virtual void event(KeyEvent* key) {};  // give apps an opportuntity to run in the background, useful for processing keyboard events before they go to the currently running app or off to host
@@ -100,6 +101,7 @@ class BritepadApp {
     void drawBars(bool update = false); // draw the status and info bars
 
     void drawStatusBar(bool update);
+
     virtual bool displaysStatusBar() { return true; };  // apps show status bar by default
     virtual color_t statusBarBGColor() { return screen.mix(bgColor(), screen.grey); }  // bgcolor of status bar
     virtual color_t statusBarFGColor() { return screen.luminance(statusBarBGColor()) > 127 ? screen.black : screen.white; } // color of text, graphics on status bar
@@ -118,7 +120,7 @@ class BritepadApp {
 
 
   protected:
-    KeyEvent* getNextEvent() { return keys.getNextEvent(); }
+    KeyEvent* getNextEvent() { return keyEvents.getNextEvent(); }
     virtual bool hasPrefs() { return canBeScreensaver() | canBeMouse() | isAppType(KEYBOARD_APP); } // mice, screensavers and keyboard apps use default prefs for enable/disable
 
     virtual void clearScreen();

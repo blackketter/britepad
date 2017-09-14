@@ -1,11 +1,11 @@
 #include "KeyboardViewerApp.h"
 
-KeyboardViewerApp theKeyboardViewerApp;
+//KeyboardViewerApp theKeyboardViewerApp(&keys);
 
 void KeyboardViewerApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);
 
-  buttons = new KeyboardWidget(&keys,screen.clipLeft(),screen.clipTop(),screen.clipWidth(),screen.clipHeight(),screen.red,screen.black);
+  buttons = new KeyboardWidget(_keyMatrix,screen.clipLeft(),screen.clipTop(),screen.clipWidth(),screen.clipHeight(),screen.red,screen.black);
 
 }
 
@@ -16,7 +16,7 @@ void KeyboardViewerApp::end() {
 
 void KeyboardViewerApp::run() {
 
-  if (tutorialMode && !keys.getOverlay()) {
+  if (tutorialMode && !_keyMatrix->getOverlay()) {
     tutorialMode = false;
     if (lastApp) {
       launchApp(lastApp, lastMode);
@@ -33,7 +33,7 @@ void KeyboardViewerApp::draw() {
 void KeyboardViewerApp::event(KeyEvent* key) {
   if (getEnabled(KEYBOARD_MODE)) {
 //    console.debugln("keyboardviewerapp idle");
-    if (!isCurrentApp() && keys.getOverlay()) {
+    if (!isCurrentApp() && _keyMatrix->getOverlay()) {
         BritepadApp* currApp = britepad.currentApp();
         if (currApp && currApp != this) {
           lastApp = currApp;

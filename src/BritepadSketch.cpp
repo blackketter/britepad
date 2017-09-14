@@ -14,7 +14,7 @@ Britepad britepad = Britepad();
 Preferences prefs = Preferences();
 MousePad mouse = MousePad();
 Console console = Console();
-KeyMatrix keys = KeyMatrix(ergodoxMap, ergodoxLayout);
+ErgodoxKeyMatrix keys;
 
 //US Pacific Time Zone (Las Vegas, Los Angeles)
 TimeChangeRule usPDT = {"PDT", Second, dowSunday, Mar, 2, -420};

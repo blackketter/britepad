@@ -63,7 +63,7 @@ class Britepad {
     BritepadApp* randomApp(AppMode m);
 
     millis_t lastIdle = 0;
-    millis_t idleInterval = 10;  // minimum interval between idles
+    millis_t idleInterval = 8;  // minimum interval between idles.  8ms is 125hz or the default mouse speed
 
     static const millis_t ambientUpdateInterval = 100;
     static const millis_t showClockDur = 2000;

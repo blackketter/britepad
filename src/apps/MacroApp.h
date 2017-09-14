@@ -85,7 +85,7 @@ class MacroApp : public BritepadApp {
           prefs.read(prefID.c_str(), s, (uint8_t*)macro);
 
           for (int i = 0; i < events; i++) {
-            keys.sendKey(macro[i].code, macro[i].pressed);
+            keyEvents.sendKey(macro[i].code, macro[i].pressed);
             delay(10);
           }
 

@@ -7,6 +7,7 @@
 
 class KeyboardViewerApp : public KeyboardApp {
   public:
+    KeyboardViewerApp(KeyMatrix* keyMatrix) { _keyMatrix = keyMatrix; };
     void begin(AppMode asMode);
     void end();
     void run();
@@ -28,6 +29,7 @@ class KeyboardViewerApp : public KeyboardApp {
     KeyboardWidget* buttons = nullptr;
     bool tutorialMode = false;
     BritepadApp* lastApp = nullptr;
+    KeyMatrix* _keyMatrix = nullptr;
     AppMode lastMode;
 };
 

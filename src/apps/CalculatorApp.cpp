@@ -1,3 +1,5 @@
+#if FLASH_SIZE > (1024*256)
+
 #include "CalculatorApp.h"
 
 CalculatorApp theCalculatorApp;
@@ -36,7 +38,7 @@ enum keys {
   ee,
   divide,
   multiply,
-  add,
+  adds,
   subtract,
   inverse,
   percent,
@@ -119,7 +121,7 @@ const ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] = {
             {screen.green, "1", Arial_12_Bold, screen.black, nullptr, one, '1'},
             {screen.green, "2", Arial_12_Bold, screen.black, nullptr, two, '2'},
             {screen.green, "3", Arial_12_Bold, screen.black, nullptr, three, '3'},
-            {screen.cyan, "+", Arial_12_Bold, screen.black, nullptr, add, '+'},
+            {screen.cyan, "+", Arial_12_Bold, screen.black, nullptr, adds, '+'},
             {screen.yellow, "x<>y", Arial_12_Bold, screen.black, nullptr, swap, 's'},
           },
           {
@@ -138,7 +140,7 @@ const ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] = {
             {screen.green, "8", Arial_12_Bold, screen.black, nullptr, eight, '8'},
             {screen.green, "9", Arial_12_Bold, screen.black, nullptr, nine, '9'},
             {screen.green, "a", Arial_12_Bold, screen.black, nullptr, hex_a, 'a'},
-            {screen.cyan, "+", Arial_12_Bold, screen.black, nullptr, add, '+'},
+            {screen.cyan, "+", Arial_12_Bold, screen.black, nullptr, adds, '+'},
           },
           {
             {screen.yellow, "dec", Arial_12_Bold, screen.black, nullptr, changeBase, MODIFIERKEY_LEFT_CTRL},
@@ -330,7 +332,7 @@ void CalculatorApp::handleKey(widgetid_t keyPressed) {
       case multiply:
         keyMultiply();
         break;
-      case add:
+      case adds:
         keyAdd();
         break;
       case subtract:
@@ -670,3 +672,4 @@ char* CalculatorApp::formatText(char* fstring, double value) {
   }
   return fstring;
 }
+#endif

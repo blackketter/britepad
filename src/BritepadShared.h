@@ -9,8 +9,11 @@ extern Console console;
 #include "Screen.h"
 extern Screen screen;
 
-#include "KeyMatrix.h"
-extern KeyMatrix keys;
+#include "ErgodoxKeyMatrix.h"
+extern ErgodoxKeyMatrix keys;
+
+#include "KeyEventQueue.h"
+extern KeyEventQueue keyEvents;
 
 #include "TouchPad.h"
 extern TouchPad pad;
@@ -39,4 +42,5 @@ extern Preferences prefs;
 
 #include "PString.h"
 
+#include "USBHost.h"
 #endif

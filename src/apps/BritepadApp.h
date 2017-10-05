@@ -120,7 +120,7 @@ class BritepadApp : public Widget {
 
 
   protected:
-    KeyEvent* getNextEvent() { return keyEvents.getNextEvent(); }
+    KeyEvent* getNextEvent() { KeyEvent* e = keyEvents.getNextEvent(); if (e) { britepad.resetScreensaver(); }; return e;}
     virtual bool hasPrefs() { return canBeScreensaver() | canBeMouse() | isAppType(KEYBOARD_APP); } // mice, screensavers and keyboard apps use default prefs for enable/disable
 
     virtual void clearScreen();

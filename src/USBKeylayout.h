@@ -160,6 +160,7 @@ const keymap_t ANSI104KeyMap[] = {
     { KEY_F11, KEY_F11 },
     { KEY_F12, KEY_F12 },
 
+    // macOS expects F13-F15 in these locations
     { KEY_PRINTSCREEN, KEY_F13 },
     { KEY_SCROLL_LOCK, KEY_F14 },
     { KEY_PAUSE, KEY_F15 },
@@ -245,7 +246,7 @@ const keymap_t ANSI104KeyMap[] = {
     { KEY_M, KEY_M },
     { KEY_COMMA, KEY_COMMA },
     { KEY_PERIOD, KEY_PERIOD },
-    { KEY_BACKSLASH, KEY_BACKSLASH },
+    { KEY_SLASH, KEY_SLASH },
     { MODIFIERKEY_RIGHT_SHIFT, MODIFIERKEY_RIGHT_SHIFT },
 
     { KEYPAD_1, KEYPAD_1 },
@@ -261,6 +262,9 @@ const keymap_t ANSI104KeyMap[] = {
     { MODIFIERKEY_RIGHT_ALT, MODIFIERKEY_RIGHT_ALT },
     { MODIFIERKEY_RIGHT_GUI, MODIFIERKEY_RIGHT_GUI },
     { MODIFIERKEY_RIGHT_CTRL, MODIFIERKEY_RIGHT_CTRL },
+
+    // some windows keyboards have a menu key where the right gui key should be. feh.
+    { KEY_MENU, MODIFIERKEY_RIGHT_GUI },
 
     { KEYPAD_0, KEYPAD_0 },
     { KEYPAD_PERIOD, KEYPAD_PERIOD },

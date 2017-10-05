@@ -188,7 +188,7 @@ KeyEvent* KeyEventQueue::getNextEvent() {
 }
 
 
-void KeyEventQueue::addEvent(keyswitch_t k, keycode_t c, millis_t t, bool d) {
+void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t t, bool d) {
 //  console.debugf("addEvent: switch: %d, code: %d, pressed: %d\n",k,c,d);
 
 /*
@@ -202,7 +202,7 @@ void KeyEventQueue::addEvent(keyswitch_t k, keycode_t c, millis_t t, bool d) {
 */
 
   char ch = getKeyChar(c);
-  KeyEvent* e = new KeyEvent(k,c,ch,t,d);
+  KeyEvent* e = new KeyEvent(m, k,c,ch,t,d);
   if (_events) {
     _events->setNext(e);
     e->setPrev(_events);

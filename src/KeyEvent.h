@@ -3,9 +3,12 @@
 
 #include "KeyInfo.h"
 
+class KeyMatrix;
+
 class KeyEvent {
   public:
-    KeyEvent(keyswitch_t key, keycode_t code, char character, millis_t time, bool pressed) {
+    KeyEvent(KeyMatrix* matrix, keyswitch_t key, keycode_t code, char character, millis_t time, bool pressed) {
+      _matrix = matrix;
       _time = time;
       _key = key;
       _code = code;
@@ -16,6 +19,7 @@ class KeyEvent {
     }
 
     millis_t time() { return _time; }
+    KeyMatrix* matrix() { return _matrix; }
     keyswitch_t key() { return _key; }
     keycode_t code() { return _code; }
     bool code(keycode_t c) { return c == _code; }
@@ -66,6 +70,7 @@ class KeyEvent {
     keycode_t _code;
     char _char;
     bool _pressed;
+    KeyMatrix* _matrix;
     KeyEvent* _prev;
     KeyEvent* _next;
 };

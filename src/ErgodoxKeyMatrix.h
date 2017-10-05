@@ -7,13 +7,15 @@ class ErgodoxKeyMatrix : public KeyMatrix {
   public:
     ErgodoxKeyMatrix();
     void begin();
-    keyswitch_t update();
-    bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
-    bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
+    void update();
+    const char* name() { return "ErgoDox"; }
 
   private:
     void scanMatrix();
     void clearKeyChanges();
+
+    bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
+    bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
 
     static const uint8_t _leftAddr = 0;
     static const uint8_t _rightAddr = 7;

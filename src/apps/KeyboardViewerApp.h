@@ -13,7 +13,7 @@ class KeyboardViewerApp : public KeyboardApp {
     void run();
     void event(KeyEvent* key);
 
-    const char* name() { return "Keys"; };
+    const char* name() { _name = _keyMatrix->name(); _name.append(" Keys");  return _name.c_str(); };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "keys";
 
@@ -30,6 +30,7 @@ class KeyboardViewerApp : public KeyboardApp {
     bool tutorialMode = false;
     BritepadApp* lastApp = nullptr;
     KeyMatrix* _keyMatrix = nullptr;
+    String _name;
     AppMode lastMode;
 };
 

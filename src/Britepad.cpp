@@ -396,10 +396,7 @@ void Britepad::loop() {
   launchApp(BritepadApp::STAY_IN_APP);
 
   if (currApp->usesKeyboard()) {
-    int events = keys.update();
-    if (events) {
-      resetScreensaver();
-    }
+    keys.update();
     theFPSCommand.idled();
   } else {
     idle();

@@ -12,6 +12,8 @@
 class KeyMatrix {
   public:
     virtual void begin();
+    virtual void update();
+    virtual const char* name() = 0;
 
     void setMap(const keymap_t* m = nullptr);  // pass nullptr to reset to default map
     const keymap_t* getMap() { return _currentMap; }
@@ -24,8 +26,6 @@ class KeyMatrix {
     void setLayout(const keylayout_t* l = nullptr);   // pass nullptr to reset to default layout
     const keylayout_t* getLayout() { return _currentLayout; }
     const keylayout_t* getDefaultLayout() { return _defaultLayout; }
-
-    virtual keyswitch_t update();  //returns number of keys changed
 
     uint8_t getWidth();
     uint8_t getHeight();
@@ -45,11 +45,7 @@ class KeyMatrix {
 
     void repeat();  // only called by timer callback function
 
-    void printStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
-
     const keyinfo_t* getKeyInfo(keycode_t c);
-    virtual bool switchIsDown(keyswitch_t k);
-    virtual bool switchIsUp(keyswitch_t k);
 
   protected:
     keyswitch_t getSwitch(keycode_t c);

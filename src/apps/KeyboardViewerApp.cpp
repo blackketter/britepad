@@ -1,6 +1,6 @@
 #include "KeyboardViewerApp.h"
 
-//KeyboardViewerApp theKeyboardViewerApp(&keys);
+KeyboardViewerApp theKeyboardViewerApp(&keys);
 
 void KeyboardViewerApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);

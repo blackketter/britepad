@@ -2,15 +2,15 @@
 #define _USBKeyMatrix_
 
 #include "KeyMatrix.h"
+#include "USBHost.h"
 
 class USBKeyMatrix : public KeyMatrix {
   public:
     USBKeyMatrix();
     void begin();
-    keyswitch_t update();
-    bool switchIsDown(keyswitch_t k);
-    bool switchIsUp(keyswitch_t k);
-
+    void update();
+    const char* name() { return "USB"; }
+    void usbKeyEvent(keyswitch_t k, bool down);
   protected:
 
   private:

@@ -170,31 +170,3 @@ void KeyMatrix::setLayout(const keylayout_t* l) {
 void KeyMatrix::setMap(const keymap_t* l) {
   _currentMap = l ? l : getDefaultMap();
 }
-
-class KeysCommand : public Command {
-  public:
-    const char* getName() { return "keys"; }
-    const char* getHelp() { return "display status of key matrix"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
-      keys.printStatus(c);
-    }
-};
-
-KeysCommand theKeysCommand;
-
-void KeyMatrix::printStatus(Stream* c) {
-  if (c == nullptr) { c = &console; }
-  c->println("---------------");
-  c->println("Keyboard Status:");
-  int i = 0;
-  keyswitch_t k = getNthKey(i);
-  while (k != NO_KEY) {
-    if (switchIsDown(k)) {
-      c->printf(" Key '%s' is down (switch: %d)\n", getKeyLabel(getCode(k)), k);
-    }
-    i++;
-    k = getNthKey(i);
-  }
-  c->println("");
-}
-

@@ -78,7 +78,7 @@ void ErgodoxKeyMatrix::scanMatrix() {
   }
 }
 
-keyswitch_t ErgodoxKeyMatrix::update() {
+void ErgodoxKeyMatrix::update() {
 
   keyswitch_t count = 0;
 
@@ -94,7 +94,7 @@ keyswitch_t ErgodoxKeyMatrix::update() {
       if ((i != NO_KEY) && ((_changedKeys[i/_numRows] >> (i%_numRows)) & 0x01)) {
         count++;
         bool d = switchIsDown(i);
-        keyEvents.addEvent(i,getCode(i),now, d);
+        keyEvents.addEvent(this, i,getCode(i),now, d);
       }
     }
 
@@ -105,7 +105,6 @@ keyswitch_t ErgodoxKeyMatrix::update() {
   } else {
     _nextScan = now + _minScanInterval;
   }
-  return count;
 }
 
 void ErgodoxKeyMatrix::clearKeyChanges() {

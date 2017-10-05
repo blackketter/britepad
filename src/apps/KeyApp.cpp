@@ -46,7 +46,6 @@ void KeyApp::run() {
         Keyboard.write(*slowstr);
         sound.click();
         slowstr++;
-        //  added delay to try to make the login screen from a cold boot on mac work.  it does not.  todo: fix it
         delay(50);
       }
       break;
@@ -67,7 +66,7 @@ void KeyApp::run() {
       Keyboard.set_media(KEY_MEDIA_EJECT);
       Keyboard.send_now();
       // todo use a timer rather than blocking
-      delay(300);  // Mac OS-X will not recognize a very short eject press
+      delay(300);  // macOS will not recognize a very short eject press
       Keyboard.set_media(0);
       Keyboard.send_now();
       break;

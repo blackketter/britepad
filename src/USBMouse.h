@@ -4,25 +4,15 @@
 #include "BritepadShared.h"
 #include "USBHost.h"
 
-MouseController _mouse(usbHost);
-USBHub hub1(usbHost);
-USBHub hub2(usbHost);
-USBHub hub3(usbHost);
-
 class USBMouse {
   public:
     void begin() {}
     void end() {}
-    void run() {
-      if(_mouse.available()) {
-        usb_mouse_buttons_state = _mouse.getButtons();
-        Mouse.move(_mouse.getMouseX(), _mouse.getMouseY(),_mouse.getWheel());
-        _mouse.mouseDataClear();
-      }
-    }
+    void run();
 
   private:
 };
 
-USBMouse usbMouse;
+extern USBMouse usbMouse;
+
 #endif

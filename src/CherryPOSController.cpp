@@ -27,6 +27,9 @@
 #include <Arduino.h>
 #include "CherryPOSController.h"
 
+#define print   USBHost::print_
+#define println USBHost::println_
+
 void CherryPOSController::init()
 {
 	contribute_Pipes(mypipes, sizeof(mypipes)/sizeof(Pipe_t));

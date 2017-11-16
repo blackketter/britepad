@@ -386,12 +386,10 @@ void Britepad::loop() {
       console.debugln("Proximity detected: showing clock");
 
     } else if (currApp->isAppMode(SCREENSAVER_MODE) && getScreensaverSwitchInterval() && (pad.time() - screensaverStartedTime) > getScreensaverSwitchInterval()*1000) {
-        console.debugf("switching screensavers %d\n", getScreensaverSwitchInterval());
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
 
       // is it time for the screensaver to kick in?
       } else if (!currApp->isAppMode(SCREENSAVER_MODE) && (pad.time() > disableScreensaversUntil)) {
-        console.debugln("starting screensaver");
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
       }
     }

@@ -341,8 +341,8 @@ void LauncherApp::end() {
 
   if (pad.pressed(TOP_PAD) || audibleExit) {
     sound.swipe(DIRECTION_UP);
-    audibleExit = false;
   }
+  audibleExit = false;
 
   exitOnRelease = false;
 
@@ -353,6 +353,7 @@ void LauncherApp::end() {
 void LauncherApp::event(KeyEvent* key) {
   if (key->pressed(KEY_EXIT)) {
     britepad.currentApp()->exit();
+    audibleExit = true;  // if we're exiting this app, then play exit sound.
   } else if (key->pressed(KEY_RIGHT_FN)) {
     if (!isCurrentApp()) {
       setLaunchScreen(MACROS_SCREEN);

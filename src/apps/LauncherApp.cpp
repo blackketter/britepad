@@ -362,4 +362,8 @@ void LauncherApp::event(KeyEvent* key) {
   }
 }
 
+bool LauncherApp::disablesScreensavers() {
+  return keyEvents.keyIsDown(KEY_RIGHT_FN);
+}
+
 LauncherApp theLauncherApp;

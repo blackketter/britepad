@@ -55,6 +55,8 @@ class LauncherApp : public BritepadApp {
 
     void setLaunchScreen(screenid_t s) {launch_screen = s;}
 
+    bool disablesScreensavers();
+
   private:
     const static int noButton = -1;
 

@@ -58,11 +58,13 @@ class FunctionLayerApp : public KeyboardApp {
     static constexpr appid_t ID = "lbar";
     const char* name() { return "Function Layer"; };
 
-    void eventEarly(KeyEvent* key) {
+    EventPriority eventPriority() { return PRIORITY_MIDDLE; }
+    bool event(KeyEvent* key) {
       if (getEnabled(KEYBOARD_MODE)) {
         // switch to the function layer
         if (key->pressed(KEY_LEFT_FN)) {
           if (keys.getOverlay() != functionOverlay) {
+            console.debug("setting function layer\n");
             keys.setOverlay(functionOverlay);
             // jiggle the mouse to make cursor show up
             Mouse.move(-1, 0);
@@ -71,9 +73,11 @@ class FunctionLayerApp : public KeyboardApp {
         } else if (
                    (key->released(KEY_LEFT_FN))  // released fn key
                   ) {
+                console.debug("removing function layer\n");
                 keys.setOverlay();
         }
       }
+      return false;
     };
 
   private:

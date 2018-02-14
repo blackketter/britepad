@@ -23,6 +23,14 @@ enum AppType {
   MACROS_APP = 512,
 };
 
+enum EventPriority {
+    PRIORITY_FIRST = -1000,
+    PRIORITY_MIDDLE = 0,
+    PRIORITY_LAST = 1000,
+    PRIORITY_NORMAL = PRIORITY_LAST,
+    PRIORITY_END = 9999,
+};
+
 class BritepadApp : public Widget {
   public:
     BritepadApp();
@@ -33,8 +41,11 @@ class BritepadApp : public Widget {
     virtual void run() {};
     virtual void switchAppMode(AppMode asMode);  // called when switching between modes
 
-    virtual void event(KeyEvent* key) {};  // give apps an opportuntity to run in the background, useful for processing keyboard events before they go to the currently running app or off to host
-    virtual void eventEarly(KeyEvent* key) {};  // give apps an opportunity to process events early, before event(), useful for munging events
+    // give apps an opportuntity to run in the background, useful for processing keyboard events before they go to the currently running app or off to host
+    // return if the event is consumed and should not be further processed
+    virtual bool event(KeyEvent* key);
+    virtual EventPriority eventPriority() { return PRIORITY_NORMAL; };
+
     virtual void timeChanged() {};  // notify app that wall clock time has been adjusted
 
     static constexpr BritepadApp* STAY_IN_APP = (BritepadApp*)0;

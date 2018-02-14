@@ -11,7 +11,8 @@ class KeyboardViewerApp : public KeyboardApp {
     void begin(AppMode asMode);
     void end();
     void run();
-    void event(KeyEvent* key);
+    bool event(KeyEvent* key);
+    EventPriority eventPriority() { return PRIORITY_LAST; }
 
     const char* name() { _name = _keyMatrix->name(); _name.append(" Keys");  return _name.c_str(); };
     appid_t id() { return ID; };

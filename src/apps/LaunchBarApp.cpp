@@ -16,7 +16,8 @@ class LaunchBarApp : public KeyboardApp {
     static constexpr appid_t ID = "lbar";
     const char* name() { return "Launch Bar"; };
 
-    void event(KeyEvent* key) {
+    EventPriority eventPriority() { return PRIORITY_LAST; }
+    bool event(KeyEvent* key) {
       if (getEnabled(KEYBOARD_MODE)) {
 
           // a little logic here for Launchbar:
@@ -48,6 +49,7 @@ class LaunchBarApp : public KeyboardApp {
           }
         }
       }
+      return false;
     }
 };
 

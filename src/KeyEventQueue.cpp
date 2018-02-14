@@ -209,7 +209,7 @@ void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t 
   }
   _events = e;
   //console.debugln("idling on new event");
-  britepad.eventEarly(e);
+//  britepad.eventEarly(e);
 
   //console.debugln("truncating");
   truncateHistory();

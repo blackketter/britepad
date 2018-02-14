@@ -19,33 +19,57 @@ class AppsCommand : public Command {
 };
 AppsCommand theAppsCommand;
 
+BritepadApp* findApp(const char* s) {
+   BritepadApp* a = nullptr;
+    int n = atoi(s);
+    if (n) {
+      a = britepad.getNextApp();
+      while (n > 1) {
+        a = britepad.getNextApp(a);
+        n--;
+      }
+    } else {
+        a = britepad.getAppByID(s);
+    }
+  return a;
+}
+
+
 class AppCommand : public Command {
   public:
     const char* getName() { return "app"; }
-    const char* getHelp() { return "Info about currently running app"; }
+    const char* getHelp() { return "app (appid | index) - Info about an app, defaults to current app"; }
     void execute(Stream* c, uint8_t paramCount, char** params) {
-        // show the apps that have been loaded
-        BritepadApp* anApp = britepad.currentApp();
-        if (anApp) {
-          String modeString;
-          c->printf("Current app:\n  name: %s\n  id:   %s\n  addr: %08x\n", anApp->name(), anApp->id(), (uint32_t)anApp);
-          switch (anApp->getAppMode()) {
-            case MOUSE_MODE:
-              modeString = "MOUSE_MODE";
-              break;
-            case SCREENSAVER_MODE:
-              modeString = "SCREENSAVER_MODE";
-              break;
-            case INTERACTIVE_MODE:
-              modeString = "INTERACTIVE_MODE";
-              break;
-            default:
-              modeString.append(anApp->getAppMode());
-          };
-          c->printf("  mode: %s\n", modeString.c_str());
-        } else {
-          c->printf("No currently running app!\n");
-        }
+      BritepadApp* anApp = nullptr;
+      if (paramCount) {
+        anApp = findApp(params[1]);
+      }
+      if (anApp == nullptr) {
+        anApp = britepad.currentApp();
+        c->print("Current ");
+      }
+
+      // show the apps that have been loaded
+       if (anApp) {
+        String modeString;
+        c->printf("App:\n  name: %s\n  id:   %s\n  addr: %08x\n", anApp->name(), anApp->id(), (uint32_t)anApp);
+        switch (anApp->getAppMode()) {
+          case MOUSE_MODE:
+            modeString = "MOUSE_MODE";
+            break;
+          case SCREENSAVER_MODE:
+            modeString = "SCREENSAVER_MODE";
+            break;
+          case INTERACTIVE_MODE:
+            modeString = "INTERACTIVE_MODE";
+            break;
+          default:
+            modeString.append(anApp->getAppMode());
+        };
+        c->printf("  mode: %s\n", modeString.c_str());
+      } else {
+        c->printf("No currently running app!\n");
+      }
     }
 };
 AppCommand theAppCommand;
@@ -55,19 +79,7 @@ class RunCommand : public Command {
     const char* getName() { return "run"; }
     const char* getHelp() { return "appid | index - Run app given id or index"; }
     void execute(Stream* c, uint8_t paramCount, char** params) {
-        BritepadApp* a = nullptr;
-        int n = atoi(params[1]);
-        if (params[1]) {
-          if (n) {
-            a = britepad.getNextApp();
-            while (n > 1) {
-              a = britepad.getNextApp(a);
-              n--;
-            }
-          } else {
-              a = britepad.getAppByID(params[1]);
-          }
-        }
+        BritepadApp* a = findApp(params[1]);
 
         if (a) {
           c->printf("Running app '%s' - %s...\n",a->id(), a->name());
@@ -75,6 +87,7 @@ class RunCommand : public Command {
           britepad.resetScreensaver(5*60*1000);  // run it for 5 minutes, then let the screensavers do their work
         } else {
           c->println("Invalid app id");
+          printError(c);
         }
       }
 };

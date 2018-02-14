@@ -41,13 +41,16 @@ class KeyboardSoundsApp : public BritepadApp {
    }
 
 
-    void eventEarly(KeyEvent* key) {
+    EventPriority eventPriority() { return PRIORITY_FIRST; }
+
+    bool event(KeyEvent* key) {
       if (_soundsEnabled) {
 
         if (key->pressed()) {
           sound.click();
         }
       }
+      return false;
     }
 
   private:

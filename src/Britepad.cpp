@@ -312,20 +312,60 @@ void Britepad::idle() {
 
 };
 
-void Britepad::event(KeyEvent* e) {
+// todo: sort the applist by priority instead of going through the list over and over again
+ void Britepad::event(KeyEvent* e) {
+//  console.debugln("\n\n****BEGIN Processing event****");
   BritepadApp* anApp = appList;
-  while (anApp != nullptr) {
-    anApp->event(e);
-    anApp = anApp->getNextApp();
-  }
-}
+  EventPriority lowestPriority = PRIORITY_NORMAL;
+  EventPriority currentPriority = PRIORITY_NORMAL;
 
-void Britepad::eventEarly(KeyEvent* e) {
-  BritepadApp* anApp = appList;
+  // find the lowest priority to start
   while (anApp != nullptr) {
-    anApp->eventEarly(e);
+    currentPriority = anApp->eventPriority();
+//    console.debugf("Priority: %s %d\n", anApp->name(), currentPriority);
+
+    if (currentPriority < lowestPriority) {
+      lowestPriority = currentPriority;
+    }
     anApp = anApp->getNextApp();
   }
+
+
+  // iterate through the priorities in order, starting with the lowest
+  currentPriority = lowestPriority;
+  EventPriority nextPriority = currentPriority;
+
+  do {
+    anApp = appList;
+//    console.debugf("***Current Priority: %d\n", currentPriority);
+    // go through list looking for the current priority and process those
+    while (anApp != nullptr) {
+      EventPriority appPriority = anApp->eventPriority();
+//      console.debugf("Checking: %s %d\n", anApp->name(), appPriority);
+
+      if (appPriority == currentPriority) {
+        // if this app is eating the event, then return immediately
+//        console.debugln("  ---Processing event");
+        bool consumed = anApp->event(e);
+        if (consumed) {
+            console.debugln("  EVENT CONSUMED");
+            return;
+        }
+
+      } else if (appPriority > currentPriority){
+        if ((nextPriority == currentPriority) || (appPriority < nextPriority)) {
+          nextPriority = appPriority;
+        }
+      }
+      anApp = anApp->getNextApp();
+    }
+    if (nextPriority == currentPriority) {
+      break;
+    } else {
+      currentPriority = nextPriority;
+    }
+
+  } while (true);
 }
 
 void Britepad::timeChanged() {

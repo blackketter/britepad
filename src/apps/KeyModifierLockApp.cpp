@@ -23,8 +23,8 @@ class KeyModifierLockApp : public KeyboardApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "modl";
     const char* name() { return "Modifier Lock"; };
-
-    void eventEarly(KeyEvent* key) {
+    EventPriority eventPriority() { return PRIORITY_FIRST; }
+    bool event(KeyEvent* key) {
 
       if (getEnabled(KEYBOARD_MODE)) {
 
@@ -81,6 +81,7 @@ class KeyModifierLockApp : public KeyboardApp {
         //console.debugln("reset unlock timeout");
         sendUpdates();
       }
+      return false;
     };
 
     void unlock() {
@@ -107,7 +108,7 @@ class KeyModifierLockApp : public KeyboardApp {
         for (int i = 0; i < modifierCount; i++) {
           if (state[i] == toUnlock) {
             state[i] = unlocked;
-            //console.debugf("unlocking %d\n",modifierKeys[i]);
+            console.debugf("unlocking %d\n",modifierKeys[i]);
             keyEvents.addEvent(nullptr, NO_KEY, modifierKeys[i], Uptime::millis(), false);
           }
         }

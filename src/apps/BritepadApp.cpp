@@ -6,6 +6,9 @@
 BritepadApp::BritepadApp()  {
   Britepad::addApp(this);
 }
+bool BritepadApp::event(KeyEvent* key) {
+  return false;
+}
 
 void BritepadApp::resetClipRect() {
   coord_t top = displaysStatusBar() ? _statusBarHeight : 0;

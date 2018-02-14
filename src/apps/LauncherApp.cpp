@@ -350,7 +350,7 @@ void LauncherApp::end() {
   BritepadApp::end();
 }
 
-void LauncherApp::event(KeyEvent* key) {
+bool LauncherApp::event(KeyEvent* key) {
   if (key->pressed(KEY_EXIT)) {
     britepad.currentApp()->exit();
     audibleExit = true;  // if we're exiting this app, then play exit sound.
@@ -360,6 +360,7 @@ void LauncherApp::event(KeyEvent* key) {
       launch();
     }
   }
+  return false;
 }
 
 bool LauncherApp::disablesScreensavers() {

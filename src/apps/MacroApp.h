@@ -137,10 +137,12 @@ class MacroApp : public BritepadApp {
       console.debugln("start recording");
     }
 
-    void event(KeyEvent* key) {
+    EventPriority eventPriority() { return PRIORITY_NORMAL; }
+    bool event(KeyEvent* key) {
       if (isCurrentApp() && isRecording()) {
         recordEvent(key);
       }
+      return false;
     }
 
     bool recordEvent(KeyEvent* key) {

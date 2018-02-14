@@ -30,7 +30,7 @@ void KeyboardViewerApp::draw() {
   buttons->draw();
 };
 
-void KeyboardViewerApp::event(KeyEvent* key) {
+bool KeyboardViewerApp::event(KeyEvent* key) {
   if (getEnabled(KEYBOARD_MODE)) {
 //    console.debugln("keyboardviewerapp idle");
     if (!isCurrentApp() && _keyMatrix->getOverlay()) {
@@ -44,4 +44,5 @@ void KeyboardViewerApp::event(KeyEvent* key) {
         console.debugln("Launching KeyboardViewerApp in tutorial mode...");
     }
   }
+  return false;
 }

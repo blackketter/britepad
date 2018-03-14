@@ -39,7 +39,9 @@ void setup() {
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(500);
+
   console.begin();
+  console.setPort(&Serial);
   console.debugln("britepad starting...");
 
   console.executeCommandLine("i2c");

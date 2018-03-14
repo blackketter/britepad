@@ -13,7 +13,14 @@
 
 #define PROXIMITY_DEAD_TIME (1000)
 
-
+class QuitCommand : public Command {
+  const char* getName() { return "quit"; }
+  const char* getHelp() { return "exit the current app"; }
+  void execute(Stream* c, uint8_t paramCount, char** params) {
+    britepad.currentApp()->exit();
+  }
+};
+QuitCommand theQuitCommand;
 
 class FPSCommand : public Command {
   public:
@@ -440,6 +447,10 @@ void Britepad::loop() {
   launchApp(BritepadApp::STAY_IN_APP);
 
   if (currApp->usesKeyboard()) {
+
+    // fixme - when a keyboard app launches, we may have the return key pressed
+    Keyboard.release(KEY_ENTER);
+
     keys.update();
     theFPSCommand.idled();
   } else {

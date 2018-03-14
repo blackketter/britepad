@@ -53,7 +53,7 @@ class KeyMatrix {
 
     millis_t _nextScan = 0;
     static const millis_t _minScanInterval = 3;
-    static const millis_t _debounceInterval = 5;
+    static const millis_t _debounceInterval = 20; // was 5ms, but that was too short, some switches were bouncing
 
     millis_t _lastFlush = 0;
 

@@ -69,6 +69,9 @@ bool TerminalWidget::key(KeyEvent* k) {
         char c = keyEvents.getKeyChar(k->code());
         if (c) {
           _lastKey = c;
+          if (_lastKey) {
+            _displayOffset = _totalChars-_charsPerScreen;
+          }
         } else {
           switch (k->code()) {
             case (KEY_PAGE_DOWN):
@@ -122,13 +125,18 @@ size_t TerminalWidget::write(uint8_t b) {
     memset(&_buffer[_cursor],' ',_columns);
   }
 
-  if (b == '\r' || b == '\n') {
+  if (b == '\b') {
+    // backspace
+    if (_cursor) { _cursor--; }
+  } else if (b == '\r' || b == '\n') {
+    // CR and LF - todo: should these be handled differently?
     if ((b == '\r' && _lastChar == '\n') || (b == '\n' && _lastChar == '\r')) {
       // cr-lf or lf-cr sequence
     } else {
       _cursor = ((_cursor / _columns) + 1) * _columns;
     }
   } else {
+    // draw the character
     _buffer[_cursor] = b;
     _cursor++;
   }

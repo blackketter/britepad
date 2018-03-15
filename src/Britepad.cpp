@@ -355,7 +355,7 @@ void Britepad::idle() {
 //        console.debugln("  ---Processing event");
         bool consumed = anApp->event(e);
         if (consumed) {
-            console.debugln("  EVENT CONSUMED");
+//            console.debugln("  EVENT CONSUMED");
             return;
         }
 

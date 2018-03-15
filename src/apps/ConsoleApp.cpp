@@ -9,7 +9,10 @@ void ConsoleApp::begin(AppMode asMode) {
   _origPort = console.getPort();
 
   if (!_terminal) {
-    _terminal = new TerminalWidget(_console, screen.clipLeft(),(coord_t)(screen.clipTop()),screen.clipWidth(),(coord_t)(screen.clipHeight()));
+    _terminal = new TerminalWidget(_console,
+      screen.clipLeft(),(coord_t)(screen.clipTop()),
+      screen.clipWidth(),(coord_t)(screen.clipHeight()),
+      100); // scrollback lines
   }
   _terminal->clearScreen();
   _terminal->draw();

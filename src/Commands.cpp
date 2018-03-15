@@ -38,7 +38,7 @@ BritepadApp* findApp(const char* s) {
 class AppCommand : public Command {
   public:
     const char* getName() { return "app"; }
-    const char* getHelp() { return "app (appid | index) - Info about an app, defaults to current app"; }
+    const char* getHelp() { return "appid | index - Info about an app, defaults to current app"; }
     void execute(Stream* c, uint8_t paramCount, char** params) {
       BritepadApp* anApp = nullptr;
       if (paramCount) {

@@ -351,16 +351,23 @@ void LauncherApp::end() {
 }
 
 bool LauncherApp::event(KeyEvent* key) {
-  if (key->pressed(KEY_EXIT)) {
-    britepad.currentApp()->exit();
-    audibleExit = true;  // if we're exiting this app, then play exit sound.
+  bool consume = false;
+  if (key->code(KEY_HOME)) {
+    if (key->pressed()) {
+      britepad.currentApp()->exit();
+      britepad.resetScreensaver();
+
+      audibleExit = true;  // if we're exiting this app, then play exit sound.
+    }
+    key->clear();
+    consume = true;
   } else if (key->pressed(KEY_RIGHT_FN)) {
     if (!isCurrentApp()) {
       setLaunchScreen(MACROS_SCREEN);
       launch();
     }
   }
-  return false;
+  return consume;
 }
 
 bool LauncherApp::disablesScreensavers() {

@@ -11,19 +11,21 @@ TerminalWidget::TerminalWidget(Stream* stream, coord_t x, coord_t y, coord_t w, 
   _totalChars = _totalRows*_columns;
   _charsPerScreen = _rows*_columns;
 
-  _displayOffset = _totalChars - _charsPerScreen;
-  _cursor = _displayOffset;
-
   _buffer = (char*)malloc(_totalChars);
   if (!_buffer) {
     console.debugln("Couldn't allocate TerminalWidget buffer!");
   }
+  clearScreen();
 }
 
 void TerminalWidget::clearScreen() {
+  _displayOffset = _totalChars - _charsPerScreen;
+  _cursor = _displayOffset;
+
   for (uint32_t i = 0; i < _totalChars; i++) {
     _buffer[i] = ' ';
   }
+  _toUpdate = true; // force a redraw
 }
 
 TerminalWidget::~TerminalWidget() {
@@ -33,7 +35,6 @@ TerminalWidget::~TerminalWidget() {
 }
 
 void TerminalWidget::draw() {
-//  screen.fillRect(_xpos, _ypos, _width, _height, screen.red);
   for (uint8_t i = 0; i < _rows; i++) {
     for (uint8_t j = 0; j < _columns; j++) {
       uint32_t charOffset = i*_columns+j + _displayOffset;
@@ -42,6 +43,16 @@ void TerminalWidget::draw() {
         lastScreen ? _fgcolor : _historyColor,
         _bgcolor, _charSize);
     }
+  }
+  // draw scrollbar
+  if (_totalRows > _rows) {
+    uint32_t row = _displayOffset / _columns;
+    coord_t x = getRight()-1;
+    coord_t y0 = getTop() + getHeight() * row / _totalRows;
+    coord_t y1 = getTop() + getHeight() * (row+_rows) / _totalRows;
+    screen.drawLine( x, 0, x, y0, _bgcolor);
+    screen.drawLine( x, y0, x, y1, _fgcolor);
+    screen.drawLine( x, y1, x, _ypos+_height, _bgcolor);
   }
 }
 

@@ -14,8 +14,6 @@ void ConsoleApp::begin(AppMode asMode) {
       screen.clipWidth(),(coord_t)(screen.clipHeight()),
       100); // scrollback lines
   }
-  _terminal->clearScreen();
-  _terminal->draw();
   console.setPort(_terminal);
   console.printLog();  // begin with the latest logs
 }
@@ -30,5 +28,5 @@ void ConsoleApp::end() {
 void ConsoleApp::run() {
   KeyEvent* key = getNextEvent();
   _terminal->key(key);
-  _terminal->run();
+  _terminal->run();  // redraws as necessary
 }

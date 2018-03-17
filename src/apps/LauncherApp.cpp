@@ -1,6 +1,7 @@
 #include "BritepadShared.h"
 #include "LauncherApp.h"
 #include "ScreensaverApp.h"
+#include "ConsoleApp.h"
 #include "widgets/AppButton.h"
 
 
@@ -354,10 +355,14 @@ bool LauncherApp::event(KeyEvent* key) {
   bool consume = false;
   if (key->code(KEY_HOME)) {
     if (key->pressed()) {
-      britepad.currentApp()->exit();
-      britepad.resetScreensaver();
-
+      if (keyEvents.keyIsDown(MODIFIERKEY_LEFT_SHIFT)) {
+        britepad.launchApp(ConsoleApp::ID);
+      } else {
+        britepad.currentApp()->exit();
+        britepad.resetScreensaver();
+      }
       audibleExit = true;  // if we're exiting this app, then play exit sound.
+
     }
     key->clear();
     consume = true;

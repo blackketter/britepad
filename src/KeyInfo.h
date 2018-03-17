@@ -17,7 +17,8 @@ const keycode_t KEY_LEFT_PAD = 204;
 const keycode_t KEY_RIGHT_PAD = 205;
 
 const keycode_t KEY_EXIT = 206;
-const keycode_t KEY_LAUNCHBAR = 207;
+
+// 207?
 
 const keycode_t MIN_MOUSE_KEY             = 208;
 const keycode_t KEY_MOUSE_MOVE_UP         = 208;
@@ -117,6 +118,11 @@ typedef struct keyinfo_t {
   modifierkey_t modifier;
 } keyinfo_t;
 
+typedef struct keychord_t {
+  modifierkey_t modifier;
+  keycode_t code[];  // terminated with NO_CODE;
+} keychord_t;
+
 const keyinfo_t keyInfo[] = {
 // nonstandard keys
   { KEY_LEFT_FN, 0, "fn", nullptr, MODIFIER_FN },
@@ -139,14 +145,14 @@ const keyinfo_t keyInfo[] = {
   { MODIFIERKEY_MOUSE_SCROLL, 0, "mouse scroll", mouseScrollIcon, MODIFIER_MOUSE_SCROLL },
 
 // standard keys
-  { MODIFIERKEY_LEFT_CTRL, 0, "ctrl", controlIcon, MODIFIER_CTRL },
-  { MODIFIERKEY_LEFT_SHIFT, 0, "shift", shiftIcon, MODIFIER_SHIFT },
-  { MODIFIERKEY_LEFT_ALT, 0, "opt", optionIcon, MODIFIER_ALT },
-  { MODIFIERKEY_LEFT_GUI, 0, "cmd", commandIcon, MODIFIER_GUI },
-  { MODIFIERKEY_RIGHT_CTRL, 0, "ctrl", controlIcon, MODIFIER_CTRL },
-  { MODIFIERKEY_RIGHT_SHIFT, 0, "shift", shiftIcon, MODIFIER_SHIFT },
-  { MODIFIERKEY_RIGHT_ALT, 0, "opt", optionIcon, MODIFIER_ALT },
-  { MODIFIERKEY_RIGHT_GUI, 0, "cmd", commandIcon, MODIFIER_GUI },
+  { MODIFIERKEY_LEFT_CTRL, 0, "left ctrl", controlIcon, MODIFIER_CTRL },
+  { MODIFIERKEY_LEFT_SHIFT, 0, "left shift", shiftIcon, MODIFIER_SHIFT },
+  { MODIFIERKEY_LEFT_ALT, 0, "left opt", optionIcon, MODIFIER_ALT },
+  { MODIFIERKEY_LEFT_GUI, 0, "left cmd", commandIcon, MODIFIER_GUI },
+  { MODIFIERKEY_RIGHT_CTRL, 0, "right ctrl", controlIcon, MODIFIER_CTRL },
+  { MODIFIERKEY_RIGHT_SHIFT, 0, "right shift", shiftIcon, MODIFIER_SHIFT },
+  { MODIFIERKEY_RIGHT_ALT, 0, "right opt", optionIcon, MODIFIER_ALT },
+  { MODIFIERKEY_RIGHT_GUI, 0, "right cmd", commandIcon, MODIFIER_GUI },
 
   { KEY_SYSTEM_POWER_DOWN, 0, "pow", nullptr, false },
   { KEY_SYSTEM_SLEEP, 0, "sleep", nullptr, false },

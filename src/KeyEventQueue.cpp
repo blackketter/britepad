@@ -187,9 +187,21 @@ KeyEvent* KeyEventQueue::getNextEvent() {
   return next;
 }
 
+bool keyDebug = false;
+
+class KeyDebugCommand : public Command {
+  public:
+    const char* getName() { return "keys"; }
+    const char* getHelp() { return "toggle key event debug output"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) {
+      keyDebug = !keyDebug;
+      c->printf("Key event debug: %s", keyDebug ? "enabled\n" : "disabled\n");
+    }
+};
+KeyDebugCommand theKeyDebugCommand;
+
 
 void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t t, bool d) {
-//  console.debugf("addEvent: switch: %d, code: %d, pressed: %d\n",k,c,d);
 
 /*
   if (d && keyIsDown(c)) {
@@ -203,6 +215,7 @@ void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t 
 
   char ch = getKeyChar(c);
   KeyEvent* e = new KeyEvent(m, k,c,ch,t,d);
+  if (keyDebug) { console.debugf("key event: \"%s\", switch: %d, code: %d, char: %c, pressed: %d\n",m->getKeyLabel(c), k, c, ch, d); }
   if (_events) {
     _events->setNext(e);
     e->setPrev(_events);

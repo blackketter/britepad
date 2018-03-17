@@ -184,13 +184,11 @@ const keymap_t ergodoxMap[] = {
     { 77, MODIFIERKEY_RIGHT_GUI },
 
     { 29, KEY_HOME },
-//    { 29, KEY_EXIT },
 
     { 71, KEY_PAGE_UP },
 
     { 23, KEY_BACKSPACE },
-//    { 17, KEY_DELETE },
-    { 17, KEY_LAUNCHBAR },
+    { 17, KEY_DELETE },
     { 11, KEY_END },
 
     { 53, KEY_PAGE_DOWN },

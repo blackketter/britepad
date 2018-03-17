@@ -9,7 +9,8 @@ class LaunchBarApp : public KeyboardApp {
 
   private:
     static const millis_t releaseTimeout = 1000;
-    CallbackTimer releaseTimer;
+    CallbackTimer _releaseTimer;
+    const keycode_t _launchbarKey = KEY_DELETE;
 
   public:
     appid_t id() { return ID; };
@@ -23,16 +24,16 @@ class LaunchBarApp : public KeyboardApp {
           // a little logic here for Launchbar:
           // multiple taps selects running apps, tapping any other key switches apptoday
           // arrow keys work
-        if (key->pressed(KEY_LAUNCHBAR)) {
-          if (!releaseTimer.isRunning()) {
+        if (key->pressed(_launchbarKey)) {
+          if (!_releaseTimer.isRunning()) {
             Keyboard.press(MODIFIERKEY_LEFT_GUI);
           }
           Keyboard.press(KEY_SPACE);
-        } else if (key->released(KEY_LAUNCHBAR)) {
-          releaseTimer.setMillis(releaseTimeout, releaseTimerCallback, (void*)this);
+        } else if (key->released(_launchbarKey)) {
+          _releaseTimer.setMillis(releaseTimeout, releaseTimerCallback, (void*)this);
           Keyboard.release(KEY_SPACE);
-        } else if (releaseTimer.isRunning() &&
-                   !key->pressed(KEY_LAUNCHBAR) &&
+        } else if (_releaseTimer.isRunning() &&
+                   !key->pressed(_launchbarKey) &&
                    key->pressed()
                   ) {
 
@@ -42,11 +43,14 @@ class LaunchBarApp : public KeyboardApp {
                 key->pressed(KEY_LEFT) ||
                 key->pressed(KEY_RIGHT)
               )) {
-            releaseTimer.setMillis(releaseTimeout, releaseTimerCallback, (void*)this);
+            _releaseTimer.setMillis(releaseTimeout, releaseTimerCallback, (void*)this);
           } else {
-            releaseTimer.cancel();
+            _releaseTimer.cancel();
             releaseTimerCallback(this);
           }
+        }
+        if (key->code(_launchbarKey)) {
+          key->clear(); // consume key
         }
       }
       return false;

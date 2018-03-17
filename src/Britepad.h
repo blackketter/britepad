@@ -28,6 +28,7 @@ class Britepad {
     void idle();   // background processing (esp. for keyboard event handling)
 
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE);
+    void launchApp(appid_t id, AppMode mode = INTERACTIVE_MODE);
     BritepadApp* currentApp() { return currApp; }
 
     static void addApp(BritepadApp* newApp);

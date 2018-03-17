@@ -3,7 +3,6 @@
 #include "BritepadApp.h"
 #include "widgets/TerminalWidget.h"
 
-
 class ConsoleApp : public BritepadApp {
   public:
     void begin(AppMode asMode);

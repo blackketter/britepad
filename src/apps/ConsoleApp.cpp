@@ -27,6 +27,10 @@ void ConsoleApp::end() {
 
 void ConsoleApp::run() {
   KeyEvent* key = getNextEvent();
-  _terminal->key(key);
-  _terminal->run();  // redraws as necessary
+  if (key->code(KEY_ESC)){
+    exit();
+  } else {
+    _terminal->key(key);
+    _terminal->run();  // redraws as necessary
+  }
 }

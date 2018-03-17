@@ -278,7 +278,7 @@ void Britepad::updateStatusBar() {
 void Britepad::begin() {
 
   // assumes that the splashapp has been created and added to list
-  launchApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
+  launchApp(SplashApp::ID, SCREENSAVER_MODE);
   setApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
 
   // initialize apps
@@ -393,7 +393,7 @@ void Britepad::loop() {
 
   if (!currApp) {
       console.debugln("No currapp!");
-      launchApp(getAppByID(LauncherApp::ID));
+      launchApp(LauncherApp::ID);
   }
 
   if (pad.pressed(TOP_PAD)) {
@@ -408,7 +408,7 @@ void Britepad::loop() {
       console.debugln("launching A_MOUSE_APP");
       launchApp(BritepadApp::A_MOUSE_APP, MOUSE_MODE);
     } else {
-      launchApp(getAppByID(LauncherApp::ID));
+      launchApp(LauncherApp::ID);
     }
 
   } else  {
@@ -427,7 +427,7 @@ void Britepad::loop() {
          !currApp->displaysClock() &&
          getAppByID(ClockApp::ID))
     {
-      launchApp(getAppByID(ClockApp::ID), SCREENSAVER_MODE);
+      launchApp(ClockApp::ID, SCREENSAVER_MODE);
       resetScreensaver(showClockDur);  // disable screensavers for a little while
       sound.click();
       console.debugln("Proximity detected: showing clock");
@@ -448,8 +448,14 @@ void Britepad::loop() {
 
   if (currApp->usesKeyboard()) {
 
-    // fixme - when a keyboard app launches, we may have the return key pressed
-    Keyboard.release(KEY_ENTER);
+    // when a keyboard app launches tell the host that all the keys have been released
+    KeyEvent* k = keyEvents.lastEvent();
+    while (k) {
+      if (keyEvents.keyIsDown(k->code())) {
+        Keyboard.release(k->code());
+      }
+      k = keyEvents.prevEvent(k);
+    }
 
     keys.update();
     theFPSCommand.idled();
@@ -470,6 +476,10 @@ void Britepad::loop() {
 void Britepad::launchApp(BritepadApp* app, AppMode mode) {
   launchedAppPtr = app;
   launchedAppMode = mode;
+}
+
+void Britepad::launchApp(appid_t id, AppMode mode) {
+  launchApp(getAppByID(id), mode);
 }
 
 time_t Britepad::getScreensaverSwitchInterval() {

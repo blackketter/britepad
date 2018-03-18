@@ -447,18 +447,11 @@ void Britepad::loop() {
   launchApp(BritepadApp::STAY_IN_APP);
 
   if (currApp->usesKeyboard()) {
-
-    // when a keyboard app launches tell the host that all the keys have been released
-    KeyEvent* k = keyEvents.lastEvent();
-    while (k) {
-      if (keyEvents.keyIsDown(k->code())) {
-        Keyboard.release(k->code());
-      }
-      k = keyEvents.prevEvent(k);
-    }
-
     keys.update();
     theFPSCommand.idled();
+
+    // when a keyboard app launches tell the host that all the keys have been released
+    keyEvents.releaseKeys();
   } else {
     idle();
   }

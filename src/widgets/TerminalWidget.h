@@ -29,6 +29,7 @@ class TerminalWidget : public Widget, public Stream {
     color_t _bgcolor = screen.black;
     color_t _fgcolor = screen.white;
     color_t _historyColor = screen.lightgrey;
+    color_t _cursorColor = screen.grey;
 
     uint8_t _columns; // visible columns
     uint8_t _rows;    // visible rows

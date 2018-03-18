@@ -34,6 +34,8 @@ class KeyEventQueue {
 
     void printStatus(Stream* c = nullptr);  // dump out the keyboard status, pass null to go to console
 
+    void releaseKeys();  // sends release messages to Keyboard for any pressed keys
+
   private:
 
     void truncateHistory();

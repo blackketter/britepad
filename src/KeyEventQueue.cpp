@@ -21,6 +21,16 @@ keyswitch_t KeyEventQueue::sendKeys() {
   return count;
 }
 
+void KeyEventQueue::releaseKeys() {
+  KeyEvent* k = lastEvent();
+  while (k) {
+    if (keyIsDown(k->code())) {
+      Keyboard.release(k->code());
+    }
+    k = prevEvent(k);
+  }
+}
+
 void KeyEventQueue::sendKey(keycode_t code, boolean pressed) {
   if (!isSoftKeyCode(code)) {
     if (pressed) {

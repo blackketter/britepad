@@ -41,7 +41,8 @@ void TerminalWidget::draw() {
       bool lastScreen = charOffset > (_totalChars - _charsPerScreen);
       screen.drawChar(_xpos+j*_charWidth, _ypos+i*_charHeight, _buffer[charOffset],
         lastScreen ? _fgcolor : _historyColor,
-        _bgcolor, _charSize);
+        _cursor == charOffset ? _cursorColor : _bgcolor,
+        _charSize);
     }
   }
   // draw scrollbar

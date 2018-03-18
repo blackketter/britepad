@@ -45,16 +45,23 @@ void SplashApp::run() {
     coord_t x1 =  loopradius*((int32_t)sin16(theta))/32768;
     coord_t y1 =  loopradius*((int32_t)cos16(theta))/32768;
     screen.fillCircle(midwidth-weight/2-loopradius+x1,midheight - y1, weight/2, screen.red);
-    screen.fillCircle(midwidth+weight/2+loopradius+x1,midheight + y1, weight/2, screen.red);
-//    screen.drawLine(midwidth-radius + x1,midheight - y1,midwidth-radius+x2, midheight- y2,screen.red);
-//    screen.drawLine(midwidth+radius + x1,midheight + y1,midwidth+radius+x2, midheight+ y2,screen.red);
+
+// for BP britepad
+//    screen.fillCircle(midwidth+weight/2+loopradius+x1,midheight + y1, weight/2, screen.red);
+
+// for BB briteboard
+    screen.fillCircle(midwidth+weight/2+loopradius+x1, midheight - y1, weight/2, screen.red);
+
   } else if (drawindex <= totalsteps) {
     int yoffset = drawindex - circlesteps;
     screen.fillCircle(midwidth-loopradius*2-weight/2,midheight - yoffset, weight/2, screen.red);
-    screen.fillCircle(midwidth+weight/2,midheight + yoffset, weight/2, screen.red);
 
-//    screen.drawLine(midwidth-3*weight, midheight-yoffset, midwidth-2*weight, midheight-yoffset, screen.red);
-//    screen.drawLine(midwidth, midheight+yoffset, midwidth+weight, midheight+yoffset, screen.red);
+// for britepad
+//    screen.fillCircle(midwidth+weight/2,midheight + yoffset, weight/2, screen.red);
+
+// for briteboard
+    screen.fillCircle(midwidth+weight/2,midheight - yoffset, weight/2, screen.red);
+
   } else if (drawindex >= totalsteps+1) {
 //    drawLogo(currColor);
   }

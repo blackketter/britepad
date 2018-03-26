@@ -2,8 +2,6 @@
 #include "USBKeyLayout.h"
 #include "Apps/KeyboardViewerApp.h"
 
-#include "CherryPOSController.h"
-
 USBKeyMatrix usbKeys;
 KeyboardViewerApp theUSBKeyboardViewerApp(&usbKeys);
 
@@ -15,8 +13,6 @@ class RawKeyboardController : public KeyboardController {
 };
 
 RawKeyboardController _keyboard;
-CherryPOSController _cherry;
-
 
 static keycode_t keycode(uint8_t usbCode) {
   if (usbCode < 4) {

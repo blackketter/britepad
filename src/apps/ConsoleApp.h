@@ -20,9 +20,12 @@ class ConsoleApp : public BritepadApp {
     AppType getAppType() { return INTERACTIVE_APP; }
 
   private:
+
+  protected:
     TerminalWidget* _terminal = nullptr;
-    Console* _console = nullptr;
     Stream* _origPort = nullptr;
+    virtual void setPort();
+    virtual void endPort();
   };
 
 #endif

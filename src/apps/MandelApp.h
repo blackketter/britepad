@@ -15,10 +15,14 @@ class MandelApp : public ScreensaverApp {
     appid_t id() { return ID; };
     static constexpr appid_t ID = "mand";
 
+    void restart();
+
   private:
-    float xOrigin = -0.086f;
-    float yOrigin = 0.85f;
+    float xOrigin;
+    float yOrigin;
     float scale = 1.0f;
+    uint32_t pixelSum;
+    uint32_t lastPixelSum;
     coord_t xPixel;
     coord_t yPixel;
     float x1, x2,y1,y2,sx,sy;

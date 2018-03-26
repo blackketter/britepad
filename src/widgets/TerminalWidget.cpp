@@ -1,8 +1,7 @@
 #include "BritepadShared.h"
 #include "widgets/TerminalWidget.h"
 
-TerminalWidget::TerminalWidget(Stream* stream, coord_t x, coord_t y, coord_t w, coord_t h, uint16_t scrollbackLines) {
-  _stream = stream;
+TerminalWidget::TerminalWidget(coord_t x, coord_t y, coord_t w, coord_t h, uint16_t scrollbackLines) {
   setBounds(x,y,w,h);
   _rows = h / _charHeight;
   _columns = w / _charWidth;

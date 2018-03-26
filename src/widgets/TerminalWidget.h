@@ -5,7 +5,7 @@
 
 class TerminalWidget : public Widget, public Stream {
   public:
-    TerminalWidget(Stream* stream, coord_t x, coord_t y, coord_t w, coord_t h, uint16_t scrollbackLines = 0);
+    TerminalWidget(coord_t x, coord_t y, coord_t w, coord_t h, uint16_t scrollbackLines = 0);
     ~TerminalWidget();
 
 // Widget methods
@@ -23,7 +23,6 @@ class TerminalWidget : public Widget, public Stream {
     void clearScreen();
 
   private:
-    Stream* _stream = nullptr;
     char* _buffer = nullptr;
 
     color_t _bgcolor = screen.black;

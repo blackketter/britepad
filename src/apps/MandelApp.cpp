@@ -1,4 +1,5 @@
 #include "BritepadShared.h"
+
 #include "MandelApp.h"
 #include "Screen.h"
 #include "Sound.h"
@@ -9,10 +10,19 @@ void MandelApp::begin(AppMode asMode) {
   ScreensaverApp::begin(asMode);
   xPixel = screen.clipRight()+1; // force a restart
   _column = new color_t[screen.clipHeight()];
+  restart();
 }
 
 void MandelApp::end() {
   delete _column;
+}
+
+void MandelApp::restart() {
+  xOrigin = (float)rand()/(float)(RAND_MAX/2)-1.0;
+  yOrigin = (float)rand()/(float)(RAND_MAX/2)-1.0;
+  scale = 1.0f;
+  pixelSum = 0;
+  lastPixelSum = 1;
 }
 
 void MandelApp::run() {
@@ -35,8 +45,12 @@ void MandelApp::run() {
     if (xPixel > r) {
       xPixel = l;
       scale *= 0.7f;
-      if (scale <= 0.00001f) {
-        scale = 1.0f;
+      // restart if the screen is the same or we have zoomed in too far
+      if (scale <= 0.00001f || (lastPixelSum == pixelSum)) {
+        restart();
+      } else {
+        lastPixelSum = pixelSum;
+        pixelSum = 0;
       }
 
       x1 = -2.0f * scale + xOrigin;
@@ -58,7 +72,9 @@ void MandelApp::run() {
       y = 2.0f * x * y + cy;
       x = xx - yy + cx;
     }
-    _column[yPixel] = ((iter << 7 & 0xF8) << 8) | ((iter << 4 & 0xFC) << 3) | (iter >> 3);
+    color_t pixel = ((iter << 7 & 0xF8) << 8) | ((iter << 4 & 0xFC) << 3) | (iter >> 3);
+    pixelSum += pixel;
+    _column[yPixel] = pixel;
     yPixel++;
   }
 }

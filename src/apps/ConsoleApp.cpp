@@ -6,20 +6,18 @@ ConsoleApp theConsoleApp;
 
 void ConsoleApp::begin(AppMode asMode) {
   BritepadApp::begin(asMode);
-  _origPort = console.getPort();
 
   if (!_terminal) {
-    _terminal = new TerminalWidget(_console,
+    _terminal = new TerminalWidget(
       screen.clipLeft(),(coord_t)(screen.clipTop()),
       screen.clipWidth(),(coord_t)(screen.clipHeight()),
       100); // scrollback lines
   }
-  console.setPort(_terminal);
-  console.printLog();  // begin with the latest logs
+  setPort();
 }
 
 void ConsoleApp::end() {
-  console.setPort(_origPort);
+  endPort();
   delete _terminal;
   _terminal = nullptr;
   BritepadApp::end();
@@ -33,4 +31,14 @@ void ConsoleApp::run() {
     _terminal->key(key);
     _terminal->run();  // redraws as necessary
   }
+}
+
+void ConsoleApp::setPort() {
+  _origPort = console.getPort();
+  console.setPort(_terminal);
+  console.printLog();  // begin with the latest logs
+}
+
+void ConsoleApp::endPort() {
+  console.setPort(_origPort);
 }

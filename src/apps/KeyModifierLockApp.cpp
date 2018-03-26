@@ -108,7 +108,7 @@ class KeyModifierLockApp : public KeyboardApp {
         for (int i = 0; i < modifierCount; i++) {
           if (state[i] == toUnlock) {
             state[i] = unlocked;
-            console.debugf("unlocking %d\n",modifierKeys[i]);
+//            console.debugf("unlocking %d\n",modifierKeys[i]);
             keyEvents.addEvent(nullptr, NO_KEY, modifierKeys[i], Uptime::millis(), false);
           }
         }

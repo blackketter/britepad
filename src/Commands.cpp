@@ -80,7 +80,7 @@ class LaunchCommand : public Command {
     const char* getHelp() { return "appid | index - Launch a given app"; }
     void execute(Stream* c, uint8_t paramCount, char** params) {
         BritepadApp* a = findApp(params[1]);
-
+        c->printf("got back app %s - %x\n", params[1],(uint32_t)a);
         if (a) {
           c->printf("Running app '%s' - %s...\n",a->id(), a->name());
           britepad.launchApp(a);

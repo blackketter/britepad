@@ -298,12 +298,12 @@ void Britepad::begin() {
 
 void Britepad::idle() {
 
+
     millis_t now = Uptime::millis();
     if (now - lastIdle < idleInterval) {
       return;
     }
 
-    lastIdle = now;
     theFPSCommand.idled();
 
     usbHost.Task();
@@ -317,6 +317,12 @@ void Britepad::idle() {
       mouse.run();
     };  // run current app state repeatedly
 
+    // make sure the Timers get a chance to call their callbacks
+    Timer::idle();
+    sound.idle();
+    console.idle();
+
+    lastIdle = now;
 };
 
 // todo: sort the applist by priority instead of going through the list over and over again
@@ -448,22 +454,15 @@ void Britepad::loop() {
 
   if (currApp->usesKeyboard()) {
     keys.update();
-    theFPSCommand.idled();
 
     // when a keyboard app launches tell the host that all the keys have been released
     keyEvents.releaseKeys();
-  } else {
-    idle();
   }
 
   currApp->run();
-
   theFPSCommand.newFrame();
 
-  // make sure the Timers get a chance to call their callbacks
-  Timer::idle();
-  sound.idle();
-  console.idle();
+  idle();
 }
 
 void Britepad::launchApp(BritepadApp* app, AppMode mode) {

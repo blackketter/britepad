@@ -159,17 +159,16 @@ class MacroApp : public BritepadApp {
 
     bool endRecording(bool save) {
       bool success = true;
-      console.debugf("endRecording: %d\n", save);
       if (save && _recordingKeys) {
         String prefID(ID);
         prefID += _macroNum;
         success = prefs.write(prefID.c_str(), _recordingEvent*sizeof(macro_t), (uint8_t*)_recordingKeys);
+        console.debugf("end recording %d events (save:%d) = success:%d\n", _recordingEvent, save,success);
       }
       if (_recordingKeys) {
         delete _recordingKeys;
         _recordingKeys = nullptr;
       }
-      console.debugf("end recording %d events (save:%d) = success:%d\n", _recordingEvent, save,success);
       return success;
     }
 

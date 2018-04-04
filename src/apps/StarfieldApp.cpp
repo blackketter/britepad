@@ -55,9 +55,12 @@ void StarfieldApp::begin(AppMode asMode) {
 void StarfieldApp::run() {
   ScreensaverApp::run();
 
+  int circleSize = 20;
+
   if (pad.touched(SCREEN_PAD)) {
-    int circleSize = 20;
     screen.fillCircle(pad.x(), pad.y(), circleSize, screen.darkergrey);
+  } else if ((Uptime::millis() - usbMouse.lastMove()) < 500) {
+    screen.fillCircle(usbMouse.x(), usbMouse.y(), circleSize, screen.darkergrey);
   }
   if (direction == DIRECTION_LEFT) {
     for (int i = screen.clipTop(); i < screen.clipBottom(); i++) {

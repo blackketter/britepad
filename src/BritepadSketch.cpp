@@ -12,7 +12,7 @@ TouchPad pad = TouchPad(screen.width(), screen.height());
 Sound sound = Sound();
 Britepad britepad = Britepad();
 Preferences prefs = Preferences();
-MousePad mouse = MousePad();
+MousePad mousePad = MousePad();
 Console console = Console();
 ErgodoxKeyMatrix keys;
 

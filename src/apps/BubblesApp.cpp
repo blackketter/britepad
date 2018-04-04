@@ -6,10 +6,13 @@ BubblesApp theBubblesApp;
 void BubblesApp::run() {
   ScreensaverApp::run();
   int r;
-  if (pad.pressed()) {
+  if (pad.pressed() || usbMouse.buttons()) {
     clearScreen();
   }
-  if (pad.touched(SCREEN_PAD)) {
+  if (((Uptime::millis() - usbMouse.lastMove()) < 500)) {
+    lastX = usbMouse.x();
+    lastY = usbMouse.y();
+  } else if (pad.touched(SCREEN_PAD)) {
     lastX = pad.x();
     lastY = pad.y();
   } else {
@@ -18,7 +21,6 @@ void BubblesApp::run() {
     lastX += deltaX;
     lastY += deltaY;
     if (lastY < screen.clipTop()) {
-      lastY = screen.clipTop();
     }
     if (lastY > screen.clipBottom()) {
       lastY = screen.clipBottom();

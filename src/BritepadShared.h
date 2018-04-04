@@ -22,7 +22,9 @@ extern TouchPad pad;
 extern Sound sound;
 
 #include "MousePad.h"
-extern MousePad mouse;
+extern MousePad mousePad;
+
+#include "USBMouse.h"
 
 #include "Britepad.h"
 extern Britepad britepad;

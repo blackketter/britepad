@@ -12,8 +12,14 @@ void BriteLiteApp::begin(AppMode asMode) {
 
 void BriteLiteApp::run() {
   ScreensaverApp::run();
-  if (pad.touched(SCREEN_PAD)) {
-    int x, y;
+  int x, y;
+
+  if ((Uptime::millis() - usbMouse.lastMove()) < 500) {
+    if (dots->hit(usbMouse.x(), usbMouse.y(), &x, &y))
+      dots->setDot(x,y, lastColor++ | 0x8000);
+      dots->updateDot(x,y);
+    }
+  else if (pad.touched(SCREEN_PAD)) {
     if (dots->hit(pad.x(), pad.y(), &x, &y)) {
       dots->setDot(x,y, lastColor++ | 0x8000);
       dots->updateDot(x,y);

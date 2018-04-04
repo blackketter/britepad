@@ -4,7 +4,6 @@
 #include "Types.h"
 #include "Timer.h"
 #include "USBHost.h"
-#include "USBMouse.h"
 
 
 #include "apps/LauncherApp.h"
@@ -314,7 +313,7 @@ void Britepad::idle() {
       keyEvents.sendKeys();
     }
     if (currApp && currApp->isAppMode(MOUSE_MODE)) {
-      mouse.run();
+      mousePad.run();
     };  // run current app state repeatedly
 
     // make sure the Timers get a chance to call their callbacks

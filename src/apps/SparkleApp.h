@@ -9,9 +9,10 @@ class SparkleApp : public BritepadApp {
 
     bool canBeMouse() { return true; }
     bool canBeInteractive() { return true; }
+    bool canBeScreensaver() { return true; }
     bool disablesScreensavers() { return getAppMode() == INTERACTIVE_MODE; }
 
-    AppType getAppType() { return MOUSE_APP; }
+    AppType getAppType() { return (AppType)(MOUSE_APP + INTERACTIVE_APP + SCREENSAVER_APP); }
 
     const char* name() { return "Sparkle"; };
     appid_t id() { return ID; };

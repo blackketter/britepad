@@ -21,22 +21,22 @@ void DotsDisplayApp::end() {
 }
 
 void DotsDisplayApp::run() {
-  if (!dots) {
-  } else {
-  }
 
   ScreensaverApp::run();
 
-  if (pad.touched(SCREEN_PAD)) {
-    int x, y;
-    if (dots->hit(pad.x(), pad.y(), &x, &y)) {
-      dots->setDot(x,y, lastColor);
-      dots->updateDot(x,y);
-    }
+  int x, y;
+  bool hit = true;
+
+  if ((Uptime::millis() - usbMouse.lastMove()) < 500) {
+    hit = dots->hit(usbMouse.x(), usbMouse.y(), &x, &y);
+  } else if (pad.touched(SCREEN_PAD)) {
+    hit = dots->hit(pad.x(), pad.y(), &x, &y);
   } else {
-    int x = random(dots->getDotsWide());
-    int y = random(dots->getDotsHigh());
+    x = random(dots->getDotsWide());
+    y = random(dots->getDotsHigh());
     lastColor = random(screen.white);
+  }
+  if (hit) {
     dots->setDot(x, y, lastColor);
     dots->updateDot(x, y);
   }

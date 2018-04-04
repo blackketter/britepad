@@ -154,11 +154,11 @@ void BritepadApp::switchAppMode(AppMode asMode) {
 
   if (_currAppMode != asMode) {
     if (_currAppMode == MOUSE_MODE) {
-      mouse.end();
+      mousePad.end();
     }
 
     if (asMode == MOUSE_MODE) {
-      mouse.begin();
+      mousePad.begin();
     }
     if (asMode == SCREENSAVER_MODE) {
       britepad.resetScreensaver();
@@ -176,6 +176,7 @@ void BritepadApp::begin(AppMode asMode) {
     drawBars();
     clearScreen();
   }
+  usbMouse.setBounds(screen.clipLeft(),screen.clipTop(), screen.clipWidth(), screen.clipHeight());
 };
 
 void BritepadApp::end() {

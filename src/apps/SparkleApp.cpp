@@ -29,6 +29,11 @@ void SparkleApp::run() {
     points[currPoint].y = pad.y() + random(spread) - spread/2;
     drawSparkle(currPoint, screen.white);
     // todo: play a sparkly sound
+  } else if ((Uptime::millis() - usbMouse.lastMove()) < 500) {
+    points[currPoint].x = usbMouse.x() + random(spread) - spread/2;
+    points[currPoint].y = usbMouse.y() + random(spread) - spread/2;
+    drawSparkle(currPoint, screen.white);
+    // todo: play a sparkly sound
   } else {
     points[currPoint].x = -100;
     points[currPoint].y = -100;

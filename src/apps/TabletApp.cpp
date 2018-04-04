@@ -2,8 +2,8 @@
 
 class TabletApp : public BritepadApp {
   public:
-    void begin(AppMode asMode) { mouse.setAbsolute(true); BritepadApp::begin(asMode); switchAppMode(MOUSE_MODE); }
-    void end() {  mouse.setAbsolute(false); BritepadApp::end(); }
+    void begin(AppMode asMode) { mousePad.setAbsolute(true); BritepadApp::begin(asMode); switchAppMode(MOUSE_MODE); }
+    void end() {  mousePad.setAbsolute(false); BritepadApp::end(); }
 
     void run() {
       BritepadApp::run();

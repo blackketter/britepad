@@ -117,7 +117,7 @@ void BreakoutApp::run() {
 
    if (dx == 0 && dy == 0) {
     // game over, man
-      if (pad.pressed(ANY_PAD)) {
+      if (pad.pressed(ANY_PAD)  || usbMouse.buttons()) {
         newGame();
       } else {
         return;
@@ -217,6 +217,8 @@ void BreakoutApp::run() {
   // update the paddle
   if (pad.touched(SCREEN_PAD)) {
     newpaddlex = pad.x() - paddlew/2; // touch is in the middle of the paddle
+  } else {
+    newpaddlex = usbMouse.x();
   }
 
   if (pad.touched(LEFT_PAD)) {

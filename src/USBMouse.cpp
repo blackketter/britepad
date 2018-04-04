@@ -1,4 +1,5 @@
 #include "USBMouse.h"
+#include "USBHost.h"
 
 USBHIDParser hid1(usbHost);
 USBHIDParser hid2(usbHost);
@@ -11,8 +12,35 @@ USBMouse usbMouse;
 
 void USBMouse::run() {
   if(_mouse.available()) {
-    usb_mouse_buttons_state = _mouse.getButtons();
-    Mouse.move(_mouse.getMouseX(), _mouse.getMouseY(),_mouse.getWheel());
+    _buttons = _mouse.getButtons();
+    _dx = _mouse.getMouseX();
+    _dy = _mouse.getMouseY();
+    _dwheel = _mouse.getWheel();
+
+    _x += _dx;
+    _y += _dy;
+    _wheel += _dwheel;
+
+    checkBounds();
+
+    usb_mouse_buttons_state = _buttons;
+    Mouse.move(_dx, _dy, _dwheel);
     _mouse.mouseDataClear();
+    _lastmove = Uptime::millis();
   }
+}
+
+void USBMouse::setBounds(coord_t x, coord_t y, coord_t w, coord_t h) {
+  _bounds.x = x;
+  _bounds.y = y;
+  _bounds.w = w;
+  _bounds.h = h;
+  checkBounds();
+}
+
+void USBMouse::checkBounds() {
+  if (_x < _bounds.x) { _x = _bounds.x; }
+  if (_y < _bounds.y) { _y = _bounds.y; }
+  if (_x > _bounds.x+_bounds.w) { _x = _bounds.x+_bounds.w; }
+  if (_y > _bounds.y+_bounds.h) { _y = _bounds.y+_bounds.h; }
 }

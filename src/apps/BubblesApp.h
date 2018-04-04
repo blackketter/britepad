@@ -17,7 +17,6 @@ class BubblesApp : public ScreensaverApp {
     int currentColor = screen.red;
     coord_t lastX, lastY;
     coord_t deltaX, deltaY;
-
 };
 
 #endif

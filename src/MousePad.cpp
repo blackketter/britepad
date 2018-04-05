@@ -55,9 +55,11 @@ void MousePad::run() {
   // bottom panel
   if (pad.pressed(BOTTOM_PAD)) {
     Mouse.press();
+    pressed = true;
     sound.click();
   } else if (pad.released(BOTTOM_PAD)) {
     Mouse.release();
+    pressed = false;
     sound.click();
   }
 
@@ -204,11 +206,13 @@ void MousePad::run() {
           }
           scrollMode = true;
         } else {
-          if (Mouse.isPressed()) {
+          if (pressed) {
             Mouse.release();
-            // todo: notify mouse up
+            pressed = false;
+           // todo: notify mouse up
           }
           Mouse.press();
+          pressed = true;
           sound.click();
           // todo: notify mouse down
         }
@@ -219,12 +223,13 @@ void MousePad::run() {
         bool releaseDrag = pad.time() - pad.lastUpTime(SCREEN_PAD) > MOUSE_RELEASE_DRAG_DUR;
         bool noDrag = pad.time() - pad.lastDownTime(SCREEN_PAD) < MOUSE_DRAG_DUR;
         if (noDrag || releaseDrag) {
-          if (Mouse.isPressed()) {
+          if (pressed) {
             if (releaseDrag) {
               sound.click();
             }
             // todo: notify mouse up
             Mouse.release();
+            pressed = false;
 //            console.debugln("mouse release after timeout");
           }
           scrollMode = false;

@@ -15,6 +15,8 @@ class MousePad {
     bool scrollMode = false;
     bool absoluteMode = false;
 
+    bool pressed = false;
+
     millis_t lastScroll = pad.time();
     int16_t accumScroll = 0;
 

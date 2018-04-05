@@ -41,6 +41,6 @@ void USBMouse::setBounds(coord_t x, coord_t y, coord_t w, coord_t h) {
 void USBMouse::checkBounds() {
   if (_x < _bounds.x) { _x = _bounds.x; }
   if (_y < _bounds.y) { _y = _bounds.y; }
-  if (_x > _bounds.x+_bounds.w) { _x = _bounds.x+_bounds.w; }
-  if (_y > _bounds.y+_bounds.h) { _y = _bounds.y+_bounds.h; }
+  if (_x >= _bounds.x+_bounds.w) { _x = _bounds.x+_bounds.w-1; }
+  if (_y >= _bounds.y+_bounds.h) { _y = _bounds.y+_bounds.h-1; }
 }

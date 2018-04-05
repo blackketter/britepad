@@ -9,7 +9,7 @@ DotMatrix::DotMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dots_w, int
 
 //  setBounds(x,y,w,h);
   // since dots are evenly spaced and the given w & h may not be even divsors, then we need to shrink to fit the multiples
-  setBounds(x,y,w,h);
+  setBounds(x,y,dotspacing_w*dots_wide,dotspacing_h*dots_high);
 
   r = min((w * dot_fill / dots_wide) / 100 / 2, (h * dot_fill / dots_high) / 100 / 2);  // dots are 80% of space
   dots = new color_t[dots_wide*dots_high];
@@ -36,10 +36,10 @@ void DotMatrix::clear() {
 }
 
 bool DotMatrix::hit(coord_t x, coord_t y, int* hitx, int* hity) {
-  if (x < getRight() &&
-      y < getBottom() &&
-      x >= getLeft() &&
-      y >= getTop()) {
+    if (x < getRight() &&
+        y < getBottom() &&
+        x >= getLeft() &&
+        y >= getTop()) {
     if (hitx) {
       *hitx= (x-getLeft())/dotspacing_w;
     }

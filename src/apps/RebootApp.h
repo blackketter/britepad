@@ -78,6 +78,7 @@ class ReloadApp : public RebootApp {
     const char* name() { return "Reload"; };
     appid_t id() { return ID; };
     static constexpr appid_t ID = "rlod";
+    AppType getAppType() { return (AppType)(DEBUG_APP + KEY_APP); }
 
     EventPriority eventPriority() { return PRIORITY_LAST; }
     bool event(KeyEvent* k) {

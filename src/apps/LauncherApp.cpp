@@ -174,7 +174,12 @@ void LauncherApp::run() {
 
   // wait until we release the button to actually launch the press-and-hold screensaver test
   if (launchOnRelease) {
-    if (pad.released(SCREEN_PAD) || (key && (key->released(KEY_SPACE) || key->released(KEY_RETURN)))) {
+    if ( pad.released(SCREEN_PAD) ||
+        ( key && (key->released(KEY_SPACE) ||
+                  key->released(KEY_RETURN) ||
+                  key->released(launchKeys[launchOnRelease->getLauncherPosition()]))
+        )
+       ) {
       AppMode runMode = launchOnRelease->canBeSetup() ? SETUP_MODE : getCurrentScreen()->mode;
       launchApp(launchOnRelease, runMode);
       britepad.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
@@ -305,7 +310,9 @@ void LauncherApp::run() {
     }
 
     if ((exitOnRelease || (getCurrentScreenID() == MACROS_SCREEN)) && (key->released(KEY_RIGHT_FN) || key->released(KEY_EXIT))) {
-      exit();
+      if (!launchOnRelease) {
+        exit();
+      }
     }
   }
 

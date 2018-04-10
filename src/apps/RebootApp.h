@@ -55,7 +55,7 @@ class ResetApp : public RebootApp {
   public:
 
     void run() {
-      prefs.resetPrefs();
+      prefs.reset();
       // reset the clock to 0
       clock.setSeconds(0);
       RebootApp::run();

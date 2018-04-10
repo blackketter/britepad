@@ -1,5 +1,5 @@
 #include "AlarmApp.h"
-#include "Preferences.h"
+#include "Dictionary.h"
 
 AlarmApp theAlarmApp;
 
@@ -20,7 +20,7 @@ void AlarmApp::saveSettings() {
   alarmSettings settings;
   settings.enabled = alarmEnabled;
   settings.time = nextAlarm.getSeconds();
-  prefs.write(id(), sizeof(alarmSettings), (uint8_t*)&settings);
+  prefs.set(id(), sizeof(alarmSettings), (uint8_t*)&settings);
 }
 
 void AlarmApp::setAlarmTime(time_t newTime) {
@@ -59,7 +59,7 @@ void AlarmApp::updateTimer() {
 void AlarmApp::init() {
 //    nextAlarm.setZone(&localTimezone);
     alarmSettings settings;
-    if (prefs.read(id(), sizeof(alarmSettings), (uint8_t*)&settings)) {
+    if (prefs.get(id(), sizeof(alarmSettings), (uint8_t*)&settings)) {
       nextAlarm.setSeconds(settings.time);
       alarmEnabled = settings.enabled;
     }

@@ -31,13 +31,13 @@ class KeyboardSoundsApp : public BritepadApp {
     bool canBeInvisible() { return true; };
 
     void init() {
-      prefs.read(id(), sizeof(_soundsEnabled), &_soundsEnabled);
+      prefs.get(id(), sizeof(_soundsEnabled), &_soundsEnabled);
     };
 
     void run() {
       _soundsEnabled = !_soundsEnabled;
       console.debugf("Sounds Enabled: %d\n",_soundsEnabled);
-      prefs.write(id(), sizeof(_soundsEnabled), &_soundsEnabled);
+      prefs.set(id(), sizeof(_soundsEnabled), &_soundsEnabled);
    }
 
 

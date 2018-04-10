@@ -441,7 +441,8 @@ void Britepad::loop() {
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
 
       // is it time for the screensaver to kick in?
-      } else if (!currApp->isAppMode(SCREENSAVER_MODE) && (pad.time() > disableScreensaversUntil)) {
+      } else if (!currApp->isAppMode(SCREENSAVER_MODE) && (pad.time() > disableScreensaversUntil)
+        && !(currApp->canBeScreensaver() && currApp->isAppMode(MOUSE_MODE))) {
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
       }
     }
@@ -475,21 +476,21 @@ void Britepad::launchApp(appid_t id, AppMode mode) {
 
 time_t Britepad::getScreensaverSwitchInterval() {
   time_t i = defaultScreensaverSwitchInterval;
-  prefs.read(screensaverSwitchIntervalPref, sizeof(i), (uint8_t*)&i);
+  prefs.get(screensaverSwitchIntervalPref, sizeof(i), (uint8_t*)&i);
   return i;
 }
 
 void Britepad::setScreensaverSwitchInterval(time_t newInterval) {
-   prefs.write(screensaverSwitchIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
+   prefs.set(screensaverSwitchIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
 }
 
 time_t Britepad::getScreensaverStartInterval() {
   time_t i = defaultScreensaverStartInterval;
-  prefs.read(screensaverStartIntervalPref, sizeof(i), (uint8_t*)&i);
+  prefs.get(screensaverStartIntervalPref, sizeof(i), (uint8_t*)&i);
   return i;
 }
 
 void Britepad::setScreensaverStartInterval(time_t newInterval) {
-   prefs.write(screensaverStartIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
+   prefs.set(screensaverStartIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
    resetScreensaver();
 }

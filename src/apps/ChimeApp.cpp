@@ -4,14 +4,14 @@ class ChimeApp : public BritepadApp {
 
   public:
     void init() {
-      prefs.read(id(), sizeof(_chimeEnabled), &_chimeEnabled);
+      prefs.get(id(), sizeof(_chimeEnabled), &_chimeEnabled);
       resetChime();
     };
 
     void run() {
       _chimeEnabled = !_chimeEnabled;
       resetChime();
-      prefs.write(id(), sizeof(_chimeEnabled), &_chimeEnabled);
+      prefs.set(id(), sizeof(_chimeEnabled), &_chimeEnabled);
    }
 
     const char* name() { return _chimeEnabled ? "Chime On" : "Chime Off"; };

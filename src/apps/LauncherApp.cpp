@@ -126,6 +126,9 @@ void LauncherApp::begin(AppMode asMode) {
   } else if (clock.now() - lastRun > resetScreenTimeout) {
     // if we haven't run in a while, reset to the default screen
     setCurrentScreenID(HOME_SCREEN);
+  } else if (getCurrentScreenID() == MACROS_SCREEN) {
+    // don't jump back to the macros screen
+    setCurrentScreenID(HOME_SCREEN);
   } else {
     setCurrentScreenID(getCurrentScreenID());
   }

@@ -20,7 +20,7 @@ void CountdownApp::redraw() {
 void CountdownApp::begin(AppMode asMode) {
   ScreensaverApp::begin(asMode);
   time_t prefTime;
-  if (prefs.read(countdownTimePrefStr, sizeof(prefTime), (uint8_t*)&prefTime)) {
+  if (prefs.get(countdownTimePrefStr, sizeof(prefTime), (uint8_t*)&prefTime)) {
     countdownTime.setSeconds(prefTime);
   } else {
   }
@@ -35,7 +35,7 @@ void CountdownApp::begin(AppMode asMode) {
 
 void CountdownApp::setTime(time_t newTime) {
   countdownTime.setSeconds(newTime);
-  prefs.write(countdownTimePrefStr, sizeof(newTime), (uint8_t*)&newTime);
+  prefs.set(countdownTimePrefStr, sizeof(newTime), (uint8_t*)&newTime);
 }
 
 void CountdownApp::run() {

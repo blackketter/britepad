@@ -81,10 +81,10 @@ void SetTimerApp::begin(AppMode asMode) {
 }
 
 void SetTimerApp::init() {
-  prefs.read(id(), sizeof(_customTimerDuration), (uint8_t*)&_customTimerDuration);
+  prefs.get(id(), sizeof(_customTimerDuration), (uint8_t*)&_customTimerDuration);
 }
 
 void SetTimerApp::end() {
-  prefs.write(id(), sizeof(_customTimerDuration), (uint8_t*)&_customTimerDuration);
+  prefs.set(id(), sizeof(_customTimerDuration), (uint8_t*)&_customTimerDuration);
 }
 

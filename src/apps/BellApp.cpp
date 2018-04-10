@@ -58,7 +58,7 @@ void BellApp::resetTimer() {
 
 void BellApp::init() {
   int16_t prefdata;
-  prefs.read(id(), sizeof(prefdata), (uint8_t*)&prefdata);
+  prefs.get(id(), sizeof(prefdata), (uint8_t*)&prefdata);
   _bell_enabled = (prefdata > 0) ? true : false;
   _bell_interval = abs(prefdata);
   resetTimer();
@@ -88,7 +88,7 @@ void BellApp::run() {
   if (adj) {
     resetTimer();
     int16_t prefdata = _bell_enabled ? _bell_interval : -_bell_interval;
-    prefs.write(id(), sizeof(prefdata), (uint8_t*)&prefdata);
+    prefs.set(id(), sizeof(prefdata), (uint8_t*)&prefdata);
   }
 
   if (adj || (_last_run != _bell_timer.remainingSecs())) {

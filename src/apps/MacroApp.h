@@ -28,7 +28,7 @@ class MacroApp : public BritepadApp {
       String prefID(ID);
       prefID += "n";
       prefID += _macroNum;
-      if (prefs.read(prefID, _name) == 0) {
+      if (prefs.get(prefID, _name) == 0) {
         _name = "Macro ";
         _name += _macroNum;
       }
@@ -82,7 +82,7 @@ class MacroApp : public BritepadApp {
           console.debugf("Sending macro of length %d key events\n", events);
           macro_t macro[events];
 
-          prefs.read(prefID.c_str(), s, (uint8_t*)macro);
+          prefs.get(prefID.c_str(), s, (uint8_t*)macro);
 
           for (int i = 0; i < events; i++) {
             keyEvents.sendKey(macro[i].code, macro[i].pressed);
@@ -162,7 +162,7 @@ class MacroApp : public BritepadApp {
       if (save && _recordingKeys) {
         String prefID(ID);
         prefID += _macroNum;
-        success = prefs.write(prefID.c_str(), _recordingEvent*sizeof(macro_t), (uint8_t*)_recordingKeys);
+        success = prefs.set(prefID.c_str(), _recordingEvent*sizeof(macro_t), (uint8_t*)_recordingKeys);
         console.debugf("end recording %d events (save:%d) = success:%d\n", _recordingEvent, save,success);
       }
       if (_recordingKeys) {
@@ -179,14 +179,14 @@ class MacroApp : public BritepadApp {
       String prefID(ID);
       prefID += "n";
       prefID += _macroNum;
-      prefs.write(prefID, _name);
+      prefs.set(prefID, _name);
     }
 
     uint8_t _macroNum;
     String _name = "Macro ";
 
     // these are static because only one macro can be recording at a time
-    static constexpr int _maxEvents = Preferences::MAX_TAG_SIZE/sizeof(macro_t);
+    static constexpr int _maxEvents = Dictionary::MAX_ENTRY_SIZE/sizeof(macro_t);
     static TextField* _message;
     static TextField* _namefield;
     static macro_t* _recordingKeys;

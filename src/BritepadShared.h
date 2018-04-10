@@ -35,8 +35,8 @@ extern Timezone localTimezone;
 
 #include "Timer.h"
 
-#include "Preferences.h"
-extern Preferences prefs;
+#include "Dictionary.h"
+extern EEPROMDictionary prefs;
 
 #include "fonts/Fonts.h"
 

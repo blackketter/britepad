@@ -19,7 +19,7 @@ void printInfo(Print* p) {
   p->printf("Backlight: %3d\n", screen.getBacklight());
   p->printf("Free ram: %10d\n", FreeMem());
   p->printf("Uptime: %f\n", Uptime::micros()/1000000.0);
-  p->printf("Prefs usage: %d/%d\n", prefs.used(), prefs.size());
+  p->printf("Prefs usage: %d, remaining: %d\n", prefs.used(), prefs.remaining());
   p->println(resetType());
 
 /*

@@ -70,14 +70,14 @@ class BritepadApp : public Widget {
     virtual bool displaysClock() { return false; }  // return true if the content includes a clock, otherwise we'll put a clock in the status bar
     virtual bool timeVisible() { return displaysClock() || displaysStatusBar(); }
 
-    virtual bool getEnabled(AppMode asMode = ANY_MODE) { readPrefs(); return (bool)(_enabled & asMode); }
+    virtual bool getEnabled(AppMode asMode = ANY_MODE) { getPrefs(); return (bool)(_enabled & asMode); }
     virtual void setEnabled(bool e, AppMode asMode = ANY_MODE) {
       if (e) {
         _enabled = (AppMode)(_enabled | asMode);
       } else {
         _enabled = (AppMode)(_enabled & (~asMode));
       }
-      writePrefs();
+      setPrefs();
     }
 
     AppMode getAppMode() { return _currAppMode; }
@@ -137,8 +137,8 @@ class BritepadApp : public Widget {
     virtual void clearScreen();
     void resetClipRect();  // resets clip rect to content area
 
-    virtual void writePrefs() {  if (hasPrefs()) { uint8_t pref = (uint8_t)_enabled; prefs.write(id(), sizeof(pref), (uint8_t*)&pref); } };
-    virtual void readPrefs() { if (hasPrefs()) { uint8_t pref = (uint8_t)ANY_MODE; prefs.read(id(),  sizeof(pref), (uint8_t*)&pref); _enabled = (AppMode)pref;} };
+    virtual void setPrefs() {  if (hasPrefs()) { uint8_t pref = (uint8_t)_enabled; prefs.set(id(), sizeof(pref), (uint8_t*)&pref); } };
+    virtual void getPrefs() { if (hasPrefs()) { uint8_t pref = (uint8_t)ANY_MODE; prefs.get(id(),  sizeof(pref), (uint8_t*)&pref); _enabled = (AppMode)pref;} };
 
     static const coord_t _statusBarHeight = 16;
     static const int32_t _defaultLauncherPosition = -1;

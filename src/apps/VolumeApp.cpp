@@ -9,7 +9,7 @@ class VolumeApp : public BritepadApp {
 
   public:
     void init() {
-      prefs.read(id(), sizeof(_volumeLevel), &_volumeLevel);
+      prefs.get(id(), sizeof(_volumeLevel), &_volumeLevel);
       sound.setVolume(_volumeLevels[_volumeLevel]);
     };
 
@@ -21,7 +21,7 @@ class VolumeApp : public BritepadApp {
 
       sound.setVolume(_volumeLevels[_volumeLevel]);
 
-      prefs.write(id(), sizeof(_volumeLevel), &_volumeLevel);
+      prefs.set(id(), sizeof(_volumeLevel), &_volumeLevel);
 
       sound.beep();
     }

@@ -159,7 +159,7 @@ void LauncherApp::drawButtons() {
 
 void LauncherApp::run() {
 
-  KeyEvent* key = getNextEvent();
+  KeyEvent* key = peekNextEvent();
 
   if (pad.released(SCREEN_PAD)) { waitForRelease = false; }
 
@@ -167,12 +167,14 @@ void LauncherApp::run() {
     for (int i = 0; i < buttons_per_screen; i++) {
       if (key && key->pressed(launchKeys[i]) && buttons->getButton(i)) {
         buttons->getButton(i)->setHighlighted(true);
+        key = nullptr;
         break;
       }
     }
 
   if (!launchOnRelease && (key && (key->released(KEY_SPACE) || key->released(KEY_RETURN)))) {
     buttons->setHighlighted(false);
+    key = nullptr;
   }
 
   // wait until we release the button to actually launch the press-and-hold screensaver test
@@ -187,6 +189,7 @@ void LauncherApp::run() {
       launchApp(launchOnRelease, runMode);
       britepad.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
       launchOnRelease = nullptr;
+      key = nullptr;
     }
   } else if (
         pad.pressed(LEFT_PAD)
@@ -194,16 +197,19 @@ void LauncherApp::run() {
      || (key && key->pressed(KEY_PAGE_UP))
     ) {
       pushScreen(DIRECTION_LEFT);
+      key = nullptr;
   } else if (pad.pressed(RIGHT_PAD)
      || (pad.getGesture() == GESTURE_SWIPE_RIGHT)
      || (key && key->pressed(KEY_PAGE_DOWN))
   ) {
     pushScreen(DIRECTION_RIGHT);
+    key = nullptr;
   } else if (
         (pad.getGesture() == GESTURE_SWIPE_UP)
      || (key && key->pressed(KEY_ESC))
       ) {
     exit();
+    key = nullptr;
   } else {
     AppButton* b = (AppButton*)buttons->releasedButton();
 
@@ -212,6 +218,7 @@ void LauncherApp::run() {
         if (key && key->released(launchKeys[i]) && buttons->getButton(i)) {
           b = (AppButton*)buttons->getButton(i);
           b->setHighlighted(false);
+          key = nullptr;
           break;
         }
       }
@@ -222,6 +229,7 @@ void LauncherApp::run() {
       if (b) {
         b->setHighlighted(true);
       }
+      key = nullptr;
     }
     if (b) {
       BritepadApp* launched = b->getApp();
@@ -272,6 +280,7 @@ void LauncherApp::run() {
         if (i < 0) { i += buttons_per_screen; }
       } while (buttons->getButton(i, 0) == nullptr);
       buttons->setSelected(i);
+      key = nullptr;
     }
 
     if (key->pressed(KEY_DOWN)) {
@@ -280,6 +289,7 @@ void LauncherApp::run() {
         if (i >= buttons_per_screen) { i -= buttons_per_screen; }
       } while (buttons->getButton(i, 0) == nullptr);
       buttons->setSelected(i);
+      key = nullptr;
     }
 
     if (key->pressed(KEY_LEFT)) {
@@ -291,6 +301,7 @@ void LauncherApp::run() {
         }
       } while (buttons->getButton(i, 0) == nullptr);
       buttons->setSelected(i);
+      key = nullptr;
     }
 
     if (key->pressed(KEY_RIGHT)||key->pressed(KEY_TAB)) {
@@ -302,6 +313,7 @@ void LauncherApp::run() {
         }
       } while (buttons->getButton(i, 0) == nullptr);
       buttons->setSelected(i);
+      key = nullptr;
     }
 
     if (key->pressed(KEY_RIGHT_FN)) {
@@ -310,12 +322,14 @@ void LauncherApp::run() {
       } else {
         exit();
       }
+      key = nullptr;
     }
 
     if ((exitOnRelease || (getCurrentScreenID() == MACROS_SCREEN)) && (key->released(KEY_RIGHT_FN) || key->released(KEY_EXIT))) {
       if (!launchOnRelease) {
         exit();
       }
+      key = nullptr;
     }
   }
 
@@ -324,6 +338,13 @@ void LauncherApp::run() {
     buttons->draw(oldSelection);
   }
 
+  if (key && key->pressed()) {
+    // if the key hasn't been processed, then bail
+    exit();
+  } else {
+    // if key has been processed, then consume it from the queue
+    getNextEvent();
+  }
 }
 
 void LauncherApp::goToScreen(screenid_t s) {

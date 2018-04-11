@@ -182,14 +182,18 @@ void KeyEventQueue::truncateHistory() {
     //console.debugln("deleted old event");
   }
 }
-
-KeyEvent* KeyEventQueue::getNextEvent() {
+KeyEvent* KeyEventQueue::peekNextEvent() {
   KeyEvent* next = _lastEvent;
   if (next == nullptr) {
     next = firstEvent();
   } else {
     next = _lastEvent->getNext();
   }
+  return next;
+}
+
+KeyEvent* KeyEventQueue::getNextEvent() {
+  KeyEvent* next = peekNextEvent();
   if (next) {
     _lastEvent = next;
     britepad.event(next);

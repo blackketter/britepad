@@ -39,7 +39,6 @@ class LauncherApp : public BritepadApp {
     void begin(AppMode asMode);
     void run();
     void end();
-    EventPriority eventPriority() { return PRIORITY_LAST; }
     bool event(KeyEvent* key);
 
     bool usesKeyboard() { return true; }

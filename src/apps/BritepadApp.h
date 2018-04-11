@@ -26,8 +26,8 @@ enum AppType {
 enum EventPriority {
     PRIORITY_FIRST = -1000,
     PRIORITY_MIDDLE = 0,
+    PRIORITY_NORMAL = 500,
     PRIORITY_LAST = 1000,
-    PRIORITY_NORMAL = PRIORITY_LAST,
     PRIORITY_END = 9999,
 };
 
@@ -132,6 +132,7 @@ class BritepadApp : public Widget {
 
   protected:
     KeyEvent* getNextEvent() { KeyEvent* e = keyEvents.getNextEvent(); if (e) { britepad.resetScreensaver(); }; return e;}
+    KeyEvent* peekNextEvent() { KeyEvent* e = keyEvents.peekNextEvent(); if (e) { britepad.resetScreensaver(); }; return e;}
     virtual bool hasPrefs() { return canBeScreensaver() | canBeMouse() | isAppType(KEYBOARD_APP); } // mice, screensavers and keyboard apps use default prefs for enable/disable
 
     virtual void clearScreen();

@@ -17,6 +17,7 @@ class KeyEventQueue {
     bool keyTapped(keycode_t c);
 
     KeyEvent* getNextEvent();
+    KeyEvent* peekNextEvent();
     void addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t t, bool d);
     KeyEvent* history(int i) { KeyEvent* e = _events; while (e && i) { e = e->getPrev(); i--; }; return e; }
     KeyEvent* firstEvent() { KeyEvent* e = _events; while (e) { if (e->getPrev() == nullptr) break; e = e->getPrev(); } return e; }

@@ -31,7 +31,7 @@ void LifeApp::switchAppMode(AppMode asMode) {
 void LifeApp::run() {
   BritepadApp::run();
   bool mouseMoved = ((Uptime::millis() - usbMouse.lastMove()) < 500);
-  if (mouseMoved) {
+  if (mouseMoved && getAppMode() == SCREENSAVER_MODE) {
     switchAppMode(MOUSE_MODE);
   }
   switch (getAppMode()) {

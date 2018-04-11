@@ -196,7 +196,6 @@ KeyEvent* KeyEventQueue::getNextEvent() {
   KeyEvent* next = peekNextEvent();
   if (next) {
     _lastEvent = next;
-    britepad.event(next);
   }
   return next;
 }
@@ -235,8 +234,7 @@ void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t 
     e->setPrev(_events);
   }
   _events = e;
-  //console.debugln("idling on new event");
-//  britepad.eventEarly(e);
+  britepad.event(e);
 
   //console.debugln("truncating");
   truncateHistory();

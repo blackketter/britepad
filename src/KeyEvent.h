@@ -33,7 +33,7 @@ class KeyEvent {
     KeyEvent* getPrev() { return _prev; }
     void setPrev(KeyEvent* prev) { _prev = prev; }
     void setNext(KeyEvent* next) { _next = next; }
-    void clear() { _code = NO_CODE; _key = NO_KEY; }
+    void clear() { _code = NO_CODE; _key = NO_KEY; _char = 0; }
 
     char shifted() {
       int i = 0;

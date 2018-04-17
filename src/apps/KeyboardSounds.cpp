@@ -41,7 +41,7 @@ class KeyboardSoundsApp : public BritepadApp {
    }
 
 
-    EventPriority eventPriority() { return PRIORITY_FIRST; }
+    EventPriority eventPriority() { return PRIORITY_LAST; }
 
     bool event(KeyEvent* key) {
       if (_soundsEnabled) {

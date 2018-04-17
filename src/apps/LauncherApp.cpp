@@ -237,6 +237,7 @@ void LauncherApp::run() {
         if (held) {
           held = false;
         } else {
+          console.debugf("Running %s invisibly\n", launched->name());
           launched->begin(INVISIBLE_MODE);
           launched->run();
           launched->end();
@@ -258,6 +259,7 @@ void LauncherApp::run() {
     if (b && b->getApp()) {
       BritepadApp* launched = b->getApp();
       if (!launched->canBeSetup() && launched->canBeInvisible()) {
+        console.debugf("Running %s invisibly on hold\n", launched->name());
         launched->begin(INVISIBLE_MODE);
         launched->run();
         launched->end();
@@ -338,7 +340,7 @@ void LauncherApp::run() {
     buttons->draw(oldSelection);
   }
 
-  if (key && key->pressed()) {
+  if (key && key->code() && key->pressed()) {
     // if the key hasn't been processed, then bail
     exit();
   } else {

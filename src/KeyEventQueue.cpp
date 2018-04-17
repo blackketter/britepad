@@ -228,7 +228,7 @@ void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t 
 
   char ch = getKeyChar(c);
   KeyEvent* e = new KeyEvent(m, k,c,ch,t,d);
-  if (keyDebug) { console.debugf("key event: \"%s\", switch: %d, code: %d, char: %c, pressed: %d\n",m->getKeyLabel(c), k, c, ch, d); }
+  if (keyDebug) { console.debugf("key addEvent: \"%s\", switch: %d, code: %d, char: %c, pressed: %d, %s\n",m->getKeyLabel(c), k, c, ch, d, m == nullptr ? "soft" : "hard"); }
   if (_events) {
     _events->setNext(e);
     e->setPrev(_events);

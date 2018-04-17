@@ -26,6 +26,7 @@ class ScreensaverStartApp : public BritepadApp {
           timeout = 60;
           break;
         case 60:
+        default:
           timeout = 3;
           break;
       }

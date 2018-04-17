@@ -14,7 +14,7 @@ class BubblesApp : public ScreensaverApp {
     bool canBeMouse() { return true; }
 
   private:
-    int currentColor = screen.red;
+    color_t currentColor = screen.red;
     coord_t lastX, lastY;
     coord_t deltaX, deltaY;
 };

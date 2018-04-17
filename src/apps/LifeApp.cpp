@@ -31,44 +31,34 @@ void LifeApp::switchAppMode(AppMode asMode) {
 void LifeApp::run() {
   BritepadApp::run();
   bool mouseMoved = ((Uptime::millis() - usbMouse.lastMove()) < 500);
-  if (mouseMoved && getAppMode() == SCREENSAVER_MODE) {
-    switchAppMode(MOUSE_MODE);
-  }
-  switch (getAppMode()) {
-    case MOUSE_MODE:
-    case INTERACTIVE_MODE: {
-        if ((pad.pressed(SCREEN_PAD) || mouseMoved) && generation) {
-          wipe();
-        }
+  AppMode mode = getAppMode();
 
-        coord_t lastX, lastY;
-        bool draw = false;
-        if (mouseMoved) {
-          lastX = usbMouse.x();
-          lastY = usbMouse.y();
-          draw = true;
-        } else if (pad.touched(SCREEN_PAD)) {
-          lastX = pad.x();
-          lastY = pad.y();
-          draw = true;
-        }
+  if (mode == MOUSE_MODE || mode == INTERACTIVE_MODE || mouseMoved) {
+    if ((pad.pressed(SCREEN_PAD) || mouseMoved) && generation) {
+      wipe();
+    }
+    coord_t lastX, lastY;
+    bool draw = false;
+    if (mouseMoved) {
+      lastX = usbMouse.x();
+      lastY = usbMouse.y();
+      draw = true;
+    } else if (pad.touched(SCREEN_PAD)) {
+      lastX = pad.x();
+      lastY = pad.y();
+      draw = true;
+    }
 
-        if (draw) {
-          int x, y;
-          if (dots->hit(lastX, lastY, &x, &y)) {
-            dots->setDot(x,y, MAXCOLOR);
-            dots->updateDot(x,y);
-            nextRun = pad.time() + MILLIS_DELAY;
-          }
-        }
+    if (draw) {
+      int x, y;
+      if (dots->hit(lastX, lastY, &x, &y)) {
+        dots->setDot(x,y, MAXCOLOR);
+        dots->updateDot(x,y);
+        nextRun = pad.time() + MILLIS_DELAY;
       }
-      // fall through
-    case SCREENSAVER_MODE:
-      iterate();
-      break;
-    default:
-      break;
+    }
   }
+  iterate();
 }
 
 void LifeApp::iterate() {

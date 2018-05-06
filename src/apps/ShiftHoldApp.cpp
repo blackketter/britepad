@@ -28,9 +28,9 @@ class HoldTimer : public Timer {
 
   private:
     virtual void callback() {
-      keyEvents.addEvent(nullptr, NO_KEY, MODIFIERKEY_LEFT_SHIFT, Uptime::millis(), true);
-      keyEvents.addEvent(nullptr, NO_KEY, _key, Uptime::millis(), true);
-      keyEvents.addEvent(nullptr, NO_KEY, MODIFIERKEY_LEFT_SHIFT, Uptime::millis(), false);
+      keyEvents.addEvent(MODIFIERKEY_LEFT_SHIFT, true);
+      keyEvents.addEvent(_key, true);
+      keyEvents.addEvent(MODIFIERKEY_LEFT_SHIFT, false);
     }
     keycode_t _key;
 };
@@ -48,15 +48,19 @@ class ShiftHoldApp : public KeyboardApp {
       // is this a shiftable key?
       if (getEnabled(KEYBOARD_MODE) && key->hard()) {  // app enabled & not a soft key
         if (key->shifted()) { // is this a key that should hold-shift
-          if (key->key() != NO_KEY && // is this a hardware key event
-            !keyEvents.keyIsDown(MODIFIERKEY_LEFT_SHIFT) && !keyEvents.keyIsDown(MODIFIERKEY_RIGHT_SHIFT)) {
+          if (key->hard() && // is this a hardware key event
+            !keyEvents.keyIsDown(MODIFIERKEY_LEFT_SHIFT) &&
+            !keyEvents.keyIsDown(MODIFIERKEY_RIGHT_SHIFT)) {
 
             keycode_t code = key->code();
 
             if (key->pressed()) {
-              new HoldTimer(this, code, _holdTimeout);
-              key->clear();
-              consumed = true;
+//              if (!keyEvents.keyTapHeld(key->code())) {
+                new HoldTimer(this, code, _holdTimeout);
+                consumed = true;
+//              } else {
+//                console.debugln("key tap held");
+//              }
             } else {
               HoldTimer* t = HoldTimer::find(this,code);
               // timer still active?
@@ -64,9 +68,8 @@ class ShiftHoldApp : public KeyboardApp {
                 // cancel timer
                 delete t;
                 // send the deferred key
-                keyEvents.addEvent(nullptr,  key->key(), key->code(), Uptime::millis(), true);
-                keyEvents.addEvent(nullptr,  key->key(), key->code(), Uptime::millis(), false);
-                key->clear();
+                keyEvents.addEvent(key->code(), true);
+                keyEvents.addEvent(key->code(), false);
                 consumed = true;
               }
             }
@@ -78,7 +81,7 @@ class ShiftHoldApp : public KeyboardApp {
           while (t) {
             Timer* next = t->next();
             if (t->getData() == this) {
-              keyEvents.addEvent(nullptr, NO_KEY, ((HoldTimer*)t)->getKey(), Uptime::millis(), true);
+              keyEvents.addEvent(((HoldTimer*)t)->getKey(), true);
               delete t;
               deleted = true;
             }
@@ -86,8 +89,7 @@ class ShiftHoldApp : public KeyboardApp {
           }
           if (deleted) {
             // requeue this event after the ones we just added.
-            keyEvents.addEvent(nullptr, key->key(), key->code(), Uptime::millis(), key->pressed());
-            key->clear();
+            keyEvents.addEvent(nullptr, key->keyswitch(), key->code(), Uptime::millis(), key->pressed());
             consumed = true;
           }
         }

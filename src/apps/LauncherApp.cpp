@@ -164,13 +164,13 @@ void LauncherApp::run() {
   if (pad.released(SCREEN_PAD)) { waitForRelease = false; }
 
   lastRun = clock.now();
-    for (int i = 0; i < buttons_per_screen; i++) {
-      if (key && key->pressed(launchKeys[i]) && buttons->getButton(i)) {
-        buttons->getButton(i)->setHighlighted(true);
-        key = nullptr;
-        break;
-      }
+  for (int i = 0; i < buttons_per_screen; i++) {
+    if (key && key->pressed(launchKeys[i]) && buttons->getButton(i)) {
+      buttons->getButton(i)->setHighlighted(true);
+      key = nullptr;
+      break;
     }
+  }
 
   if (!launchOnRelease && (key && (key->released(KEY_SPACE) || key->released(KEY_RETURN)))) {
     buttons->setHighlighted(false);
@@ -397,7 +397,6 @@ bool LauncherApp::event(KeyEvent* key) {
       audibleExit = true;  // if we're exiting this app, then play exit sound.
 
     }
-    key->clear();
     consume = true;
   } else if (key->pressed(KEY_RIGHT_FN)) {
     if (!isCurrentApp()) {

@@ -13,17 +13,20 @@ class KeyEventQueue {
     keyswitch_t sendKeys();  // send key events to host, returns number of key events sent
     void sendKey(keycode_t code, boolean pressed);
 
-    bool keyDoubleTapped(keycode_t c);
     bool keyTapped(keycode_t c);
+    bool keyDoubleTapped(keycode_t c);
+    bool keyTapHeld(keycode_t c);
 
     KeyEvent* getNextEvent();
     KeyEvent* peekNextEvent();
     void addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t t, bool d);
+    void addEvent(keycode_t c, bool d);
     KeyEvent* history(int i) { KeyEvent* e = _events; while (e && i) { e = e->getPrev(); i--; }; return e; }
     KeyEvent* firstEvent() { KeyEvent* e = _events; while (e) { if (e->getPrev() == nullptr) break; e = e->getPrev(); } return e; }
     KeyEvent* lastEvent(keycode_t c) { KeyEvent* e = _events; while (e) { if (e->code() == c) break; e = e->getPrev();  }; return e; }
     KeyEvent* lastEvent() { return _events; };
     KeyEvent* prevEvent(KeyEvent* e) { return e->getPrev(); }
+    void removeEvent(KeyEvent* e);
     bool keyIsDown(keycode_t c) { KeyEvent* e = lastEvent(c); return (e && e->pressed()); }
     inline bool keyIsUp(keycode_t c) { KeyEvent* e = lastEvent(c); return (!e || !e->pressed()); }
 

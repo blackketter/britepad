@@ -7,10 +7,10 @@ class KeyMatrix;
 
 class KeyEvent {
   public:
-    KeyEvent(KeyMatrix* matrix, keyswitch_t key, keycode_t code, char character, millis_t time, bool pressed) {
+    KeyEvent(KeyMatrix* matrix, keyswitch_t keyswitch, keycode_t code, char character, millis_t time, bool pressed) {
       _matrix = matrix;
       _time = time;
-      _key = key;
+      _keyswitch = keyswitch;
       _code = code;
       _char = character;
       _pressed = pressed;
@@ -20,7 +20,7 @@ class KeyEvent {
 
     millis_t time() { return _time; }
     KeyMatrix* matrix() { return _matrix; }
-    keyswitch_t key() { return _key; }
+    keyswitch_t keyswitch() { return _keyswitch; }
     keycode_t code() { return _code; }
     bool code(keycode_t c) { return c == _code; }
     char character() { return _char; }
@@ -33,7 +33,6 @@ class KeyEvent {
     KeyEvent* getPrev() { return _prev; }
     void setPrev(KeyEvent* prev) { _prev = prev; }
     void setNext(KeyEvent* next) { _next = next; }
-    void clear() { _code = NO_CODE; _key = NO_KEY; _char = 0; _matrix = nullptr; }
     bool soft() { return _matrix == nullptr; }
     bool hard() { return !soft(); }
 
@@ -68,7 +67,7 @@ class KeyEvent {
 
   private:
     millis_t _time;
-    keyswitch_t _key;
+    keyswitch_t _keyswitch;
     keycode_t _code;
     char _char;
     bool _pressed;

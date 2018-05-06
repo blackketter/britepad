@@ -58,7 +58,7 @@ class FunctionLayerApp : public KeyboardApp {
     static constexpr appid_t ID = "lbar";
     const char* name() { return "Function Layer"; };
 
-    EventPriority eventPriority() { return PRIORITY_MIDDLE; }
+    EventPriority eventPriority() { return PRIORITY_FIRST; }
     bool event(KeyEvent* key) {
       if (getEnabled(KEYBOARD_MODE)) {
         // switch to the function layer

@@ -12,6 +12,7 @@ class LifeApp : public DotsDisplayApp {
     bool canBeScreensaver() { return true; }
     bool canBeInteractive() { return true; }
     bool canBeMouse() { return true; }
+    bool wantsToRun() { return nextRun > pad.time(); }
 
     const char* name() { return "Life"; };
     static constexpr appid_t ID = "life";

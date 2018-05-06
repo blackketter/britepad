@@ -325,7 +325,8 @@ void Britepad::idle() {
 };
 
 // todo: sort the applist by priority instead of going through the list over and over again
- void Britepad::event(KeyEvent* e) {
+ bool Britepad::event(KeyEvent* e) {
+  bool consumed = false;
 //  console.debugln("\n\n****BEGIN Processing event****");
   BritepadApp* anApp = appList;
   EventPriority lowestPriority = PRIORITY_NORMAL;
@@ -358,10 +359,10 @@ void Britepad::idle() {
       if (appPriority == currentPriority) {
         // if this app is eating the event, then return immediately
 //        console.debugln("  ---Processing event");
-        bool consumed = anApp->event(e);
+        consumed = anApp->event(e);
         if (consumed) {
 //            console.debugln("  EVENT CONSUMED");
-            return;
+            break;
         }
 
       } else if (appPriority > currentPriority){
@@ -371,6 +372,9 @@ void Britepad::idle() {
       }
       anApp = anApp->getNextApp();
     }
+    if (consumed) {
+      break;
+    }
     if (nextPriority == currentPriority) {
       break;
     } else {
@@ -378,6 +382,7 @@ void Britepad::idle() {
     }
 
   } while (true);
+  return consumed;
 }
 
 void Britepad::timeChanged() {

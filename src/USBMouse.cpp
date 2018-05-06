@@ -25,6 +25,7 @@ void USBMouse::run() {
 
     usb_mouse_buttons_state = _buttons;
     Mouse.move(_dx, _dy, _dwheel);
+    if (_dwheel) console.debugf("scrolling %d\n", _dwheel);
     _mouse.mouseDataClear();
     _lastmove = Uptime::millis();
   }

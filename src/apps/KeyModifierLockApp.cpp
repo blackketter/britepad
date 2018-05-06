@@ -25,6 +25,7 @@ class KeyModifierLockApp : public KeyboardApp {
     const char* name() { return "Modifier Lock"; };
     EventPriority eventPriority() { return PRIORITY_FIRST; }
     bool event(KeyEvent* key) {
+      bool consumed = false;
 
       if (getEnabled(KEYBOARD_MODE)) {
 
@@ -41,7 +42,7 @@ class KeyModifierLockApp : public KeyboardApp {
           } else {
             if (anyLocked() && key->pressed(KEY_ESC)) {
               flipLockStates(doubleLocked, toUnlock);
-              key->clear();
+              consumed = true;
               unlockAll();
             }
           }
@@ -62,14 +63,14 @@ class KeyModifierLockApp : public KeyboardApp {
                 mouseKeyHit = false;
               } else if (keyEvents.keyTapped(key->code())) {
                 setLockState(key->code(), locked);
-                key->clear();
+                consumed = true;
               } else {
                 setLockState(key->code(), unlocked);
               }
             } else if (state == locked) {
 //              setLockState(key->code(), unlocked);
               setLockState(key->code(), doubleLocked);
-              key->clear();
+              consumed = true;
             } else if (state == doubleLocked) {
               flipLockStates(doubleLocked, toUnlock);
               flipLockStates(locked, toUnlock);
@@ -81,7 +82,7 @@ class KeyModifierLockApp : public KeyboardApp {
         //console.debugln("reset unlock timeout");
         sendUpdates();
       }
-      return false;
+      return consumed;
     };
 
     void unlock() {
@@ -109,7 +110,7 @@ class KeyModifierLockApp : public KeyboardApp {
           if (state[i] == toUnlock) {
             state[i] = unlocked;
 //            console.debugf("unlocking %d\n",modifierKeys[i]);
-            keyEvents.addEvent(nullptr, NO_KEY, modifierKeys[i], Uptime::millis(), false);
+            keyEvents.addEvent(modifierKeys[i], false);
           }
         }
 

@@ -49,7 +49,7 @@ class Britepad {
 
     void resetScreensaver(millis_t dur = 0) { if (dur == 0) { dur = getScreensaverStartInterval()*1000; } disableScreensaversUntil = Uptime::millis() + dur; }
 
-    void event(KeyEvent* e);
+    bool event(KeyEvent* e);
     void timeChanged();
 
   private:

@@ -50,7 +50,7 @@ class LaunchBarApp : public KeyboardApp {
           }
         }
         if (key->code(_launchbarKey)) {
-          key->clear(); // consume key
+          return true; // consume key
         }
       }
       return false;

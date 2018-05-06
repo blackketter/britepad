@@ -182,6 +182,7 @@ void KeyEventQueue::truncateHistory() {
     //console.debugln("deleted old event");
   }
 }
+
 KeyEvent* KeyEventQueue::peekNextEvent() {
   KeyEvent* next = _lastEvent;
   if (next == nullptr) {
@@ -213,8 +214,12 @@ class KeyDebugCommand : public Command {
 };
 KeyDebugCommand theKeyDebugCommand;
 
+void KeyEventQueue::addEvent(keycode_t c, bool d) {
+  addEvent(nullptr, NO_KEY, c, Uptime::millis(), d);
+}
 
 void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t t, bool d) {
+// note that this may be called recursively
 
 /*
   if (d && keyIsDown(c)) {
@@ -228,13 +233,18 @@ void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t 
 
   char ch = getKeyChar(c);
   KeyEvent* e = new KeyEvent(m, k,c,ch,t,d);
-  if (keyDebug) { console.debugf("key addEvent: \"%s\", switch: %d, code: %d, char: %c, pressed: %d, %s\n",m->getKeyLabel(c), k, c, ch, d, m == nullptr ? "soft" : "hard"); }
+  if (keyDebug) { console.debugf("key addEvent: \"%s\", switch: %d, code: %d, char: %c, pressed: %d, %s\n",
+        m->getKeyLabel(c), k, c, ch, d, m == nullptr ? "soft" : "hard"); }
   if (_events) {
     _events->setNext(e);
     e->setPrev(_events);
   }
+
   _events = e;
-  britepad.event(e);
+
+  if (britepad.event(e))  {
+    removeEvent(e);
+  }
 
   //console.debugln("truncating");
   truncateHistory();
@@ -243,18 +253,68 @@ void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t 
 
 }
 
+void KeyEventQueue::removeEvent(KeyEvent* k) {
+  if (keyDebug) {
+    console.debugf("key removeEvent: switch: %d, code: %d, char: %c, pressed: %d, %s\n",
+                k->keyswitch(), k->code(), k->character(), k->pressed(), k->matrix() == nullptr ? "soft" : "hard");
+  }
+  KeyEvent* curr = _events;
+  while (curr) {
+    if (curr == k) {
+      KeyEvent* prev = k->getPrev();
+      KeyEvent* next = k->getNext();
+      if (prev) {
+        prev->setNext(next);
+      }
+      if (next) {
+        next->setPrev(prev);
+      }
+      if (_events == k) {
+        _events = prev;
+      }
+      if (_lastEvent == k) {
+        _lastEvent = next;
+      }
+      delete k;
+      curr = nullptr;
+    } else {
+      curr = curr->getPrev();
+    }
+  }
+};
+
+
 bool KeyEventQueue::keyTapped(keycode_t c) {
   KeyEvent* h0 = history(0);
   KeyEvent* h1 = history(1);
   if (h0 && h1 &&
         (h1->code() == c) && h1->pressed() &&
         (h0->code() == c) && h0->released() &&
-        (h0->time() - h1->time() < _tappedTime)
+        ((h0->time() - h1->time()) < _tappedTime)
      ) {
     return true;
   } else {
     return false;
   }
+}
+
+bool KeyEventQueue::keyTapHeld(keycode_t c) {
+  KeyEvent* h0 = history(0);
+  KeyEvent* h1 = history(1);
+  KeyEvent* h2 = history(2);
+  if (h0 && h1 && h2) {
+    if (
+        (h2->code() == c) && h2->pressed() &&
+        (h1->code() == c) && h1->released() &&
+        (h0->code() == c) && h0->pressed() &&
+        ((h0->time() - h2->time()) < _doubleTappedTime)
+       ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  return false;
 }
 
 bool KeyEventQueue::keyDoubleTapped(keycode_t c) {
@@ -311,8 +371,10 @@ void KeyEventQueue::printStatus(Stream* c) {
   KeyEvent* event = _events;
   int i = 0;
   while (event) {
-    c->printf("  Key event[%2d] =%8d.%03d '%s' code:%d switch:%d %s\n",
-      i, ((int)(event->time()))/1000, ((int)(event->time()))%1000, keys.getKeyLabel(event->code()),event->code(), event->key(), event->pressed() ? "down" : "up");
+    c->printf("  Key event[%2d] =%8d.%03d '%s' code:%d switch:%d %s %s\n",
+      i, ((int)(event->time()))/1000, ((int)(event->time()))%1000,
+      keys.getKeyLabel(event->code()),event->code(), event->keyswitch(),
+      event->pressed() ? "down" : "up", event->matrix() ? "hard" : "soft");
     event = event->getPrev();
     i++;
   }

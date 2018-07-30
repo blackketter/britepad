@@ -318,7 +318,7 @@ void LauncherApp::run() {
       key = nullptr;
     }
 
-    if (key->pressed(KEY_RIGHT_FN)) {
+/*    if (key->pressed(KEY_RIGHT_FN)) {
       if (getCurrentScreenID() != MACROS_SCREEN) {
         goToScreen(MACROS_SCREEN);
       } else {
@@ -326,8 +326,10 @@ void LauncherApp::run() {
       }
       key = nullptr;
     }
-
-    if ((exitOnRelease || (getCurrentScreenID() == MACROS_SCREEN)) && (key->released(KEY_RIGHT_FN) || key->released(KEY_EXIT))) {
+*/
+    if ((exitOnRelease ||
+//        (getCurrentScreenID() == MACROS_SCREEN)) && (key->released(KEY_RIGHT_FN) ||
+        key->released(KEY_EXIT))) {
       if (!launchOnRelease) {
         exit();
       }
@@ -398,17 +400,20 @@ bool LauncherApp::event(KeyEvent* key) {
 
     }
     consume = true;
+/*
   } else if (key->pressed(KEY_RIGHT_FN)) {
     if (!isCurrentApp()) {
       setLaunchScreen(MACROS_SCREEN);
       launch();
     }
+*/
   }
   return consume;
 }
 
 bool LauncherApp::disablesScreensavers() {
-  return keyEvents.keyIsDown(KEY_RIGHT_FN);
+    return false;
+//  return keyEvents.keyIsDown(KEY_RIGHT_FN);
 }
 
 LauncherApp theLauncherApp;

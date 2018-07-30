@@ -4,7 +4,11 @@
 TimeChangeRule CEST = {"CEST", Last, Sun, Mar, 2, 120};     //Central European Summer Time
 TimeChangeRule CET = {"CET ", Last, Sun, Oct, 3, 60};       //Central European Standard Time
 
-ZoneClockApp theZoneClock("Paris", CEST, CET);
+TimeChangeRule EDT = {"EDT", Second, Sun, Mar, 2, -240};
+TimeChangeRule EST = {"EST", First, Sun, Nov, 2, -300};
+
+ZoneClockApp euZoneClock("Paris", CEST, CET);
+ZoneClockApp nycZoneClock("New York", EST, EDT);
 
 ZoneClockApp::ZoneClockApp(const char* name, TimeChangeRule dstStart, TimeChangeRule stdStart) {
   _offsetName = name;

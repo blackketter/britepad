@@ -38,6 +38,8 @@ const keycode_t MAX_MOUSE_KEY             = 220;
 
 const keycode_t MODIFIERKEY_MOUSE         = 221;
 const keycode_t MODIFIERKEY_MOUSE_SCROLL  = 222;
+const keycode_t KEY_FIRST_MACRO           = 223; // leave room for 12 macros for now
+
 
 const keycode_t MAX_SOFT_KEY = 255;
 
@@ -173,6 +175,19 @@ const keyinfo_t keyInfo[] = {
   { KEY_MEDIA_MUTE, 0, "mute", muteIcon, false },
   { KEY_MEDIA_VOLUME_INC, 0, "vol+", volPlusIcon, false },
   { KEY_MEDIA_VOLUME_DEC, 0, "vol-", volMinusIcon, false },
+
+  { KEY_FIRST_MACRO + 0, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 1, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 2, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 3, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 4, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 5, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 6, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 7, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 8, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 9, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 10, 0, "macro 0", macroIcon, false },
+  { KEY_FIRST_MACRO + 11, 0, "macro 0", macroIcon, false },
 
   { KEY_A, 'a', "a", nullptr, false },
   { KEY_B, 'b', "b", nullptr, false },

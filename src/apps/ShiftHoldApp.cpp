@@ -28,9 +28,14 @@ class HoldTimer : public Timer {
 
   private:
     virtual void callback() {
-      keyEvents.addEvent(MODIFIERKEY_LEFT_SHIFT, true);
+      bool taphold = keyEvents.keyTapped(_key);
+      if (!taphold) {
+        keyEvents.addEvent(MODIFIERKEY_LEFT_SHIFT, true);
+      }
       keyEvents.addEvent(_key, true);
-      keyEvents.addEvent(MODIFIERKEY_LEFT_SHIFT, false);
+      if (!taphold) {
+        keyEvents.addEvent(MODIFIERKEY_LEFT_SHIFT, false);
+      }
     }
     keycode_t _key;
 };
@@ -49,6 +54,8 @@ class ShiftHoldApp : public KeyboardApp {
       if (getEnabled(KEYBOARD_MODE) && key->hard()) {  // app enabled & not a soft key
         if (key->shifted()) { // is this a key that should hold-shift
           if (key->hard() && // is this a hardware key event
+            !keyEvents.keyIsDown(MODIFIERKEY_LEFT_CTRL) &&
+            !keyEvents.keyIsDown(MODIFIERKEY_RIGHT_CTRL) &&
             !keyEvents.keyIsDown(MODIFIERKEY_LEFT_SHIFT) &&
             !keyEvents.keyIsDown(MODIFIERKEY_RIGHT_SHIFT)) {
 

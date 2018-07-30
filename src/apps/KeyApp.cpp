@@ -21,7 +21,7 @@ KeyApp ffKey(ffIcon, KEY_MEDIA_NEXT_TRACK, defaultColor, 3);
 //  KeyApp myNameKey("My Name", "Dean\nBlackketter");
 
 // i never use this
-// KeyApp ejectKey("Eject", KEY_MEDIA_EJECT);
+ KeyApp sleepKey("Sleep", KEY_SYSTEM_SLEEP,defaultColor,11);
 
 void KeyApp::run() {
 
@@ -62,6 +62,9 @@ void KeyApp::run() {
       Keyboard.send_now();
       console.debugf("sent media key: %d\n", mediaKey);
       break;
+    case KEY_SYSTEM_SLEEP:
+      Keyboard.press(MODIFIERKEY_ALT);
+      Keyboard.press(MODIFIERKEY_GUI);
     case KEY_MEDIA_EJECT:
       Keyboard.set_media(KEY_MEDIA_EJECT);
       Keyboard.send_now();
@@ -69,6 +72,8 @@ void KeyApp::run() {
       delay(300);  // macOS will not recognize a very short eject press
       Keyboard.set_media(0);
       Keyboard.send_now();
+      Keyboard.release(MODIFIERKEY_ALT);
+      Keyboard.release(MODIFIERKEY_GUI);
       break;
     default:
       Keyboard.write(mediaKey);

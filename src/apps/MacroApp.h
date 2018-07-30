@@ -96,7 +96,6 @@ class MacroApp : public BritepadApp {
       }
     }
 
-
   private:
     void runSetup() {
       if (isRecording()) {
@@ -138,11 +137,18 @@ class MacroApp : public BritepadApp {
     }
 
     EventPriority eventPriority() { return PRIORITY_NORMAL; }
+
     bool event(KeyEvent* key) {
+      bool consume = false;
       if (isCurrentApp() && isRecording()) {
         recordEvent(key);
+      } else if (key->code(KEY_FIRST_MACRO + _macroNum)) {
+        if (key->pressed()) {
+          launch();
+          consume = true;
+        }
       }
-      return false;
+      return consume;
     }
 
     bool recordEvent(KeyEvent* key) {

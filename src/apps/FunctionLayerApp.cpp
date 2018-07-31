@@ -80,6 +80,11 @@ class FunctionLayerApp : public KeyboardApp {
           if (keys.getOverlay() != functionOverlay) {
             console.debug("setting function layer\n");
             keys.setOverlay(functionOverlay);
+            // tap the shift key to wake the computer up
+            if (keyEvents.keyIsUp(MODIFIERKEY_LEFT_SHIFT)) {
+              Keyboard.press(KEY_LEFT_SHIFT);
+              Keyboard.release(KEY_LEFT_SHIFT);
+            }
             // jiggle the mouse to make cursor show up
             Mouse.move(-1, 0);
             Mouse.move(1, 0);

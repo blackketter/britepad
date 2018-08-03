@@ -25,6 +25,7 @@ enum AppType {
 
 enum EventPriority {
     PRIORITY_FIRST = -1000,
+    PRIORITY_EARLY = -500,
     PRIORITY_MIDDLE = 0,
     PRIORITY_NORMAL = 500,
     PRIORITY_LAST = 1000,

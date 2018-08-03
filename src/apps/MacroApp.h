@@ -73,30 +73,35 @@ class MacroApp : public BritepadApp {
       if (getAppMode() == SETUP_MODE) {
         runSetup();
       } else {
-        String prefID(ID);
-        prefID += _macroNum;
-        size_t s = prefs.size(prefID.c_str());
-
-        if (s) {
-          int events = s/sizeof(macro_t);
-          console.debugf("Sending macro of length %d key events\n", events);
-          macro_t macro[events];
-
-          prefs.get(prefID.c_str(), s, (uint8_t*)macro);
-
-          for (int i = 0; i < events; i++) {
-            keyEvents.sendKey(macro[i].code, macro[i].pressed);
-            delay(10);
-          }
-
-        } else {
-          console.debugln("No macro found");
-        }
+        sendMacro();
         exit();
       }
     }
 
   private:
+    void sendMacro() {
+      String prefID(ID);
+      prefID += _macroNum;
+      size_t s = prefs.size(prefID.c_str());
+
+      if (s) {
+        int events = s/sizeof(macro_t);
+        console.debugf("Sending macro of length %d key events\n", events);
+        macro_t macro[events];
+
+        prefs.get(prefID.c_str(), s, (uint8_t*)macro);
+
+        for (int i = 0; i < events; i++) {
+          keyEvents.addEvent(macro[i].code, macro[i].pressed);
+//        keyEvents.sendKey(macro[i].code, macro[i].pressed);
+//        delay(10);
+        }
+
+      } else {
+        console.debugln("No macro found");
+      }
+    }
+
     void runSetup() {
       if (isRecording()) {
         if (pad.pressed()) {
@@ -144,8 +149,8 @@ class MacroApp : public BritepadApp {
         recordEvent(key);
       } else if (key->code(KEY_FIRST_MACRO + _macroNum)) {
         if (key->pressed()) {
-          launch();
-          consume = true;
+          sendMacro();
+          //consume = true;
         }
       }
       return consume;

@@ -78,5 +78,4 @@ void setup() {
 
 void loop() {
   britepad.loop();
-  watchdogKick();
 }

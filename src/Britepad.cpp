@@ -303,6 +303,8 @@ void Britepad::idle() {
       return;
     }
 
+    watchdogKick();
+
     theFPSCommand.idled();
 
     usbHost.Task();

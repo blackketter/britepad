@@ -49,7 +49,7 @@ class KeyEventQueue {
 
     void clearKeyChanges();
 
-    static const int _maxEventHistory = 20;
+    static const int _maxEventHistory = 200;
     KeyEvent* _events = nullptr;
     KeyEvent* _lastEvent = nullptr;
 

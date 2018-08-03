@@ -130,7 +130,7 @@ const ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] = {
             {screen.green, ".", Arial_12_Bold, screen.black, nullptr, decimal, '.'},
             {screen.green, "E", Arial_12_Bold, screen.black, nullptr, ee, 'e'},
             {screen.cyan, "-", Arial_12_Bold, screen.black, nullptr, subtract, '-'},
-            {screen.yellow, "enter", Arial_12_Bold, screen.black, nullptr, enter, '\n'},
+            {screen.yellow, "enter", Arial_12_Bold, screen.black, nullptr, enter, '\r'},
           },
         },
         { // Hex calc map

@@ -1,6 +1,6 @@
 #include "BritepadShared.h"
 #include "ScreensaverApp.h"
-
+// plasma based on DemoSauce example
 class PlasmaApp : public ScreensaverApp {
   public:
     void run();
@@ -17,20 +17,20 @@ class PlasmaApp : public ScreensaverApp {
 
     float _phase = 0;
     float _colorCycle = 0;
-    uint_fast8_t _ditherY = 0;
+    uint8_t _ditherY = 0;
     color_t _bgColor;
 
     const float PLASMA_CLOUD_SPEED = 0.02;
-    const uint_fast16_t PLASMA_CLOUD_MARGIN = 25;
+    const uint16_t PLASMA_CLOUD_MARGIN = 25;
 
-    const uint_fast8_t PLASMA_CLOUD_LINE_WIDTH = 4;
-    const uint_fast8_t PLASMA_CLOUD_STEP_Y = 4;
+    const uint8_t PLASMA_CLOUD_LINE_WIDTH = 4;
+    const uint8_t PLASMA_CLOUD_STEP_Y = 4;
 
     const float PLASMA_COLOR_CYCLE_SPEED = 0.003;
 
-    static const uint_fast8_t SQRT_TABLE_LENGTH = 255;
-    uint_fast8_t sqrtTable[ SQRT_TABLE_LENGTH ];
-    uint_fast8_t sqrtBitShift;  // Shift distances (integers) this many bits. This will give you a lookup index to get the square root.
+    static const uint8_t SQRT_TABLE_LENGTH = 255;
+    uint8_t sqrtTable[ SQRT_TABLE_LENGTH ];
+    uint8_t sqrtBitShift;  // Shift distances (integers) this many bits. This will give you a lookup index to get the square root.
 
 };
 
@@ -44,16 +44,16 @@ void PlasmaApp::begin(AppMode asMode) {
   float h = (float)screen.clipHeight();
 
   float maxScreenDistance = (w*w) + (h*h);
-  uint_fast8_t nextPow2 = ceil( log2f( maxScreenDistance ) );
+  uint8_t nextPow2 = ceil( log2f( maxScreenDistance ) );
   float maxTableDistance = pow( 2.0f, nextPow2 );
   sqrtBitShift = nextPow2 - 8;
 
   float sqrtTableMult = (float)0xff / sqrt(maxScreenDistance);
 
-  for( uint_fast8_t i=0; i<SQRT_TABLE_LENGTH; i++ ) {
+  for( uint8_t i=0; i<SQRT_TABLE_LENGTH; i++ ) {
     float useDistance = ((float)i / (float)SQRT_TABLE_LENGTH) * maxTableDistance;
     float aSqrt = sqrt( useDistance );
-    sqrtTable[i] = (uint_fast8_t)(aSqrt * sqrtTableMult);
+    sqrtTable[i] = (uint8_t)(aSqrt * sqrtTableMult);
     //sqrtTable[i] = random(0xff);
   }
 }
@@ -67,7 +67,7 @@ void PlasmaApp::run() {
 
   _colorCycle -= PLASMA_COLOR_CYCLE_SPEED;
   if( _colorCycle <= 0.0f ) _colorCycle += 1.0f;
-  uint_fast8_t colorAdd = _colorCycle * 0xff;
+  uint8_t colorAdd = _colorCycle * 0xff;
 
   //py._ditherY = (py._ditherY + 1) % PLASMA_YELLOW_DITHER;
 
@@ -90,13 +90,16 @@ void PlasmaApp::run() {
   if (pad.touched(SCREEN_PAD)) {
     p0.x = pad.x();
     p0.y = pad.y();
-  } else if ((Uptime::millis() - usbMouse.lastMove()) < 500) {
-    p0.x = usbMouse.x();
-    p0.y = usbMouse.y();
+  }
+
+  if ((Uptime::millis() - usbMouse.lastMove()) < 500) {
+    p1.x = usbMouse.x();
+    p1.y = usbMouse.y();
   }
 
 
   for( coord_t x=0; x<w; x+=PLASMA_CLOUD_LINE_WIDTH ) {
+    britepad.idle();
     for( coord_t y=_ditherY; y<h; y+=PLASMA_CLOUD_STEP_Y ) {
       point_t d0, d1;
       d0.x = abs(p0.x - x);
@@ -106,14 +109,14 @@ void PlasmaApp::run() {
 
       //point_t d2 = (point_t){ abs(p2.x - x), abs(p2.y - y) };
 
-      uint_fast8_t lookup0 = (d0.x*d0.x + d0.y*d0.y) >> sqrtBitShift;
-      uint_fast8_t lookup1 = (d1.x*d1.x + d1.y*d1.y) >> sqrtBitShift;
-      //uint_fast8_t lookup2 = (d2.x*d2.x + d2.y*d2.y) >> sqrtBitShift;
+      uint8_t lookup0 = (d0.x*d0.x + d0.y*d0.y) >> sqrtBitShift;
+      uint8_t lookup1 = (d1.x*d1.x + d1.y*d1.y) >> sqrtBitShift;
+      //uint8_t lookup2 = (d2.x*d2.x + d2.y*d2.y) >> sqrtBitShift;
 
-      uint_fast8_t bright = (sqrtTable[ lookup0 ] * sqrtTable[ lookup1 ] ) >> 6;
-      bright = (uint_fast16_t)(bright + colorAdd) & 0xff;
+      uint8_t bright = (sqrtTable[ lookup0 ] * sqrtTable[ lookup1 ] ) >> 6;
+      bright = (uint16_t)(bright + colorAdd) & 0xff;
 
-      uint_fast16_t color = screen.color565( ((bright&0xfb)<<2), 0, bright );
+      uint16_t color = screen.color565( ((bright&0xfb)<<2), 0, bright );
       screen.drawFastHLine( x, y, PLASMA_CLOUD_LINE_WIDTH, color );
     }
   }

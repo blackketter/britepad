@@ -3,10 +3,10 @@
 #include "widgets/Button.h"
 #include "apps/BritepadApp.h"
 // APPBUTTON
-class AppButton : public RoundButton {
+class AppButton : public RoundedButton {
   public:
-    AppButton() { setFrameInset(5); setWrapTitle(true); };
-    AppButton(BritepadApp* a) { setApp(a); setFrameInset(5); setWrapTitle(true); }
+    AppButton() { setFrameInset(2); setWrapTitle(true); setRadius(20); };
+    AppButton(BritepadApp* a) { setApp(a); setFrameInset(2); setWrapTitle(true); setRadius(20); }
     ~AppButton() {};
     BritepadApp* getApp() { return (BritepadApp*)getID(); }
     void setApp(BritepadApp* a) { setID((widgetid_t)a); }
@@ -30,7 +30,7 @@ class AppButton : public RoundButton {
 class SettingsButton : public AppButton {
   public:
      virtual color_t getColor() {
-      color_t c = RoundButton::getColor();
+      color_t c = Button::getColor();
       if (!getApp()->getEnabled(getAppMode())) {
           c = screen.darken(c);
         }

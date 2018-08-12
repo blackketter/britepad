@@ -43,6 +43,7 @@ void LauncherApp::setCurrentScreenID(screenid_t n) {
   if (buttons) { delete(buttons); }
 
   buttons = new ButtonMatrix(screen.clipLeft(),screen.clipTop(),screen.clipWidth(),screen.clipHeight(),v_buttons,h_buttons,1);
+  buttons->setGap(7);
 
   // do all the specifically positioned apps, then the default (0) position apps
   for (int specific = 1; specific >= 0; specific--) {

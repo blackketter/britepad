@@ -147,10 +147,15 @@ void RoundButton::drawbg() {
 };
 
 void RoundedButton::drawbg() {
-  screen.fillRoundRect(_xpos, _ypos, _width, _height, radius, fillColor());
+  coord_t r = _radius;
+  if (r < 0) {
+    r = min(_width,_height)/3;
+  }
+  r = max(1,r);
+  screen.fillRoundRect(_xpos, _ypos, _width, _height, r, fillColor());
   if (selected) {
-    screen.drawRoundRect(_xpos, _ypos, _width, _height, radius, screen.white);
-    screen.drawRoundRect(_xpos+1, _ypos+1, _width-1, _height-1, radius-1, screen.white);
+    screen.drawRoundRect(_xpos, _ypos, _width, _height, r, screen.white);
+    screen.drawRoundRect(_xpos+1, _ypos+1, _width-1, _height-1, r-1, screen.white);
   }
 }
 

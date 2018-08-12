@@ -93,10 +93,10 @@ class RoundButton : public Button {
 
 class RoundedButton : public Button {
   public:
-    void setRadius(coord_t r) { radius = r; }
+    void setRadius(coord_t r) { _radius = r; }
   protected:
     virtual void drawbg();
-    coord_t radius = 8;
+    coord_t _radius = -1;
 };
 
 #endif

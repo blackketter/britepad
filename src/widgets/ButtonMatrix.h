@@ -61,6 +61,7 @@ class ButtonMatrix : public Widget {
     buttonindex_t totalButtons() { return buttonRows*buttonColumns*buttonMaps; }
     buttonindex_t getSelected();
     void setSelected(buttonindex_t button);
+    void setGap(coord_t g) { gap = g; }
 
   protected:
     buttonindex_t index(int row, int column, int map) { return map*buttonRows*buttonColumns + row*buttonColumns + column; };
@@ -72,7 +73,7 @@ class ButtonMatrix : public Widget {
     int buttonMaps = 0;
     int currMap = 0;
     virtual Button* newButton() { return new Button(); }
-    static const coord_t gap = 1;
+    coord_t gap = 1;
 };
 
 class RoundButtonMatrix : public ButtonMatrix {

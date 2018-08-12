@@ -48,7 +48,10 @@ void EyesApp::begin(AppMode asMode) {
 
   for (int i = 0; i < numEyes; i++) {
     screen.fillCircle(center[i].x,center[i].y,radius[i],screen.white);
-    screen.fillCircle(center[i].x,center[i].y,pupilRadius[i],screen.black);
+
+    point_t p;
+    calcPupil(i, lastTarget, p);
+    screen.fillCircle(p.x,p.y,pupilRadius[i],screen.black);
   }
 }
 void EyesApp::calcPupil(int eye, point_t& target, point_t& pupil) {

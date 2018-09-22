@@ -96,7 +96,7 @@ bool KeyApp::canBeInvisible() {
 
 void KeyApp::draw() {
   clearScreen();
-  screen.setFont(Arial_20_Bold);
+  screen.setFont(&Arial_20_Bold);
   screen.setTextColor(screen.yellow);
   int x = screen.clipMidWidth() - (screen.measureTextWidth(nameStr) / 2);
   int y = screen.clipMidHeight() - (screen.measureTextHeight(nameStr) / 2);

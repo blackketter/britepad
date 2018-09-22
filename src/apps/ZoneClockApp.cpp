@@ -23,7 +23,7 @@ const char* ZoneClockApp::name() {
 
 void ZoneClockApp::update() {
   ClockApp::update();
-  screen.setFont(Arial_16);
+  screen.setFont(&Arial_16);
   screen.setCursor(
     screen.clipMidWidth()-screen.measureTextWidth(_offsetName)/2,
     screen.clipTop()+ screen.clipMidHeight()/3  + screen.measureTextHeight(_offsetName)/2

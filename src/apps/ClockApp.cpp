@@ -25,7 +25,7 @@ void ClockApp::update() {
     Time thisTime;
 
     thisTime.setSeconds(getClock().getSeconds());
-    screen.setFont(Arial_72_Digits_Bold);
+    screen.setFont(&Arial_72_Digits_Bold);
 
     screen.setTextColor(screen.luminance(currentColor) < 128 ? screen.brighten(currentColor, 128) : currentColor, bgColor());
     sprintf(textTime, "%d:%02d", thisTime.hourFormat12(), thisTime.minute());
@@ -44,7 +44,7 @@ void ClockApp::update() {
     screen.drawText(textTime);
     screen.pushClipRect(&clip);
 
-    screen.setFont(Arial_16);
+    screen.setFont(&Arial_16);
 
     screen.setCursor(screen.clipMidWidth()+w/2,screen.clipMidHeight() + h/2 - screen.measureTextHeight(textTime));
     screen.drawText(thisTime.isAM() ? "am" : "pm");
@@ -55,7 +55,7 @@ void ClockApp::update() {
     char longDate[100];
     thisTime.longDate(longDate);
 
-    screen.setFont(Arial_12);
+    screen.setFont(&Arial_12);
     screen.setCursor(
       screen.clipMidWidth()-screen.measureTextWidth(longDate)/2,
       screen.clipBottom()-((screen.clipBottom()-(screen.clipMidHeight() + h/2))/2  + screen.measureTextHeight(longDate)/2));

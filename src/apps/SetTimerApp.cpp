@@ -36,7 +36,7 @@ void SetTimerApp::drawTime() {
     char timeStr[100];
 
     screen.setTextColor(screen.white, bgColor());
-    screen.setFont(Arial_72_Digits_Bold);
+    screen.setFont(&Arial_72_Digits_Bold);
 
     sprintf(timeStr, " %d:%02d ", (int)_customTimerDuration/60, (int)_customTimerDuration%60);
 
@@ -74,7 +74,7 @@ void SetTimerApp::begin(AppMode asMode) {
   button[2].init(x3, ytop, buttonradius,screen.red, false, screen.white, plusIcon);
   button[3].init(x3, ybottom, buttonradius,screen.red, false,screen.white, minusIcon);
 
-  button[4].init(x2, ybottom, buttonradius,screen.darkgreen, false, "Start", Arial_12_Bold, screen.black);
+  button[4].init(x2, ybottom, buttonradius,screen.darkgreen, false, "Start", &Arial_12_Bold, screen.black);
 
   drawTime();
   drawButtons();

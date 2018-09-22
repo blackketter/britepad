@@ -104,7 +104,7 @@ void BellApp::drawTime() {
     char timeStr[100];
 
     screen.setTextColor(screen.white, bgColor());
-    screen.setFont(Arial_72_Digits_Bold);
+    screen.setFont(&Arial_72_Digits_Bold);
 
     sprintf(timeStr, " %d:%02d ", _bell_interval/60, _bell_interval%60);
 
@@ -118,7 +118,7 @@ void BellApp::drawTime() {
 
 // Countdown info
     screen.setTextColor(_bell_enabled ? screen.green : screen.red, bgColor());
-    screen.setFont(Arial_16_Digits_Bold);
+    screen.setFont(&Arial_16_Digits_Bold);
 
     int16_t remain = _bell_enabled ? _bell_timer.remainingSecs()+1 : _bell_interval;
 
@@ -159,7 +159,7 @@ void BellApp::begin(AppMode asMode) {
   button[2].init(x3, ytop, buttonradius,screen.red, false, screen.white, plusIcon);
   button[3].init(x3, ybottom, buttonradius,screen.red, false,screen.white, minusIcon);
 
-  button[4].init(x2, ybottom, buttonradius,_bell_enabled ? screen.green : screen.darkgreen, false, _bell_enabled ? "On" : "Off", Arial_12_Bold, screen.black);
+  button[4].init(x2, ybottom, buttonradius,_bell_enabled ? screen.green : screen.darkgreen, false, _bell_enabled ? "On" : "Off", &Arial_12_Bold, screen.black);
 
   drawTime();
   drawButtons();

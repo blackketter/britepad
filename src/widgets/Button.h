@@ -8,7 +8,7 @@
 class Button : public Widget {
   public:
     Button() {};
-    Button(coord_t x, coord_t y, coord_t w, coord_t h,color_t color = screen.black, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr) {
+    Button(coord_t x, coord_t y, coord_t w, coord_t h,color_t color = screen.black, bool highlight = false, const char* title = nullptr, font_t f = &Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr) {
       init(x,y,w,h,color,highlight,title,f,titleColor,iconData);
     };
 
@@ -16,7 +16,7 @@ class Button : public Widget {
       init(x,y,w,h,color,highlight,title,f,titleColor,iconData, id);
     };
 
-    Button(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr) {
+    Button(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nullptr, font_t f = &Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr) {
      init(x,y,r,color,highlight,title,f,titleColor,iconData);
     };
 
@@ -26,11 +26,11 @@ class Button : public Widget {
       setID(id);
     };
 
-    virtual void init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr);
+    virtual void init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight = false, const char* title = nullptr, font_t f = &Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr);
     virtual void init(coord_t x, coord_t y, coord_t r,color_t color, bool highlight, color_t iconColor, icon_t iconData) {
-      init(x,y,r,color,highlight,(const char*)nullptr,Arial_9_Bold,iconColor,iconData);
+      init(x,y,r,color,highlight,(const char*)nullptr,&Arial_9_Bold,iconColor,iconData);
     }
-    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nullptr, font_t f = Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr, widgetid_t id = 0, keycode_t key = NO_CODE);
+    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, bool highlight = false, const char* title = nullptr, font_t f = &Arial_9_Bold, color_t titleColor = screen.black, icon_t iconData = nullptr, widgetid_t id = 0, keycode_t key = NO_CODE);
 
     virtual bool pressed();
     virtual bool released();

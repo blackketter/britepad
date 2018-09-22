@@ -25,7 +25,7 @@ class MacrosApp : public BritepadApp {
 
     void begin(AppMode asMode) {
       _message = new TextField(screen.clipLeft(), screen.clipTop() + screen.clipHeight()/6, screen.clipWidth(), screen.clipHeight()/3,
-            Arial_16, screen.white, screen.black, (alignment_t)(ALIGN_CENTER+ALIGN_VCENTER));
+            &Arial_16, screen.white, screen.black, (alignment_t)(ALIGN_CENTER+ALIGN_VCENTER));
       BritepadApp::begin(asMode);
       loadButtons();
     }
@@ -56,7 +56,7 @@ class MacrosApp : public BritepadApp {
           _recording = false;
           _message->draw("Macro name:");
           _namefield = new TextField(screen.clipLeft() + screen.clipWidth()/4, screen.clipTop() + screen.clipHeight()/3*2, screen.clipWidth()/2, screen.clipHeight()/6,
-                Arial_16, screen.white, screen.darkergrey, (alignment_t)(ALIGN_CENTER+ALIGN_VCENTER));
+                &Arial_16, screen.white, screen.darkergrey, (alignment_t)(ALIGN_CENTER+ALIGN_VCENTER));
           _namefield->setMaxTextLength(10);
           _namefield->draw();
         }

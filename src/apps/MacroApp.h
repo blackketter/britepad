@@ -50,7 +50,7 @@ class MacroApp : public BritepadApp {
       BritepadApp::begin(asMode);
       if (asMode == SETUP_MODE) {
         _message = new TextField(screen.clipLeft(), screen.clipTop() + screen.clipHeight()/6, screen.clipWidth(), screen.clipHeight()/3,
-              Arial_16, screen.white, screen.black, (alignment_t)(ALIGN_CENTER+ALIGN_VCENTER));
+              &Arial_16, screen.white, screen.black, (alignment_t)(ALIGN_CENTER+ALIGN_VCENTER));
         _message->draw("Type new macro now.\nTap screen to finish.");
         startRecording();
       } else {
@@ -108,7 +108,7 @@ class MacroApp : public BritepadApp {
           endRecording(true);
           _message->draw("Macro name:");
           _namefield = new TextField(screen.clipLeft() + screen.clipWidth()/4, screen.clipTop() + screen.clipHeight()/3*2, screen.clipWidth()/2, screen.clipHeight()/6,
-                Arial_16, screen.white, screen.darkergrey, (alignment_t)(ALIGN_CENTER+ALIGN_VCENTER));
+                &Arial_16, screen.white, screen.darkergrey, (alignment_t)(ALIGN_CENTER+ALIGN_VCENTER));
           _namefield->setMaxTextLength(10);
           _namefield->setText(_name);
           _namefield->draw();

@@ -44,7 +44,7 @@ void CalendarApp::draw() {
 
   char s[100];
   sprintf(s, "%s %d", clock.monthString(month), year);
-  screen.setFont(Arial_14_Bold);
+  screen.setFont(&Arial_14_Bold);
   screen.setTextColor(screen.red);
   screen.setCursor( x - screen.measureTextWidth(s)/2, y - screen.measureTextHeight(s)/2);
   screen.drawText(s);
@@ -53,7 +53,7 @@ void CalendarApp::draw() {
   y += rowHeight;
   x = xStart;
   const char* dayAbbrev[] = { "", "Su", "M", "Tu", "W", "Th", "F", "Sa" };
-  screen.setFont(Arial_14);
+  screen.setFont(&Arial_14);
   screen.setTextColor(screen.green);
   for (int i = 1; i <= 7; i++) {
     screen.setCursor( x - screen.measureTextWidth(dayAbbrev[i])/2, y - screen.measureTextHeight(dayAbbrev[i])/2);

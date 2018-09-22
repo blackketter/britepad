@@ -94,7 +94,7 @@ void StopwatchApp::drawTime() {
 
     char textTime[8];
 
-    screen.setFont(Arial_48_Digits_Bold);
+    screen.setFont(&Arial_48_Digits_Bold);
     screen.setTextColor(screen.white, bgColor());
     if (!hours) {
       sprintf(textTime, " %02d:%02d.%01d ", mins, secs, tenths);

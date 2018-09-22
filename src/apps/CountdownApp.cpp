@@ -75,7 +75,7 @@ void CountdownApp::run() {
     textTime.printf("  %d minutes, & %d seconds  \n", mins, secs);
     textTime.printf("    %s    \n", past ? "ago..." : "until...");
 
-    screen.setFont(Arial_16_Bold);
+    screen.setFont(&Arial_16_Bold);
     screen.setTextColor(past ? screen.red : screen.white , bgColor());
     screen.setTextAlign((alignment_t)(ALIGN_HCENTER|ALIGN_VCENTER));
     screen.setCursor(screen.clipMidWidth(),screen.clipMidHeight());

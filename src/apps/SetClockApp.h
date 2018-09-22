@@ -27,7 +27,7 @@ class SetClockApp : public BritepadApp {
     Time* theTime;
 
     virtual color_t modeButtonColor() { return screen.red; };
-    virtual font_t modeButtonFont() { return Arial_12_Bold; };
+    virtual font_t modeButtonFont() { return &Arial_12_Bold; };
     virtual const char* modeButtonText() { return setDate ? "Time" : "Date"; };
     virtual void modeButtonPressed();
 

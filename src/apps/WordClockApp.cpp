@@ -99,7 +99,7 @@ void WordClockApp::update() {
         break;
       }
 
-    screen.setFont(Arial_20_Bold);
+    screen.setFont(&Arial_20_Bold);
     screen.setTextColor(currentColor++, bgColor());
     screen.setCursor(screen.clipMidWidth(), screen.clipMidHeight());
     screen.setTextAlign((alignment_t)(ALIGN_VCENTER|ALIGN_HCENTER));

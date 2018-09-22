@@ -18,7 +18,7 @@ KeyboardWidget::KeyboardWidget(KeyMatrix* keymatrix, coord_t x, coord_t y, coord
       coord_t button_y = y+_keymatrix->getKeyY(k)*oneKeyHeight;
       coord_t button_w = oneKeyWidth*_keymatrix->getKeyWidth(k);
       coord_t button_h = oneKeyWidth*_keymatrix->getKeyHeight(k);
-      Button* b = new Button(button_x+1, button_y+1, button_w-1, button_h-1, defaultColor, false, "", Arial_10_Bold, defaultLabelColor, nullptr, (widgetid_t)k);
+      Button* b = new Button(button_x+1, button_y+1, button_w-1, button_h-1, defaultColor, false, "", &Arial_10_Bold, defaultLabelColor, nullptr, (widgetid_t)k);
       addWidget(b);
     }
     i++;

@@ -9,7 +9,7 @@ GestureApp theGestureApp;
 void GestureApp::run() {
   BritepadApp::run();
 
-  screen.setFont(Arial_14);
+  screen.setFont(&Arial_14);
   screen.setCursor(screen.clipLeft(), screen.clipTop());
 
   if (pad.released(BOTTOM_PAD)) {

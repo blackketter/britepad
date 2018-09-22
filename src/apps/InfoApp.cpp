@@ -81,7 +81,7 @@ void InfoApp::init() {
 void InfoApp::run() {
   BritepadApp::run();
   screen.setTextColor(screen.white, bgColor());
-  screen.setFont(Arial_10);
+  screen.setFont(&Arial_10);
   screen.setCursor(screen.clipLeft() + screen.fontGap(), screen.clipTop()+screen.fontGap());
 
   printInfo(&screen);

@@ -132,7 +132,7 @@ void PomodoroApp::drawTime() {
 
   int remaining = isRunning() ? _timer.remainingSecs() : _workInterval;
 
-  screen.setFont(Arial_72_Digits_Bold);
+  screen.setFont(&Arial_72_Digits_Bold);
   sprintf(textTime, " %d:%02d ", remaining/60, remaining%60);
   coord_t width = screen.measureTextWidth(textTime);
 
@@ -144,7 +144,7 @@ void PomodoroApp::drawTime() {
   screen.drawText(textTime);
   screen.pushClipRect(&clip);
 
-  screen.setFont(Arial_20_Bold);
+  screen.setFont(&Arial_20_Bold);
   screen.setCursor(screen.clipMidWidth() - screen.measureTextWidth(label)/2,
                    screen.clipTop() + screen.clipHeight()/6 - screen.measureTextHeight(label)/2);
 

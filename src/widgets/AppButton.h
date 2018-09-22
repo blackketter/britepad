@@ -22,7 +22,7 @@ class AppButton : public RoundedButton {
       return c;
     }
     virtual color_t     getTitleColor() { return Screen::black; }
-    virtual font_t      getTitleFont()  { return Arial_9_Bold; }
+    virtual font_t      getTitleFont()  { return &Arial_9_Bold; }
     virtual AppMode     getAppMode()    { return INTERACTIVE_MODE; }
 };
 

@@ -113,7 +113,7 @@ void MineMatrix::updateDot(int x, int y) {
   } else if (neighbors > 0) {
       screen.fillRect(l,t,w,h,screen.grey50);
       screen.setCursor(l+w/3, t+h/3);
-      screen.setFont(Arial_10_Bold);
+      screen.setFont(&Arial_10_Bold);
       screen.setTextColor(screen.black);
       screen.drawTextF("%d",neighbors);
   } else {
@@ -128,8 +128,8 @@ void MinesApp::begin(AppMode asMode) {
   }
 
   coord_t textH = field->getHeight()/minesHeight;
-  minesLeft.init(screen.clipLeft(),screen.clipBottom()-textH,field->getLeft()-screen.clipLeft(),textH,Arial_12_Bold,screen.blue, screen.black, (alignment_t)(ALIGN_CENTER|ALIGN_VCENTER));
-  timer.init(field->getRight(),screen.clipBottom()-textH,screen.clipRight()-field->getRight(),textH,Arial_12_Bold,screen.white, screen.black, (alignment_t)(ALIGN_CENTER|ALIGN_VCENTER));
+  minesLeft.init(screen.clipLeft(),screen.clipBottom()-textH,field->getLeft()-screen.clipLeft(),textH,&Arial_12_Bold,screen.blue, screen.black, (alignment_t)(ALIGN_CENTER|ALIGN_VCENTER));
+  timer.init(field->getRight(),screen.clipBottom()-textH,screen.clipRight()-field->getRight(),textH,&Arial_12_Bold,screen.white, screen.black, (alignment_t)(ALIGN_CENTER|ALIGN_VCENTER));
 
   field->draw();
 

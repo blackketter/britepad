@@ -7,7 +7,7 @@
 
 class TouchKeyboard : public Widget {
   public:
-    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, font_t legendFont = Arial_9_Bold, color_t legendColor = screen.black);
+    virtual void init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, font_t legendFont = &Arial_9_Bold, color_t legendColor = screen.black);
 
     virtual void track();
     virtual void draw();

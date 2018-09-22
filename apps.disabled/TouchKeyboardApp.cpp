@@ -10,7 +10,7 @@ void TouchKeyboardApp::begin(AppMode asMode) {
     kbd = new TouchKeyboard();
   }
   if (kbd) {
-    kbd->init(screen.clipLeft(), screen.clipTop() + screen.clipHeight()/5, screen.clipWidth(), screen.clipHeight()*4/5,screen.cyan, Arial_14_Bold, screen.black);
+    kbd->init(screen.clipLeft(), screen.clipTop() + screen.clipHeight()/5, screen.clipWidth(), screen.clipHeight()*4/5,screen.cyan, &Arial_14_Bold, screen.black);
     kbd->draw();
   } else {
     console.debugf("failed to allocate TouchKeyboard");

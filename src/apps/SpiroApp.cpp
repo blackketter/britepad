@@ -36,7 +36,7 @@ void SpiroApp::reset() {
 
 void SpiroApp::drawInfo() {
     screen.setCursor(screen.clipLeft(), screen.clipTop());
-    screen.setFont(Arial_8_Bold);
+    screen.setFont(&Arial_8_Bold);
     screen.setTextColor(screen.red, bgColor());
     if (displayInfo) {
       screen.drawTextF("R: %d  \nr: %d  \nd: %d   ", R,r,d);

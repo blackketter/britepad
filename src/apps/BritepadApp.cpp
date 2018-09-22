@@ -32,7 +32,7 @@ void BritepadApp::drawStatusBar(bool update) {
   if (displaysStatusBar()) {
     screen.setClipRect(0, 0, screen.width(), _statusBarHeight);
 
-    screen.setFont(Arial_8_Bold);
+    screen.setFont(&Arial_8_Bold);
     screen.setTextColor(statusBarFGColor());
 
     if (!update) {
@@ -48,7 +48,7 @@ void BritepadApp::drawStatusBar(bool update) {
     // only include the clock if the app doesn't already draw a clock
     if (!displaysClock() && clock.hasBeenSet()) {
       // draw title
-      screen.setFont(Arial_8_Bold);
+      screen.setFont(&Arial_8_Bold);
       color_t textColor = screen.mix(statusBarFGColor(), statusBarBGColor());
       screen.setTextColor(textColor, statusBarBGColor());
       char shortTime[20];
@@ -80,7 +80,7 @@ void BritepadApp::drawInfoBar(bool update) {
     coord_t top = screen.height()-_statusBarHeight;
     screen.setClipRect(0, top, screen.width(), screen.height()-top);
 
-    screen.setFont(Arial_8_Bold);
+    screen.setFont(&Arial_8_Bold);
     screen.setTextColor(infoBarFGColor());
 
     const char* text = infoBarText();

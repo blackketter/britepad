@@ -82,138 +82,138 @@ const int keyRows = 4;
 const ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] = {
         { // Basic calc map
           {
-            {screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift},
-            {screen.green, "7", Arial_12_Bold, screen.black, nullptr, seven},
-            {screen.green, "8", Arial_12_Bold, screen.black, nullptr, eight},
-            {screen.green, "9", Arial_12_Bold, screen.black, nullptr, nine},
-            {screen.cyan, "/", Arial_12_Bold, screen.black, nullptr, divide},
-            {screen.cyan, "1/x", Arial_12_Bold, screen.black, nullptr, inverse},
+            {screen.yellow, "...", &Arial_12_Bold, screen.black, nullptr, shift},
+            {screen.green, "7", &Arial_12_Bold, screen.black, nullptr, seven},
+            {screen.green, "8", &Arial_12_Bold, screen.black, nullptr, eight},
+            {screen.green, "9", &Arial_12_Bold, screen.black, nullptr, nine},
+            {screen.cyan, "/", &Arial_12_Bold, screen.black, nullptr, divide},
+            {screen.cyan, "1/x", &Arial_12_Bold, screen.black, nullptr, inverse},
           },
           {
-            {screen.yellow, "hex", Arial_12_Bold, screen.black, nullptr, changeBase},
-            {screen.green, "4", Arial_12_Bold, screen.black, nullptr, four},
-            {screen.green, "5", Arial_12_Bold, screen.black, nullptr, five},
-            {screen.green, "6", Arial_12_Bold, screen.black, nullptr, six},
-            {screen.cyan, "x", Arial_12_Bold, screen.black, nullptr, multiply},
-            {screen.cyan, "%", Arial_12_Bold, screen.black, nullptr, percent},
+            {screen.yellow, "hex", &Arial_12_Bold, screen.black, nullptr, changeBase},
+            {screen.green, "4", &Arial_12_Bold, screen.black, nullptr, four},
+            {screen.green, "5", &Arial_12_Bold, screen.black, nullptr, five},
+            {screen.green, "6", &Arial_12_Bold, screen.black, nullptr, six},
+            {screen.cyan, "x", &Arial_12_Bold, screen.black, nullptr, multiply},
+            {screen.cyan, "%", &Arial_12_Bold, screen.black, nullptr, percent},
           },
           {
-            {screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace},
-            {screen.green, "1", Arial_12_Bold, screen.black, nullptr, one},
-            {screen.green, "2", Arial_12_Bold, screen.black, nullptr, two},
-            {screen.green, "3", Arial_12_Bold, screen.black, nullptr, three},
-            {screen.cyan, "+", Arial_12_Bold, screen.black, nullptr, add},
-            {screen.yellow, "x<>y", Arial_12_Bold, screen.black, nullptr, swap},
+            {screen.red, nullptr, &Arial_12_Bold, screen.black, backspaceIcon, backspace},
+            {screen.green, "1", &Arial_12_Bold, screen.black, nullptr, one},
+            {screen.green, "2", &Arial_12_Bold, screen.black, nullptr, two},
+            {screen.green, "3", &Arial_12_Bold, screen.black, nullptr, three},
+            {screen.cyan, "+", &Arial_12_Bold, screen.black, nullptr, add},
+            {screen.yellow, "x<>y", &Arial_12_Bold, screen.black, nullptr, swap},
           },
           {
-            {screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear},
-            {screen.green, "0", Arial_12_Bold, screen.black, nullptr, zero},
-            {screen.green, ".", Arial_12_Bold, screen.black, nullptr, decimal},
-            {screen.green, "E", Arial_12_Bold, screen.black, nullptr, ee},
-            {screen.cyan, "-", Arial_12_Bold, screen.black, nullptr, subtract},
-            {screen.yellow, "enter", Arial_12_Bold, screen.black, nullptr, enter},
+            {screen.red, "clear", &Arial_12_Bold, screen.black, nullptr, clear},
+            {screen.green, "0", &Arial_12_Bold, screen.black, nullptr, zero},
+            {screen.green, ".", &Arial_12_Bold, screen.black, nullptr, decimal},
+            {screen.green, "E", &Arial_12_Bold, screen.black, nullptr, ee},
+            {screen.cyan, "-", &Arial_12_Bold, screen.black, nullptr, subtract},
+            {screen.yellow, "enter", &Arial_12_Bold, screen.black, nullptr, enter},
           },
         },
         { // Hex calc map
           {
-            {screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift},
-            {screen.green, "7", Arial_12_Bold, screen.black, nullptr, seven},
-            {screen.green, "8", Arial_12_Bold, screen.black, nullptr, eight},
-            {screen.green, "9", Arial_12_Bold, screen.black, nullptr, nine},
-            {screen.green, "a", Arial_12_Bold, screen.black, nullptr, hex_a},
-            {screen.cyan, "+", Arial_12_Bold, screen.black, nullptr, add},
+            {screen.yellow, "...", &Arial_12_Bold, screen.black, nullptr, shift},
+            {screen.green, "7", &Arial_12_Bold, screen.black, nullptr, seven},
+            {screen.green, "8", &Arial_12_Bold, screen.black, nullptr, eight},
+            {screen.green, "9", &Arial_12_Bold, screen.black, nullptr, nine},
+            {screen.green, "a", &Arial_12_Bold, screen.black, nullptr, hex_a},
+            {screen.cyan, "+", &Arial_12_Bold, screen.black, nullptr, add},
           },
           {
-            {screen.yellow, "dec", Arial_12_Bold, screen.black, nullptr, changeBase},
-            {screen.green, "4", Arial_12_Bold, screen.black, nullptr, four},
-            {screen.green, "5", Arial_12_Bold, screen.black, nullptr, five},
-            {screen.green, "6", Arial_12_Bold, screen.black, nullptr, six},
-            {screen.green, "b", Arial_12_Bold, screen.black, nullptr, hex_b},
-            {screen.cyan, "-", Arial_12_Bold, screen.black, nullptr, subtract},
+            {screen.yellow, "dec", &Arial_12_Bold, screen.black, nullptr, changeBase},
+            {screen.green, "4", &Arial_12_Bold, screen.black, nullptr, four},
+            {screen.green, "5", &Arial_12_Bold, screen.black, nullptr, five},
+            {screen.green, "6", &Arial_12_Bold, screen.black, nullptr, six},
+            {screen.green, "b", &Arial_12_Bold, screen.black, nullptr, hex_b},
+            {screen.cyan, "-", &Arial_12_Bold, screen.black, nullptr, subtract},
           },
           {
-            {screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace},
-            {screen.green, "1", Arial_12_Bold, screen.black, nullptr, one},
-            {screen.green, "2", Arial_12_Bold, screen.black, nullptr, two},
-            {screen.green, "3", Arial_12_Bold, screen.black, nullptr, three},
-            {screen.green, "c", Arial_12_Bold, screen.black, nullptr, hex_c},
-            {screen.cyan, "x", Arial_12_Bold, screen.black, nullptr, multiply},
+            {screen.red, nullptr, &Arial_12_Bold, screen.black, backspaceIcon, backspace},
+            {screen.green, "1", &Arial_12_Bold, screen.black, nullptr, one},
+            {screen.green, "2", &Arial_12_Bold, screen.black, nullptr, two},
+            {screen.green, "3", &Arial_12_Bold, screen.black, nullptr, three},
+            {screen.green, "c", &Arial_12_Bold, screen.black, nullptr, hex_c},
+            {screen.cyan, "x", &Arial_12_Bold, screen.black, nullptr, multiply},
           },
           {
-            {screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear},
-            {screen.green, "0", Arial_12_Bold, screen.black, nullptr, zero},
-            {screen.green, "f", Arial_12_Bold, screen.black, nullptr, hex_f},
-            {screen.green, "e", Arial_12_Bold, screen.black, nullptr, hex_e},
-            {screen.green, "d", Arial_12_Bold, screen.black, nullptr, hex_d},
-            {screen.yellow, "enter", Arial_12_Bold, screen.black, nullptr, enter},
+            {screen.red, "clear", &Arial_12_Bold, screen.black, nullptr, clear},
+            {screen.green, "0", &Arial_12_Bold, screen.black, nullptr, zero},
+            {screen.green, "f", &Arial_12_Bold, screen.black, nullptr, hex_f},
+            {screen.green, "e", &Arial_12_Bold, screen.black, nullptr, hex_e},
+            {screen.green, "d", &Arial_12_Bold, screen.black, nullptr, hex_d},
+            {screen.yellow, "enter", &Arial_12_Bold, screen.black, nullptr, enter},
           },
         },
         { // Sci calc map
           {
-            {screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift},
-            {screen.cyan, "x^2", Arial_12_Bold, screen.black, nullptr, square_f},
-            {screen.cyan, "x^3", Arial_12_Bold, screen.black, nullptr, cube_f},
-            {screen.cyan, "x^y", Arial_12_Bold, screen.black, nullptr, pow_f},
-            {screen.cyan, "e^x", Arial_12_Bold, screen.black, nullptr, exp_f},
-            {screen.cyan, "10^x", Arial_12_Bold, screen.black, nullptr, pow10_f},
+            {screen.yellow, "...", &Arial_12_Bold, screen.black, nullptr, shift},
+            {screen.cyan, "x^2", &Arial_12_Bold, screen.black, nullptr, square_f},
+            {screen.cyan, "x^3", &Arial_12_Bold, screen.black, nullptr, cube_f},
+            {screen.cyan, "x^y", &Arial_12_Bold, screen.black, nullptr, pow_f},
+            {screen.cyan, "e^x", &Arial_12_Bold, screen.black, nullptr, exp_f},
+            {screen.cyan, "10^x", &Arial_12_Bold, screen.black, nullptr, pow10_f},
           },
           {
-            {screen.yellow, "hex", Arial_12_Bold, screen.black, nullptr, changeBase},
-            {screen.cyan, "sqrt", Arial_12_Bold, screen.black, nullptr, sqrt_f},
-            {screen.cyan, "cubert", Arial_12_Bold, screen.black, nullptr, cubert_f},
-            {screen.cyan, "xroot", Arial_12_Bold, screen.black, nullptr, xroot_f},
-            {screen.cyan, "ln", Arial_12_Bold, screen.black, nullptr, ln_f},
-            {screen.cyan, "log10", Arial_12_Bold, screen.black, nullptr, log10_f},
+            {screen.yellow, "hex", &Arial_12_Bold, screen.black, nullptr, changeBase},
+            {screen.cyan, "sqrt", &Arial_12_Bold, screen.black, nullptr, sqrt_f},
+            {screen.cyan, "cubert", &Arial_12_Bold, screen.black, nullptr, cubert_f},
+            {screen.cyan, "xroot", &Arial_12_Bold, screen.black, nullptr, xroot_f},
+            {screen.cyan, "ln", &Arial_12_Bold, screen.black, nullptr, ln_f},
+            {screen.cyan, "log10", &Arial_12_Bold, screen.black, nullptr, log10_f},
           },
           {
-            {screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace},
-            {screen.cyan, "sin", Arial_12_Bold, screen.black, nullptr, sin_f},
-            {screen.cyan, "cos", Arial_12_Bold, screen.black, nullptr, cos_f},
-            {screen.cyan, "tan", Arial_12_Bold, screen.black, nullptr, tan_f},
-            {screen.cyan, "pi", Arial_12_Bold, screen.black, nullptr, pi_f},
-            {screen.cyan, "e", Arial_12_Bold, screen.black, nullptr, e_f},
+            {screen.red, nullptr, &Arial_12_Bold, screen.black, backspaceIcon, backspace},
+            {screen.cyan, "sin", &Arial_12_Bold, screen.black, nullptr, sin_f},
+            {screen.cyan, "cos", &Arial_12_Bold, screen.black, nullptr, cos_f},
+            {screen.cyan, "tan", &Arial_12_Bold, screen.black, nullptr, tan_f},
+            {screen.cyan, "pi", &Arial_12_Bold, screen.black, nullptr, pi_f},
+            {screen.cyan, "e", &Arial_12_Bold, screen.black, nullptr, e_f},
           },
           {
-            {screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear},
-            {screen.green, "asin", Arial_12_Bold, screen.black, nullptr, asin_f},
-            {screen.green, "acos", Arial_12_Bold, screen.black, nullptr, acos_f},
-            {screen.green, "atan", Arial_12_Bold, screen.black, nullptr, atan_f},
-            {screen.green, "logy", Arial_12_Bold, screen.black, nullptr, logy_f},
-            {screen.yellow, "log2", Arial_12_Bold, screen.black, nullptr, log2_f},
+            {screen.red, "clear", &Arial_12_Bold, screen.black, nullptr, clear},
+            {screen.green, "asin", &Arial_12_Bold, screen.black, nullptr, asin_f},
+            {screen.green, "acos", &Arial_12_Bold, screen.black, nullptr, acos_f},
+            {screen.green, "atan", &Arial_12_Bold, screen.black, nullptr, atan_f},
+            {screen.green, "logy", &Arial_12_Bold, screen.black, nullptr, logy_f},
+            {screen.yellow, "log2", &Arial_12_Bold, screen.black, nullptr, log2_f},
           },
         },
         { // Conversions map
           {
-            {screen.yellow, "...", Arial_12_Bold, screen.black, nullptr, shift},
-            {screen.cyan, "in > mm", Arial_9_Bold, screen.black, nullptr, in2mm_f},
-            {screen.cyan, "mm > in", Arial_9_Bold, screen.black, nullptr, mm2in_f},
-            {screen.cyan, "g > lb", Arial_9_Bold, screen.black, nullptr, g2lb_f},
-            {screen.cyan, "lb > g", Arial_9_Bold, screen.black, nullptr, lb2g_f},
-            {screen.cyan, "", Arial_9_Bold, screen.black, nullptr, unused},
+            {screen.yellow, "...", &Arial_12_Bold, screen.black, nullptr, shift},
+            {screen.cyan, "in > mm", &Arial_9_Bold, screen.black, nullptr, in2mm_f},
+            {screen.cyan, "mm > in", &Arial_9_Bold, screen.black, nullptr, mm2in_f},
+            {screen.cyan, "g > lb", &Arial_9_Bold, screen.black, nullptr, g2lb_f},
+            {screen.cyan, "lb > g", &Arial_9_Bold, screen.black, nullptr, lb2g_f},
+            {screen.cyan, "", &Arial_9_Bold, screen.black, nullptr, unused},
           },
           {
-            {screen.yellow, "hex", Arial_12_Bold, screen.black, nullptr, changeBase},
-            {screen.cyan, "c > f", Arial_9_Bold, screen.black, nullptr, c2f_f},
-            {screen.cyan, "f > c", Arial_9_Bold, screen.black, nullptr, f2c_f},
-            {screen.cyan, "ppi", Arial_12_Bold, screen.black, nullptr, ppi_f},
-            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
-            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.yellow, "hex", &Arial_12_Bold, screen.black, nullptr, changeBase},
+            {screen.cyan, "c > f", &Arial_9_Bold, screen.black, nullptr, c2f_f},
+            {screen.cyan, "f > c", &Arial_9_Bold, screen.black, nullptr, f2c_f},
+            {screen.cyan, "ppi", &Arial_12_Bold, screen.black, nullptr, ppi_f},
+            {screen.cyan, "", &Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.cyan, "", &Arial_12_Bold, screen.black, nullptr, unused},
           },
           {
-            {screen.red, nullptr, Arial_12_Bold, screen.black, backspaceIcon, backspace},
-            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
-            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
-            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
-            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
-            {screen.cyan, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.red, nullptr, &Arial_12_Bold, screen.black, backspaceIcon, backspace},
+            {screen.cyan, "", &Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.cyan, "", &Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.cyan, "", &Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.cyan, "", &Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.cyan, "", &Arial_12_Bold, screen.black, nullptr, unused},
           },
           {
-            {screen.red, "clear", Arial_12_Bold, screen.black, nullptr, clear},
-            {screen.green, "", Arial_12_Bold, screen.black, nullptr, unused},
-            {screen.green, "", Arial_12_Bold, screen.black, nullptr, unused},
-            {screen.green, "", Arial_12_Bold, screen.black, nullptr, unused},
-            {screen.green, "", Arial_12_Bold, screen.black, nullptr, unused},
-            {screen.yellow, "", Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.red, "clear", &Arial_12_Bold, screen.black, nullptr, clear},
+            {screen.green, "", &Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.green, "", &Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.green, "", &Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.green, "", &Arial_12_Bold, screen.black, nullptr, unused},
+            {screen.yellow, "", &Arial_12_Bold, screen.black, nullptr, unused},
           },
         }
     };
@@ -596,11 +596,11 @@ void CalculatorTestApp::drawDisplay() {
   }
 
   if (strlen(printNumber) < 11) {
-    screen.setFont(Arial_28);
+    screen.setFont(&Arial_28);
   } else if (strlen(number) < 15) {
-    screen.setFont(Arial_20);
+    screen.setFont(&Arial_20);
   } else {
-    screen.setFont(Arial_16);
+    screen.setFont(&Arial_16);
   }
 
   coord_t w = screen.measureTextWidth(printNumber);
@@ -615,11 +615,11 @@ void CalculatorTestApp::drawDisplay() {
   char line3[100];
   sprintf(number, "%s\n%s\n%s", formatText(line1, top(3)), formatText(line2, top(2)), formatText(line3, top(1)));
 
-  screen.setFont(Arial_9_Bold);
+  screen.setFont(&Arial_9_Bold);
 
   // if it doesn't fit, shrink it down
   if ((screen.measureTextWidth(number) + topWidth)>(screen.clipWidth()-10)) {
-    screen.setFont(Arial_8);
+    screen.setFont(&Arial_8);
   }
 
   screen.setCursor(screen.clipLeft() + 5, screen.clipTop()+displayHeight/2-screen.measureTextHeight(number)/2);

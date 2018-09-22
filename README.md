@@ -1,2 +1,2 @@
 # britepad
-Britepad is a USB Touchpad &amp; Display based on Teensy 3.2 hardware.  
+Britepad is a USB Touchpad, Keyboard &amp; Display based on Teensy 3.2/3.6 hardware.  

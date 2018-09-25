@@ -10,7 +10,7 @@
 #endif
 
 #include "Hardware.h"
-#include "String.h"
+#include "string.h"
 #include "HTMLColor.h"
 
 #define R8(x) ((uint8_t)((((uint16_t)x)&0xf800)>>8))

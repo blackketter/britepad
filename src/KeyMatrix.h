@@ -3,7 +3,7 @@
 
 #include "Clock.h"
 #include "MCP23018.h"
-#include "Widgets/icon.h"
+#include "widgets/Icon.h"
 #include "KeyInfo.h"
 #include "KeyLayout.h"
 #include "KeyEvent.h"

@@ -1,6 +1,6 @@
 #include "USBKeyMatrix.h"
 #include "USBKeyLayout.h"
-#include "Apps/KeyboardViewerApp.h"
+#include "apps/KeyboardViewerApp.h"
 
 USBKeyMatrix usbKeys;
 KeyboardViewerApp theUSBKeyboardViewerApp(&usbKeys);

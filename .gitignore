@@ -1,3 +1,5 @@
 .pioenvs
 .piolibdeps
 PassApp.cpp
+apps.disabled
+

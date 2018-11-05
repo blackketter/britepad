@@ -24,8 +24,6 @@ extern Sound sound;
 #include "MousePad.h"
 extern MousePad mousePad;
 
-#include "USBMouse.h"
-
 #include "Britepad.h"
 extern Britepad britepad;
 
@@ -44,5 +42,9 @@ extern EEPROMDictionary prefs;
 
 #include "PString.h"
 
-#include "USBHost.h"
+#include "Pointer.h"
+
+#include "Commands/FPSCommand.h"
+extern FPSCommand theFPSCommand;
+
 #endif

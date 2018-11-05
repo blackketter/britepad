@@ -3,12 +3,12 @@
 #include "Britepad.h"
 #include "Types.h"
 #include "Timer.h"
-#include "USBHost.h"
-
 
 #include "apps/LauncherApp.h"
 #include "apps/ClockApp.h"
 #include "apps/SplashApp.h"
+
+#include "USB/USBHost.h"
 
 #define PROXIMITY_DEAD_TIME (1000)
 
@@ -20,50 +20,6 @@ class QuitCommand : public Command {
   }
 };
 QuitCommand theQuitCommand;
-
-class FPSCommand : public Command {
-  public:
-    const char* getName() { return "fps"; }
-    const char* getHelp() { return "toggle displaying frame rate in fps"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
-      enable = !enable;
-      c->printf("FPS display %s\n", enable ? "enabled" : "disabled");
-    }
-    void newFrame() {
-      frames++;
-      millis_t now = Uptime::millis();
-      millis_t frameDur = now - lastFrame;
-      if (frameDur > maxFrame) { maxFrame = frameDur; }
-      if (now - lastTime > 1000) {
-        if (enable) {
-          console.debugf("FPS: %.2f (Max frame: %dms, Max idle: %dms)\n", ((float)(frames*1000))/(now - lastTime), (int)maxFrame, (int)maxIdle);
-        }
-        lastTime = now;
-        frames = 0;
-        maxFrame = 0;
-        maxIdle = 0;
-      }
-      lastFrame = now;
-    }
-
-    void idled() {
-      millis_t now = Uptime::millis();
-      millis_t idleDur = now - lastIdle;
-      if (idleDur > maxIdle) { maxIdle = idleDur; }
-      lastIdle = now;
-    }
-
-  private:
-    bool enable = false;
-    uint32_t frames = 0;
-    millis_t lastTime;
-    millis_t lastFrame;
-    millis_t maxFrame;
-
-    millis_t lastIdle = 0;
-    millis_t maxIdle = 0;
-};
-
 FPSCommand theFPSCommand;
 
 BritepadApp* appList = nullptr;

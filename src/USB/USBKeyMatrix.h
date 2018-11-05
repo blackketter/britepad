@@ -2,7 +2,7 @@
 #define _USBKeyMatrix_
 
 #include "KeyMatrix.h"
-#include "USBHost.h"
+#include "USB/USBHost.h"
 
 class USBKeyMatrix : public KeyMatrix {
   public:

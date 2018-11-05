@@ -276,66 +276,64 @@ void LauncherApp::run() {
   buttonindex_t oldSelection = buttons->getSelected();
   buttonindex_t i = oldSelection;
 
-  if (key) {
-    if (key->pressed(KEY_UP)) {
-      do {
-        i -= h_buttons;
-        if (i < 0) { i += buttons_per_screen; }
-      } while (buttons->getButton(i, 0) == nullptr);
-      buttons->setSelected(i);
-      key = nullptr;
-    }
+  if (key && key->pressed(KEY_UP)) {
+    do {
+      i -= h_buttons;
+      if (i < 0) { i += buttons_per_screen; }
+    } while (buttons->getButton(i, 0) == nullptr);
+    buttons->setSelected(i);
+    key = nullptr;
+  }
 
-    if (key->pressed(KEY_DOWN)) {
-      do {
-        i += h_buttons;
-        if (i >= buttons_per_screen) { i -= buttons_per_screen; }
-      } while (buttons->getButton(i, 0) == nullptr);
-      buttons->setSelected(i);
-      key = nullptr;
-    }
+  if (key && key->pressed(KEY_DOWN)) {
+    do {
+      i += h_buttons;
+      if (i >= buttons_per_screen) { i -= buttons_per_screen; }
+    } while (buttons->getButton(i, 0) == nullptr);
+    buttons->setSelected(i);
+    key = nullptr;
+  }
 
-    if (key->pressed(KEY_LEFT)) {
-      do {
-        i--;
-        if (i < 0) {
-          pushScreen(DIRECTION_LEFT);
-          i = buttons_per_screen - 1;
-        }
-      } while (buttons->getButton(i, 0) == nullptr);
-      buttons->setSelected(i);
-      key = nullptr;
-    }
-
-    if (key->pressed(KEY_RIGHT)||key->pressed(KEY_TAB)) {
-      do {
-        i++;
-        if (i >= buttons_per_screen) {
-          pushScreen(DIRECTION_RIGHT);
-          i = 0;
-        }
-      } while (buttons->getButton(i, 0) == nullptr);
-      buttons->setSelected(i);
-      key = nullptr;
-    }
-
-/*    if (key->pressed(KEY_RIGHT_FN)) {
-      if (getCurrentScreenID() != MACROS_SCREEN) {
-        goToScreen(MACROS_SCREEN);
-      } else {
-        exit();
+  if (key && key->pressed(KEY_LEFT)) {
+    do {
+      i--;
+      if (i < 0) {
+        pushScreen(DIRECTION_LEFT);
+        i = buttons_per_screen - 1;
       }
-      key = nullptr;
+    } while (buttons->getButton(i, 0) == nullptr);
+    buttons->setSelected(i);
+    key = nullptr;
+  }
+
+  if (key && (key->pressed(KEY_RIGHT)||key->pressed(KEY_TAB))) {
+    do {
+      i++;
+      if (i >= buttons_per_screen) {
+        pushScreen(DIRECTION_RIGHT);
+        i = 0;
+      }
+    } while (buttons->getButton(i, 0) == nullptr);
+    buttons->setSelected(i);
+    key = nullptr;
+  }
+
+/*    if (key && key->pressed(KEY_RIGHT_FN)) {
+    if (getCurrentScreenID() != MACROS_SCREEN) {
+      goToScreen(MACROS_SCREEN);
+    } else {
+      exit();
     }
+    key = nullptr;
+  }
 */
-    if ((exitOnRelease ||
+  if ((exitOnRelease ||
 //        (getCurrentScreenID() == MACROS_SCREEN)) && (key->released(KEY_RIGHT_FN) ||
-        key->released(KEY_EXIT))) {
-      if (!launchOnRelease) {
-        exit();
-      }
-      key = nullptr;
+      (key && key->released(KEY_EXIT)))) {
+    if (!launchOnRelease) {
+      exit();
     }
+    key = nullptr;
   }
 
   if (oldSelection != i) {

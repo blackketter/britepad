@@ -54,11 +54,16 @@ const pinNumber TFT_CS_PIN = 10;
 const pinNumber TFT_DC_PIN = 9;
 const pinNumber BACKLIGHT_PIN = 21;
 
-#elif defined(ESP8266)
+#elif defined(ESP32)
 
-const pinNumber TFT_DC_PIN = 2;
-const pinNumber TFT_CS_PIN  = 4;
-const pinNumber BACKLIGHT_PIN  = 0;
+const pinNumber TFT_DC_PIN = 33;
+const pinNumber TFT_CS_PIN  = 15;
+const pinNumber BACKLIGHT_PIN  = 22;
+const pinNumber TFT_RST_PIN = 16;
+
+const pinNumber AUDIO_SHUTDOWN_PIN = 0;
+
+const uint32_t  WIRE_SPEED = 400000;
 
 #endif
 

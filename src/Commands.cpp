@@ -64,7 +64,7 @@ class AppCommand : public Command {
             modeString = "INTERACTIVE_MODE";
             break;
           default:
-            modeString.append(anApp->getAppMode());
+            modeString += anApp->getAppMode(); // string append
         };
         c->printf("  mode: %s\n", modeString.c_str());
       } else {

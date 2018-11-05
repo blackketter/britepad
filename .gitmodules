@@ -28,3 +28,9 @@
 [submodule "lib/USBHost_t36"]
 	path = lib/USBHost_t36
 	url = https://github.com/blackketter/USBHost_t36.git
+[submodule "lib/Adafruit_ILI9341"]
+	path = lib/Adafruit_ILI9341
+	url = https://github.com/adafruit/Adafruit_ILI9341.git
+[submodule "lib/Adafruit-GFX-Library"]
+	path = lib/Adafruit-GFX-Library
+	url = https://github.com/adafruit/Adafruit-GFX-Library.git

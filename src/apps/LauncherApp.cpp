@@ -242,7 +242,7 @@ void LauncherApp::run() {
           launched->begin(INVISIBLE_MODE);
           launched->run();
           launched->end();
-          exitOnRelease = true;
+//          exitOnRelease = true;
         }
         b->draw();
       } else {

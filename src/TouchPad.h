@@ -103,10 +103,11 @@ class TouchPad {
     uint16_t lastGestureDistance = 0;
     const gestureData_t* gesturesSearched;
 
-    void initAPDS();
+    bool initAPDS();
     void updateAPDS();
     millis_t lastAPDSupdate = 0;
     millis_t APSDupdateInterval = 10;
+    bool hasAPDS = false;
 
     uint16_t ambientLight = ambientMax;
     uint8_t proximity;

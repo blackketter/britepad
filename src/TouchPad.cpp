@@ -31,8 +31,13 @@ void TouchPad::begin() {
     ctpWorking = true;
   }
   console.debugln("starting ambient");
-  initAPDS();
-  console.debugln("started ambient");
+  if (initAPDS()) {
+    console.debugln("started ambient");
+    hasAPDS = true;
+  } else {
+    console.debugln("No APDS");
+    hasAPDS = false;
+  }
 }
 
 void TouchPad::update() {
@@ -59,10 +64,25 @@ void TouchPad::update() {
       curr.touched[SCREEN_PAD] = 1;
     }
 
+    bool flipX = false;
+    bool flipY = false;
+
     // flip it around to match the screen.
     if (ctp.getChipID() == FT6236_CHIPID) {
+      flipX = true;
+      flipY = false;
+    }
+    if (!hasAPDS) {
+      flipX = false;
+      flipY = true;
+    }
+
+
+    if (flipX) {
       curr.x = map(curr.x, 0, height, height, 0);
-    } else {
+    }
+
+    if (flipY) {
       curr.y = map(curr.y, 0, width, width, 0);
     }
 
@@ -181,6 +201,8 @@ uint8_t TouchPad::getProximityDistance() {
 
 void TouchPad::updateAPDS() {
 
+  if (!hasAPDS) { return; }
+
   if (curr.time / APSDupdateInterval != lastAPDSupdate / APSDupdateInterval) {
     lastAPDSupdate = curr.time;
 
@@ -198,7 +220,7 @@ void TouchPad::updateAPDS() {
       ambientLight = light;
     } else {
       ambientLight = ambientMax;
-//      console.debugln("error reading ambient light");
+      console.debugln("error reading ambient light");
     }
 
 #if 0
@@ -284,7 +306,6 @@ void TouchPad::updateAPDS() {
 
 //      millis_t gestureDur = lastt - firstt;
       //console.debugf("  gesture duration: %dms\n", gestureDur);
-
       upBegin -= firstt;
       downBegin -= firstt;
       leftBegin -= firstt;
@@ -303,7 +324,7 @@ void TouchPad::updateAPDS() {
   }
 }
 
-void TouchPad::initAPDS() {
+bool TouchPad::initAPDS() {
 
   // not using APDS9960 interrupt
   bool useAPDS9960Interrupts = false;
@@ -325,7 +346,9 @@ void TouchPad::initAPDS() {
 
   } else {
     console.debugln("APDS-9960 Fail init()");
+    return false;
   }
+  return true;
 }
 
 bool TouchPad::touched(int pad) {

@@ -7,15 +7,19 @@ KeyboardWidget::KeyboardWidget(KeyMatrix* keymatrix, coord_t x, coord_t y, coord
 
   coord_t oneKeyWidth = w/_keymatrix->getWidth();
   coord_t oneKeyHeight = h/_keymatrix->getHeight();
+
   if (oneKeyWidth > oneKeyHeight) { oneKeyWidth = oneKeyHeight; }
   if (oneKeyHeight > oneKeyWidth) { oneKeyHeight = oneKeyWidth; }
+
+  coord_t xMargin = (w - _keymatrix->getWidth() * oneKeyWidth)/2;
+  coord_t yMargin = (h - _keymatrix->getHeight() * oneKeyHeight)/2;
 
   int i = 0;
   keyswitch_t k = _keymatrix->getNthKey(i);
   while (k != NO_KEY) {
     if (_keymatrix->getKeyLayout(k)) {
-      coord_t button_x = x+_keymatrix->getKeyX(k)*oneKeyWidth;
-      coord_t button_y = y+_keymatrix->getKeyY(k)*oneKeyHeight;
+      coord_t button_x = xMargin + x + _keymatrix->getKeyX(k)*oneKeyWidth;
+      coord_t button_y = yMargin + y + _keymatrix->getKeyY(k)*oneKeyHeight;
       coord_t button_w = oneKeyWidth*_keymatrix->getKeyWidth(k);
       coord_t button_h = oneKeyWidth*_keymatrix->getKeyHeight(k);
       Button* b = new Button(button_x+1, button_y+1, button_w-1, button_h-1, defaultColor, false, "", &Arial_10_Bold, defaultLabelColor, nullptr, (widgetid_t)k);

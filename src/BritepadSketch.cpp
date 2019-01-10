@@ -15,7 +15,7 @@ EEPROMDictionary prefs = EEPROMDictionary();
 
 MousePad mousePad = MousePad();
 Console console = Console();
-ErgodoxKeyMatrix keys;
+BB1KeyMatrix keys;
 
 //US Pacific Time Zone (Las Vegas, Los Angeles)
 TimeChangeRule usPDT = {"PDT", Second, dowSunday, Mar, 2, -420};
@@ -52,7 +52,7 @@ void setup() {
 
   console.debugln("starting screen");
   screen.begin();
-  screen.setRotation(3);  // Britepad Mark-0 is oriented this way
+  screen.setRotation(1);  // Britepad Mark-0 is oriented this way
   screen.fillScreen(screen.black);
 
   console.debugln("starting touchpad");

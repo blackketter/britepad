@@ -9,8 +9,9 @@ extern Console console;
 #include "Screen.h"
 extern Screen screen;
 
+#include "BB1KeyMatrix.h"
 #include "ErgodoxKeyMatrix.h"
-extern ErgodoxKeyMatrix keys;
+extern BB1KeyMatrix keys;
 
 #include "KeyEventQueue.h"
 extern KeyEventQueue keyEvents;

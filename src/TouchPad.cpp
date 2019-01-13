@@ -201,7 +201,12 @@ uint8_t TouchPad::getProximityDistance() {
 
 void TouchPad::updateAPDS() {
 
-  if (!hasAPDS) { return; }
+  if (!hasAPDS) {
+    // read the analog ambient light sensor
+// disable because the bb1 display doesn't allow for pwm dimming
+//    ambientLight = ((uint32_t)analogRead(AMBIENT_ANALOG_PIN) * ambientMax)/1023;
+    return;
+    }
 
   if (curr.time / APSDupdateInterval != lastAPDSupdate / APSDupdateInterval) {
     lastAPDSupdate = curr.time;

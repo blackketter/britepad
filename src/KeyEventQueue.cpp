@@ -10,13 +10,18 @@ KeyEventQueue::KeyEventQueue() {
 }
 
 keyswitch_t KeyEventQueue::sendKeys() {
-  KeyEvent* event = getNextEvent();
+  KeyEvent* event = peekNextEvent();
   keyswitch_t count = 0;
 
   while (event) {
-    sendKey(event->code(), event->pressed());
+    if (event->time() > Uptime::millis()) {
+      //console.debugln("key in future, not sending");
+      break;
+    }
     event = getNextEvent();
+    sendKey(event->code(), event->pressed());
     count++;
+    event = peekNextEvent();
   }
   return count;
 }
@@ -35,10 +40,10 @@ void KeyEventQueue::sendKey(keycode_t code, boolean pressed) {
   if (!isSoftKeyCode(code)) {
     if (pressed) {
       Keyboard.press(code);
-      //console.debugf("key press[%d]\n", code);
+//      console.debugf("send key press[%d]\n", code);
     } else {
       Keyboard.release(code);
-      //console.debugf("key release[%d]\n", code);
+//      console.debugf("send key release[%d]\n", code);
     }
   } else {
     switch (code) {
@@ -233,8 +238,10 @@ void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t 
 
   char ch = getKeyChar(c);
   KeyEvent* e = new KeyEvent(m, k,c,ch,t,d);
-  if (keyDebug) { console.debugf("key addEvent: \"%s\", switch: %d, code: %d, char: %c, pressed: %d, %s\n",
-        m->getKeyLabel(c), k, c, ch, d, m == nullptr ? "soft" : "hard"); }
+  if (keyDebug) {
+      console.debugf("key addEvent: \"%s\", switch: %d, code: %d, char: %c, pressed: %d, %s, time:%f\n",
+        m->getKeyLabel(c), k, c, ch, d, m == nullptr ? "soft" : "hard", t/1000.0);
+     }
   if (_events) {
     _events->setNext(e);
     e->setPrev(_events);

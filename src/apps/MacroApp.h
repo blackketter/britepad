@@ -90,11 +90,10 @@ class MacroApp : public BritepadApp {
         macro_t macro[events];
 
         prefs.get(prefID.c_str(), s, (uint8_t*)macro);
-
+        millis_t keytime = Uptime::millis();
         for (int i = 0; i < events; i++) {
-          keyEvents.addEvent(macro[i].code, macro[i].pressed);
-//        keyEvents.sendKey(macro[i].code, macro[i].pressed);
-//        delay(10);
+          keyEvents.addEvent(nullptr, NO_KEY, macro[i].code, keytime, macro[i].pressed);
+          keytime += 25;  // delay each key
         }
 
       } else {

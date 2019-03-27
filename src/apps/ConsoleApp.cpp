@@ -10,7 +10,7 @@ void ConsoleApp::begin(AppMode asMode) {
   if (!_terminal) {
     _terminal = new TerminalWidget(
       screen.clipLeft(),(coord_t)(screen.clipTop()),
-      screen.clipWidth(),(coord_t)(screen.clipHeight()),
+      screen.clipWidth(),(coord_t)(screen.clipHeight()-8),
       100); // scrollback lines
   }
   setPort();

@@ -389,7 +389,7 @@ bool LauncherApp::event(KeyEvent* key) {
   bool consume = false;
   if (key->code(KEY_EXIT)) {
     if (key->pressed()) {
-      if (keyEvents.keyIsDown(MODIFIERKEY_LEFT_SHIFT)) {
+      if (keyEvents.keyIsDown(MODIFIERKEY_LEFT_SHIFT) && !britepad.currentApp()->isID(ConsoleApp::ID)) {
         britepad.launchApp(ConsoleApp::ID);
       } else {
         britepad.currentApp()->exit();

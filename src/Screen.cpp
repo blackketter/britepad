@@ -145,7 +145,11 @@ void Screen::pushFill(direction_t dir, color_t color) {
       pushClipRect(&r);
       for (coord_t i = 0; i < width(); i += stepSize) {
         fillRect(width()-stepSize-i, 0, stepSize, height(), color);
-        screen.setScroll(i+stepSize);
+        if (getRotation() == 1) {
+          screen.setScroll(width()-stepSize-i);
+        } else {
+          screen.setScroll(i+stepSize);
+        }
         britepad.idle();
 //        delay(1);
       }
@@ -155,7 +159,11 @@ void Screen::pushFill(direction_t dir, color_t color) {
       pushClipRect(&r);
       for (coord_t i = 0; i < width(); i+= stepSize) {
         fillRect(i, 0, stepSize, height(), color);
-        screen.setScroll(width()-stepSize-i);
+        if (getRotation() == 1) {
+          screen.setScroll(i+stepSize);
+        } else {
+          screen.setScroll(width()-stepSize-i);
+        }
         britepad.idle();
 //        delay(1);
       }

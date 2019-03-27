@@ -183,6 +183,13 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
         break;
     }
     console.debugf("Begin: %s in %s mode\n", currApp->name(), modeString);
+    if (currApp->usesKeyboard()) {
+      keys.update();
+
+      // when a keyboard app launches tell the host that all the keys have been released
+      keyEvents.releaseKeys();
+    }
+
     currApp->begin(asMode);
     }
 }
@@ -414,13 +421,6 @@ void Britepad::loop() {
   setApp(getLaunchedApp(), getLaunchedAppMode());
 
   launchApp(BritepadApp::STAY_IN_APP);
-
-  if (currApp->usesKeyboard()) {
-    keys.update();
-
-    // when a keyboard app launches tell the host that all the keys have been released
-    keyEvents.releaseKeys();
-  }
 
   currApp->run();
   theFPSCommand.newFrame();

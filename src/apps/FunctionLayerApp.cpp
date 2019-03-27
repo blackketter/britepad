@@ -69,7 +69,7 @@ class FunctionLayerApp : public KeyboardApp {
   public:
 
     appid_t id() { return ID; };
-    static constexpr appid_t ID = "lbar";
+    static constexpr appid_t ID = "funl";
     const char* name() { return "Function Layer"; };
 
     EventPriority eventPriority() { return PRIORITY_EARLY; }

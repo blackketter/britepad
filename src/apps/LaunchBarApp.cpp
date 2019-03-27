@@ -1,7 +1,7 @@
 #include "KeyboardApp.h"
 
 
-void releaseTimerCallback(void* app) {
+static void releaseTimerCallback(void* app) {
   Keyboard.release(MODIFIERKEY_LEFT_GUI);
 }
 
@@ -15,7 +15,7 @@ class LaunchBarApp : public KeyboardApp {
   public:
     appid_t id() { return ID; };
     static constexpr appid_t ID = "lbar";
-    const char* name() { return "Launch Bar"; };
+    const char* name() { return "Launch Bar Del"; };
 
     EventPriority eventPriority() { return PRIORITY_LAST; }
     bool event(KeyEvent* key) {

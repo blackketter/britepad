@@ -1,6 +1,8 @@
 #include "KeyEventQueue.h"
 #include "BritepadShared.h"
 
+bool keyDebug = false;
+
 KeyEventQueue keyEvents;
 
 void repeatTimerCallback(void* kq) { ((KeyEventQueue*)kq)->repeat(); };
@@ -27,6 +29,7 @@ keyswitch_t KeyEventQueue::sendKeys() {
 }
 
 void KeyEventQueue::releaseKeys() {
+  if (keyDebug)  console.debugln("release keys");
   KeyEvent* k = lastEvent();
   while (k) {
     if (keyIsDown(k->code())) {
@@ -40,10 +43,10 @@ void KeyEventQueue::sendKey(keycode_t code, boolean pressed) {
   if (!isSoftKeyCode(code)) {
     if (pressed) {
       Keyboard.press(code);
-//      console.debugf("send key press[%d]\n", code);
+      if (keyDebug)  console.debugf("send key press[%d]\n", code);
     } else {
       Keyboard.release(code);
-//      console.debugf("send key release[%d]\n", code);
+      if (keyDebug)  console.debugf("send key release[%d]\n", code);
     }
   } else {
     switch (code) {
@@ -153,7 +156,7 @@ void KeyEventQueue::repeat() {
   while (c != NO_CODE) {
     KeyEvent* e = lastEvent(c);
     if (e && e->pressed() && ((now - e->time() > _repeatStart) || ((now - _lastRepeat) < _repeatStart))) {
-      //console.debugf(" repeating code:%d\n",c);
+      if (keyDebug)  console.debugf(" repeating code:%d\n",c);
       if (!e->isMouseMoveKey()) { sendKey(c,0); }
       sendKey(c,1);
       _lastRepeat = now;
@@ -205,8 +208,6 @@ KeyEvent* KeyEventQueue::getNextEvent() {
   }
   return next;
 }
-
-bool keyDebug = false;
 
 class KeyDebugCommand : public Command {
   public:

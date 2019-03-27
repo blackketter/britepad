@@ -116,9 +116,12 @@ int TerminalWidget::peek() {
 }
 
 void TerminalWidget::flush() {
+  run();
 }
 
 size_t TerminalWidget::write(uint8_t b) {
+  if (b == 0) { return 1; };
+
   if (_cursor >= _totalChars) {
     memmove ( _buffer, _buffer+_columns, _columns*(_totalRows-1) );
     _cursor = _columns*(_totalRows-1);

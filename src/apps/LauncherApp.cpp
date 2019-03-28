@@ -416,3 +416,16 @@ bool LauncherApp::disablesScreensavers() {
 }
 
 LauncherApp theLauncherApp;
+
+
+class ExitCommand : public Command {
+  public:
+    const char* getName() { return "exit"; }
+    const char* getHelp() { return "Exit current app"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) {
+      britepad.currentApp()->exit();
+      britepad.resetScreensaver();
+    }
+};
+
+ExitCommand theExitCommand;

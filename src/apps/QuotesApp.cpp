@@ -14,7 +14,7 @@ class QuotesApp : public ScreensaverApp {
 
         String wrapped;
         const char* strat = randomObliqueStrategy();
-        console.debugln(strat);
+        console.debugf("Quote: %s\n",strat);
         screen.softWrapText(wrapped, strat);
         screen.drawString(wrapped);
         screen.setTextAlign();

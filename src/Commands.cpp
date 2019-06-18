@@ -106,3 +106,14 @@ class PrefsCommand : public Command {
     }
 };
 PrefsCommand thePrefsCommand;
+
+class TimersCommand : public Command {
+  public:
+    const char* getName() { return "timers"; }
+    const char* getHelp() { return "Print Timer Info"; }
+    void execute(Stream* c, uint8_t paramCount, char** params) {
+      Timer::printInfo(c);
+    }
+};
+
+TimersCommand theTimersCommand;

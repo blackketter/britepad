@@ -34,3 +34,6 @@
 [submodule "lib/Adafruit-GFX-Library"]
 	path = lib/Adafruit-GFX-Library
 	url = https://github.com/adafruit/Adafruit-GFX-Library.git
+[submodule "lib/LuaArduino"]
+	path = lib/LuaArduino
+	url = https://github.com/blackketter/LuaArduino.git

@@ -10,7 +10,7 @@ class ConsoleApp : public BritepadApp {
     void run();
 
     virtual bool disablesScreensavers() { return true; }
-    virtual bool usesKeyboard() {return true;}
+    virtual bool usesKeyboard() { return true;}
     virtual BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
 
     const char* name() { return "Console"; };

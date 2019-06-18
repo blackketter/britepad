@@ -104,7 +104,7 @@ const modifiedkey_t shiftedKeys[] = {
   { KEY_RIGHT_BRACE, '}' },
   { KEY_BACKSLASH, '|' },
   { KEY_SEMICOLON, ':' },
-  { KEY_QUOTE, '\'' },
+  { KEY_QUOTE, '"' },
   { KEY_TILDE, '~' }, // tilde key is actually a ` in EN_US
   { KEY_COMMA, '<' },
   { KEY_PERIOD, '>' },
@@ -237,7 +237,7 @@ const keyinfo_t keyInfo[] = {
   { KEY_BACKSLASH, '\\', "\\", nullptr, false },
   { KEY_NON_US_NUM, 0, "num", nullptr, false },
   { KEY_SEMICOLON, ';', ";", nullptr, false },
-  { KEY_QUOTE, '"', "\"", nullptr, false },
+  { KEY_QUOTE, '\'', "'", nullptr, false },
   { KEY_TILDE, '`', "'", nullptr, false },  // tilde key is actually ` in EN_US
   { KEY_COMMA, ',', ",", nullptr, false },
   { KEY_PERIOD, '.', ".", nullptr, false },

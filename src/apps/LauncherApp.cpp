@@ -11,6 +11,23 @@ KEY_A, KEY_S, KEY_D, KEY_F,
 KEY_Z, KEY_X, KEY_C, KEY_V
 };
 
+enum screenids {
+  FIRST_SCREEN,
+  DEBUG_SCREEN = FIRST_SCREEN,
+  MICE_SCREEN,
+  CLOCKS_SCREEN,
+  SCREENSAVERS_SCREEN,
+  KEYBOARD_SCREEN,
+  SETTINGS_SCREEN,
+  MACROS_SCREEN,
+  HOME_SCREEN,
+  TIMERS_SCREEN,
+  APPS_SCREEN,
+  LAST_SCREEN = APPS_SCREEN,
+  TOTAL_SCREENS,
+  NO_SCREEN
+};
+
 screen_t screens[] = {
   { DEBUG_SCREEN,"Debug",nullptr,DEBUG_APP,INTERACTIVE_MODE,Screen::grey},
   { MICE_SCREEN,"Mice","Press and hold to test",MOUSE_APP,MOUSE_MODE,Screen::black},
@@ -99,6 +116,7 @@ screen_t* LauncherApp::getCurrentScreen() {
 
 LauncherApp::LauncherApp() {
   current_screen = HOME_SCREEN;
+  launch_screen = NO_SCREEN;
 }
 
 void LauncherApp::begin(AppMode asMode) {
@@ -399,13 +417,6 @@ bool LauncherApp::event(KeyEvent* key) {
 
     }
     consume = true;
-/*
-  } else if (key->pressed(KEY_RIGHT_FN)) {
-    if (!isCurrentApp()) {
-      setLaunchScreen(MACROS_SCREEN);
-      launch();
-    }
-*/
   }
   return consume;
 }
@@ -416,16 +427,3 @@ bool LauncherApp::disablesScreensavers() {
 }
 
 LauncherApp theLauncherApp;
-
-
-class ExitCommand : public Command {
-  public:
-    const char* getName() { return "exit"; }
-    const char* getHelp() { return "Exit current app"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
-      britepad.currentApp()->exit();
-      britepad.resetScreensaver();
-    }
-};
-
-ExitCommand theExitCommand;

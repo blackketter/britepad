@@ -7,23 +7,6 @@
 
 typedef uint8_t screenid_t;
 
-enum screenids {
-  FIRST_SCREEN,
-  DEBUG_SCREEN = FIRST_SCREEN,
-  MICE_SCREEN,
-  CLOCKS_SCREEN,
-  SCREENSAVERS_SCREEN,
-  KEYBOARD_SCREEN,
-  SETTINGS_SCREEN,
-  MACROS_SCREEN,
-  HOME_SCREEN,
-  TIMERS_SCREEN,
-  APPS_SCREEN,
-  LAST_SCREEN = APPS_SCREEN,
-  TOTAL_SCREENS,
-  NO_SCREEN
-};
-
 typedef struct screen_t {
   screenid_t id;
   const char* name;
@@ -74,7 +57,7 @@ class LauncherApp : public BritepadApp {
 
     void drawButtons();
     screenid_t current_screen;
-    screenid_t launch_screen = NO_SCREEN;
+    screenid_t launch_screen;
 
     bool waitForRelease = false;
 

@@ -5,20 +5,14 @@
 #include "BritepadApp.h"
 #include "widgets/ButtonMatrix.h"
 
-typedef uint8_t screenid_t;
+typedef int8_t pageindex_t;
 
-typedef struct screen_t {
-  screenid_t id;
-  const char* name;
-  const char* info;
-  AppType type;
-  AppMode mode;
-  color_t color;
-} screen_t;
+class LauncherPage;
 
 class LauncherApp : public BritepadApp {
   public:
     LauncherApp();
+//    void init();
     void begin(AppMode asMode);
     void run();
     void end();
@@ -36,8 +30,6 @@ class LauncherApp : public BritepadApp {
     const char* statusBarTitle();
     const char* infoBarText();
 
-    void setLaunchScreen(screenid_t s) {launch_screen = s;}
-
     bool disablesScreensavers();
 
   private:
@@ -45,19 +37,25 @@ class LauncherApp : public BritepadApp {
 
     const static int h_buttons = 4;
     const static int v_buttons = 3;
-    const static int buttons_per_screen = h_buttons * v_buttons;
+    const static int buttons_per_page = h_buttons * v_buttons;
     const static int resetScreenTimeout = 10;  // seconds
 
-    screenid_t getCurrentScreenID() { return current_screen; }
-    void setCurrentScreenID(screenid_t n);
-    void pushScreen(direction_t d);
-    void goToScreen(screenid_t s);
-    screen_t* getCurrentScreen();
+    LauncherPage* getCurrentPage();
+    pageindex_t getCurrentPageIndex() { return current_page; }
+    void setCurrentPageIndex(pageindex_t n);
+    pageindex_t firstPageOfType(AppType type);
+    pageindex_t pageCount();
+
+    void pushPage(direction_t d);
+    void goToPage(pageindex_t s);
     color_t bgColor();
 
     void drawButtons();
-    screenid_t current_screen;
-    screenid_t launch_screen;
+
+    void makePages();
+    void freePages();
+
+    pageindex_t current_page;
 
     bool waitForRelease = false;
 
@@ -68,7 +66,10 @@ class LauncherApp : public BritepadApp {
     bool audibleExit = false;
     bool exitOnRelease = false;
 
+    const AppType defaultPageAppType = KEY_APP;
+
     ButtonMatrix* buttons = 0;
+    LauncherPage* _pages = nullptr;
 };
 
 #endif

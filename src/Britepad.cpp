@@ -167,7 +167,6 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   currApp = newApp;
 
   if (currApp) {
-    currApp->drawBars();
     const char* modeString = "unknown";
     switch (asMode) {
       case SCREENSAVER_MODE:
@@ -191,6 +190,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     }
 
     currApp->begin(asMode);
+    currApp->drawBars();
     }
 }
 

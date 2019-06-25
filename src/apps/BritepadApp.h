@@ -113,6 +113,7 @@ class BritepadApp : public Widget {
     void drawBars(bool update = false); // draw the status and info bars
 
     void drawStatusBar(bool update);
+    virtual void clearScreen();
 
     virtual bool displaysStatusBar() { return true; };  // apps show status bar by default
     virtual color_t statusBarBGColor() { return screen.mix(bgColor(), screen.grey); }  // bgcolor of status bar
@@ -129,6 +130,7 @@ class BritepadApp : public Widget {
     inline BritepadApp* getPrevApp() {  return _prevApp; };
     inline void setNextApp(BritepadApp* app) {  _nextApp = app; };
     inline void setPrevApp(BritepadApp* app) {  _prevApp = app; };
+    static const int32_t defaultLauncherPosition = -1;
 
 
   protected:
@@ -136,20 +138,18 @@ class BritepadApp : public Widget {
     KeyEvent* peekNextEvent() { KeyEvent* e = keyEvents.peekNextEvent(); if (e) { britepad.resetScreensaver(); }; return e;}
     virtual bool hasPrefs() { return canBeScreensaver() | canBeMouse() | isAppType(KEYBOARD_APP); } // mice, screensavers and keyboard apps use default prefs for enable/disable
 
-    virtual void clearScreen();
     void resetClipRect();  // resets clip rect to content area
 
     virtual void setPrefs() {  if (hasPrefs()) { uint8_t pref = (uint8_t)_enabled; prefs.set(id(), sizeof(pref), (uint8_t*)&pref); } };
     virtual void getPrefs() { if (hasPrefs()) { uint8_t pref = (uint8_t)ANY_MODE; prefs.get(id(),  sizeof(pref), (uint8_t*)&pref); _enabled = (AppMode)pref;} };
 
     static const coord_t _statusBarHeight = 16;
-    static const int32_t _defaultLauncherPosition = -1;
     static const millis_t _maxRunTime = 10;
 
     AppMode _enabled = ANY_MODE;  // bit mask for enabled modes. apps are always enabled by default
     AppMode _currAppMode = INACTIVE_MODE;
 
-    int32_t _launcherPosition = _defaultLauncherPosition;
+    int32_t _launcherPosition = defaultLauncherPosition;
 
   private:
 

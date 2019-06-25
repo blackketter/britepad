@@ -6,6 +6,7 @@
 BritepadApp::BritepadApp()  {
   Britepad::addApp(this);
 }
+
 bool BritepadApp::event(KeyEvent* key) {
   return false;
 }

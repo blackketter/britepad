@@ -437,6 +437,12 @@ void Britepad::launchApp(appid_t id, AppMode mode) {
   launchApp(getAppByID(id), mode);
 }
 
+void Britepad::exit() {
+  if (currentApp()) {
+    currentApp()->exit();
+  }
+}
+
 time_t Britepad::getScreensaverSwitchInterval() {
   time_t i = defaultScreensaverSwitchInterval;
   prefs.get(screensaverSwitchIntervalPref, sizeof(i), (uint8_t*)&i);

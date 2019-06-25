@@ -3,7 +3,6 @@
 
 #include "BritepadShared.h"
 #include "BritepadApp.h"
-#include "widgets/ButtonMatrix.h"
 
 typedef int8_t pageindex_t;
 
@@ -32,12 +31,12 @@ class LauncherApp : public BritepadApp {
 
     bool disablesScreensavers();
 
+    void pushPage(direction_t d);
+    void goToPage(pageindex_t s);
+
   private:
     const static int noButton = -1;
 
-    const static int h_buttons = 4;
-    const static int v_buttons = 3;
-    const static int buttons_per_page = h_buttons * v_buttons;
     const static int resetScreenTimeout = 10;  // seconds
 
     LauncherPage* getCurrentPage();
@@ -46,29 +45,21 @@ class LauncherApp : public BritepadApp {
     pageindex_t firstPageOfType(AppType type);
     pageindex_t pageCount();
 
-    void pushPage(direction_t d);
-    void goToPage(pageindex_t s);
     color_t bgColor();
-
-    void drawButtons();
 
     void makePages();
     void freePages();
 
     pageindex_t current_page;
 
-    bool waitForRelease = false;
 
     time_t lastRun = 0;
     time_t lastBegin = 0;
-    bool held = false;
-    BritepadApp* launchOnRelease = nullptr;
     bool audibleExit = false;
-    bool exitOnRelease = false;
+    bool waitForRelease = false;
 
     const AppType defaultPageAppType = KEY_APP;
 
-    ButtonMatrix* buttons = 0;
     LauncherPage* _pages = nullptr;
 };
 

@@ -30,6 +30,7 @@ class Britepad {
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE);
     void launchApp(appid_t id, AppMode mode = INTERACTIVE_MODE);
     BritepadApp* currentApp() { return currApp; }
+    void exit();
 
     static void addApp(BritepadApp* newApp);
     BritepadApp* getAppByID(appid_t appID);

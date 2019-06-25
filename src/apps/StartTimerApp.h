@@ -8,7 +8,7 @@
 
 class StartTimerApp : public BritepadApp {
   public:
-    StartTimerApp(const char* name, time_t duration, int32_t pos = _defaultLauncherPosition);
+    StartTimerApp(const char* name, time_t duration, int32_t pos = defaultLauncherPosition);
     StartTimerApp();
     void run();
 

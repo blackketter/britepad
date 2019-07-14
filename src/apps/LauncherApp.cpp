@@ -11,7 +11,6 @@ KEY_A, KEY_S, KEY_D, KEY_F,
 KEY_Z, KEY_X, KEY_C, KEY_V
 };
 
-
 class LauncherPage {
   public:
     LauncherPage(const char* name, const char* info, AppType type, AppMode mode, color_t color, LauncherPage* next, BritepadApp* startingWith = nullptr);
@@ -38,11 +37,9 @@ class LauncherPage {
     BritepadApp* _launchOnRelease = nullptr;
     bool _held = false;
 
-
     const static int _h_buttons = 4;
     const static int _v_buttons = 3;
     const static int _buttons_per_page = _h_buttons * _v_buttons;
-
 };
 
 LauncherPage::LauncherPage(const char* name, const char* info, AppType type, AppMode mode, color_t color, LauncherPage* next, BritepadApp* startingWith)

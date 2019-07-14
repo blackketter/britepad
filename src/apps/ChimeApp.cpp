@@ -1,4 +1,4 @@
- #include "BritepadApp.h"
+#include "BritepadApp.h"
 
 class ChimeApp : public BritepadApp {
 

@@ -4,23 +4,27 @@ void printInfo(Print* p) {
   char string[100];
   clock.longTime(string);
 
-  p->printf("Time: %s\nX: %3d Y: %3d\n", string, pad.x(), pad.y());
+  p->printf("Time: %s\n", string);
+  p->printf("Compiled: " __DATE__ " " __TIME__ "\n");
+  p->printf("Free ram: %10d\n", FreeMem());
+  p->printf("Uptime: %f\n", Uptime::micros()/1000000.0);
+  p->printf("Prefs usage: %d, remaining: %d\n", prefs.used(), prefs.remaining());
+  p->println(resetType());
 
   uint32_t rtcMillis = (uint32_t)((clock.getRTCMicros()%1000000)/1000);
   uint32_t clockMillis = clock.fracMillis();
 
+  p->printf("RTC millis:%03d, clock: %03d, diff: %d\n", (uint32_t)rtcMillis, (uint32_t)clockMillis, (int)rtcMillis - (int)clockMillis);
+
+
+  p->printf("X: %3d Y: %3d\n", string, pad.x(), pad.y());
   p->printf("Touch: %c(%d) %c(%d) %c(%d) %c(%d)\n",
     pad.touched(TOP_PAD) ? 'T':'t', touchRead(T_TOUCH_PIN),
     pad.touched(LEFT_PAD) ? 'L':'l', touchRead(L_TOUCH_PIN),
     pad.touched(TOP_PAD) ? 'B':'b', touchRead(B_TOUCH_PIN),
     pad.touched(RIGHT_PAD) ? 'R':'r', touchRead(R_TOUCH_PIN));
-  p->printf("RTC millis:%03d, clock: %03d, diff: %d\n", (uint32_t)rtcMillis, (uint32_t)clockMillis, (int)rtcMillis - (int)clockMillis);
   p->printf("Ambient: %3d\n", pad.getAmbientLight());
   p->printf("Backlight: %3d\n", screen.getBacklight());
-  p->printf("Free ram: %10d\n", FreeMem());
-  p->printf("Uptime: %f\n", Uptime::micros()/1000000.0);
-  p->printf("Prefs usage: %d, remaining: %d\n", prefs.used(), prefs.remaining());
-  p->println(resetType());
 
 /*
   millis_t n = Uptime::millis();

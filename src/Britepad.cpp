@@ -259,8 +259,6 @@ void Britepad::begin() {
 }
 
 void Britepad::idle() {
-
-
     millis_t now = Uptime::millis();
     if (now - lastIdle < idleInterval) {
       return;

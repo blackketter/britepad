@@ -1,6 +1,4 @@
 .pio
-.pioenvs
-.piolibdeps
 PassApp.cpp
 apps.disabled
 tags

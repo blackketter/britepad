@@ -20,7 +20,8 @@ class AppsCommand : public Command {
 AppsCommand theAppsCommand;
 
 BritepadApp* findApp(const char* s) {
-   BritepadApp* a = nullptr;
+  BritepadApp* a = britepad.getAppByID(s);
+  if (a == nullptr) {
     int n = atoi(s);
     if (n) {
       a = britepad.getNextApp();
@@ -28,9 +29,8 @@ BritepadApp* findApp(const char* s) {
         a = britepad.getNextApp(a);
         n--;
       }
-    } else {
-        a = britepad.getAppByID(s);
     }
+  }
   return a;
 }
 

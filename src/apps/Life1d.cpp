@@ -40,6 +40,25 @@ void Life1dApp::seed() {
   for (coord_t i = 0; i < _width; i++) {
     _world[i] = 0;
   }
+
+  switch (random(3)) {
+    case 0:
+     _world[_width/2] = 1;
+    break;
+
+    case 1:
+      for (int i = 0; i < _width; i++) {
+        _world[i] = random(2);
+      }
+    break;
+
+    case 2:
+      int c = 10;
+      for (int i = 0; i < c; i++) {
+        _world[random(_width)] = 1;
+      }
+    break;
+  }
   _world[_width/2] = 1;
 }
 
@@ -47,7 +66,7 @@ void Life1dApp::run() {
 
   ScreensaverApp::run();
 
-   coord_t t = screen.clipTop();
+  coord_t t = screen.clipTop();
   coord_t b = screen.clipBottom();
   coord_t l = screen.clipLeft();
 

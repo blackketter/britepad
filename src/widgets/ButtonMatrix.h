@@ -51,7 +51,7 @@ class ButtonMatrix : public Widget {
     int getMap() { return currMap; };
 
     Button* getButton(widgetid_t id);
-    Button* getButton(buttonindex_t i, int map = 0) {  if (buttons && (i >= 0) && (i < totalButtons())) { return buttons[i+map*buttonRows*buttonColumns]; } else { return nullptr; } }
+    Button* getButton(buttonindex_t i, int map = 0);
 
     void setButton(Button* b, buttonindex_t i, int map = 0);
 
@@ -59,6 +59,7 @@ class ButtonMatrix : public Widget {
 
     virtual void setHighlighted(bool highlight);
     buttonindex_t totalButtons() { return buttonRows*buttonColumns*buttonMaps; }
+    buttonindex_t buttonCount();
     buttonindex_t getSelected();
     void setSelected(buttonindex_t button);
     void setGap(coord_t g) { gap = g; }

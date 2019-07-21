@@ -149,6 +149,10 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     asMode = INTERACTIVE_MODE;
   }
 
+  if (asMode == ANY_MODE) {
+    asMode = INTERACTIVE_MODE;
+  }
+
   if (newApp == currApp) {
     if (currApp->getAppMode() != asMode) {
        currApp->switchAppMode(asMode);

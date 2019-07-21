@@ -91,6 +91,18 @@ Button* ButtonMatrix::releasedButton() {
   }
   return nullptr;
 }
+buttonindex_t ButtonMatrix::buttonCount() {
+  buttonindex_t count = 0;
+  for (int r = 0; r < buttonRows; r++) {
+    for (int c = 0; c < buttonColumns; c++) {
+      buttonindex_t i = index(r,c,currMap);
+      if (buttons[i]) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
 
 Button* ButtonMatrix::heldButton() {
 
@@ -103,6 +115,14 @@ Button* ButtonMatrix::heldButton() {
     }
   }
   return nullptr;
+}
+
+Button* ButtonMatrix::getButton(buttonindex_t i, int map) {
+  if (buttons && (i >= 0) && (i < totalButtons())) {
+    return buttons[i+map*buttonRows*buttonColumns];
+  } else {
+    return nullptr;
+  }
 }
 
 Button* ButtonMatrix::getButton(widgetid_t id) {

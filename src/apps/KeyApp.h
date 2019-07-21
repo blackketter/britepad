@@ -33,7 +33,6 @@ class KeyApp : public BritepadApp {
 
     AppType getAppType() { return KEY_APP; }
 
-    AppButton* newAppButton() { AppButton* b = new AppButton(this); return b; }
     color_t appButtonColor() { return button_color; }
     Icon getIcon() { return _icon; }
 

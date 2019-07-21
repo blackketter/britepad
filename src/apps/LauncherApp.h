@@ -42,6 +42,7 @@ class LauncherApp : public BritepadApp {
     LauncherPage* getCurrentPage();
     pageindex_t getCurrentPageIndex() { return current_page; }
     void setCurrentPageIndex(pageindex_t n);
+    void setCurrentPageIndex();
     pageindex_t firstPageOfType(AppType type);
     pageindex_t pageCount();
 
@@ -59,6 +60,7 @@ class LauncherApp : public BritepadApp {
     bool waitForRelease = false;
 
     const AppType defaultPageAppType = KEY_APP;
+    String searchString;
 
     LauncherPage* _pages = nullptr;
 };

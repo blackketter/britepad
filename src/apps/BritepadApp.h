@@ -21,6 +21,7 @@ enum AppType {
   KEY_APP = 128,
   KEYBOARD_APP = 256,
   MACROS_APP = 512,
+  ANY_TYPE_APP = 0xffff,
 };
 
 enum EventPriority {

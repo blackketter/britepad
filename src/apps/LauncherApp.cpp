@@ -5,34 +5,32 @@
 #include "widgets/AppButton.h"
 #include "widgets/ButtonMatrix.h"
 
-keycode_t launchKeys[] = {
-KEY_Q, KEY_W, KEY_E, KEY_R,
-KEY_A, KEY_S, KEY_D, KEY_F,
-KEY_Z, KEY_X, KEY_C, KEY_V
-};
-
 class LauncherPage {
   public:
     LauncherPage(const char* name, const char* info, AppType type, AppMode mode, color_t color, LauncherPage* next, BritepadApp* startingWith = nullptr);
-    ~LauncherPage();
-    const char* name() { return _name; }
+    LauncherPage() {};
+    virtual ~LauncherPage();
+    virtual const char* name() { return _name; }
     const char* info() { return _info; }
     AppType type() { return _type; }
     AppMode mode() { return _mode; }
     color_t color() { return _color; }
-    void setNext(LauncherPage* next) { _next = next; }
     LauncherPage* next() { return _next; }
-    void makeButtons(BritepadApp* startingWith);
     void draw();
     bool run(KeyEvent* key, LauncherApp* app);
+    void setSelected(buttonindex_t i) { _buttons->setSelected(i); }
 
   protected:
+    virtual bool filter(BritepadApp* a);
+    virtual int32_t appPos(BritepadApp* a) { return a->getLauncherPosition(); };
+    void makeButtons(BritepadApp* startingWith);
+
     const char* _name;
     const char* _info;
-    AppType _type;
-    AppMode _mode;
+    AppType _type = ANY_TYPE_APP;
+    AppMode _mode = ANY_MODE;
     color_t _color;
-    LauncherPage* _next;
+    LauncherPage* _next = nullptr;
     ButtonMatrix* _buttons = nullptr;
     BritepadApp* _launchOnRelease = nullptr;
     bool _held = false;
@@ -57,6 +55,10 @@ void LauncherPage::draw() {
   _buttons->draw();
 }
 
+bool LauncherPage::filter(BritepadApp* a) {
+  return a->isAppType(type());
+}
+
 void LauncherPage::makeButtons(BritepadApp* startingWith) {
   if (_buttons) { delete(_buttons); }
 
@@ -67,9 +69,9 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
   for (int specific = 1; specific >= 0; specific--) {
     BritepadApp* a = britepad.getNextApp(startingWith);
     while (a) {
-      if (a->isAppType(type())) {
+      if (filter(a)) {
         britepad.idle();
-        int32_t pos = a->getLauncherPosition();
+        int32_t pos = appPos(a);
         if ((specific && (pos!=BritepadApp::defaultLauncherPosition)) || (!specific && (pos==BritepadApp::defaultLauncherPosition))) {
           if (pos==BritepadApp::defaultLauncherPosition) { pos = 0; }
           while (_buttons->getButton(pos,0)) {
@@ -94,9 +96,8 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
                   b = new ScreensaverButton(a);
                   break;
                 case INTERACTIVE_MODE:
-                  b = a->newAppButton();
-                  break;
                 default:
+                  b = a->newAppButton();
                   break;
               }
               _buttons->setButton(b,pos);
@@ -111,14 +112,7 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
 
 bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
 
-  for (int i = 0; i < _buttons_per_page; i++) {
-    if (key && key->pressed(launchKeys[i]) && _buttons->getButton(i)) {
-      _buttons->getButton(i)->setHighlighted(true);
-      key = nullptr;
-      break;
-    }
-  }
-
+  console.debugf("run key: %d pressed: %d\n", key->code(), key->pressed());
   if (!_launchOnRelease && (key && (key->released(KEY_SPACE) || key->released(KEY_RETURN)))) {
     _buttons->setHighlighted(false);
     key = nullptr;
@@ -128,8 +122,7 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
   if (_launchOnRelease) {
     if ( pad.released(SCREEN_PAD) ||
         ( key && (key->released(KEY_SPACE) ||
-                  key->released(KEY_RETURN) ||
-                  key->released(launchKeys[_launchOnRelease->getLauncherPosition()]))
+                  key->released(KEY_RETURN))
         )
        ) {
       AppMode runMode = _launchOnRelease->canBeSetup() ? SETUP_MODE : mode();
@@ -157,19 +150,11 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
       ) {
     britepad.exit();
     key = nullptr;
-  } else {
-    AppButton* b = (AppButton*)_buttons->releasedButton();
+  }
 
-    if (!b) {
-      for (int i = 0; i < _buttons_per_page; i++) {
-        if (key && key->released(launchKeys[i]) && _buttons->getButton(i)) {
-          b = (AppButton*)_buttons->getButton(i);
-          b->setHighlighted(false);
-          key = nullptr;
-          break;
-        }
-      }
-    }
+  if (_buttons->buttonCount()) {
+
+    AppButton* b = (AppButton*)_buttons->releasedButton();
 
     if (!b && (key && (key->pressed(KEY_SPACE) || key->pressed(KEY_RETURN)))) {
       b = (AppButton*)_buttons->getButton(_buttons->getSelected(),0);
@@ -192,7 +177,7 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
         b->draw();
       } else {
         AppMode whichMode = mode();
-        if (whichMode == INTERACTIVE_MODE) {
+        if (whichMode == INTERACTIVE_MODE || whichMode == ANY_MODE) {
           britepad.launchApp(launched);
         } else {
           launched->setEnabled(!launched->getEnabled(whichMode), whichMode);
@@ -216,51 +201,56 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
         _launchOnRelease = b->getApp();
       }
     }
-  }
 
-  buttonindex_t oldSelection = _buttons->getSelected();
-  buttonindex_t i = oldSelection;
+    buttonindex_t oldSelection = _buttons->getSelected();
+    buttonindex_t i = oldSelection;
 
-  if (key && key->pressed(KEY_UP)) {
-    do {
-      i -= _h_buttons;
-      if (i < 0) { i += _buttons_per_page; }
-    } while (_buttons->getButton(i, 0) == nullptr);
-    _buttons->setSelected(i);
-    key = nullptr;
-  }
+    if (key && key->pressed(KEY_UP)) {
+      do {
+        i -= _h_buttons;
+        if (i < 0) { i += _buttons_per_page; }
+      } while (_buttons->getButton(i, 0) == nullptr);
+      _buttons->setSelected(i);
+      key = nullptr;
+    }
 
-  if (key && key->pressed(KEY_DOWN)) {
-    do {
-      i += _h_buttons;
-      if (i >= _buttons_per_page) { i -= _buttons_per_page; }
-    } while (_buttons->getButton(i, 0) == nullptr);
-    _buttons->setSelected(i);
-    key = nullptr;
-  }
+    if (key && key->pressed(KEY_DOWN)) {
+      do {
+        i += _h_buttons;
+        if (i >= _buttons_per_page) { i -= _buttons_per_page; }
+      } while (_buttons->getButton(i, 0) == nullptr);
+      _buttons->setSelected(i);
+      key = nullptr;
+    }
 
-  if (key && key->pressed(KEY_LEFT)) {
-    do {
-      i--;
-      if (i < 0) {
-        //app->pushPage(DIRECTION_LEFT);
-        i = _buttons_per_page - 1;
-      }
-    } while (_buttons->getButton(i, 0) == nullptr);
-    _buttons->setSelected(i);
-    key = nullptr;
-  }
+    if (key && key->pressed(KEY_LEFT)) {
+      do {
+        i--;
+        if (i < 0) {
+          //app->pushPage(DIRECTION_LEFT);
+          i = _buttons_per_page - 1;
+        }
+      } while (_buttons->getButton(i, 0) == nullptr);
+      _buttons->setSelected(i);
+      key = nullptr;
+    }
 
-  if (key && (key->pressed(KEY_RIGHT)||key->pressed(KEY_TAB))) {
-    do {
-      i++;
-      if (i >= _buttons_per_page) {
-        //app->q(DIRECTION_RIGHT);
-        i = 0;
-      }
-    } while (_buttons->getButton(i, 0) == nullptr);
-    _buttons->setSelected(i);
-    key = nullptr;
+    if (key && (key->pressed(KEY_RIGHT)||key->pressed(KEY_TAB))) {
+      do {
+        i++;
+        if (i >= _buttons_per_page) {
+          //app->q(DIRECTION_RIGHT);
+          i = 0;
+        }
+      } while (_buttons->getButton(i, 0) == nullptr);
+      _buttons->setSelected(i);
+      key = nullptr;
+    }
+
+    if (oldSelection != i) {
+      _buttons->draw(i);
+      _buttons->draw(oldSelection);
+    }
   }
 
   if (key && key->released(KEY_EXIT)) {
@@ -270,39 +260,68 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
     key = nullptr;
   }
 
-  if (oldSelection != i) {
-    _buttons->draw(i);
-    _buttons->draw(oldSelection);
-  }
-
-  if (key && key->code() && key->pressed()) {
-    // if the key hasn't been processed, then bail
-    britepad.exit();
-  } else {
+  if (!key) {
     // if key has been processed, then consume it from the queue
     return true;
   }
   return false;
 }
 
+class SearchLauncherPage : public LauncherPage {
+  public:
+    SearchLauncherPage(String& searchString, const char* info, color_t color, LauncherPage* next, BritepadApp* startingWith = nullptr);
+  protected:
+    bool filter(BritepadApp* a) override;
+    int32_t appPos(BritepadApp* a) override { return BritepadApp::defaultLauncherPosition; };
+    const char* name() override;
+
+    String _searchString;
+};
+
+SearchLauncherPage::SearchLauncherPage(String& searchString, const char* info, color_t color, LauncherPage* next, BritepadApp* startingWith) {
+  _searchString = searchString;
+  _info = info;
+  _color = color;
+  _next = next;
+
+  searchString.toLowerCase();
+  makeButtons(startingWith);
+}
+
+bool SearchLauncherPage::filter(BritepadApp* a) {
+  String title = a->name();
+  title.toLowerCase();
+
+  return title.startsWith(_searchString);
+}
+
+const char* SearchLauncherPage::name() {
+  return _searchString.c_str();
+}
+
 /////////////////////////
 // LauncherApp Methods //
 /////////////////////////
 void LauncherApp::makePages() {
+
+  console.debugln("makepages");
+
   if (_pages) { return; } // pages already made
-
-  LauncherPage* newPage;
-  newPage = new LauncherPage( "Macros",nullptr, MACROS_APP,INTERACTIVE_MODE,Screen::darkergreen, nullptr);
-  newPage = new LauncherPage( "Apps",nullptr,INTERACTIVE_APP,INTERACTIVE_MODE,Screen::darkergrey, newPage);
-  newPage = new LauncherPage( "Timers",nullptr,TIMER_APP,INTERACTIVE_MODE,Screen::darkerblue, newPage);
-  newPage = new LauncherPage( "Home",nullptr,KEY_APP,INTERACTIVE_MODE,Screen::darkergreen, newPage);
-  newPage = new LauncherPage( "Settings",nullptr,SETTINGS_APP,INTERACTIVE_MODE,Screen::darkeryellow, newPage);
-  newPage = new LauncherPage( "Screensavers","Press and hold to test",SCREENSAVER_APP,SCREENSAVER_MODE,Screen::darkeryellow, newPage);
-  newPage = new LauncherPage( "Keyboard",nullptr,KEYBOARD_APP,KEYBOARD_MODE,Screen::DarkOrange, newPage);
-  newPage = new LauncherPage( "Clocks","Press and hold to test",CLOCK_APP,SCREENSAVER_MODE,Screen::darkerred, newPage);
-  newPage = new LauncherPage( "Mice","Press and hold to test",MOUSE_APP,MOUSE_MODE,Screen::black, newPage);
-  newPage = new LauncherPage( "Debug",nullptr,DEBUG_APP,INTERACTIVE_MODE,Screen::grey, newPage);
-
+  LauncherPage* newPage = nullptr;
+  if (searchString.length()) {
+    newPage = new SearchLauncherPage( searchString, "Search", Screen::darkergreen, newPage);
+  } else {
+    newPage = new LauncherPage( "Macros",nullptr, MACROS_APP,INTERACTIVE_MODE,Screen::darkergreen, newPage);
+    newPage = new LauncherPage( "Apps",nullptr,INTERACTIVE_APP,INTERACTIVE_MODE,Screen::darkergrey, newPage);
+    newPage = new LauncherPage( "Timers",nullptr,TIMER_APP,INTERACTIVE_MODE,Screen::darkerblue, newPage);
+    newPage = new LauncherPage( "Home",nullptr,KEY_APP,INTERACTIVE_MODE,Screen::darkergreen, newPage);
+    newPage = new LauncherPage( "Settings",nullptr,SETTINGS_APP,INTERACTIVE_MODE,Screen::darkeryellow, newPage);
+    newPage = new LauncherPage( "Screensavers","Press and hold to test",SCREENSAVER_APP,SCREENSAVER_MODE,Screen::darkeryellow, newPage);
+    newPage = new LauncherPage( "Keyboard",nullptr,KEYBOARD_APP,KEYBOARD_MODE,Screen::DarkOrange, newPage);
+    newPage = new LauncherPage( "Clocks","Press and hold to test",CLOCK_APP,SCREENSAVER_MODE,Screen::darkerred, newPage);
+    newPage = new LauncherPage( "Mice","Press and hold to test",MOUSE_APP,MOUSE_MODE,Screen::black, newPage);
+    newPage = new LauncherPage( "Debug",nullptr,DEBUG_APP,INTERACTIVE_MODE,Screen::grey, newPage);
+  }
   _pages = newPage;
 }
 
@@ -346,12 +365,19 @@ void LauncherApp::setCurrentPageIndex(pageindex_t n) {
   current_page = n;
 }
 
+void LauncherApp::setCurrentPageIndex() {
+  setCurrentPageIndex(firstPageOfType(defaultPageAppType));
+}
+
 LauncherPage* LauncherApp::getCurrentPage() {
   LauncherPage* s = _pages;
   pageindex_t p = getCurrentPageIndex();
   while(s && p != 0) {
     p--;
     s = s->next();
+  }
+  if (s == nullptr) {
+    s = _pages;
   }
   return s;
 }
@@ -371,19 +397,17 @@ void LauncherApp::begin(AppMode asMode) {
   Keyboard.press(KEY_LEFT_SHIFT);
   Keyboard.release(KEY_LEFT_SHIFT);
 
-  console.debugln("makepages");
   makePages();
 
-  console.debugln("start setpage");
   if (clock.now() - lastBegin < 2) {
     // launching twice quickly resets to default page
-    setCurrentPageIndex(firstPageOfType(defaultPageAppType));
+    setCurrentPageIndex();
   } else if (clock.now() - lastRun > resetScreenTimeout) {
     // if we haven't run in a while, reset to the default page
-    setCurrentPageIndex(firstPageOfType(defaultPageAppType));
+    setCurrentPageIndex();
   } else if (getCurrentPage()->type() == MACROS_APP) {
     // don't jump back to the macros page
-    setCurrentPageIndex(firstPageOfType(defaultPageAppType));
+    setCurrentPageIndex();
   } else {
     setCurrentPageIndex(getCurrentPageIndex());
   }
@@ -414,8 +438,48 @@ void LauncherApp::run() {
 
   bool consumed = false;
 
-  if (!waitForRelease) {
+  if (!waitForRelease && key) {
     consumed = getCurrentPage()->run(key,this);
+  }
+
+  if (!consumed && key && key->character()) {
+    if (key->pressed()) {
+
+      char c = key->character();
+
+      if (c == 8) { // backspace
+        if (searchString.length()) {
+          searchString.remove(searchString.length() - 1);
+        }
+      } else {
+        searchString += c;
+      }
+
+      freePages();
+      makePages();
+
+      if (searchString.length()) {
+        setCurrentPageIndex(0);
+        getCurrentPage()->setSelected(0);
+      } else {
+        setCurrentPageIndex();
+      }
+
+      drawBars();
+      clearScreen();
+      getCurrentPage()->draw();
+    }
+    consumed = true;
+  }
+
+  // consume any other releases
+  if (!consumed && key && key->released()) {
+    consumed = true;
+  }
+
+  if (!consumed && key && key->code() && key->pressed()) {
+    // if the key hasn't been processed, then bail
+    britepad.exit();
   }
 
   if (consumed) {
@@ -465,6 +529,11 @@ void LauncherApp::end() {
   BritepadApp::end();
 
   freePages();
+  if (searchString.length()) {
+    searchString = "";
+    setCurrentPageIndex();
+    lastRun = 0; // reset launch screen to default
+  }
 }
 
 bool LauncherApp::event(KeyEvent* key) {

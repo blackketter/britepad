@@ -70,7 +70,6 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
     BritepadApp* a = britepad.getNextApp(startingWith);
     while (a) {
       if (filter(a)) {
-        britepad.idle();
         int32_t pos = appPos(a);
         if ((specific && (pos!=BritepadApp::defaultLauncherPosition)) || (!specific && (pos==BritepadApp::defaultLauncherPosition))) {
           if (pos==BritepadApp::defaultLauncherPosition) { pos = 0; }
@@ -112,7 +111,6 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
 
 bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
 
-  console.debugf("run key: %d pressed: %d\n", key->code(), key->pressed());
   if (!_launchOnRelease && (key && (key->released(KEY_SPACE) || key->released(KEY_RETURN)))) {
     _buttons->setHighlighted(false);
     key = nullptr;
@@ -304,8 +302,6 @@ const char* SearchLauncherPage::name() {
 /////////////////////////
 void LauncherApp::makePages() {
 
-  console.debugln("makepages");
-
   if (_pages) { return; } // pages already made
   LauncherPage* newPage = nullptr;
   if (searchString.length()) {
@@ -388,7 +384,6 @@ LauncherApp::LauncherApp() {
 void LauncherApp::begin(AppMode asMode) {
   console.debugln("start LauncherApp::begin");
 
-  console.debugln("sort apps");
   // first, sort the list alphabetically
   britepad.sortApps();
 

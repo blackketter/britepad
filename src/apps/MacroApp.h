@@ -95,6 +95,7 @@ class MacroApp : public BritepadApp {
           keyEvents.addEvent(nullptr, NO_KEY, macro[i].code, keytime, macro[i].pressed);
           keytime += 25;  // delay each key
         }
+        // wait until all the events are sent
         while (keyEvents.peekNextEvent()) {
           britepad.idle();
         }

@@ -438,9 +438,9 @@ void LauncherApp::run() {
 
   bool consumed = false;
 
-  if (!waitForRelease && key) {
+//  if (!waitForRelease && key) {
     consumed = getCurrentPage()->run(key,this);
-  }
+//  }
 
   if (!consumed && key && key->character()) {
     if (key->pressed()) {

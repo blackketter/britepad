@@ -95,7 +95,9 @@ class MacroApp : public BritepadApp {
           keyEvents.addEvent(nullptr, NO_KEY, macro[i].code, keytime, macro[i].pressed);
           keytime += 25;  // delay each key
         }
-
+        while (keyEvents.peekNextEvent()) {
+          britepad.idle();
+        }
       } else {
         console.debugln("No macro found");
       }

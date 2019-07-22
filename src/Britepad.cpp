@@ -136,6 +136,9 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   } else if (newApp == BritepadApp::A_SCREENSAVER_APP) {
     newApp = randomApp(SCREENSAVER_MODE);
     asMode = SCREENSAVER_MODE;
+  } else if (newApp == BritepadApp::LAST_APP) {
+    newApp = lastAppPtr;
+    asMode = lastAppMode;
   } else if (newApp == BritepadApp::EXIT_APP) {
     newApp = getAppByID(LauncherApp::ID);
     asMode = INTERACTIVE_MODE;
@@ -431,8 +434,27 @@ void Britepad::loop() {
 }
 
 void Britepad::launchApp(BritepadApp* app, AppMode mode) {
-  launchedAppPtr = app;
-  launchedAppMode = mode;
+  if (app == BritepadApp::LAST_APP) {
+    launchedAppPtr = lastAppPtr;
+    launchedAppMode = lastAppMode;
+    lastAppPtr = nullptr;
+  } else {
+    launchedAppPtr = app;
+    launchedAppMode = mode;
+  }
+
+  if (BritepadApp::validApp(launchedAppPtr) &&
+      launchedAppPtr->exitsTo() == BritepadApp::LAST_APP
+      ) {
+    lastAppPtr = currentApp();
+    if (lastAppPtr) {
+      lastAppMode = currentApp()->getAppMode();
+    }
+    console.debugf("saving lastapp for %x\n", (uint32_t)app);
+  } else if (launchedAppPtr != BritepadApp::STAY_IN_APP){
+    lastAppPtr = BritepadApp::EXIT_APP;
+    console.debugf("NOT saving lastapp for %x\n", (uint32_t)app);
+  }
 }
 
 void Britepad::launchApp(appid_t id, AppMode mode) {

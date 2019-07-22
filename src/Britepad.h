@@ -58,6 +58,9 @@ class Britepad {
     BritepadApp* launchedAppPtr = nullptr;
     AppMode launchedAppMode = INTERACTIVE_MODE;
 
+    BritepadApp* lastAppPtr = nullptr;
+    AppMode lastAppMode = INTERACTIVE_MODE;
+
     void setApp(BritepadApp* newApp, AppMode asMode);  // sets the current app
 
     BritepadApp* wantsToRun();

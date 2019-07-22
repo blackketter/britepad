@@ -9,22 +9,22 @@ void KeyboardViewerApp::begin(AppMode asMode) {
 
 }
 
-void KeyboardViewerApp::end() {
-  delete buttons;
-  buttons = nullptr;
-}
-
 void KeyboardViewerApp::run() {
 
-  if (tutorialMode && !_keyMatrix->getOverlay()) {
-    tutorialMode = false;
-    if (lastApp) {
-      launchApp(lastApp, lastMode);
-    }
+  if (_tutorialMode && !_keyMatrix->getOverlay()) {
+    console.debugln("KeyboardViewerApp exiting");
+    exit();
   } else {
     draw();
   }
 };
+
+void KeyboardViewerApp::end() {
+  delete buttons;
+  buttons = nullptr;
+  _tutorialMode = false;
+  console.debugln("KeyboardViewerApp end");
+}
 
 void KeyboardViewerApp::draw() {
   buttons->draw();
@@ -32,14 +32,8 @@ void KeyboardViewerApp::draw() {
 
 bool KeyboardViewerApp::event(KeyEvent* key) {
   if (getEnabled(KEYBOARD_MODE)) {
-//    console.debugln("keyboardviewerapp idle");
     if (!isCurrentApp() && _keyMatrix->getOverlay()) {
-        BritepadApp* currApp = britepad.currentApp();
-        if (currApp && currApp != this) {
-          lastApp = currApp;
-          lastMode = lastApp->getAppMode();
-        }
-        tutorialMode = true;
+        _tutorialMode = true;
         launch();
         console.debugln("Launching KeyboardViewerApp in tutorial mode...");
     }

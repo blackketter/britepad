@@ -387,6 +387,8 @@ void LauncherApp::begin(AppMode asMode) {
   // first, sort the list alphabetically
   britepad.sortApps();
 
+  britepad.resetScreensaver();
+
   // this should wake up the host, which is great for entering passwords
   // but might have some side effects
   Keyboard.press(KEY_LEFT_SHIFT);
@@ -529,6 +531,7 @@ void LauncherApp::end() {
     setCurrentPageIndex();
     lastRun = 0; // reset launch screen to default
   }
+  britepad.resetScreensaver();
 }
 
 bool LauncherApp::event(KeyEvent* key) {
@@ -538,14 +541,25 @@ bool LauncherApp::event(KeyEvent* key) {
       if (keyEvents.keyIsDown(MODIFIERKEY_LEFT_SHIFT) && !britepad.currentApp()->isID(ConsoleApp::ID)) {
         britepad.launchApp(ConsoleApp::ID);
       } else {
-        britepad.exit(); // LauncherApp is what other apps exit to
-        britepad.resetScreensaver();
+        britepad.exit();
       }
       audibleExit = true;  // if we're exiting this app, then play exit sound.
 
     }
     consume = true;
   }
+
+  if (key->code(KEY_LEFT_FN) || key->code(KEY_RIGHT_FN)) {
+    if (isCurrentApp()) {
+      exit();
+      consume = true;
+    } else {
+      if (keyEvents.keyTapped(KEY_LEFT_FN) || keyEvents.keyTapped(KEY_RIGHT_FN)) {
+        launch();
+      }
+    }
+  }
+
   return consume;
 }
 

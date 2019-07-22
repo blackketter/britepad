@@ -55,6 +55,8 @@ class BritepadApp : public Widget {
     static constexpr BritepadApp* A_MOUSE_APP = (BritepadApp*)2; // typically the MouseApp, but might be a timer when it's running
     static constexpr BritepadApp* A_SCREENSAVER_APP = (BritepadApp*)3; // go to a screensaver
     static constexpr BritepadApp* EXIT_APP = (BritepadApp*)4;  // return to launcher
+    static constexpr BritepadApp* LAST_APP = (BritepadApp*)5;  // return to the last app before this one.
+    static constexpr bool validApp(BritepadApp* a) { return a > LAST_APP; }
 
     virtual const char* name() = 0;
     virtual Icon getIcon() { return nullptr; };

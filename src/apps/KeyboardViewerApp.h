@@ -13,6 +13,7 @@ class KeyboardViewerApp : public KeyboardApp {
     void run();
     bool event(KeyEvent* key);
     EventPriority eventPriority() { return PRIORITY_LAST; }
+    BritepadApp* exitsTo() { if (_tutorialMode) { return LAST_APP; } else { return EXIT_APP; } }
 
     const char* name() { _name = _keyMatrix->name(); _name.append(" Keys");  return _name.c_str(); };
     appid_t id() { return ID; };
@@ -28,11 +29,9 @@ class KeyboardViewerApp : public KeyboardApp {
   private:
     void draw();
     KeyboardWidget* buttons = nullptr;
-    bool tutorialMode = false;
-    BritepadApp* lastApp = nullptr;
+    bool _tutorialMode = false;
     KeyMatrix* _keyMatrix = nullptr;
     String _name;
-    AppMode lastMode;
 };
 
 #endif

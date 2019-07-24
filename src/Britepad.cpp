@@ -44,18 +44,21 @@ void Britepad::sortApps() {
   while (oldList) {
     BritepadApp* i = oldList;
     BritepadApp* highest = i;
+    BritepadApp* highestPrev = nullptr;
+
+    BritepadApp* p = nullptr;
     while (i) {
       if (strcasecmp(i->name(), highest->name()) > 0) {
+        highestPrev = p;
         highest = i;
       }
+      p = i;
       i = i->getNextApp();
     }
 
     // remove from the list
-    BritepadApp* p = highest->getPrevApp();
     BritepadApp* n = highest->getNextApp();
-    if (p) { p->setNextApp(n); } else { oldList = n; }
-    if (n) { n->setPrevApp(p); }
+    if (highestPrev) { highestPrev->setNextApp(n); } else { oldList = n; }
 
     addApp(highest);
   }
@@ -109,9 +112,6 @@ BritepadApp* Britepad::wantsToRun() {
 }
 
 void Britepad::addApp(BritepadApp* app) {
-  if (appList) {
-    appList->setPrevApp(app);
-  }
   app->setNextApp(appList);
   appList = app;
 }

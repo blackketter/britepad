@@ -5,8 +5,8 @@
 // APPBUTTON
 class AppButton : public RoundedButton {
   public:
-    AppButton() { setFrameInset(2); setWrapTitle(true); setRadius(20); };
-    AppButton(BritepadApp* a) { setApp(a); setFrameInset(2); setWrapTitle(true); setRadius(20); }
+    AppButton() { setFrameInset(2); setWrapTitle(true); setRadius(_defaultRadius); };
+    AppButton(BritepadApp* a) { setApp(a); setFrameInset(2); setWrapTitle(true); setRadius(_defaultRadius); }
     ~AppButton() {};
     BritepadApp* getApp() { return (BritepadApp*)getID(); }
     void setApp(BritepadApp* a) { setID((widgetid_t)a); }
@@ -24,6 +24,9 @@ class AppButton : public RoundedButton {
     virtual color_t     getTitleColor() { return Screen::black; }
     virtual font_t      getTitleFont()  { return &Arial_9_Bold; }
     virtual AppMode     getAppMode()    { return INTERACTIVE_MODE; }
+
+  protected:
+    static const coord_t _defaultRadius = 12;
 };
 
 // SETTINGSBUTTON - special buttons for settings rather than launching apps

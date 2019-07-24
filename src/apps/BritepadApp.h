@@ -130,9 +130,7 @@ class BritepadApp : public Widget {
     virtual const char* infoBarText() { return nullptr; }
 
     inline BritepadApp* getNextApp() {  return _nextApp; };
-    inline BritepadApp* getPrevApp() {  return _prevApp; };
     inline void setNextApp(BritepadApp* app) {  _nextApp = app; };
-    inline void setPrevApp(BritepadApp* app) {  _prevApp = app; };
     static const int32_t defaultLauncherPosition = -1;
 
 
@@ -157,7 +155,6 @@ class BritepadApp : public Widget {
   private:
 
     BritepadApp* _nextApp = nullptr;
-    BritepadApp* _prevApp = nullptr;
 };
 
 #endif

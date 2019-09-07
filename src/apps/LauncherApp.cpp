@@ -185,19 +185,19 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
       sound.click();
     }
     b = (AppButton*)_buttons->heldButton();
-    if (b && b->getApp()) {
+    if (b && b->getApp() && !_held) {
       BritepadApp* launched = b->getApp();
       if (!launched->canBeSetup() && launched->canBeInvisible()) {
         console.debugf("Running %s invisibly on hold\n", launched->name());
         launched->begin(INVISIBLE_MODE);
         launched->run();
         launched->end();
-        _held = true;
-      } else {
+       } else if (!_launchOnRelease){
         sound.click();
         app->clearScreen();
         _launchOnRelease = b->getApp();
       }
+      _held = true;
     }
 
     buttonindex_t oldSelection = _buttons->getSelected();

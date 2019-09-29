@@ -23,6 +23,7 @@ void printInfo(Print* p) {
     pad.touched(LEFT_PAD) ? 'L':'l', touchRead(L_TOUCH_PIN),
     pad.touched(TOP_PAD) ? 'B':'b', touchRead(B_TOUCH_PIN),
     pad.touched(RIGHT_PAD) ? 'R':'r', touchRead(R_TOUCH_PIN));
+  p->printf("Resolution: %d, %d\n", screen.width(), screen.height());
   p->printf("Ambient: %3d\n", pad.getAmbientLight());
   p->printf("Backlight: %3d\n", screen.getBacklight());
 

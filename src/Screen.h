@@ -2,9 +2,15 @@
 #define _Screen_
 
 #if TEENSY == 1
+#if defined(LCD_TYPE) && LCD_TYPE==ILI9488
 #include <ILI9488_t3.h>
+#else
+#include <ILI9341_t3.h>
+#endif
+
 #include <font_Arial.h>
 #include <font_ArialBold.h>
+
 #else
 #include <Adafruit_ILI9341.h>
 #endif
@@ -57,18 +63,18 @@ enum direction_t {
 //typedef ILI9341_t3_font_t font_t;
 typedef const ILI9341_t3_font_t* font_t;
 
-#if LCD == ILI9488
+#if defined(LCD_TYPE) && LCD_TYPE==ILI9488
 class Screen : public ILI9488_t3
 {
   public:
     Screen(uint8_t _CS = TFT_CS_PIN, uint8_t _DC = TFT_DC_PIN, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
       ILI9488_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
 #else
-class Screen : public ILI9488_t3
+class Screen : public ILI9341_t3
 {
   public:
     Screen(uint8_t _CS = TFT_CS_PIN, uint8_t _DC = TFT_DC_PIN, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
-      ILI9488_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
+      ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
 #endif
 
 #else

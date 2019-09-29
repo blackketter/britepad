@@ -2,7 +2,7 @@
 #define _Screen_
 
 #if TEENSY == 1
-#include <ILI9341_t3.h>
+#include <ILI9488_t3.h>
 #include <font_Arial.h>
 #include <font_ArialBold.h>
 #else
@@ -57,11 +57,20 @@ enum direction_t {
 //typedef ILI9341_t3_font_t font_t;
 typedef const ILI9341_t3_font_t* font_t;
 
-class Screen : public ILI9341_t3
+#if LCD == ILI9488
+class Screen : public ILI9488_t3
 {
   public:
     Screen(uint8_t _CS = TFT_CS_PIN, uint8_t _DC = TFT_DC_PIN, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
-      ILI9341_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
+      ILI9488_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
+#else
+class Screen : public ILI9488_t3
+{
+  public:
+    Screen(uint8_t _CS = TFT_CS_PIN, uint8_t _DC = TFT_DC_PIN, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
+      ILI9488_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
+#endif
+
 #else
 //this is for ESP8266 Wemos D1 Mini
 typedef GFXfont font_t;

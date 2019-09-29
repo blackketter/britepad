@@ -17,7 +17,7 @@ void printInfo(Print* p) {
   p->printf("RTC millis:%03d, clock: %03d, diff: %d\n", (uint32_t)rtcMillis, (uint32_t)clockMillis, (int)rtcMillis - (int)clockMillis);
 
 
-  p->printf("X: %3d Y: %3d\n", string, pad.x(), pad.y());
+  p->printf("Touchscreen X: %3d Y: %3d %s\n",  pad.x(), pad.y(), pad.touched() ? "TOUCHED" : "");
   p->printf("Touch: %c(%d) %c(%d) %c(%d) %c(%d)\n",
     pad.touched(TOP_PAD) ? 'T':'t', touchRead(T_TOUCH_PIN),
     pad.touched(LEFT_PAD) ? 'L':'l', touchRead(L_TOUCH_PIN),

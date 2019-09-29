@@ -76,6 +76,7 @@ void TouchPad::update() {
       flipX = false;
       flipY = true;
     }
+//    if (curr.touched[SCREEN_PAD]) { console.debugf("curr: %d,%d of %d %d\n", curr.x, curr.y, width, height); }
 
 
     if (flipX) {

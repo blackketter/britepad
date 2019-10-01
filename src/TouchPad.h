@@ -38,8 +38,7 @@ typedef struct TPState {
 class TouchPad {
 
   public:
-    TouchPad(coord_t w, coord_t h);
-    void begin();
+    void begin(coord_t w, coord_t h);
     void update();
     bool touched(int pad = SCREEN_PAD);  // is the pad being touched?
     bool changed(int pad = SCREEN_PAD);  // has the pad touch state changed since the last update?

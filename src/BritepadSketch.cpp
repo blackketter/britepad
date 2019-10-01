@@ -8,7 +8,7 @@
 #include "ErgodoxLayout.h"
 
 Screen screen = Screen();
-TouchPad pad = TouchPad(screen.width(), screen.height());
+TouchPad pad = TouchPad();
 Sound sound = Sound();
 Britepad britepad = Britepad();
 EEPROMDictionary prefs = EEPROMDictionary();
@@ -56,7 +56,7 @@ void setup() {
   screen.fillScreen(screen.black);
 
   console.debugln("starting touchpad");
-  pad.begin();
+  pad.begin(screen.width(), screen.height());
 
   console.debugln("starting sound");
   sound.begin();

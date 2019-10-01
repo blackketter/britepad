@@ -14,14 +14,12 @@ void copyTPState( TPState* dest, TPState* src ) {
   memcpy(dest,src,sizeof(TPState));
 }
 
-TouchPad::TouchPad(coord_t w, coord_t h) {
+
+void TouchPad::begin(coord_t w, coord_t h) {
 
   height = h;
   width = w;
 
-}
-
-void TouchPad::begin() {
   console.debugln("touchpad begin");
 
   if (!ctp.begin(40)) {  // pass in 'sensitivity' coefficient
@@ -76,15 +74,13 @@ void TouchPad::update() {
       flipX = false;
       flipY = true;
     }
-//    if (curr.touched[SCREEN_PAD]) { console.debugf("curr: %d,%d of %d %d\n", curr.x, curr.y, width, height); }
-
 
     if (flipX) {
-      curr.x = map(curr.x, 0, height, height, 0);
+      curr.x = map(curr.x, 0, width, width, 0);
     }
 
     if (flipY) {
-      curr.y = map(curr.y, 0, width, width, 0);
+      curr.y = map(curr.y, 0, height, height, 0);
     }
 
   } else {

@@ -40,9 +40,9 @@ class TerminalWidget : public Widget, public Stream {
     uint32_t _charsPerScreen;
 
     // 5x7 font
-    const uint8_t _charSize = 1;
-    const coord_t _charWidth = 6 * _charSize;
-    const coord_t _charHeight = 8 * _charSize;
+    uint8_t _charSize = 1;
+    coord_t _charWidth = 6 * _charSize;
+    coord_t _charHeight = 8 * _charSize;
 
     char _lastKey = 0;
     uint8_t _lastChar = 0;

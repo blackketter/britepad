@@ -3,6 +3,13 @@
 
 TerminalWidget::TerminalWidget(coord_t x, coord_t y, coord_t w, coord_t h, uint16_t scrollbackLines) {
   setBounds(x,y,w,h);
+
+  if (w > 320) {
+    _charSize = 2;
+    _charWidth = 6 * _charSize;
+    _charHeight = 8 * _charSize;
+  }
+
   _rows = h / _charHeight;
   _columns = w / _charWidth;
 
@@ -37,7 +44,7 @@ void TerminalWidget::draw() {
   for (uint8_t i = 0; i < _rows; i++) {
     for (uint8_t j = 0; j < _columns; j++) {
       uint32_t charOffset = i*_columns+j + _displayOffset;
-      bool lastScreen = charOffset > (_totalChars - _charsPerScreen);
+      bool lastScreen = charOffset >= (_totalChars - _charsPerScreen);
       screen.drawChar(_xpos+j*_charWidth, _ypos+i*_charHeight, _buffer[charOffset],
         lastScreen ? _fgcolor : _historyColor,
         _cursor == charOffset ? _cursorColor : _bgcolor,

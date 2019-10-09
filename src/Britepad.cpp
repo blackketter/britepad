@@ -3,13 +3,15 @@
 #include "Britepad.h"
 #include "Types.h"
 #include "Timer.h"
-#include "Commands/FPSCommand.h"
 
 #include "apps/LauncherApp.h"
 #include "apps/ClockApp.h"
 #include "apps/SplashApp.h"
 
 #include "USB/USBHost.h"
+
+#include "Commands/FPSCommand.h"
+FPSCommand theFPSCommand;
 
 #define PROXIMITY_DEAD_TIME (1000)
 

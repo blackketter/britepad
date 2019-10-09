@@ -82,8 +82,8 @@ class FunctionLayerApp : public KeyboardApp {
             keys.setOverlay(functionOverlay);
 
             // send system wakeup then tap the shift key to wake the computer up
-            Keyboard.press(KEY_SYSTEM_WAKE_UP);
-            Keyboard.release(KEY_SYSTEM_WAKE_UP);
+//            Keyboard.press(KEY_SYSTEM_WAKE_UP);
+//            Keyboard.release(KEY_SYSTEM_WAKE_UP);
             if (keyEvents.keyIsUp(MODIFIERKEY_LEFT_SHIFT)) {
               Keyboard.press(KEY_LEFT_SHIFT);
               Keyboard.release(KEY_LEFT_SHIFT);

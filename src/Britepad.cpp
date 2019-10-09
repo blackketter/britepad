@@ -3,6 +3,7 @@
 #include "Britepad.h"
 #include "Types.h"
 #include "Timer.h"
+#include "Commands/FPSCommand.h"
 
 #include "apps/LauncherApp.h"
 #include "apps/ClockApp.h"
@@ -20,7 +21,6 @@ class QuitCommand : public Command {
   }
 };
 QuitCommand theQuitCommand;
-FPSCommand theFPSCommand;
 
 BritepadApp* appList = nullptr;
 
@@ -272,8 +272,6 @@ void Britepad::idle() {
     }
 
     watchdogKick();
-
-    theFPSCommand.idled();
 
     usbHost.Task();
     usbMouse.run();

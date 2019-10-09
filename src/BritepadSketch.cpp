@@ -21,7 +21,6 @@ BB1KeyMatrix keys;
 TimeChangeRule usPDT = {"PDT", Second, dowSunday, Mar, 2, -420};
 TimeChangeRule usPST = {"PST", First, dowSunday, Nov, 2, -480};
 Timezone localTimezone(usPDT,usPST);
-Clock clock = Clock();
 
 void setup() {
 

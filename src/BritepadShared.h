@@ -45,7 +45,4 @@ extern EEPROMDictionary prefs;
 
 #include "Pointer.h"
 
-#include "Commands/FPSCommand.h"
-extern FPSCommand theFPSCommand;
-
 #endif

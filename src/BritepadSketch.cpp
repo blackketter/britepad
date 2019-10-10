@@ -17,6 +17,8 @@ MousePad mousePad = MousePad();
 Console console = Console();
 BB1KeyMatrix keys;
 
+Clock clock;
+
 //US Pacific Time Zone (Las Vegas, Los Angeles)
 TimeChangeRule usPDT = {"PDT", Second, dowSunday, Mar, 2, -420};
 TimeChangeRule usPST = {"PST", First, dowSunday, Nov, 2, -480};

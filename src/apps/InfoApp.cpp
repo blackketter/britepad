@@ -1,6 +1,6 @@
 #include "InfoApp.h"
 
-void printInfo(Print* p) {
+void printBpInfo(Print* p) {
   char string[100];
   clock.longTime(string);
 
@@ -68,16 +68,16 @@ void printInfo(Print* p) {
 */
 }
 
-class InfoCommand : public Command {
+class bpCommand : public Command {
   public:
-    const char* getName() { return "info"; }
-    const char* getHelp() { return "Print System Info"; }
+    const char* getName() { return "bp"; }
+    const char* getHelp() { return "Print britepad System Info"; }
     void execute(Stream* c, uint8_t paramCount, char** params) {
-      printInfo(c);
+      printBpInfo(c);
     }
 };
 
-InfoCommand theInfoCommand;
+bpCommand theBpCommand;
 InfoApp theInfoApp;
 
 void InfoApp::init() {
@@ -89,7 +89,7 @@ void InfoApp::run() {
   screen.setFont(&Arial_10);
   screen.setCursor(screen.clipLeft() + screen.fontGap(), screen.clipTop()+screen.fontGap());
 
-  printInfo(&screen);
+  printBpInfo(&screen);
 
   // this info only makes sense when printed on screen
   uint8_t raw = pad.getProximityRaw();

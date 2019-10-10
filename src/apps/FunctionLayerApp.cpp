@@ -82,8 +82,12 @@ class FunctionLayerApp : public KeyboardApp {
             keys.setOverlay(functionOverlay);
 
             // send system wakeup then tap the shift key to wake the computer up
-//            Keyboard.press(KEY_SYSTEM_WAKE_UP);
-//            Keyboard.release(KEY_SYSTEM_WAKE_UP);
+            if (Uptime::millis() > _lastWakeUp + _wakeInterval) {
+              // but don't send it often, because this can put the system to sleep!
+              Keyboard.press(KEY_SYSTEM_WAKE_UP);
+              Keyboard.release(KEY_SYSTEM_WAKE_UP);
+              _lastWakeUp = Uptime::millis();
+            }
             if (keyEvents.keyIsUp(MODIFIERKEY_LEFT_SHIFT)) {
               Keyboard.press(KEY_LEFT_SHIFT);
               Keyboard.release(KEY_LEFT_SHIFT);
@@ -103,6 +107,8 @@ class FunctionLayerApp : public KeyboardApp {
     };
 
   private:
+    millis_t _lastWakeUp = 0;
+    static const millis_t _wakeInterval = 10000;  // don't wake more than once in 10 seconds
 };
 
 FunctionLayerApp theFunctionLayerApp;

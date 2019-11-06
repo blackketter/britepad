@@ -54,9 +54,9 @@ void LifeApp::run() {
       if (dots->hit(lastX, lastY, &x, &y)) {
         dots->setDot(x,y, MAXCOLOR);
         dots->updateDot(x,y);
-        nextRun = pad.time() + MILLIS_DELAY;
       }
     }
+    nextRun = pad.time() + MILLIS_DELAY;
   }
   iterate();
 }

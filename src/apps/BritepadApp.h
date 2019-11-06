@@ -133,7 +133,6 @@ class BritepadApp : public Widget {
     inline void setNextApp(BritepadApp* app) {  _nextApp = app; };
     static const int32_t defaultLauncherPosition = -1;
 
-
   protected:
     KeyEvent* getNextEvent() { KeyEvent* e = keyEvents.getNextEvent(); if (e) { britepad.resetScreensaver(); }; return e;}
     KeyEvent* peekNextEvent() { KeyEvent* e = keyEvents.peekNextEvent(); if (e) { britepad.resetScreensaver(); }; return e;}
@@ -153,7 +152,6 @@ class BritepadApp : public Widget {
     int32_t _launcherPosition = defaultLauncherPosition;
 
   private:
-
     BritepadApp* _nextApp = nullptr;
 };
 

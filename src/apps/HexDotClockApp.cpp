@@ -29,10 +29,10 @@ void HexDotClockApp::update() {
 
     if (h10 == 0) { h10 = 10; } // supress leading digit
 
-    drawDigit(h10,  0, 9);
-    drawDigit(h1, 10, 9);
-    drawDigit(m10, 20, 9);
-    drawDigit(m1, 30, 9);
+    drawDigit(h10,  0, 7);
+    drawDigit(h1, 10, 7);
+    drawDigit(m10, 20, 7);
+    drawDigit(m1, 30, 7);
     dots->draw();
 
 };

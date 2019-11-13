@@ -57,6 +57,7 @@ void SquareMatrix::updateDot(int x, int y) {
 }
 
 // todo: add correct HexDotMatrix::hit()
+
 // todo: create a HexMatrix that is not dotty
 
 void HexDotMatrix::updateDot(int x, int y) {
@@ -123,8 +124,39 @@ void TriangleMatrix::updateDot(int x, int y) {
   }
   coord_t l = getLeft();
   coord_t t = getTop();
-  screen.fillTriangle(x0+l,y0+t,x1+l,y1+t,x2+l,y2+t,getDot(x,y));
+  screen.fillTriangle(x0+l,y0+t, x1+l,y1+t, x2+l,y2+t, getDot(x,y));
 
+}
+
+bool TriangleMatrix::hit(coord_t x, coord_t y, int* hitx, int* hity) {
+    if (x < getRight() &&
+        y < getBottom() &&
+        x >= getLeft() &&
+        y >= getTop()) {
+
+    coord_t row =  (y-getTop())/dotspacing_h;
+
+    if (hity) {
+      *hity = row;
+    }
+
+    coord_t v_offset = (y-getTop()) - row*dotspacing_h;
+    coord_t slope_offset = ((uint32_t)dotspacing_w * v_offset) / dotspacing_h;
+
+    coord_t x_offsetted = x - getLeft() - slope_offset;
+
+    coord_t colpair = ((x_offsetted)/dotspacing_w/2) * 2;
+
+    coord_t left_width = dotspacing_w*2 - slope_offset*2;
+    coord_t h_offset = x_offsetted - colpair*dotspacing_w;
+
+    if (hitx) {
+      *hitx= colpair + (h_offset < left_width ? 0 : 1);
+    }
+    return true;
+  } else {
+    return false;
+  }
 }
 
 

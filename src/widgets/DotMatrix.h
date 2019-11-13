@@ -56,6 +56,7 @@ class TriangleMatrix : public HexDotMatrix {
   public:
     TriangleMatrix(coord_t x, coord_t y, coord_t w, coord_t h, int dotsWide, int dotsHigh) : HexDotMatrix(x, y, w, h, dotsWide, dotsHigh) {};
     virtual void updateDot(int x, int y);
+    bool hit(coord_t x, coord_t y, int* hitx = nullptr, int* hity = nullptr) override;
 };
 
 #endif

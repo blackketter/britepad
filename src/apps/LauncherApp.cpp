@@ -177,6 +177,7 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
         AppMode whichMode = mode();
         if (whichMode == INTERACTIVE_MODE || whichMode == ANY_MODE) {
           britepad.launchApp(launched);
+          britepad.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
         } else {
           launched->setEnabled(!launched->getEnabled(whichMode), whichMode);
           b->draw();

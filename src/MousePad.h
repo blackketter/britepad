@@ -25,6 +25,9 @@ class MousePad {
     const uint16_t absMargin = 5; // 5% at each edge
 
 // Mouse parameters
+		coord_t last_x = -1;
+		coord_t last_y = -1;
+		
     const uint16_t MOUSE_MAX_MOVE = 100; // move maximum number of points
 
     const millis_t MOUSE_TAP_DUR = 150; // a tap is less than this many millis
@@ -33,7 +36,7 @@ class MousePad {
     const millis_t MOUSE_RELEASE_DRAG_DUR = 1000;
 
     const uint16_t MOUSE_TAP_MOVEMENT_MAX = 10;
-    const uint16_t SCROLL_EDGE_MARGIN = 10;
+    const float SCROLL_EDGE_MARGIN_FRACTION = 0.1;
     const bool isMac = false;
 
     const int16_t scrollFactor = 16;

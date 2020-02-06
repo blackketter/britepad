@@ -53,8 +53,6 @@ class TouchPad {
     coord_t  x() { return curr.x; };
     coord_t  y() { return curr.y; };
     millis_t  time() { return curr.time; };
-    coord_t  deltax() { return (curr.x - last.x); };
-    coord_t  deltay() { return (curr.y - last.y); };
     uint16_t getAmbientLight() { return ambientLight;};
 
     uint8_t getProximityMax() { return proximityMax; };
@@ -62,8 +60,8 @@ class TouchPad {
     uint8_t getProximityRaw() { return proximity; };
     ProximityGesture getProximityGesture();
 
-    coord_t getHeight() { return width; };
-    coord_t getWidth() { return height; };
+    coord_t getHeight() { return height; };
+    coord_t getWidth() { return width; };
 
     bool didGesture();
     bool isGesturing();

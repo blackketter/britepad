@@ -14,6 +14,16 @@ void MousePad::end() {
 }
 
 void MousePad::run() {
+//	console.debugf("xy:%d,%d\n",pad.x(),pad.y());
+	if (last_x < 0 && last_y < 0) {
+	 	last_x = pad.x();
+	 	last_y = pad.y();
+	}
+	
+	coord_t delta_x = pad.x() - last_x;
+	coord_t delta_y = pad.y() - last_y;
+	last_x = pad.x();
+	last_y = pad.y();
 
   // todo: make these sounds more descriptive
   if (pad.pressed(RIGHT_PAD)) { sound.click(); }
@@ -108,12 +118,12 @@ void MousePad::run() {
     }
 
     // send a move message only if we actually move
-    if (pad.deltax() != 0 || pad.deltay() != 0) {
+    if (delta_x != 0 || delta_y != 0) {
       // if the touch is in the edge, then we scroll
-      if (pad.x() > (pad.getWidth() - SCROLL_EDGE_MARGIN)) {
-        if (pad.deltay() != 0) {
+      if (pad.x() > (pad.getWidth() - SCROLL_EDGE_MARGIN_FRACTION*pad.getWidth())) {
+        if (delta_y != 0) {
 
-          accumScroll += pad.deltay();
+          accumScroll += delta_y;
 
           // limit scroll messages to max 25ms intervals and some movement
           if (pad.time() - lastScroll > scrollInterval && abs(accumScroll) > scrollFactor) {
@@ -148,37 +158,38 @@ void MousePad::run() {
           if (y < 0) { y = 0; }
           if (y >= screen_v) { y = screen_v - 1; }
 
-          console.debugf("pad.x: %d, pad.y: %d, x: %d, y: %d\n", pad.x(), pad.y(), x, y);
+//          console.debugf("pad.x: %d, pad.y: %d, x: %d, y: %d\n", pad.x(), pad.y(), x, y);
           Mouse.moveTo(x, y);
         } else {
           // otherwise we move the mouse, if this isn't a down transition
           // scale up movement
-          int deltax = pad.deltax() * 2;
-          int deltay = pad.deltay() * 2;
+          
+          delta_x = delta_x * 2;
+          delta_y = delta_y * 2;
           // accelerate
-          if (abs(deltax) > 20 || abs(deltay) > 20) {
-            deltax *= 4;
-            deltay *= 4;
-          } else if (abs(deltax) > 10 || abs(deltay) > 10) {
-            deltax *= 3;
-            deltay *= 3;
-          } else if (abs(deltax) > 5 || abs(deltay) > 5) {
-            deltax *= 2;
-            deltay *= 2;
+          if (abs(delta_x) > 20 || abs(delta_y) > 20) {
+            delta_x *= 4;
+            delta_y *= 4;
+          } else if (abs(delta_x) > 10 || abs(delta_y) > 10) {
+            delta_x *= 3;
+            delta_y *= 3;
+          } else if (abs(delta_x) > 5 || abs(delta_y) > 5) {
+            delta_x *= 2;
+            delta_y *= 2;
           }
 
-          if (abs(deltax) > MOUSE_MAX_MOVE) {
-            deltax = deltax > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
+          if (abs(delta_x) > MOUSE_MAX_MOVE) {
+            delta_x = delta_x > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
           }
 
-          if (abs(deltay) > MOUSE_MAX_MOVE) {
-            deltay = deltay > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
+          if (abs(delta_y) > MOUSE_MAX_MOVE) {
+            delta_y = delta_y > 0 ? MOUSE_MAX_MOVE : -MOUSE_MAX_MOVE;
           }
-          Mouse.move(deltax, deltay);
-          // todo: notify mouse move deltax/deltay
+          Mouse.move(delta_x, delta_y);
+          // todo: notify mouse move delta_x/delta_y
 #if DEBUG_TRACKING
           // Print out the mouse movements
-          console.debugf("<move: %d, %d>",deltax,deltay);
+          console.debugf("<adjusted: %d, %d>\n",delta_x,delta_y);
 #endif
         }
       }
@@ -194,7 +205,7 @@ void MousePad::run() {
 
       if ( (downtime < MOUSE_TAP_DUR) && (abs(pad.lastDownX() - pad.x()) < MOUSE_TAP_MOVEMENT_MAX && (abs(pad.lastDownY() - pad.y()) < MOUSE_TAP_MOVEMENT_MAX)) ) {
 
-        if (pad.x() > (pad.getWidth() - SCROLL_EDGE_MARGIN)) {
+        if (pad.x() > (pad.getWidth() - pad.getWidth()*SCROLL_EDGE_MARGIN_FRACTION )) {
           if (pad.y() < pad.getHeight()/2) {
             Keyboard.press(KEY_PAGE_UP);
             Keyboard.release(KEY_PAGE_UP);

@@ -22,7 +22,6 @@ class DotCalApp : public ClockApp {
     virtual int getDotsHigh() { return 12; }
     DotMatrix* dots = nullptr;
 
-  private:
     const color_t beforeColor = screen.white;
     const color_t afterColor = screen.grey;
     const color_t blankColor = screen.black;

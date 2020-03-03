@@ -6,7 +6,7 @@ class AppsCommand : public Command {
   public:
     const char* getName() { return "apps"; }
     const char* getHelp() { return "Lists installed apps"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
+    void execute(Console* c, uint8_t paramCount, char** params) {
         // show the apps that have been loaded
         BritepadApp* anApp = britepad.getNextApp();
         int count = 1;
@@ -39,7 +39,7 @@ class AppCommand : public Command {
   public:
     const char* getName() { return "app"; }
     const char* getHelp() { return "appid | index - Print app info, default current"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
+    void execute(Console* c, uint8_t paramCount, char** params) {
       BritepadApp* anApp = nullptr;
       if (paramCount) {
         anApp = findApp(params[1]);
@@ -78,7 +78,7 @@ class LaunchCommand : public Command {
   public:
     const char* getName() { return "launch"; }
     const char* getHelp() { return "appid | index - Launch a given app"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
+    void execute(Console* c, uint8_t paramCount, char** params) {
         BritepadApp* a = findApp(params[1]);
         c->printf("got back app %s - %x\n", params[1],(uint32_t)a);
         if (a) {
@@ -97,7 +97,7 @@ class PrefsCommand : public Command {
   public:
     const char* getName() { return "prefs"; }
     const char* getHelp() { return "dump prefs data"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
+    void execute(Console* c, uint8_t paramCount, char** params) {
       const uint8_t* data = prefs.data();
       size_t len = prefs.used();
       for (size_t i = 0; i < len; i++) {
@@ -111,7 +111,7 @@ class TimersCommand : public Command {
   public:
     const char* getName() { return "timers"; }
     const char* getHelp() { return "Print Timer Info"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
+    void execute(Console* c, uint8_t paramCount, char** params) {
       Timer::printInfo(c);
     }
 };

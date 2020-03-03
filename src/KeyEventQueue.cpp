@@ -213,7 +213,7 @@ class KeyDebugCommand : public Command {
   public:
     const char* getName() { return "keys"; }
     const char* getHelp() { return "toggle key event debug output"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
+    void execute(Console* c, uint8_t paramCount, char** params) {
       keyDebug = !keyDebug;
       c->printf("Key event debug: %s", keyDebug ? "enabled\n" : "disabled\n");
     }
@@ -365,7 +365,7 @@ class KeyEventsCommand : public Command {
   public:
     const char* getName() { return "events"; }
     const char* getHelp() { return "display keyboard events"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
+    void execute(Console* c, uint8_t paramCount, char** params) {
       keyEvents.printStatus(c);
     }
 };

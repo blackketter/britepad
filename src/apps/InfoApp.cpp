@@ -72,7 +72,7 @@ class bpCommand : public Command {
   public:
     const char* getName() { return "bp"; }
     const char* getHelp() { return "Print britepad System Info"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
+    void execute(Console* c, uint8_t paramCount, char** params) {
       printBpInfo(c);
     }
 };

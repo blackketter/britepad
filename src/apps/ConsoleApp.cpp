@@ -14,6 +14,7 @@ void ConsoleApp::begin(AppMode asMode) {
       100); // scrollback lines
   }
   setPort();
+  console.executeCommandLine("hello");
 }
 
 void ConsoleApp::end() {
@@ -47,7 +48,7 @@ class ExitCommand : public Command {
   public:
     const char* getName() { return "exit"; }
     const char* getHelp() { return "Exit current app"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) {
+    void execute(Console* c, uint8_t paramCount, char** params) {
       britepad.currentApp()->exit();
       britepad.resetScreensaver();
     }

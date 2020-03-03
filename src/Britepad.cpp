@@ -18,7 +18,7 @@ FPSCommand theFPSCommand;
 class QuitCommand : public Command {
   const char* getName() { return "quit"; }
   const char* getHelp() { return "exit the current app"; }
-  void execute(Stream* c, uint8_t paramCount, char** params) {
+  void execute(Console* c, uint8_t paramCount, char** params) {
     britepad.currentApp()->exit();
   }
 };

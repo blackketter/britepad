@@ -20,7 +20,7 @@ class RebootCommand : public Command {
   public:
     const char* getName() { return "reboot"; }
     const char* getHelp() { return "Reboots system"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) { reboot(); }
+    void execute(Console* c, uint8_t paramCount, char** params) { reboot(); }
 };
 
 RebootCommand theRebootCommand;
@@ -29,7 +29,7 @@ class ReloadCommand : public Command {
   public:
     const char* getName() { return "reload"; }
     const char* getHelp() { return "Jump to Teensy bootloader"; }
-    void execute(Stream* c, uint8_t paramCount, char** params) { _reboot_Teensyduino_(); }
+    void execute(Console* c, uint8_t paramCount, char** params) { _reboot_Teensyduino_(); }
 };
 
 ReloadCommand theReloadCommand;

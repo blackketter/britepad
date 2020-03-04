@@ -1,13 +1,19 @@
 #include "BritepadShared.h"
 #include "widgets/TerminalWidget.h"
+#include "font_DroidSansMono.h"
 
 TerminalWidget::TerminalWidget(coord_t x, coord_t y, coord_t w, coord_t h, uint16_t scrollbackLines) {
   setBounds(x,y,w,h);
 
   if (w > 320) {
-    _charSize = 2;
-    _charWidth = 6 * _charSize;
-    _charHeight = 8 * _charSize;
+     _charWidth = 9;
+    _charHeight = 16;
+    _font = &DroidSansMono_12;
+  } else {
+    _charSize = 1;
+    _charWidth = 6;
+    _charHeight = 8;
+    _font = nullptr;
   }
 
   _rows = h / _charHeight;
@@ -41,14 +47,21 @@ TerminalWidget::~TerminalWidget() {
 }
 
 void TerminalWidget::draw() {
+  screen.setFont(_font);
   for (uint8_t i = 0; i < _rows; i++) {
     for (uint8_t j = 0; j < _columns; j++) {
       uint32_t charOffset = i*_columns+j + _displayOffset;
       bool lastScreen = charOffset >= (_totalChars - _charsPerScreen);
-      screen.drawChar(_xpos+j*_charWidth, _ypos+i*_charHeight, _buffer[charOffset],
-        lastScreen ? _fgcolor : _historyColor,
-        _cursor == charOffset ? _cursorColor : _bgcolor,
-        _charSize);
+      if (_font) {
+        screen.setCursor(_xpos+j*_charWidth, _ypos+i*_charHeight);
+        screen.setTextColor(lastScreen ? _fgcolor : _historyColor, _cursor == charOffset ? _cursorColor : _bgcolor);
+        screen.drawFontChar(_buffer[charOffset]);
+      } else { 
+        screen.drawChar(_xpos+j*_charWidth, _ypos+i*_charHeight, _buffer[charOffset],
+          lastScreen ? _fgcolor : _historyColor,
+          _cursor == charOffset ? _cursorColor : _bgcolor,
+          _charSize);
+      }
     }
   }
   // draw scrollbar

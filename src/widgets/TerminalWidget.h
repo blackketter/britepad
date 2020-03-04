@@ -43,6 +43,7 @@ class TerminalWidget : public Widget, public Stream {
     uint8_t _charSize = 1;
     coord_t _charWidth = 6 * _charSize;
     coord_t _charHeight = 8 * _charSize;
+    const ILI9341_t3_font_t* _font;
 
     char _lastKey = 0;
     uint8_t _lastChar = 0;

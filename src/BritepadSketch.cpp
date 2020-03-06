@@ -46,8 +46,6 @@ void setup() {
   console.setPort(&Serial);
   console.debugln("britepad starting...");
 
-  console.executeCommandLine("i2c");
-
   console.debugln("starting prefs...");
   prefs.load();
 

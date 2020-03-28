@@ -6,6 +6,7 @@
 
 // Apps run in particular modes
 enum AppMode {
+  NO_MODE = 0,
   MOUSE_MODE = 1,
   INTERACTIVE_MODE = 2,
   SCREENSAVER_MODE = 4,

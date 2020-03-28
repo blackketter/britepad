@@ -7,11 +7,6 @@ static void releaseTimerCallback(void* app) {
 
 class LaunchBarApp : public KeyboardApp {
 
-  private:
-    static const millis_t releaseTimeout = 1000;
-    CallbackTimer _releaseTimer;
-    const keycode_t _launchbarKey = KEY_DELETE;
-
   public:
     appid_t id() { return ID; };
     static constexpr appid_t ID = "lbar";
@@ -55,6 +50,15 @@ class LaunchBarApp : public KeyboardApp {
       }
       return false;
     }
+
+  protected:
+    AppMode defaultEnabled() override { return NO_MODE; }
+
+  private:
+    static const millis_t releaseTimeout = 1000;
+    CallbackTimer _releaseTimer;
+    const keycode_t _launchbarKey = KEY_DELETE;
+
 };
 
 LaunchBarApp theLaunchBarApp;

@@ -144,26 +144,36 @@ const keyoverlay_t atreusOverlay[] = {
     { KEY_P, KEY_0 },
     { KEY_BACKSLASH, KEY_MINUS },
 
-    { KEY_A, KEY_FIRST_MACRO + 4 },
-    { KEY_S, KEY_FIRST_MACRO + 5 },
-    { KEY_D, KEY_FIRST_MACRO + 6 },
-    { KEY_F, KEY_FIRST_MACRO + 7 },
+    { KEY_A, KEY_TILDE },
+    { KEY_S, KEY_MEDIA_PREV_TRACK },
+    { KEY_D, KEY_MEDIA_PLAY_PAUSE },
+    { KEY_F, KEY_MEDIA_NEXT_TRACK },
+    { KEY_G, KEY_MEDIA_VOLUME_INC },
+    { KEY_B, KEY_MEDIA_VOLUME_DEC },
+    { KEY_BACKSPACE, KEY_MEDIA_MUTE },
     { KEY_Z, KEY_FIRST_MACRO + 8 },
     { KEY_X, KEY_FIRST_MACRO + 9 },
     { KEY_C, KEY_FIRST_MACRO + 10 },
     { KEY_V, KEY_FIRST_MACRO + 11 },
+
 
     { KEY_M, KEY_PAGE_UP },
     { KEY_COMMA, KEY_PAGE_DOWN },
     { KEY_PERIOD, KEY_LEFT_BRACE },
     { KEY_SLASH, KEY_RIGHT_BRACE },
 
-
+    // don't overlay these
+    { KEY_ESC, KEY_ESC },
+    { MODIFIERKEY_LEFT_CTRL, MODIFIERKEY_LEFT_CTRL },
+    { MODIFIERKEY_RIGHT_CTRL, MODIFIERKEY_RIGHT_CTRL },
     { KEY_LEFT_FN, KEY_LEFT_FN },
     { KEY_RIGHT_FN, KEY_RIGHT_FN },
     { MODIFIERKEY_RIGHT_SHIFT, MODIFIERKEY_RIGHT_SHIFT },
     { MODIFIERKEY_LEFT_SHIFT, MODIFIERKEY_LEFT_SHIFT },
-    { KEY_ESC, KEY_ESC },
+    { MODIFIERKEY_LEFT_GUI, MODIFIERKEY_LEFT_GUI },
+    { MODIFIERKEY_RIGHT_GUI, MODIFIERKEY_RIGHT_GUI },
+    { MODIFIERKEY_LEFT_ALT, MODIFIERKEY_LEFT_ALT },
+    { MODIFIERKEY_RIGHT_ALT, MODIFIERKEY_RIGHT_ALT },
 
     { KEY_J, KEY_UP },
     { KEY_K, KEY_DOWN },
@@ -218,6 +228,9 @@ class AtreusApp : public KeyboardApp {
       }
       return false;
     };
+  protected:
+    AppMode defaultEnabled() override { return NO_MODE; }
+
   private:
     void updateMap() {
       keys.setMap( getEnabled(KEYBOARD_MODE) ? atreusMap : nullptr);

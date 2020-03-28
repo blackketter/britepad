@@ -46,7 +46,7 @@ class KeyboardSoundsApp : public BritepadApp {
     bool event(KeyEvent* key) {
       if (_soundsEnabled) {
 
-        if (key->pressed() && key->hard()) {
+        if (key->pressed() && key->hard() && !key->code(NO_CODE)) {
           sound.click();
         }
       }

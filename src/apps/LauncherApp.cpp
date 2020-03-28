@@ -555,9 +555,9 @@ bool LauncherApp::event(KeyEvent* key) {
       exit();
       consume = true;
     } else {
-      if (keyEvents.keyTapped(KEY_LEFT_FN) || keyEvents.keyTapped(KEY_RIGHT_FN)) {
-        launch();
-      }
+//      if (keyEvents.keyTapped(KEY_LEFT_FN) || keyEvents.keyTapped(KEY_RIGHT_FN)) {
+//        launch();
+//      }
     }
   }
 

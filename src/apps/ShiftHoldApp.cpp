@@ -104,6 +104,9 @@ class ShiftHoldApp : public KeyboardApp {
       return consumed;
     };
 
+  protected:
+    AppMode defaultEnabled() override { return NO_MODE; }
+
   private:
     static const millis_t _holdTimeout = 250;
 };

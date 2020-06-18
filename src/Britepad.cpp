@@ -233,7 +233,8 @@ void backlightCallback(void* data) {
       lastBacklight -= delta;
     }
 
-    screen.setBacklight(lastBacklight);
+    // backlight not dimmable
+    //screen.setBacklight(lastBacklight);
   }
 }
 
@@ -486,4 +487,22 @@ time_t Britepad::getScreensaverStartInterval() {
 void Britepad::setScreensaverStartInterval(time_t newInterval) {
    prefs.set(screensaverStartIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
    resetScreensaver();
+}
+
+void Britepad::wakeHost() {
+  // tap the shift key to wake the computer up
+  if (keyEvents.keyIsUp(MODIFIERKEY_LEFT_SHIFT)) {
+    Keyboard.press(KEY_LEFT_SHIFT);
+    Keyboard.release(KEY_LEFT_SHIFT);
+  }
+  // jiggle the mouse to make cursor show up
+  Mouse.move(-1, 0);
+  Mouse.move(1, 0);
+
+#if 0
+  // send system wakeup
+  // disabled now because sometimes it puts the system back to sleep
+  Keyboard.press(KEY_SYSTEM_WAKE_UP);
+  Keyboard.release(KEY_SYSTEM_WAKE_UP);
+#endif
 }

@@ -80,20 +80,8 @@ class FunctionLayerApp : public KeyboardApp {
           if (keys.getOverlay() != functionOverlay) {
             console.debug("setting function layer\n");
             keys.setOverlay(functionOverlay);
-#if 0
-            // send system wakeup
-            // disabled now because sometimes it puts the system back to sleep
-            Keyboard.press(KEY_SYSTEM_WAKE_UP);
-            Keyboard.release(KEY_SYSTEM_WAKE_UP);
-#endif
-            // then tap the shift key to wake the computer up
-            if (keyEvents.keyIsUp(MODIFIERKEY_LEFT_SHIFT)) {
-              Keyboard.press(KEY_LEFT_SHIFT);
-              Keyboard.release(KEY_LEFT_SHIFT);
-            }
-            // jiggle the mouse to make cursor show up
-            Mouse.move(-1, 0);
-            Mouse.move(1, 0);
+
+            britepad.wakeHost();
           }
         } else if (
                    (key->released(KEY_LEFT_FN) || key->released(KEY_RIGHT_FN))  // released fn key

@@ -200,8 +200,7 @@ void TouchPad::updateAPDS() {
 
   if (!hasAPDS) {
     // read the analog ambient light sensor
-// disable because the bb1 display doesn't allow for pwm dimming
-//    ambientLight = ((uint32_t)analogRead(AMBIENT_ANALOG_PIN) * ambientMax)/1023;
+    ambientLight = ((uint32_t)analogRead(AMBIENT_ANALOG_PIN) * ambientMax)/1023;
     return;
     }
 

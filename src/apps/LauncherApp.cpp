@@ -391,10 +391,7 @@ void LauncherApp::begin(AppMode asMode) {
   britepad.resetScreensaver();
 
   // this should wake up the host, which is great for entering passwords
-  // but might have some side effects
-  Keyboard.press(KEY_LEFT_SHIFT);
-  Keyboard.release(KEY_LEFT_SHIFT);
-
+  britepad.wakeHost();
   makePages();
 
   if (clock.now() - lastBegin < 2) {

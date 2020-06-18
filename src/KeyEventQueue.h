@@ -25,6 +25,7 @@ class KeyEventQueue {
     KeyEvent* firstEvent() { KeyEvent* e = _events; while (e) { if (e->getPrev() == nullptr) break; e = e->getPrev(); } return e; }
     KeyEvent* lastEvent(keycode_t c) { KeyEvent* e = _events; while (e) { if (e->code() == c) break; e = e->getPrev();  }; return e; }
     KeyEvent* lastEvent() { return _events; };
+    millis_t lastEventTime() { KeyEvent* e = lastEvent();  if (e) return e->time(); else return 0; }
     KeyEvent* prevEvent(KeyEvent* e) { return e->getPrev(); }
     void removeEvent(KeyEvent* e);
     bool keyIsDown(keycode_t c) { KeyEvent* e = lastEvent(c); return (e && e->pressed()); }

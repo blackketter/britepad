@@ -54,6 +54,9 @@ class Britepad {
     bool event(KeyEvent* e);
     void timeChanged();
 
+    void wakeHost();
+    millis_t lastEventTime() { return keyEvents.lastEventTime(); }
+
   private:
     BritepadApp* currApp = nullptr;
     BritepadApp* launchedAppPtr = nullptr;

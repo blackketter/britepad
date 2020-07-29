@@ -22,7 +22,11 @@ const pinNumber T_TOUCH_PIN = A8;  // DIGITAL 22
 const pinNumber L_TOUCH_PIN = A1;  // DIGITAL 15
 const pinNumber R_TOUCH_PIN = A3;  // DIGITAL 17
 
+#ifdef __MK66FX1M0__
 const pinNumber AMBIENT_ANALOG_PIN = A20;
+#else
+const pinNumber AMBIENT_ANALOG_PIN = A11;
+#endif
 
 // touch thresholds
 const int L_HIGH_THRESHOLD = 950;

@@ -92,7 +92,7 @@ void TouchPad::update() {
     curr.x = last.x;
     curr.y = last.y;
   }
-
+#ifndef __IMXRT1062__
   // read the 4 touch panels
   int t = touchRead(T_TOUCH_PIN);
   int b = touchRead(B_TOUCH_PIN);
@@ -103,7 +103,7 @@ void TouchPad::update() {
   curr.touched[BOTTOM_PAD] = last.touched[BOTTOM_PAD] ? b > B_LOW_THRESHOLD : b > B_HIGH_THRESHOLD;
   curr.touched[LEFT_PAD] = last.touched[LEFT_PAD] ? l > L_LOW_THRESHOLD : l > L_HIGH_THRESHOLD;
   curr.touched[RIGHT_PAD] = last.touched[RIGHT_PAD] ? r > R_LOW_THRESHOLD : r > R_HIGH_THRESHOLD;
-
+#endif
   // calculate lastup and lastdown times
   for (int i = 0; i < SENSOR_COUNT; i++) {
     if (pressed(i)) {

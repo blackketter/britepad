@@ -11,8 +11,8 @@ TerminalWidget::TerminalWidget(coord_t x, coord_t y, coord_t w, coord_t h, uint1
     _font = &DroidSansMono_12;
   } else {
     _charSize = 1;
-    _charWidth = 6;
-    _charHeight = 8;
+    _charWidth = 6*_charSize;
+    _charHeight = 8*_charSize;
     _font = nullptr;
   }
 
@@ -56,13 +56,14 @@ void TerminalWidget::draw() {
         screen.setCursor(_xpos+j*_charWidth, _ypos+i*_charHeight);
         screen.setTextColor(lastScreen ? _fgcolor : _historyColor, _cursor == charOffset ? _cursorColor : _bgcolor);
         screen.drawFontChar(_buffer[charOffset]);
-      } else { 
+      } else {
         screen.drawChar(_xpos+j*_charWidth, _ypos+i*_charHeight, _buffer[charOffset],
           lastScreen ? _fgcolor : _historyColor,
           _cursor == charOffset ? _cursorColor : _bgcolor,
           _charSize);
       }
     }
+    britepad.idle();
   }
   // draw scrollbar
   if (_totalRows > _rows) {

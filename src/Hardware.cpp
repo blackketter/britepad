@@ -1,6 +1,6 @@
 #include "Hardware.h"
 
-#ifdef TEENSYDUINO
+#ifdef __MK66FX1M0__
 extern volatile uint8_t usb_configuration;
 
 bool usbActive() {
@@ -34,6 +34,7 @@ void startup_early_hook();
 }
 extern "C" {
 #endif //__cplusplus
+
   void startup_early_hook() {
     // clock source 0 LPO 1khz, 4 s timeout
     WDOG_TOVALL = WATCHDOG_TIME_MS; // The next 2 lines sets the time-out value. This is the value that the watchdog timer compare itself to.
@@ -43,10 +44,10 @@ extern "C" {
   }
 #ifdef __cplusplus
 }
-#endif // TEENSYDUINO
+#endif
 
 #else
 bool usbActive() { return false; }
 void watchdogKick() {};
-const char* resetType() { return "Reset cause unknown";);
+const char* resetType() { return"Reset cause unknown";};
 #endif

@@ -18,11 +18,13 @@ void printBpInfo(Print* p) {
 
 
   p->printf("Touchscreen X: %3d Y: %3d %s\n",  pad.x(), pad.y(), pad.touched() ? "TOUCHED" : "");
+#ifndef __IMXRT1062__
   p->printf("Touch: %c(%d) %c(%d) %c(%d) %c(%d)\n",
     pad.touched(TOP_PAD) ? 'T':'t', touchRead(T_TOUCH_PIN),
     pad.touched(LEFT_PAD) ? 'L':'l', touchRead(L_TOUCH_PIN),
     pad.touched(TOP_PAD) ? 'B':'b', touchRead(B_TOUCH_PIN),
     pad.touched(RIGHT_PAD) ? 'R':'r', touchRead(R_TOUCH_PIN));
+#endif
   p->printf("Resolution: %d, %d\n", screen.width(), screen.height());
   p->printf("Ambient: %3d\n", pad.getAmbientLight());
   p->printf("Backlight: %3d\n", screen.getBacklight());

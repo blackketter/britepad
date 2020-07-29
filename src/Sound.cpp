@@ -95,11 +95,11 @@ void Sound::click() {
     fades[beeper].fadeIn(0);
     envelopes[beeper].delay(0);
     envelopes[beeper].attack(0);
-    envelopes[beeper].hold(10);
-    envelopes[beeper].decay(10);
+    envelopes[beeper].hold(1);
+    envelopes[beeper].decay(0);
     envelopes[beeper].sustain(0);  //  just a percussive sound, no sustain
 
-    waveforms[beeper].begin(1.0, 100, WAVEFORM_PULSE);
+    waveforms[beeper].begin(.5f, 1000, WAVEFORM_PULSE);
     envelopes[beeper].noteOn();
     AudioInterrupts();
   }

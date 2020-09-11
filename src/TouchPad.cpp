@@ -1,13 +1,19 @@
 #include "Arduino.h"
 
-#include <Adafruit_FT6206.h>
 #include <SparkFun_APDS9960.h>
 
 #include "BritepadShared.h"
 #include "TouchPad.h"
 #include "Hardware.h"
 
+#ifdef BB100
+#include <GT911.h>
+GT911 ctp = GT911();
+#else
+#include <Adafruit_FT6206.h>
 Adafruit_FT6206 ctp = Adafruit_FT6206();
+#endif
+
 SparkFun_APDS9960 apds = SparkFun_APDS9960();
 
 void copyTPState( TPState* dest, TPState* src ) {
@@ -22,8 +28,13 @@ void TouchPad::begin(coord_t w, coord_t h) {
 
   console.debugln("touchpad begin");
 
+#ifdef BB100
+#include <GT911.h>
+  if (!ctp.begin(CTP_INT_PIN, CTP_RESET_PIN)) {  // pass in 'sensitivity' coefficient
+#else
   if (!ctp.begin(40)) {  // pass in 'sensitivity' coefficient
-    console.debugln("Couldn't start FT6206 touchscreen controller");
+#endif
+    console.debugln("Couldn't start touchscreen controller");
   } else {
     console.debugln("touchpad working");
     ctpWorking = true;
@@ -52,8 +63,13 @@ void TouchPad::update() {
     delay(1);
     TS_Point p = ctp.getPoint();
 
+#ifdef BB100
+    curr.y = p.y;
+    curr.x = p.x;
+#else
     curr.x = p.y;
     curr.y = p.x;
+#endif
 
     // bogus coordinates at 0,0
     if (curr.x == 0 && curr.y == 0) {
@@ -65,6 +81,8 @@ void TouchPad::update() {
     bool flipX = false;
     bool flipY = false;
 
+#ifdef BB100
+#else
     // flip it around to match the screen.
     if (ctp.getChipID() == FT6236_CHIPID) {
       flipX = true;
@@ -74,6 +92,7 @@ void TouchPad::update() {
       flipX = false;
       flipY = true;
     }
+#endif
 
     if (flipX) {
       curr.x = map(curr.x, 0, width, width, 0);

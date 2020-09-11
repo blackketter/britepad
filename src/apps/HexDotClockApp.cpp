@@ -4,8 +4,16 @@ HexDotClockApp theHexDotClockApp;
 
 void HexDotClockApp::begin(AppMode asMode) {
   if (dots == nullptr) {
-    dots = new HexDotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), 9 * 4 + 3, 9*3); // approx 4:1 aspect ratio
-//    console.debugf("top: %d, height: %d\n",screen.clipTop(),screen.clipHeight());
+    // approx 4:1 aspect ratio
+    int w = 9 * 4 + 3;
+    int h = 9 * 3;
+    int dotsize = min(screen.clipWidth()/w, screen.clipHeight()/h);
+    coord_t wpixels = w * dotsize;
+    coord_t hpixels = h * dotsize;
+    coord_t xorig = (screen.clipWidth()-wpixels)/2;
+    coord_t yorig = (screen.clipHeight()-hpixels)/2;
+
+    dots = new HexDotMatrix(screen.clipLeft()+xorig, screen.clipTop()+yorig, wpixels, hpixels, w, h);
     dots->setStaggerV(true);  // stagger vertically
   }
   ClockApp::begin(asMode);

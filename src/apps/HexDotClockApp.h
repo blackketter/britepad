@@ -9,7 +9,7 @@ class HexDotClockApp : public ClockApp {
     void begin(AppMode asMode);
     void end();
     void update();
-    millis_t updateInterval() override { return 60000; }
+    millis_t updateInterval() override { return 1000; }
 
     const char* name() { return "Hex"; };
     appid_t id() { return ID; };

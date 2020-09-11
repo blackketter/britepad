@@ -5,6 +5,7 @@
 USBKeyMatrix usbKeys;
 KeyboardViewerApp theUSBKeyboardViewerApp(&usbKeys);
 
+#ifndef NOUSBHOST
 class RawKeyboardController : public KeyboardController {
   protected:
     void new_data(const Transfer_t *transfer);
@@ -78,6 +79,7 @@ void RawKeyboardController::new_data(const Transfer_t *transfer)
   KeyboardController::new_data(transfer);
 }
 
+#endif
 
 USBKeyMatrix::USBKeyMatrix() {
    _defaultLayout = ANSI104KeyLayout;

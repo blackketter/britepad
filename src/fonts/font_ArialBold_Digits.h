@@ -1,7 +1,7 @@
 #ifndef _ILI9341_t3_font_ArialBold_Digits_
 #define _ILI9341_t3_font_ArialBold_Digits_
 
-#include "ILI9341_t3.h"
+#include "fonts/Fonts.h"
 
 #ifdef __cplusplus
 extern "C" {

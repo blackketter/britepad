@@ -3,7 +3,9 @@
 #ifdef __AVR__
 #include <avr/pgmspace.h>
 #else
+#ifndef PROGMEM
 #define PROGMEM
+#endif
 #endif
 const unsigned char PROGMEM williamtell [] = {
 0x90,62,70, 0,0, 0x80, 0,0, 0x90,62,77, 0,0, 0x80, 0,0, 0x90,62,75, 0,0, 

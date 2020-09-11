@@ -492,8 +492,8 @@ void Britepad::setScreensaverStartInterval(time_t newInterval) {
 void Britepad::wakeHost() {
   // tap the shift key to wake the computer up
   if (keyEvents.keyIsUp(MODIFIERKEY_LEFT_SHIFT)) {
-    Keyboard.press(KEY_LEFT_SHIFT);
-    Keyboard.release(KEY_LEFT_SHIFT);
+    Keyboard.press(KEY_RIGHT_ALT);
+    Keyboard.release(KEY_RIGHT_ALT);
   }
   // jiggle the mouse to make cursor show up
   Mouse.move(-1, 0);

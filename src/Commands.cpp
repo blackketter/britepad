@@ -77,13 +77,23 @@ AppCommand theAppCommand;
 class LaunchCommand : public Command {
   public:
     const char* getName() { return "launch"; }
-    const char* getHelp() { return "appid | index - Launch a given app"; }
+    const char* getHelp() { return "[-s] appid | index - Launch a given app, -s for screensaver"; }
     void execute(Console* c, uint8_t paramCount, char** params) {
-        BritepadApp* a = findApp(params[1]);
-        c->printf("got back app %s - %x\n", params[1],(uint32_t)a);
+      uint8_t pathindex = 1;
+      AppMode mode = INTERACTIVE_MODE;
+
+      if (paramCount && (params[1][0] == '-')) {
+        if (strchr(params[1], 's')) {
+            mode = SCREENSAVER_MODE;
+        }
+        pathindex++;
+      }
+
+        BritepadApp* a = findApp(params[pathindex]);
+        c->printf("got back app %s - %x\n", params[pathindex],(uint32_t)a);
         if (a) {
           c->printf("Running app '%s' - %s...\n",a->id(), a->name());
-          britepad.launchApp(a);
+          britepad.launchApp(a, mode);
           britepad.resetScreensaver(5*60*1000);  // run it for 5 minutes, then let the screensavers do their work
         } else {
           c->println("Invalid app id");

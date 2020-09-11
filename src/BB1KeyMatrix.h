@@ -1,27 +1,12 @@
 #ifndef _BB1KeyMatrix_
 #define _BB1KeyMatrix_
+#include "BritepadShared.h"
+#include "BB1KeyMatrix.h"
+#include "BB1Layout.h"
 
 #include "KeyMatrix.h"
 
-class BB1KeyMatrix : public KeyMatrix {
-  public:
-    BB1KeyMatrix();
-    void begin();
-    void update();
-    const char* name() { return "BB1"; }
-
-  private:
-    void scanMatrix();
-    void clearKeyChanges();
-
-    bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
-    bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
-
-
-    static const uint8_t _numRows = 5;
-    static const uint8_t _numColumns = 17;
-
-    const  pinNumber _columnPin[_numColumns] = {
+    const  pinNumber columnPins[] = {
       5,
       6,
       7,
@@ -41,7 +26,7 @@ class BB1KeyMatrix : public KeyMatrix {
       36
     };
 
-    const  pinNumber _rowPin[_numRows] = {
+    const  pinNumber rowPins[] = {
       4,
       3,
       2,
@@ -49,9 +34,11 @@ class BB1KeyMatrix : public KeyMatrix {
       0
     };
 
-    uint8_t _curState[_numColumns];  // assumes less than 8 rows
-    uint8_t _lastState[_numColumns];
-    uint8_t _changedKeys[_numColumns];
+
+class BB1KeyMatrix : public GPIOKeyMatrix {
+  public:
+    BB1KeyMatrix() : GPIOKeyMatrix(BB1Layout, BB1Map, 5, 17, rowPins, columnPins) {};
+    const char* name() { return "BB1"; }
 
 };
 

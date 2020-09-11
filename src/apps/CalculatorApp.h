@@ -3,8 +3,6 @@
 #include "BritepadApp.h"
 #include "widgets/Button.h"
 #include "widgets/ButtonMatrix.h"
-#include "widgets/Icons.h"
-
 
 class CalculatorApp : public BritepadApp {
   public:

@@ -19,10 +19,11 @@ class DotsDisplayApp : public ScreensaverApp {
     static constexpr appid_t ID = "dots";
 
   protected:
-    virtual int getDotsWide() { return 16; }
-    virtual int getDotsHigh() { return 12; }
+    virtual int getDotsWide() { return screen.width() / dotSize; }
+    virtual int getDotsHigh() { return screen.height() / dotSize; }
     DotMatrix* dots = nullptr;
     color_t lastColor;
+    const int dotSize = 20;
 };
 
 #endif

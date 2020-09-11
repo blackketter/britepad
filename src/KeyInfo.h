@@ -1,7 +1,7 @@
 #ifndef _KeyInfo_
 #define _KeyInfo_
 #include "keylayouts.h"
-#include "widgets/Icons.h"
+#include "icons.h"
 
 typedef uint16_t keycode_t;
 
@@ -304,5 +304,12 @@ const keyinfo_t keyInfo[] = {
 };
 
 const keycode_t TOTALCODES = sizeof(keyInfo)/sizeof(keyInfo[0]) - 1;  // how many unique codes (not including the end of table marker
+
+
+int getKeyInfoIndex(keycode_t c);
+const keyinfo_t* getKeyInfo(keycode_t c);
+const icon_t getKeyIcon(keycode_t c);
+modifierkey_t getKeyModifier(keycode_t c);
+const char* getKeyLabel(keycode_t c);
 
 #endif // _KeyInfo_

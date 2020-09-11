@@ -19,8 +19,8 @@ class LifeApp : public DotsDisplayApp {
     appid_t id() { return ID; };
 
   protected:
-    int getDotsWide() { return 32; }
-    int getDotsHigh() { return 24; }
+    int getDotsWide() { return _wide; }
+    int getDotsHigh() { return _high; }
 
   private:
     void seed();
@@ -32,6 +32,8 @@ class LifeApp : public DotsDisplayApp {
     millis_t nextRun = 0;
     bool reseed = true;
     int ruleset = 0;
+    int _wide;
+    int _high;
 };
 
 #endif

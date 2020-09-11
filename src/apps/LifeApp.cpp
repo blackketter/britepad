@@ -32,6 +32,8 @@ void LifeApp::run() {
   BritepadApp::run();
   bool mouseMoved = ((Uptime::millis() - usbMouse.lastMove()) < 500);
   AppMode mode = getAppMode();
+  _wide = screen.width()/10;
+  _high = screen.height()/10;
 
   if (mode == MOUSE_MODE || mode == INTERACTIVE_MODE || mouseMoved) {
     if ((pad.pressed(SCREEN_PAD) || mouseMoved) && generation) {

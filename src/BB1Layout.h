@@ -120,7 +120,7 @@ const keylayout_t BB1Layout[] = {
 
 const keymap_t BB1Map[] = {
 // row 0
-    {  0, KEY_EQUAL },
+    {  0, KEY_TILDE },
     {  5, KEY_1 },
     { 10, KEY_2 },
     { 15, KEY_3 },
@@ -185,7 +185,7 @@ const keymap_t BB1Map[] = {
 
 // row 4
     {  0+4, KEY_LEFT_FN },
-    {  5+4, KEY_TILDE },
+    {  5+4, KEY_EQUAL },
     { 10+4, KEY_ESC },
     { 15+4, KEY_LEFT },
     { 20+4, KEY_RIGHT },

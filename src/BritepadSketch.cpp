@@ -15,7 +15,12 @@ EEPROMDictionary prefs = EEPROMDictionary();
 
 MousePad mousePad = MousePad();
 Console console = Console();
+
+#if defined(BB1)
 BB1KeyMatrix keys;
+#elif defined(BB100)
+BB100KeyMatrix keys;
+#endif
 
 Clock clock;
 
@@ -51,7 +56,7 @@ void setup() {
 
   console.debugln("starting screen");
   screen.begin();
-  screen.setRotation(1);  // Britepad Mark-0 is oriented this way
+  screen.setRotation(1);  // So far, all displays are in this rotation
   screen.fillScreen(screen.black);
 
   console.debugln("starting touchpad");

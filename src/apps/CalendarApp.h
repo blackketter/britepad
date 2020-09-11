@@ -2,8 +2,6 @@
 #define _CalendarApp_
 #include "BritepadApp.h"
 #include "widgets/Button.h"
-#include "widgets/Icons.h"
-
 
 class CalendarApp : public BritepadApp {
   public:

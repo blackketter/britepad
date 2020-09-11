@@ -3,9 +3,7 @@
 #include "BritepadApp.h"
 #include "widgets/Button.h"
 #include "widgets/DotMatrix.h"
-#include "widgets/Icons.h"
 #include "widgets/TextField.h"
-
 
 class MineMatrix : public SquareMatrix {
   private:

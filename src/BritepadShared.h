@@ -11,7 +11,12 @@ extern Screen screen;
 
 #include "BB1KeyMatrix.h"
 #include "ErgodoxKeyMatrix.h"
+#if defined(BB1)
 extern BB1KeyMatrix keys;
+#elif defined(BB100)
+#include "BB100KeyMatrix.h"
+extern BB100KeyMatrix keys;
+#endif
 
 #include "KeyEventQueue.h"
 extern KeyEventQueue keyEvents;

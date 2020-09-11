@@ -1,8 +1,7 @@
 #ifndef _USBHost_
 #define _USBHost_
 
-#if defined(__MK66FX1M0__) || defined(__IMXRT1062__)
-
+#ifndef NOUSBHOST
 #include "Arduino.h"
 #include "USBHost_t36.h"
 

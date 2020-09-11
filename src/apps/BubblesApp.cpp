@@ -37,6 +37,7 @@ void BubblesApp::run() {
     lastX += deltaX;
     lastY += deltaY;
     if (lastY < screen.clipTop()) {
+      lastY = screen.clipTop();
     }
     if (lastY > screen.clipBottom()) {
       lastY = screen.clipBottom();

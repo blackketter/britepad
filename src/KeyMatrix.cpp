@@ -1,6 +1,6 @@
-#include "BritepadShared.h"
 #include "KeyMatrix.h"
-#include "KeyInfo.h"
+#include "KeyEventQueue.h"
+#include "BritepadShared.h"
 
 void KeyMatrix::begin() {
   setMap();  // set to default map
@@ -114,55 +114,6 @@ uint8_t KeyMatrix::getKeyHeight(keyswitch_t k) {
   return 0;
 }
 
-int KeyMatrix::getKeyInfoIndex(keycode_t c) {
-  int i = 0;
-  while (keyInfo[i].code != NO_CODE) {
-    if (keyInfo[i].code == c) {
-      return i;
-    }
-    i++;
-  }
-  return i;
-}
-
-const keyinfo_t* KeyMatrix::getKeyInfo(keycode_t c) {
-
-  int i = getKeyInfoIndex(c);
-
-  if (keyInfo[i].code == NO_CODE) {
-    return nullptr;
-  } else {
-    return &keyInfo[i];
-  }
-}
-
-const icon_t KeyMatrix::getKeyIcon(keycode_t c) {
-  const keyinfo_t* info = getKeyInfo(c);
-  if (info) {
-    return info->icon;
-  } else {
-    return 0;
-  }
-}
-
-modifierkey_t KeyMatrix::getKeyModifier(keycode_t c) {
-  const keyinfo_t* info = getKeyInfo(c);
-  if (info) {
-    return info->modifier;
-  } else {
-    return false;
-  }
-}
-
-const char* KeyMatrix::getKeyLabel(keycode_t c) {
-  const keyinfo_t* info = getKeyInfo(c);
-  if (info) {
-    return info->label;
-  } else {
-    return 0;
-  }
-}
-
 void KeyMatrix::setLayout(const keylayout_t* l) {
   _currentLayout = l ? l : getDefaultLayout();
 }
@@ -170,3 +121,103 @@ void KeyMatrix::setLayout(const keylayout_t* l) {
 void KeyMatrix::setMap(const keymap_t* l) {
   _currentMap = l ? l : getDefaultMap();
 }
+
+
+//////////////////////////////////////////////////
+// GPIOKeyMatrix
+//////////////////////////////////////////////////
+GPIOKeyMatrix::GPIOKeyMatrix(const keylayout_t* keylayout, const keymap_t* keymap, uint8_t rows, uint8_t columns, const pinNumber* rowPins, const pinNumber* columnPins) {
+  _numRows = rows;
+  _numColumns = columns;
+  _curState = new uint8_t[_numColumns];
+  _lastState = new uint8_t[_numColumns];
+  _changedKeys = new uint8_t[_numColumns];
+  _rowPin = rowPins;
+  _columnPin = columnPins;
+  _defaultMap = keymap;
+  _defaultLayout = keylayout;
+}
+
+GPIOKeyMatrix::~GPIOKeyMatrix() {
+  delete(_curState);
+  delete(_lastState);
+  delete(_changedKeys);
+}
+
+// Diodes have cathodes (positive) on rows, anodes on columns
+void GPIOKeyMatrix::begin() {
+  KeyMatrix::begin();
+  for (int i = 0; i < _numRows;i++) {
+    pinMode(_rowPin[i], OUTPUT);
+    digitalWrite(_rowPin[i], HIGH);
+  }
+
+  for (int i = 0; i < _numColumns; i++) {
+    pinMode(_columnPin[i], INPUT_PULLUP);
+  }
+}
+
+void GPIOKeyMatrix::scanMatrix() {
+  for (int i = 0; i < _numColumns; i++) {
+    _curState[i] = 0;
+  }
+
+  for (int i = 0; i < _numRows; i++) {
+    digitalWrite(_rowPin[i], LOW);
+    delayMicroseconds(500);
+    for (int j = 0; j < _numColumns; j++) {
+      // active low
+      if (!digitalRead(_columnPin[j])) {
+        _curState[j] = _curState[j] | (0x01 << i);
+      }
+    }
+    digitalWrite(_rowPin[i], HIGH);
+  }
+
+  for (int i = 0; i < _numColumns; i++) {
+    _changedKeys[i] = _lastState[i] ^ _curState[i];
+  }
+
+  // save the last state
+  for (int i = 0; i < _numColumns; i++) {
+    _lastState[i] = _curState[i];
+  }
+}
+
+void GPIOKeyMatrix::update() {
+
+  keyswitch_t count = 0;
+
+  clearKeyChanges();
+
+  millis_t now = Uptime::millis();
+  if (now > _nextScan) {
+    scanMatrix();
+
+    keyswitch_t total = _numRows * _numColumns;
+
+    for (keyswitch_t i = 0; i < total; i++) {
+      if ((i != NO_KEY) && ((_changedKeys[i/_numRows] >> (i%_numRows)) & 0x01)) {
+        count++;
+        bool d = switchIsDown(i);
+        console.debugf("GPIO key %d %s\n", i, d ? "down" : "up");
+        keyEvents.addEvent(this, i,getCode(i),now, d);
+      }
+    }
+
+  }
+  if (count) {
+    console.debugf("update found %d key events\n",count);
+    _nextScan = now + _debounceInterval;
+  } else {
+    _nextScan = now + _minScanInterval;
+  }
+}
+
+void GPIOKeyMatrix::clearKeyChanges() {
+  // save the last state
+  for (int i = 0; i < _numColumns; i++) {
+    _changedKeys[i] = 0;
+  }
+}
+

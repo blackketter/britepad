@@ -1,7 +1,11 @@
 #include "KeyEventQueue.h"
+#include "Console.h"
+#include "KeyInfo.h"
 #include "BritepadShared.h"
 
-bool keyDebug = false;
+extern Console console;
+
+bool keyDebug = true;
 
 KeyEventQueue keyEvents;
 
@@ -241,7 +245,7 @@ void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t 
   KeyEvent* e = new KeyEvent(m, k,c,ch,t,d);
   if (keyDebug) {
       console.debugf("key addEvent: \"%s\", switch: %d, code: %d, char: %c, pressed: %d, %s, time:%f\n",
-        m->getKeyLabel(c), k, c, ch, d, m == nullptr ? "soft" : "hard", t/1000.0);
+        getKeyLabel(c), k, c, ch, d, m == nullptr ? "soft" : "hard", t/1000.0);
      }
   if (_events) {
     _events->setNext(e);
@@ -343,7 +347,7 @@ bool KeyEventQueue::keyDoubleTapped(keycode_t c) {
 
 
 char KeyEventQueue::getKeyChar(keycode_t c) {
-  const keyinfo_t* info = keys.getKeyInfo(c);
+  const keyinfo_t* info = getKeyInfo(c);
   if (info) {
     bool shifted = keyIsDown(MODIFIERKEY_LEFT_SHIFT) || keyIsDown(MODIFIERKEY_RIGHT_SHIFT);
     if (shifted) {
@@ -381,7 +385,7 @@ void KeyEventQueue::printStatus(Stream* c) {
   while (event) {
     c->printf("  Key event[%2d] =%8d.%03d '%s' code:%d switch:%d %s %s\n",
       i, ((int)(event->time()))/1000, ((int)(event->time()))%1000,
-      keys.getKeyLabel(event->code()),event->code(), event->keyswitch(),
+      getKeyLabel(event->code()),event->code(), event->keyswitch(),
       event->pressed() ? "down" : "up", event->matrix() ? "hard" : "soft");
     event = event->getPrev();
     i++;

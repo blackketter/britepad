@@ -2,17 +2,16 @@
 #define _Screen_
 
 #if TEENSY == 1
-#if defined(LCD_TYPE) && LCD_TYPE==ILI9488
-#include <ILI9488_t3.h>
+#if defined(LCD_ILI9488)
+#include "ILI9488_t3.h"
+#elif defined(LCD_ERTFTM0784)
+#include "ER-TFT0784_t3.h"
 #else
-#include <ILI9341_t3.h>
+#include "ILI9341_t3.h"
 #endif
 
-#include <font_Arial.h>
-#include <font_ArialBold.h>
-
 #else
-#include <Adafruit_ILI9341.h>
+#include "Adafruit_ILI9341.h"
 #endif
 
 #include "Hardware.h"
@@ -63,12 +62,29 @@ enum direction_t {
 //typedef ILI9341_t3_font_t font_t;
 typedef const ILI9341_t3_font_t* font_t;
 
-#if defined(LCD_TYPE) && LCD_TYPE==ILI9488
+#if defined(LCD_ILI9488)
 class Screen : public ILI9488_t3
 {
   public:
     Screen(uint8_t _CS = TFT_CS_PIN, uint8_t _DC = TFT_DC_PIN, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
       ILI9488_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
+#elif defined(LCD_ERTFTM0784)
+class Screen : public ER_TFT0784_t3
+{
+  public:
+     Screen(
+    		uint8_t _CS = TFT_CS_PIN,
+    		uint8_t _RESET = TFT_RESET_PIN,
+    		uint8_t _MOSI = TFT_MOSI_PIN,
+    		uint8_t _SCLK = TFT_SCLK_PIN,
+    		uint8_t _MISO = TFT_MISO_PIN,
+    		uint8_t _2828CS = TFT_2828CS_PIN,
+    		uint8_t _2828RESET = TFT_2828RESET_PIN,
+    		uint8_t _2828SDI = TFT_2828SDI_PIN,
+    		uint8_t _2828SCK = TFT_2828SCK_PIN
+    	) :
+      ER_TFT0784_t3(_CS, _RESET, _MOSI, _SCLK, _MISO, _2828CS, _2828RESET, _2828SDI, _2828SCK)
+
 #else
 class Screen : public ILI9341_t3
 {
@@ -92,8 +108,11 @@ class Screen : public Adafruit_ILI9341
       pinMode(BACKLIGHT_PIN, OUTPUT);
       digitalWrite(BACKLIGHT_PIN, LOW);   // set the backlight off
     };
-
+#if defined(LCD_ERTFTM0784)
     static const uint8_t maxbrightness = 255;
+#else
+		static const uint8_t maxbrightness = 255;
+#endif
     static const coord_t offscreen = -100;
     void setBacklight(uint8_t brightness);
     uint8_t getBacklight();
@@ -107,8 +126,7 @@ class Screen : public Adafruit_ILI9341
     void softWrapText(String& out, const char* in);
     font_t getFont() { return font; }
     void setFont(font_t f) { font = f; }
-
-  	void drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color);
+    	void drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color);
 
     void pushFill(direction_t dir, color_t color);
 
@@ -139,14 +157,15 @@ class Screen : public Adafruit_ILI9341
 
 //	  virtual void drawPixel(point_t& p, color_t color) { drawPixel((int16_t)p.x,(int16_t)p.y,(uint16_t)color); };
 
-    static const color_t black = ILI9341_BLACK;
-    static const color_t white = ILI9341_WHITE;
+// Color definitions
+    static const color_t black = 0x0000;
+    static const color_t white = 0xFFFF;
 
-    static const color_t red = ILI9341_RED;
-    static const color_t green = ILI9341_GREEN;
-    static const color_t blue = ILI9341_BLUE;
-    static const color_t yellow = ILI9341_YELLOW;
-    static const color_t orange = ILI9341_ORANGE;
+    static const color_t red = 0xF800;
+    static const color_t green = 0x07E0;
+    static const color_t blue = 0x001F;
+    static const color_t yellow = 0xFFE0;
+    static const color_t orange = 0xFD20;
 
     static const color_t cyan = 0x07ff; // 0, 1, 1
     static const color_t bluegreen = 0x0410; // 0,  .5, .5
@@ -328,3 +347,4 @@ private:
 extern Screen screen;
 
 #endif
+

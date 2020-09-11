@@ -1,11 +1,12 @@
 #ifndef _Icons_
 #define _Icons_
-#include "widgets/Icon.h"
 
 // icondata format is:
 // 1 byte of width
 // 1 byte of height
 // rest of bytes - packed bitmap of width*height/8 bytes (rounded up to fit all the bits)
+
+typedef const uint8_t* icon_t;
 
 const uint8_t optionIcon[] = {
  16, 11,

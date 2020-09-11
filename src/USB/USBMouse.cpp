@@ -1,4 +1,10 @@
 #include "USBMouse.h"
+
+#ifdef NOUSBHOST
+void USBMouse::run() {}
+void USBMouse::setBounds(coord_t x, coord_t y, coord_t w, coord_t h) {}
+void USBMouse::checkBounds() {}
+#else
 #include "USBHost.h"
 
 USBHIDParser hid1(usbHost);
@@ -8,7 +14,6 @@ USBHIDParser hid4(usbHost);
 USBHIDParser hid5(usbHost);
 MouseController _mouse(usbHost);
 
-USBMouse usbMouse;
 
 void USBMouse::run() {
   if(_mouse.available()) {
@@ -45,3 +50,7 @@ void USBMouse::checkBounds() {
   if (_x >= _bounds.x+_bounds.w) { _x = _bounds.x+_bounds.w-1; }
   if (_y >= _bounds.y+_bounds.h) { _y = _bounds.y+_bounds.h-1; }
 }
+
+#endif
+
+USBMouse usbMouse;

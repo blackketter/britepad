@@ -4,39 +4,7 @@
 #include "BritepadApp.h"
 #include "BritepadShared.h"
 #include "Sound.h"
-#include "core_pins.h"
-#define CPU_RESTART_ADDR (uint32_t *)0xE000ED0C
-#define CPU_RESTART_VAL 0x5FA0004
-#define CPU_RESTART (*CPU_RESTART_ADDR = CPU_RESTART_VAL);
-
-void reboot() {
-      while (1) {
-        delay(100);
-        CPU_RESTART
-      };
-}
-
-class RebootCommand : public Command {
-  public:
-    const char* getName() { return "reboot"; }
-    const char* getHelp() { return "Reboots system"; }
-    void execute(Console* c, uint8_t paramCount, char** params) { reboot(); }
-};
-
-RebootCommand theRebootCommand;
-
-class ReloadCommand : public Command {
-  public:
-    const char* getName() { return "reload"; }
-    const char* getHelp() { return "Jump to Teensy bootloader"; }
-    void execute(Console* c, uint8_t paramCount, char** params) { 
-#ifndef __IMXRT1062__
-_reboot_Teensyduino_();
-#endif
-}
-};
-
-ReloadCommand theReloadCommand;
+#include "Commands/TeensyCommands.h"
 
 class RebootApp : public BritepadApp {
 
@@ -76,9 +44,7 @@ class ReloadApp : public RebootApp {
   public:
 
     void run() {
-#ifndef __IMXRT1062__
-      _reboot_Teensyduino_();
-#endif
+      reload();
     }
 
     const char* name() { return "Reload"; };

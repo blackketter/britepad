@@ -2,6 +2,7 @@
 #define _ErgodoxKeyMatrix_
 
 #include "KeyMatrix.h"
+#include "MCP23018.h"
 
 class ErgodoxKeyMatrix : public KeyMatrix {
   public:

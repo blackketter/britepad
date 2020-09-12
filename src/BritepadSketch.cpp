@@ -70,7 +70,7 @@ void setup() {
   clock.updateTime();
 
   console.debugln("starting keyboard matrix");
-  keys.begin();
+  keys.begin(&keyEvents);
 
   Wire.setClock(WIRE_SPEED);
 

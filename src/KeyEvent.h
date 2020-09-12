@@ -3,6 +3,8 @@
 
 #include "KeyInfo.h"
 
+extern boolean keyDebug;
+
 class KeyMatrix;
 
 class KeyEvent {

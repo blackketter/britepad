@@ -1,8 +1,10 @@
 #ifndef _Britepad_
 #define _Britepad_
 
+#include "BritepadKeyEventQueue.h"
 #include "BritepadShared.h"
 #include "Timer.h"
+
 
 // Apps run in particular modes
 enum AppMode {

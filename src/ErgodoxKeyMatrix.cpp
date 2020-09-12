@@ -10,8 +10,8 @@ ErgodoxKeyMatrix::ErgodoxKeyMatrix() {
 }
 
 // Port A is columns, Port B is rows.  Diodes have cathodes (positive) on A
-void ErgodoxKeyMatrix::begin() {
-  KeyMatrix::begin();
+void ErgodoxKeyMatrix::begin(KeyEventQueue* queue) {
+  KeyMatrix::begin(queue);
 
   _leftMatrix.SetAddress(_leftAddr);
   _leftMatrix.SetDirection(0, 0xff);  // port a output, port b input
@@ -78,7 +78,7 @@ void ErgodoxKeyMatrix::scanMatrix() {
   }
 }
 
-void ErgodoxKeyMatrix::update() {
+bool ErgodoxKeyMatrix::update() {
 
   keyswitch_t count = 0;
 
@@ -94,7 +94,7 @@ void ErgodoxKeyMatrix::update() {
       if ((i != NO_KEY) && ((_changedKeys[i/_numRows] >> (i%_numRows)) & 0x01)) {
         count++;
         bool d = switchIsDown(i);
-        keyEvents.addEvent(this, i,getCode(i),now, d);
+        _queue->addEvent(this, i,getCode(i),now, d);
       }
     }
 
@@ -105,6 +105,7 @@ void ErgodoxKeyMatrix::update() {
   } else {
     _nextScan = now + _minScanInterval;
   }
+  return count != 0;
 }
 
 void ErgodoxKeyMatrix::clearKeyChanges() {

@@ -1,7 +1,6 @@
 #ifndef _BB1KeyMatrix_
 #define _BB1KeyMatrix_
 #include "BritepadShared.h"
-#include "BB1KeyMatrix.h"
 #include "BB1Layout.h"
 
 #include "KeyMatrix.h"

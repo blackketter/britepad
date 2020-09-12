@@ -18,8 +18,11 @@ extern BB1KeyMatrix keys;
 extern BB100KeyMatrix keys;
 #endif
 
-#include "KeyEventQueue.h"
-extern KeyEventQueue keyEvents;
+#include "Britepad.h"
+extern Britepad britepad;
+
+#include "BritepadKeyEventQueue.h"
+extern BritepadKeyEventQueue keyEvents;
 
 #include "TouchPad.h"
 extern TouchPad pad;
@@ -30,8 +33,6 @@ extern Sound sound;
 #include "MousePad.h"
 extern MousePad mousePad;
 
-#include "Britepad.h"
-extern Britepad britepad;
 
 #include "Clock.h"
 extern Clock clock;

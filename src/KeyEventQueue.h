@@ -9,7 +9,11 @@
 
 class KeyEventQueue {
   public:
-    KeyEventQueue();
+    KeyEventQueue(int maxEventHistory = 200);
+
+    // override to process events before they get put in the queue
+    virtual void processEvent(KeyEvent* e) { };
+
     keyswitch_t sendKeys();  // send key events to host, returns number of key events sent
     void sendKey(keycode_t code, boolean pressed);
 
@@ -50,7 +54,7 @@ class KeyEventQueue {
 
     void clearKeyChanges();
 
-    static const int _maxEventHistory = 200;
+    int _maxEventHistory;
     KeyEvent* _events = nullptr;
     KeyEvent* _lastEvent = nullptr;
 
@@ -63,6 +67,5 @@ class KeyEventQueue {
 
     bool _click = true;
 };
-extern KeyEventQueue keyEvents;
 
 #endif

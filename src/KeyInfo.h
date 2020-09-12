@@ -113,11 +113,11 @@ const modifiedkey_t shiftedKeys[] = {
 };
 
 typedef struct keyinfo_t {
-  keycode_t code;
-  char c;
-  const char* label;
+  const keycode_t code;
+  const char c;
+  const char* const label;
   const icon_t icon;
-  modifierkey_t modifier;
+  const modifierkey_t modifier;
 } keyinfo_t;
 
 typedef struct keychord_t {
@@ -127,8 +127,8 @@ typedef struct keychord_t {
 
 const keyinfo_t keyInfo[] = {
 // nonstandard keys
-  { KEY_LEFT_FN, 0, "fn", nullptr, MODIFIER_FN },
-  { KEY_RIGHT_FN, 0, "fn", nullptr, MODIFIER_FN },
+  { KEY_LEFT_FN, 0, "fn left", nullptr, MODIFIER_FN },
+  { KEY_RIGHT_FN, 0, "fn right", nullptr, MODIFIER_FN },
 
   { KEY_MOUSE_MOVE_UP, 0, "mouse up", mouseUpIcon, false },
   { KEY_MOUSE_MOVE_DOWN, 0, "mouse down", mouseDownIcon, false },

@@ -5,13 +5,14 @@
 #include "KeyInfo.h"
 #include "KeyLayout.h"
 #include "KeyEvent.h"
+#include "KeyEventQueue.h"
 #include "Timer.h"
 typedef int pinNumber;
 
 class KeyMatrix {
   public:
-    virtual void begin();
-    virtual void update() = 0;
+    virtual void begin(KeyEventQueue* queue);
+    virtual boolean update() = 0;
     virtual const char* name() = 0;
 
     void setMap(const keymap_t* m = nullptr);  // pass nullptr to reset to default map
@@ -43,6 +44,8 @@ class KeyMatrix {
     const keyinfo_t* getKeyInfo(keycode_t c);
 
   protected:
+    KeyEventQueue* _queue;
+
     keyswitch_t getSwitch(keycode_t c);
     int getKeyInfoIndex(keycode_t c);
 
@@ -66,8 +69,10 @@ class GPIOKeyMatrix : public KeyMatrix {
   public:
     GPIOKeyMatrix(const keylayout_t* keylayout, const keymap_t* keymap, uint8_t rows, uint8_t columnns, const pinNumber* rowPins, const pinNumber* columnPins);
     ~GPIOKeyMatrix();
-    void begin();
-    void update();
+    void begin(KeyEventQueue* queue);
+    boolean update();
+    bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
+    bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
 
   private:
     uint8_t _numRows;
@@ -77,9 +82,6 @@ class GPIOKeyMatrix : public KeyMatrix {
 
     void scanMatrix();
     void clearKeyChanges();
-
-    bool switchIsDown(keyswitch_t k) { return ((_curState[k/_numRows] >> (k%_numRows)) & 0x01); }
-    bool switchIsUp(keyswitch_t k) { return !switchIsDown(k); }
 
     uint8_t* _curState;  // assumes less than 8 rows
     uint8_t* _lastState;

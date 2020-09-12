@@ -13,6 +13,8 @@
 #include "Commands/FPSCommand.h"
 FPSCommand theFPSCommand;
 
+BritepadKeyEventQueue keyEvents;
+
 #define PROXIMITY_DEAD_TIME (1000)
 
 class QuitCommand : public Command {
@@ -506,3 +508,16 @@ void Britepad::wakeHost() {
   Keyboard.release(KEY_SYSTEM_WAKE_UP);
 #endif
 }
+
+
+
+class KeyEventsCommand : public Command {
+  public:
+    const char* getName() { return "events"; }
+    const char* getHelp() { return "display keyboard events"; }
+    void execute(Console* c, uint8_t paramCount, char** params) {
+      keyEvents.printStatus(c);
+    }
+};
+
+KeyEventsCommand theKeyEventsCommand;

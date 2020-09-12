@@ -88,14 +88,21 @@ USBKeyMatrix::USBKeyMatrix() {
    setLayout();
 }
 
-void USBKeyMatrix::begin() {
-  KeyMatrix::begin();
+void USBKeyMatrix::begin(KeyEventQueue* queue) {
+  KeyMatrix::begin(queue);
 }
 
-void USBKeyMatrix::update() {
+boolean USBKeyMatrix::update() {
+  if (_updated) {
+    _updated = false;
+    return true;
+  } else {
+    return false;
+  }
 }
 
 void USBKeyMatrix::usbKeyEvent(keyswitch_t k, bool down) {
-  keyEvents.addEvent(this, k, getCode(k), Uptime::millis(), down);
+  _queue->addEvent(this, k, getCode(k), Uptime::millis(), down);
+  _updated = true;
 }
 

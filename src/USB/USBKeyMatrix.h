@@ -7,14 +7,14 @@
 class USBKeyMatrix : public KeyMatrix {
   public:
     USBKeyMatrix();
-    void begin();
-    void update();
+    void begin(KeyEventQueue* queue) override;
+    boolean update();
     const char* name() { return "USB"; }
     void usbKeyEvent(keyswitch_t k, bool down);
   protected:
 
   private:
-
+    boolean _updated = false;
 };
 
 #endif // _USBKeyMatrix_

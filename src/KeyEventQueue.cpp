@@ -5,13 +5,12 @@
 
 extern Console console;
 
-bool keyDebug = true;
-
-KeyEventQueue keyEvents;
+bool keyDebug = false;
 
 void repeatTimerCallback(void* kq) { ((KeyEventQueue*)kq)->repeat(); };
 
-KeyEventQueue::KeyEventQueue() {
+KeyEventQueue::KeyEventQueue(int maxEventHistory) {
+  _maxEventHistory = maxEventHistory;
   _repeatTimer.setMillis(_repeatInterval, repeatTimerCallback, this, true);
 }
 
@@ -21,7 +20,7 @@ keyswitch_t KeyEventQueue::sendKeys() {
 
   while (event) {
     if (event->time() > Uptime::millis()) {
-      //console.debugln("key in future, not sending");
+      if (keyDebug) console.debugln("key in future, not sending");
       break;
     }
     event = getNextEvent();
@@ -191,7 +190,7 @@ void KeyEventQueue::truncateHistory() {
     KeyEvent* last = curr;
     curr = curr->getPrev();
     delete last;
-    //console.debugln("deleted old event");
+    if (keyDebug) console.debugln("deleted old event");
   }
 }
 
@@ -244,8 +243,8 @@ void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t 
   char ch = getKeyChar(c);
   KeyEvent* e = new KeyEvent(m, k,c,ch,t,d);
   if (keyDebug) {
-      console.debugf("key addEvent: \"%s\", switch: %d, code: %d, char: %c, pressed: %d, %s, time:%f\n",
-        getKeyLabel(c), k, c, ch, d, m == nullptr ? "soft" : "hard", t/1000.0);
+      console.debugf("key addEvent: \"%s\", switch: %d, code: %d, char: 0x%02x, %s, %s, time:%d.%03d\n",
+        getKeyLabel(c), k, c, ch, d ? "pressed" : "released", m == nullptr ? "soft" : "hard", (int)(t/1000), (int)((t%1000)));
      }
   if (_events) {
     _events->setNext(e);
@@ -254,14 +253,12 @@ void KeyEventQueue::addEvent(KeyMatrix* m, keyswitch_t k, keycode_t c, millis_t 
 
   _events = e;
 
-  if (britepad.event(e))  {
-    removeEvent(e);
-  }
+  processEvent(e);
 
-  //console.debugln("truncating");
+//  console.debugln("truncating");
   truncateHistory();
 
-  //console.debugln("done addEvent");
+//  console.debugln("done addEvent");
 
 }
 
@@ -364,17 +361,6 @@ char KeyEventQueue::getKeyChar(keycode_t c) {
     return 0;
   }
 }
-
-class KeyEventsCommand : public Command {
-  public:
-    const char* getName() { return "events"; }
-    const char* getHelp() { return "display keyboard events"; }
-    void execute(Console* c, uint8_t paramCount, char** params) {
-      keyEvents.printStatus(c);
-    }
-};
-
-KeyEventsCommand theKeyEventsCommand;
 
 void KeyEventQueue::printStatus(Stream* c) {
   if (c == nullptr) { c = &console; }

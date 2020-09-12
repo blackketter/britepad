@@ -2,7 +2,8 @@
 #include "KeyEventQueue.h"
 #include "BritepadShared.h"
 
-void KeyMatrix::begin() {
+void KeyMatrix::begin(KeyEventQueue* queue) {
+  _queue = queue;
   setMap();  // set to default map
   setLayout(); // set to default layout
 }
@@ -145,8 +146,8 @@ GPIOKeyMatrix::~GPIOKeyMatrix() {
 }
 
 // Diodes have cathodes (positive) on rows, anodes on columns
-void GPIOKeyMatrix::begin() {
-  KeyMatrix::begin();
+void GPIOKeyMatrix::begin(KeyEventQueue* queue) {
+  KeyMatrix::begin(queue);
   for (int i = 0; i < _numRows;i++) {
     pinMode(_rowPin[i], OUTPUT);
     digitalWrite(_rowPin[i], HIGH);
@@ -184,34 +185,37 @@ void GPIOKeyMatrix::scanMatrix() {
   }
 }
 
-void GPIOKeyMatrix::update() {
+boolean GPIOKeyMatrix::update() {
 
   keyswitch_t count = 0;
 
   clearKeyChanges();
 
   millis_t now = Uptime::millis();
-  if (now > _nextScan) {
-    scanMatrix();
 
+  //console.debugf("checking now: %d.%03d _nextScan: %d.%03d\n", (int)(now/1000),(int)(now%1000), (int)(_nextScan/1000),(int)(_nextScan%1000));
+
+  if (now >= _nextScan) {
+    //console.debugln("scanning");
+    scanMatrix();
     keyswitch_t total = _numRows * _numColumns;
 
     for (keyswitch_t i = 0; i < total; i++) {
       if ((i != NO_KEY) && ((_changedKeys[i/_numRows] >> (i%_numRows)) & 0x01)) {
         count++;
         bool d = switchIsDown(i);
-        console.debugf("GPIO key %d %s\n", i, d ? "down" : "up");
-        keyEvents.addEvent(this, i,getCode(i),now, d);
+        if (keyDebug) console.debugf("GPIO key %d %s\n", i, d ? "down" : "up");
+        _queue->addEvent(this, i,getCode(i),now, d);
       }
     }
-
+    if (count) {
+      _nextScan = now + _debounceInterval;
+      if (keyDebug) console.debugf("update found %d key events, next scan: %d.%03d\n",count, (int)(_nextScan/1000),(int)(_nextScan%1000));
+    } else {
+      _nextScan = now + _minScanInterval;
+    }
   }
-  if (count) {
-    console.debugf("update found %d key events\n",count);
-    _nextScan = now + _debounceInterval;
-  } else {
-    _nextScan = now + _minScanInterval;
-  }
+  return count != 0;
 }
 
 void GPIOKeyMatrix::clearKeyChanges() {

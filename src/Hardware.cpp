@@ -1,6 +1,6 @@
 #include "Hardware.h"
 
-#ifdef __MK66FX1M0__
+#if defined(__MK66FX1M0__) && !defined(TEENSYDEBUG)
 extern volatile uint8_t usb_configuration;
 
 bool usbActive() {

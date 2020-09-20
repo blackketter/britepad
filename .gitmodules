@@ -37,3 +37,6 @@
 [submodule "lib/LuaArduino"]
 	path = lib/LuaArduino
 	url = https://github.com/blackketter/LuaArduino.git
+[submodule "lib/KeyMatrix"]
+	path = lib/KeyMatrix
+	url = https://github.com/blackketter/KeyMatrix

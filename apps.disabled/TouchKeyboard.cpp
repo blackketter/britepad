@@ -1,5 +1,5 @@
 #include "widgets/TouchKeyboard.h"
-#include "widgets/Icons.h"
+#include "KeyIcons.h"
 
 void TouchKeyboard::init(coord_t x, coord_t y, coord_t w, coord_t h,color_t color, font_t legendFont, color_t legendColor)
 {

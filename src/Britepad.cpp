@@ -14,6 +14,7 @@
 FPSCommand theFPSCommand;
 
 BritepadKeyEventQueue keyEvents;
+#include "TypeCommand.h"
 
 #define PROXIMITY_DEAD_TIME (1000)
 
@@ -456,7 +457,7 @@ void Britepad::launchApp(BritepadApp* app, AppMode mode) {
     console.debugf("saving lastapp for %x\n", (uint32_t)app);
   } else if (launchedAppPtr != BritepadApp::STAY_IN_APP){
     lastAppPtr = BritepadApp::EXIT_APP;
-    console.debugf("NOT saving lastapp for %x\n", (uint32_t)app);
+//    console.debugf("NOT saving lastapp for %x\n", (uint32_t)app);
   }
 }
 

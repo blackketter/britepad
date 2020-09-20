@@ -1,69 +1,6 @@
 #include "KeyMatrix.h"
 #include "KeyboardApp.h"
 
-#ifdef UNUSEDKEYS
-    // keymap
-    {  0, KEY_EQUAL },
-    {  5, KEY_1 },
-    { 10, KEY_2 },
-    { 15, KEY_3 },
-    { 20, KEY_4 },
-    { 25, KEY_5 },
-
-    { 55, KEY_6 },
-    { 60, KEY_7 },
-    { 65, KEY_8 },
-    { 70, KEY_9 },
-    { 75, KEY_0 },
-    { 80, KEY_MINUS },
-
-
-    { 35+3, KEY_HOME },
-    { 40+3, KEY_EXIT },
-    { 45+3, MODIFIERKEY_RIGHT_CTRL },
-    { 50+3, MODIFIERKEY_RIGHT_GUI },
-
-    {  0+4, KEY_LEFT_FN },
-    {  5+4, KEY_TILDE },
-    { 10+4, KEY_ESC },
-    { 15+4, KEY_LEFT },
-    { 20+4, KEY_RIGHT },
-    { 35+4, KEY_END },
-    { 40+4, KEY_PAGE_DOWN },
-    { 45+4, KEY_PAGE_UP },
-    { 60+4, KEY_UP },
-    { 65+4, KEY_DOWN },
-    { 70+4, KEY_LEFT_BRACE },
-    { 75+4, KEY_RIGHT_BRACE },
-    { 80+4, KEY_RIGHT_FN },
-
-    // overlay
-    { KEY_Y, KEY_MEDIA_PREV_TRACK },
-    { KEY_U, KEY_MEDIA_PLAY_PAUSE },
-    { KEY_I, KEY_MEDIA_NEXT_TRACK },
-    { KEY_O, KEY_MEDIA_MUTE },
-    { KEY_P, KEY_MEDIA_VOLUME_DEC },
-    { KEY_BACKSLASH, KEY_MEDIA_VOLUME_INC },
-    { KEY_QUOTE, KEY_MEDIA_EJECT },
-    { KEY_J, KEY_MOUSE_MOVE_UP },
-    { KEY_K, KEY_MOUSE_MOVE_DOWN },
-    { KEY_H, KEY_MOUSE_MOVE_LEFT },
-    { KEY_L, KEY_MOUSE_MOVE_RIGHT },
-    { KEY_ENTER, KEY_MOUSE_BUTTON_LEFT },
-    { MODIFIERKEY_RIGHT_GUI, KEY_MOUSE_BUTTON_MIDDLE },
-    { KEY_SPACE, KEY_MOUSE_BUTTON_RIGHT },
-    { KEY_LEFT_BRACE, KEY_MOUSE_BUTTON_BACK },
-    { KEY_RIGHT_BRACE, KEY_MOUSE_BUTTON_FORWARD },
-    { KEY_UP, KEY_MOUSE_SCROLL_UP },
-    { KEY_DOWN, KEY_MOUSE_SCROLL_DOWN },
-    { KEY_LEFT, KEY_MOUSE_SCROLL_LEFT },
-    { KEY_RIGHT, KEY_MOUSE_SCROLL_RIGHT },
-    { MODIFIERKEY_LEFT_GUI, MODIFIERKEY_MOUSE },
-    { MODIFIERKEY_LEFT_ALT, MODIFIERKEY_MOUSE_SCROLL },
-
-#endif
-
-
 // map for BB1 keys to Atreus
 static const keymap_t atreusMap[] = {
 // row 0

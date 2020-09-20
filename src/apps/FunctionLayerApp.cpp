@@ -63,8 +63,6 @@ const keyoverlay_t functionOverlay[] = {
     { KEY_DOWN, KEY_MOUSE_SCROLL_DOWN },
     { KEY_LEFT, KEY_MOUSE_SCROLL_LEFT },
     { KEY_RIGHT, KEY_MOUSE_SCROLL_RIGHT },
-    { MODIFIERKEY_LEFT_GUI, MODIFIERKEY_MOUSE },
-    { MODIFIERKEY_LEFT_ALT, MODIFIERKEY_MOUSE_SCROLL },
 
     // end of table marker
     { NO_CODE, NO_CODE }  // replace the second value with ANY_CODE to make overlay transparent

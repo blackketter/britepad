@@ -7,6 +7,11 @@
 #include "BritepadShared.h"
 #include "ErgodoxLayout.h"
 
+#ifdef TEENSYDEBUG
+#include "TeensyDebug.h"
+#pragma GCC optimize ("O0")
+#endif
+
 Screen screen = Screen();
 TouchPad pad = TouchPad();
 Sound sound = Sound();
@@ -46,6 +51,10 @@ void setup() {
 
   // delay at startup, not sure why it's needed to get the cpu unstuck
   delay(500);
+
+#ifdef TEENSYDEBUG
+  debug.begin(SerialUSB1);
+#endif
 
   console.begin();
   console.setPort(&Serial);

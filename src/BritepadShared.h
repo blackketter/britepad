@@ -3,23 +3,17 @@
 
 #include "Arduino.h"
 
+#include "Clock.h"
+extern Clock clock;
+extern Timezone localTimezone;
+
+#include "Timer.h"
+
 #include "Console.h"
 extern Console console;
 
 #include "Screen.h"
 extern Screen screen;
-
-#include "BB1KeyMatrix.h"
-#include "ErgodoxKeyMatrix.h"
-#if defined(BB1)
-extern BB1KeyMatrix keys;
-#elif defined(BB100)
-#include "BB100KeyMatrix.h"
-extern BB100KeyMatrix keys;
-#endif
-
-#include "Britepad.h"
-extern Britepad britepad;
 
 #include "BritepadKeyEventQueue.h"
 extern BritepadKeyEventQueue keyEvents;
@@ -33,12 +27,14 @@ extern Sound sound;
 #include "MousePad.h"
 extern MousePad mousePad;
 
-
-#include "Clock.h"
-extern Clock clock;
-extern Timezone localTimezone;
-
-#include "Timer.h"
+#include "BB1KeyMatrix.h"
+#include "ErgodoxKeyMatrix.h"
+#if defined(BB1)
+extern BB1KeyMatrix keys;
+#elif defined(BB100)
+#include "BB100KeyMatrix.h"
+extern BB100KeyMatrix keys;
+#endif
 
 #include "Dictionary.h"
 extern EEPROMDictionary prefs;
@@ -50,5 +46,12 @@ extern EEPROMDictionary prefs;
 #include "PString.h"
 
 #include "Pointer.h"
+
+#include "apps/BritepadApp.h"
+
+#include "BritepadKeyEventQueue.h"
+
+#include "Britepad.h"
+extern Britepad britepad;
 
 #endif

@@ -3,12 +3,12 @@
 
 
 BritepadApp* SetCountdownApp::exitsTo() {
-  return getAppByID(CountdownApp::ID);
+  return BritepadApp::getAppByID(CountdownApp::ID);
 }
 
 void SetCountdownApp::begin(AppMode asMode) {
 
-  CountdownApp* countdownApp = (CountdownApp*)getAppByID(CountdownApp::ID);
+  CountdownApp* countdownApp = (CountdownApp*)BritepadApp::getAppByID(CountdownApp::ID);
   if (countdownApp) {
     countdownTime.setSeconds(countdownApp->getTime());
   }
@@ -19,7 +19,7 @@ void SetCountdownApp::begin(AppMode asMode) {
 
 void SetCountdownApp::end() {
 
-  CountdownApp* countdownApp = (CountdownApp*)getAppByID(CountdownApp::ID);
+  CountdownApp* countdownApp = (CountdownApp*)BritepadApp::getAppByID(CountdownApp::ID);
   if (countdownApp) {
     countdownApp->setTime(countdownTime.getSeconds());
   }

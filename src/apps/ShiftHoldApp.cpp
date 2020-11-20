@@ -1,5 +1,6 @@
 #include "KeyMatrix.h"
 #include "KeyboardApp.h"
+#include "BritepadShared.h"
 
 // this app lets you type shifted key by holding down the key for more than a default 250ms.
 

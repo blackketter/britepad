@@ -1,6 +1,7 @@
 #include "ConsoleApp.h"
 #include "Sound.h"
 #include <usb_keyboard.h>
+#include "BritepadShared.h"
 
 ConsoleApp theConsoleApp;
 

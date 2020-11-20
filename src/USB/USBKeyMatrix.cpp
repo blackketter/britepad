@@ -1,9 +1,5 @@
 #include "USBKeyMatrix.h"
 #include "USBKeyLayout.h"
-#include "apps/KeyboardViewerApp.h"
-
-USBKeyMatrix usbKeys;
-KeyboardViewerApp theUSBKeyboardViewerApp(&usbKeys);
 
 #ifndef NOUSBHOST
 class RawKeyboardController : public KeyboardController {
@@ -29,6 +25,8 @@ static bool contains(uint8_t b, const uint8_t *data)
 	if (data[5] == b || data[6] == b || data[7] == b) return true;
 	return false;
 }
+
+extern USBKeyMatrix usbKeys;
 
 void RawKeyboardController::new_data(const Transfer_t *transfer)
 {
@@ -92,7 +90,7 @@ void USBKeyMatrix::begin(KeyEventQueue* queue) {
   KeyMatrix::begin(queue);
 }
 
-boolean USBKeyMatrix::update() {
+bool USBKeyMatrix::update() {
   if (_updated) {
     _updated = false;
     return true;

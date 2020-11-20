@@ -91,8 +91,6 @@ void SetClockApp::begin(AppMode asMode) {
 
 void SetClockApp::end() {
   theTime->endSetTime();
-  britepad.timeChanged();
-
   BritepadApp::end();
 }
 

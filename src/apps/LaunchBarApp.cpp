@@ -1,4 +1,5 @@
 #include "KeyboardApp.h"
+#include "BritepadShared.h"
 
 
 static void releaseTimerCallback(void* app) {

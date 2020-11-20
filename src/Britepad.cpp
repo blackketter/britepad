@@ -7,6 +7,7 @@
 #include "apps/LauncherApp.h"
 #include "apps/ClockApp.h"
 #include "apps/SplashApp.h"
+#include "apps/AlarmApp.h"
 
 #include "USB/USBHost.h"
 
@@ -15,6 +16,9 @@ FPSCommand theFPSCommand;
 
 BritepadKeyEventQueue keyEvents;
 #include "TypeCommand.h"
+
+// for the bell icon
+#include "KeyIcons.h"
 
 #define PROXIMITY_DEAD_TIME (1000)
 
@@ -27,48 +31,6 @@ class QuitCommand : public Command {
 };
 QuitCommand theQuitCommand;
 
-BritepadApp* appList = nullptr;
-
-BritepadApp* Britepad::getAppByID(appid_t appID) {
-
-  BritepadApp* nextapp = appList;
-  while (nextapp) {
-
-    if (nextapp->isID(appID)) {
-      return nextapp;
-    }
-    nextapp = nextapp->getNextApp();
-  }
-  return nullptr;
-}
-
-void Britepad::sortApps() {
-  BritepadApp* oldList = appList;
-  appList = nullptr;
-
-  while (oldList) {
-    BritepadApp* i = oldList;
-    BritepadApp* highest = i;
-    BritepadApp* highestPrev = nullptr;
-
-    BritepadApp* p = nullptr;
-    while (i) {
-      if (strcasecmp(i->name(), highest->name()) > 0) {
-        highestPrev = p;
-        highest = i;
-      }
-      p = i;
-      i = i->getNextApp();
-    }
-
-    // remove from the list
-    BritepadApp* n = highest->getNextApp();
-    if (highestPrev) { highestPrev->setNextApp(n); } else { oldList = n; }
-
-    addApp(highest);
-  }
-}
-
 BritepadApp* Britepad::randomApp(AppMode m) {
 
   // if an app wants to be this mode, then give it a chance
@@ -79,7 +41,7 @@ BritepadApp* Britepad::randomApp(AppMode m) {
 
   // count the enabled apps
   int count = 0;
-  BritepadApp* nextapp = appList;
+  BritepadApp* nextapp = BritepadApp::getFirstApp();
   while (nextapp) {
     if (nextapp->canBeAppMode(m) && ((nextapp)->getEnabled(m))) {
       count++;
@@ -90,11 +52,11 @@ BritepadApp* Britepad::randomApp(AppMode m) {
   // pick a random one
   count = random(count);
 
-  nextapp = appList;
+  nextapp = BritepadApp::getFirstApp();
   while (nextapp) {
     if (nextapp->canBeAppMode(m) && ((nextapp)->getEnabled(m))) {
       if (count == 0) {
-        return nextapp;
+        return (BritepadApp*)nextapp;
       } else {
         count--;
       }
@@ -107,33 +69,20 @@ BritepadApp* Britepad::randomApp(AppMode m) {
 
 BritepadApp* Britepad::wantsToRun() {
 
-  BritepadApp* nextapp = appList;
+  BritepadApp* nextapp = BritepadApp::getFirstApp();
   while (nextapp) {
     if (nextapp->wantsToRun())
-      return nextapp;
+      return (BritepadApp*)nextapp;
     nextapp = nextapp->getNextApp();
   }
   return nullptr;
-}
-
-void Britepad::addApp(BritepadApp* app) {
-  app->setNextApp(appList);
-  appList = app;
-}
-
-BritepadApp* Britepad::getNextApp(BritepadApp* anApp) {
-  if (anApp) {
-    return anApp->getNextApp();
-  } else {
-    return appList;
-  }
 }
 
 void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
   if (newApp == BritepadApp::STAY_IN_APP) {
     return;
   } else if (newApp == BritepadApp::SWITCH_TO_INTERACTIVE_MODE) {
-    currApp->switchAppMode(INTERACTIVE_MODE);
+    currentApp()->switchAppMode(INTERACTIVE_MODE);
     return;
   } else if (newApp == BritepadApp::A_MOUSE_APP) {
     newApp = randomApp(MOUSE_MODE);
@@ -145,7 +94,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     newApp = lastAppPtr;
     asMode = lastAppMode;
   } else if (newApp == BritepadApp::EXIT_APP) {
-    newApp = getAppByID(LauncherApp::ID);
+    newApp = BritepadApp::getAppByID(LauncherApp::ID);
     asMode = INTERACTIVE_MODE;
   }
 
@@ -153,7 +102,7 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     launchedAppPtr = newApp;
   } else {
     console.debugln("Can't switch to null newApp, returning to launcher");
-    newApp = getAppByID(LauncherApp::ID);
+    newApp = BritepadApp::getAppByID(LauncherApp::ID);
     asMode = INTERACTIVE_MODE;
   }
 
@@ -161,9 +110,9 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     asMode = INTERACTIVE_MODE;
   }
 
-  if (newApp == currApp) {
-    if (currApp->getAppMode() != asMode) {
-       currApp->switchAppMode(asMode);
+  if (newApp == currentApp()) {
+    if (currentApp()->getAppMode() != asMode) {
+       currentApp()->switchAppMode(asMode);
     }
     return;
   }
@@ -172,13 +121,13 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
     screensaverStartedTime = pad.time();
   }
 
-  if (currApp) {
-    currApp->end();
+  if (currentApp()) {
+    currentApp()->end();
   }
 
-  currApp = newApp;
+  setCurrentApp(newApp);
 
-  if (currApp) {
+  if (currentApp()) {
     const char* modeString = "unknown";
     switch (asMode) {
       case SCREENSAVER_MODE:
@@ -193,16 +142,16 @@ void Britepad::setApp(BritepadApp* newApp, AppMode asMode) {
       default:
         break;
     }
-    console.debugf("Begin: %s in %s mode\n", currApp->name(), modeString);
-    if (currApp->usesKeyboard()) {
+    console.debugf("Begin: %s in %s mode\n", currentApp()->name(), modeString);
+    if (currentApp()->usesKeyboard()) {
       keys.update();
 
       // when a keyboard app launches tell the host that all the keys have been released
       keyEvents.releaseKeys();
     }
 
-    currApp->begin(asMode);
-    currApp->drawBars();
+    currentApp()->begin(asMode);
+    drawBars();
     }
 }
 
@@ -247,17 +196,26 @@ void statusBarCallback(void* data) {
 
 void Britepad::updateStatusBar() {
   // updates the time in the status bar
-  currApp->drawStatusBar(true);
+  drawStatusBar(true);
 }
 
+void Britepad::resetClipRect() {
+//TODO - Remove need for this cast
+  BritepadApp* curr = (BritepadApp*)currentApp();
+  if (curr) {
+    coord_t top = curr->displaysStatusBar() ? _statusBarHeight : 0;
+    coord_t bottom = curr->displaysInfoBar() ? screen.height()-_statusBarHeight : screen.height();
+    curr->setClipRect(0, top, screen.width(), bottom-top);
+  }
+}
 void Britepad::begin() {
 
   // assumes that the splashapp has been created and added to list
   launchApp(SplashApp::ID, SCREENSAVER_MODE);
-  setApp(getAppByID(SplashApp::ID), SCREENSAVER_MODE);
+  setApp(BritepadApp::getAppByID(SplashApp::ID), SCREENSAVER_MODE);
 
   // initialize apps
-  BritepadApp* anApp = appList;
+  BritepadApp* anApp = BritepadApp::getFirstApp();
   while (anApp != nullptr) {
     anApp->init();
     anApp = anApp->getNextApp();
@@ -283,10 +241,10 @@ void Britepad::idle() {
     usbMouse.run();
     keys.update();
 
-    if (currApp && !currApp->usesKeyboard()) {
+    if (currentApp() && !currentApp()->usesKeyboard()) {
       keyEvents.sendKeys();
     }
-    if (currApp && currApp->isAppMode(MOUSE_MODE)) {
+    if (currentApp() && currentApp()->isAppMode(MOUSE_MODE)) {
       mousePad.run();
     };  // run current app state repeatedly
 
@@ -298,11 +256,11 @@ void Britepad::idle() {
     lastIdle = now;
 };
 
-// todo: sort the applist by priority instead of going through the list over and over again
+// todo: sort the app list by priority instead of going through the list over and over again
  bool Britepad::event(KeyEvent* e) {
   bool consumed = false;
 //  console.debugln("\n\n****BEGIN Processing event****");
-  BritepadApp* anApp = appList;
+  BritepadApp* anApp = BritepadApp::getFirstApp();
   EventPriority lowestPriority = PRIORITY_NORMAL;
   EventPriority currentPriority = PRIORITY_NORMAL;
 
@@ -323,7 +281,7 @@ void Britepad::idle() {
   EventPriority nextPriority = currentPriority;
 
   do {
-    anApp = appList;
+    anApp = BritepadApp::getFirstApp();
 //    console.debugf("***Current Priority: %d\n", currentPriority);
     // go through list looking for the current priority and process those
     while (anApp != nullptr) {
@@ -359,14 +317,6 @@ void Britepad::idle() {
   return consumed;
 }
 
-void Britepad::timeChanged() {
-  BritepadApp* anApp = appList;
-  while (anApp != nullptr) {
-    anApp->timeChanged();
-    anApp = anApp->getNextApp();
-  }
-}
-
 void Britepad::loop() {
 
   pad.update();
@@ -375,19 +325,19 @@ void Britepad::loop() {
     resetScreensaver();
   }
 
-  if (!currApp) {
+  if (!currentApp()) {
       console.debugln("No currapp!");
       launchApp(LauncherApp::ID);
   }
 
   if (pad.pressed(TOP_PAD)) {
-    currApp->exit();
-  } else if (currApp->isAppMode(SCREENSAVER_MODE) && (pad.pressed(SCREEN_PAD) || ((pad.pressed(ANY_PAD) && !currApp->canBeInteractive())))) {
+    currentApp()->exit();
+  } else if (currentApp()->isAppMode(SCREENSAVER_MODE) && (pad.pressed(SCREEN_PAD) || ((pad.pressed(ANY_PAD) && !currentApp()->canBeInteractive())))) {
     console.debugln("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
-    if (currApp->canBeMouse() && currApp->getEnabled(MOUSE_MODE) && usbActive()) {
+    if (currentApp()->canBeMouse() && currentApp()->getEnabled(MOUSE_MODE) && usbActive()) {
       console.debugln("switching current app to MOUSE_MODE");
-      currApp->switchAppMode(MOUSE_MODE);
+      currentApp()->switchAppMode(MOUSE_MODE);
     } else if (usbActive()) {
       console.debugln("launching A_MOUSE_APP");
       launchApp(BritepadApp::A_MOUSE_APP, MOUSE_MODE);
@@ -397,31 +347,31 @@ void Britepad::loop() {
 
   } else  {
    // check if somebody wants to be screensaver
-   if (currApp->isAppMode(SCREENSAVER_MODE) &&
-       !currApp->wantsToRun() &&
+   if (currentApp()->isAppMode(SCREENSAVER_MODE) &&
+       !currentApp()->wantsToRun() &&
        wantsToRun()) {
 
       launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
 
   // let's check to see if we should run a screensaver
-  } else if (pad.time() > disableScreensaversUntil && !currApp->disablesScreensavers()) {
+  } else if (pad.time() > disableScreensaversUntil && !currentApp()->disablesScreensavers()) {
 
     if ( pad.pressed(PROXIMITY_SENSOR) &&
-         currApp->isAppMode(SCREENSAVER_MODE) &&
-         !currApp->displaysClock() &&
-         getAppByID(ClockApp::ID))
+         currentApp()->isAppMode(SCREENSAVER_MODE) &&
+         !currentApp()->displaysClock() &&
+         BritepadApp::getAppByID(ClockApp::ID))
     {
       launchApp(ClockApp::ID, SCREENSAVER_MODE);
       resetScreensaver(showClockDur);  // disable screensavers for a little while
       sound.click();
       console.debugln("Proximity detected: showing clock");
 
-    } else if (currApp->isAppMode(SCREENSAVER_MODE) && getScreensaverSwitchInterval() && (pad.time() - screensaverStartedTime) > getScreensaverSwitchInterval()*1000) {
+    } else if (currentApp()->isAppMode(SCREENSAVER_MODE) && getScreensaverSwitchInterval() && (pad.time() - screensaverStartedTime) > getScreensaverSwitchInterval()*1000) {
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
 
       // is it time for the screensaver to kick in?
-      } else if (!currApp->isAppMode(SCREENSAVER_MODE) && (pad.time() > disableScreensaversUntil)
-        && !(currApp->canBeScreensaver() && currApp->isAppMode(MOUSE_MODE))) {
+      } else if (!currentApp()->isAppMode(SCREENSAVER_MODE) && (pad.time() > disableScreensaversUntil)
+        && !(currentApp()->canBeScreensaver() && currentApp()->isAppMode(MOUSE_MODE))) {
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
       }
     }
@@ -431,7 +381,7 @@ void Britepad::loop() {
 
   launchApp(BritepadApp::STAY_IN_APP);
 
-  currApp->run();
+  currentApp()->run();
   theFPSCommand.newFrame();
 
   idle();
@@ -462,7 +412,7 @@ void Britepad::launchApp(BritepadApp* app, AppMode mode) {
 }
 
 void Britepad::launchApp(appid_t id, AppMode mode) {
-  launchApp(getAppByID(id), mode);
+  launchApp(BritepadApp::getAppByID(id), mode);
 }
 
 void Britepad::exit() {
@@ -510,6 +460,78 @@ void Britepad::wakeHost() {
 #endif
 }
 
+void Britepad::drawBars(bool update) {
+  drawInfoBar(update);
+  drawStatusBar(update);
+}
+
+void Britepad::drawStatusBar(bool update) {
+  if (currentApp()->displaysStatusBar()) {
+    screen.setClipRect(0, 0, screen.width(), _statusBarHeight);
+
+    screen.setFont(&Arial_8_Bold);
+    screen.setTextColor(currentApp()->statusBarFGColor());
+
+    if (!update) {
+      screen.fillScreen(currentApp()->statusBarBGColor());
+
+      // draw title
+      const char* title = currentApp()->statusBarTitle();
+      screen.setCursor( (screen.clipWidth() - screen.measureTextWidth(title)) / 2,
+                         (_statusBarHeight-screen.measureTextHeight(title)) / 2);
+      screen.drawText(title);
+    }
+
+    // only include the clock if the app doesn't already draw a clock
+    if (!currentApp()->displaysClock() && clock.hasBeenSet()) {
+      // draw title
+      screen.setFont(&Arial_8_Bold);
+      color_t textColor = screen.mix(currentApp()->statusBarFGColor(), currentApp()->statusBarBGColor());
+      screen.setTextColor(textColor, currentApp()->statusBarBGColor());
+      char shortTime[20];
+      clock.shortTime(shortTime);
+      char shortTimeSpaced[100];
+      sprintf(shortTimeSpaced,"  %s ", shortTime);
+      screen.setCursor( (screen.clipRight() - screen.measureTextWidth(shortTimeSpaced) - 2),
+                        (_statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
+      screen.drawText(shortTimeSpaced);
+
+      AlarmApp* alarm = (AlarmApp*)BritepadApp::getAppByID(AlarmApp::ID);
+      if (alarm && alarm->getAlarmEnabled()) {
+        Icon(bellIcon).draw( screen.clipRight() - screen.measureTextWidth(shortTimeSpaced) - 10, 4, textColor) ;
+      }
+
+      clock.shortDate(shortTime);
+      sprintf(shortTimeSpaced,"  %s ", shortTime);
+      screen.setCursor( screen.clipLeft() + 2,
+                        (_statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
+      screen.drawText(shortTimeSpaced);
+    }
+
+  }
+  resetClipRect();
+}
+
+void Britepad::drawInfoBar(bool update) {
+  if (currentApp()->displaysInfoBar()) {
+    coord_t top = screen.height()-_statusBarHeight;
+    screen.setClipRect(0, top, screen.width(), screen.height()-top);
+
+    screen.setFont(&Arial_8_Bold);
+    screen.setTextColor(currentApp()->infoBarFGColor());
+
+    const char* text = currentApp()->infoBarText();
+    if (!update && text) {
+      screen.fillScreen(currentApp()->infoBarBGColor());
+
+      screen.setCursor( (screen.clipWidth() - screen.measureTextWidth(text)) / 2,
+                         top + (_statusBarHeight-screen.measureTextHeight(text)) / 2);
+      screen.drawText(text);
+    }
+
+  }
+   resetClipRect();
+}
 
 
 class KeyEventsCommand : public Command {

@@ -1,4 +1,5 @@
 #include "InfoApp.h"
+#include "BritepadShared.h"
 
 void printBpInfo(Print* p) {
   char string[100];

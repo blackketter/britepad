@@ -21,11 +21,20 @@ EEPROMDictionary prefs = EEPROMDictionary();
 MousePad mousePad = MousePad();
 Console console = Console();
 
+#include "USB/USBKeyMatrix.h"
+#include "apps/KeyboardViewerApp.h"
+
 #if defined(BB1)
 BB1KeyMatrix keys;
 #elif defined(BB100)
 BB100KeyMatrix keys;
 #endif
+
+KeyboardViewerApp theKeyboardViewerApp(&keys);
+
+USBKeyMatrix usbKeys;
+KeyboardViewerApp theUSBKeyboardViewerApp(&usbKeys);
+
 
 Clock clock;
 

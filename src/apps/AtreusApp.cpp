@@ -1,5 +1,6 @@
 #include "KeyMatrix.h"
 #include "KeyboardApp.h"
+#include "BritepadShared.h"
 
 // map for BB1 keys to Atreus
 static const keymap_t atreusMap[] = {

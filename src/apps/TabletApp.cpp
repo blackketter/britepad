@@ -1,4 +1,5 @@
 #include "BritepadApp.h"
+#include "BritepadShared.h"
 
 class TabletApp : public BritepadApp {
   public:

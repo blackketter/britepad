@@ -1,4 +1,6 @@
 #include "BritepadApp.h"
+#include "Timer.h"
+#include "BritepadShared.h"
 
 class ChimeApp : public BritepadApp {
 

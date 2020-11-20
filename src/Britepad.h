@@ -1,28 +1,7 @@
 #ifndef _Britepad_
 #define _Britepad_
-
-#include "BritepadKeyEventQueue.h"
 #include "BritepadShared.h"
-#include "Timer.h"
-
-
-// Apps run in particular modes
-enum AppMode {
-  NO_MODE = 0,
-  MOUSE_MODE = 1,
-  INTERACTIVE_MODE = 2,
-  SCREENSAVER_MODE = 4,
-  INACTIVE_MODE = 8,
-  KEYBOARD_MODE = 16,
-  INVISIBLE_MODE = 32,
-  SETUP_MODE = 64,
-  ANY_MODE = 255
-};
-
-typedef const char* appid_t;
-
-class BritepadApp;
-class LauncherApp;
+#include "apps/BritepadApp.h"
 
 class Britepad {
   public:
@@ -32,13 +11,9 @@ class Britepad {
 
     void launchApp(BritepadApp* app, AppMode mode = INTERACTIVE_MODE);
     void launchApp(appid_t id, AppMode mode = INTERACTIVE_MODE);
-    BritepadApp* currentApp() { return currApp; }
+    BritepadApp* currentApp() { return _currApp; }
     void exit();
 
-    static void addApp(BritepadApp* newApp);
-    BritepadApp* getAppByID(appid_t appID);
-    void sortApps();
-    BritepadApp* getNextApp(BritepadApp* anApp = nullptr);
     void updateStatusBar();
     BritepadApp* getLaunchedApp() { return launchedAppPtr; }
     AppMode getLaunchedAppMode() { return launchedAppMode; }
@@ -59,8 +34,12 @@ class Britepad {
     void wakeHost();
     millis_t lastEventTime() { return keyEvents.lastEventTime(); }
 
+    void drawInfoBar(bool update = false);
+    void drawBars(bool update = false); // draw the status and info bars
+    void drawStatusBar(bool update);
+
   private:
-    BritepadApp* currApp = nullptr;
+    BritepadApp* _currApp = nullptr;
     BritepadApp* launchedAppPtr = nullptr;
     AppMode launchedAppMode = INTERACTIVE_MODE;
 
@@ -68,9 +47,12 @@ class Britepad {
     AppMode lastAppMode = INTERACTIVE_MODE;
 
     void setApp(BritepadApp* newApp, AppMode asMode);  // sets the current app
+    void setCurrentApp(BritepadApp* newApp) { _currApp = newApp; };
 
     BritepadApp* wantsToRun();
     BritepadApp* randomApp(AppMode m);
+
+    void resetClipRect();
 
     millis_t lastIdle = 0;
     millis_t idleInterval = 8;  // minimum interval between idles.  8ms is 125hz or the default mouse speed
@@ -90,6 +72,8 @@ class Britepad {
 
     const char* screensaverSwitchIntervalPref = "scri";
     const char* screensaverStartIntervalPref = "ssst";
+
+    static const coord_t _statusBarHeight = 16;
 };
 
 #endif

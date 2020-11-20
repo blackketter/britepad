@@ -67,7 +67,7 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
 
   // do all the specifically positioned apps, then the default (0) position apps
   for (int specific = 1; specific >= 0; specific--) {
-    BritepadApp* a = britepad.getNextApp(startingWith);
+    BritepadApp* a = startingWith->getNextApp();
     while (a) {
       if (filter(a)) {
         int32_t pos = appPos(a);
@@ -104,7 +104,7 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
           }
         }
       }
-      a = britepad.getNextApp(a);
+      a = a->getNextApp();
     }
   }
 }
@@ -386,7 +386,7 @@ void LauncherApp::begin(AppMode asMode) {
   console.debugln("start LauncherApp::begin");
 
   // first, sort the list alphabetically
-  britepad.sortApps();
+  BritepadApp::sortApps();
 
   britepad.resetScreensaver();
 
@@ -460,7 +460,7 @@ void LauncherApp::run() {
         setCurrentPageIndex();
       }
 
-      drawBars();
+      britepad.drawBars();
       clearScreen();
       getCurrentPage()->draw();
     }
@@ -489,7 +489,7 @@ void LauncherApp::goToPage(pageindex_t s) {
     setCurrentPageIndex(s);
     sound.swipe(d);
     screen.pushFill(d, bgColor());
-    drawBars();
+    britepad.drawBars();
     getCurrentPage()->draw();
   }
 }

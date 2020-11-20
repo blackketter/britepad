@@ -4,7 +4,6 @@
 #include "KeyboardApp.h"
 #include "widgets/KeyboardWidget.h"
 
-
 class KeyboardViewerApp : public KeyboardApp {
   public:
     KeyboardViewerApp(KeyMatrix* keyMatrix) { _keyMatrix = keyMatrix; };

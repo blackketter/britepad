@@ -25,7 +25,9 @@ void USBMouse::run() {
     _x += _dx;
     _y += _dy;
     _wheel += _dwheel;
-
+    if (_dwheel) {
+      sound.click(0.125f);
+    }
     checkBounds();
 
     usb_mouse_buttons_state = _buttons;

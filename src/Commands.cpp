@@ -8,7 +8,7 @@ class AppsCommand : public Command {
     const char* getHelp() { return "Lists installed apps"; }
     void execute(Console* c, uint8_t paramCount, char** params) {
         // show the apps that have been loaded
-        BritepadApp* anApp = britepad.getNextApp();
+        BritepadApp* anApp = BritepadApp::getFirstApp();
         int count = 1;
         while (anApp != nullptr) {
           c->printf("  %d : %s - %s (%08x)\n", count, anApp->id(), anApp->name(), (uint32_t)anApp);
@@ -20,13 +20,13 @@ class AppsCommand : public Command {
 AppsCommand theAppsCommand;
 
 BritepadApp* findApp(const char* s) {
-  BritepadApp* a = britepad.getAppByID(s);
+  BritepadApp* a = BritepadApp::getAppByID(s);
   if (a == nullptr) {
     int n = atoi(s);
     if (n) {
-      a = britepad.getNextApp();
+      a = BritepadApp::getFirstApp();
       while (n > 1) {
-        a = britepad.getNextApp(a);
+        a = a->getNextApp();
         n--;
       }
     }
@@ -93,7 +93,7 @@ class LaunchCommand : public Command {
         c->printf("got back app %s - %x\n", params[pathindex],(uint32_t)a);
         if (a) {
           c->printf("Running app '%s' - %s...\n",a->id(), a->name());
-          britepad.launchApp(a, mode);
+          britepad.launchApp((BritepadApp*)a, mode);
           britepad.resetScreensaver(5*60*1000);  // run it for 5 minutes, then let the screensavers do their work
         } else {
           c->println("Invalid app id");

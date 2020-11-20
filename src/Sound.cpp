@@ -87,7 +87,7 @@ int Sound::freeSynth() {
 }
 
 
-void Sound::click() {
+void Sound::click(float loudness) {
   int beeper = freeSynth();
   if (beeper != NO_SYNTH) {
     //console.debugln("click");
@@ -99,7 +99,7 @@ void Sound::click() {
     envelopes[beeper].decay(0);
     envelopes[beeper].sustain(0);  //  just a percussive sound, no sustain
 
-    waveforms[beeper].begin(.5f, 1000, WAVEFORM_PULSE);
+    waveforms[beeper].begin(loudness, 1000, WAVEFORM_PULSE);
     envelopes[beeper].noteOn();
     AudioInterrupts();
   }

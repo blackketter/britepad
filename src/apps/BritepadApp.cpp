@@ -3,99 +3,54 @@
 #include "widgets/Icon.h"
 #include "widgets/AppButton.h"
 
-BritepadApp::BritepadApp()  {
-  Britepad::addApp(this);
+BritepadApp* BritepadApp::_appList = nullptr;
+
+void BritepadApp::setClipRect(coord_t x, coord_t y, coord_t w, coord_t h) {
+  screen.setClipRect(x,y,w,h);
 }
 
-bool BritepadApp::event(KeyEvent* key) {
-  return false;
-}
-
-void BritepadApp::resetClipRect() {
-  coord_t top = displaysStatusBar() ? _statusBarHeight : 0;
-  coord_t bottom = displaysInfoBar() ? screen.height()-_statusBarHeight : screen.height();
-  screen.setClipRect(0, top, screen.width(), bottom-top);
-}
-
-const uint8_t bellIcon[] = {
-  8,8,
-  0b00011000,
-  0b00111100,
-  0b01100110,
-  0b01100110,
-  0b01100110,
-  0b11111111,
-  0b11111111,
-  0b00011000
+bool BritepadApp::isCurrentApp() {
+  return britepad.currentApp() == this;
 };
 
-void BritepadApp::drawStatusBar(bool update) {
-  if (displaysStatusBar()) {
-    screen.setClipRect(0, 0, screen.width(), _statusBarHeight);
+void BritepadApp::launchApp(BritepadApp* app, AppMode mode) {
+  britepad.launchApp(app, mode);
+};
 
-    screen.setFont(&Arial_8_Bold);
-    screen.setTextColor(statusBarFGColor());
-
-    if (!update) {
-      screen.fillScreen(statusBarBGColor());
-
-      // draw title
-      const char* title = statusBarTitle();
-      screen.setCursor( (screen.clipWidth() - screen.measureTextWidth(title)) / 2,
-                         (_statusBarHeight-screen.measureTextHeight(title)) / 2);
-      screen.drawText(title);
-    }
-
-    // only include the clock if the app doesn't already draw a clock
-    if (!displaysClock() && clock.hasBeenSet()) {
-      // draw title
-      screen.setFont(&Arial_8_Bold);
-      color_t textColor = screen.mix(statusBarFGColor(), statusBarBGColor());
-      screen.setTextColor(textColor, statusBarBGColor());
-      char shortTime[20];
-      clock.shortTime(shortTime);
-      char shortTimeSpaced[100];
-      sprintf(shortTimeSpaced,"  %s ", shortTime);
-      screen.setCursor( (screen.clipRight() - screen.measureTextWidth(shortTimeSpaced) - 2),
-                        (_statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
-      screen.drawText(shortTimeSpaced);
-
-      AlarmApp* alarm = (AlarmApp*)getAppByID(AlarmApp::ID);
-      if (alarm && alarm->getAlarmEnabled()) {
-        Icon(bellIcon).draw( screen.clipRight() - screen.measureTextWidth(shortTimeSpaced) - 10, 4, textColor) ;
-      }
-
-      clock.shortDate(shortTime);
-      sprintf(shortTimeSpaced,"  %s ", shortTime);
-      screen.setCursor( screen.clipLeft() + 2,
-                        (_statusBarHeight-screen.measureTextHeight(shortTimeSpaced)) / 2);
-      screen.drawText(shortTimeSpaced);
-    }
-
-  }
-  resetClipRect();
+KeyEvent* BritepadApp::getNextEvent() {
+  KeyEvent* e = keyEvents.getNextEvent();
+  if (e) {
+    britepad.resetScreensaver();
+  };
+  return e;
 }
 
-void BritepadApp::drawInfoBar(bool update) {
-  if (displaysInfoBar()) {
-    coord_t top = screen.height()-_statusBarHeight;
-    screen.setClipRect(0, top, screen.width(), screen.height()-top);
-
-    screen.setFont(&Arial_8_Bold);
-    screen.setTextColor(infoBarFGColor());
-
-    const char* text = infoBarText();
-    if (!update && text) {
-      screen.fillScreen(infoBarBGColor());
-
-      screen.setCursor( (screen.clipWidth() - screen.measureTextWidth(text)) / 2,
-                         top + (_statusBarHeight-screen.measureTextHeight(text)) / 2);
-      screen.drawText(text);
-    }
-
-  }
-  resetClipRect();
+KeyEvent* BritepadApp::peekNextEvent() {
+  KeyEvent* e = keyEvents.peekNextEvent();
+  if (e) {
+    britepad.resetScreensaver();
+  };
+  return e;
 }
+
+bool BritepadApp::timeToLeave() {
+  return ((Uptime::millis() -  pad.time()) > _maxRunTime);
+}
+
+void BritepadApp::setPrefs() {
+  if (hasPrefs()) {
+    uint8_t pref = (uint8_t)_enabled;
+    prefs.set(id(), sizeof(pref), (uint8_t*)&pref);
+  }
+};
+
+void BritepadApp::getPrefs() {
+  if (hasPrefs()) {
+    uint8_t pref = (uint8_t)defaultEnabled();
+    prefs.get(id(),  sizeof(pref), (uint8_t*)&pref);
+    _enabled = (AppMode)pref;
+  }
+};
 
 void BritepadApp::clearScreen() {
   //idle because fillScreen is slow
@@ -123,15 +78,6 @@ void BritepadApp::delay(millis_t d) {
     britepad.idle();
     yield();
   } while (Uptime::micros() <= end);
-}
-
-void BritepadApp::drawBars(bool update) {
-  drawInfoBar(update);
-  drawStatusBar(update);
-}
-
-bool BritepadApp::isID(appid_t match) {
-  return !strcmp(match, id());
 }
 
 bool BritepadApp::canBeAppMode(AppMode b) {
@@ -174,7 +120,7 @@ void BritepadApp::begin(AppMode asMode) {
   BritepadApp::switchAppMode(asMode);
   if (asMode != INVISIBLE_MODE && wasMode != INVISIBLE_MODE) {
     // redraw, but only if we are not going to or coming from an invisible mode
-    drawBars();
+    britepad.drawBars();
     clearScreen();
   }
   usbMouse.setBounds(screen.clipLeft(),screen.clipTop(), screen.clipWidth(), screen.clipHeight());
@@ -187,4 +133,54 @@ void BritepadApp::end() {
 AppButton* BritepadApp::newAppButton() {
   return new AppButton(this);
 }
+
+BritepadApp* BritepadApp::getAppByID(appid_t appID) {
+
+  BritepadApp* nextapp = getFirstApp();
+  while (nextapp) {
+
+    if (nextapp->isID(appID)) {
+      return nextapp;
+    }
+    nextapp = nextapp->getNextApp();
+  }
+  return nullptr;
+}
+
+
+bool BritepadApp::isID(appid_t match) {
+  return !strcmp(match, id());
+}
+
+void BritepadApp::sortApps() {
+  BritepadApp* oldList = getFirstApp();
+  setFirstApp(nullptr);
+
+  while (oldList) {
+    BritepadApp* i = oldList;
+    BritepadApp* highest = i;
+    BritepadApp* highestPrev = nullptr;
+
+    BritepadApp* p = nullptr;
+    while (i) {
+      if (strcasecmp(i->name(), highest->name()) > 0) {
+        highestPrev = p;
+        highest = i;
+      }
+      p = i;
+      i = i->getNextApp();
+    }
+
+    // remove from the list
+    BritepadApp* n = highest->getNextApp();
+    if (highestPrev) { highestPrev->setNextApp(n); } else { oldList = n; }
+
+    BritepadApp::addApp(highest);
+  }
+}
+
+bool BritepadApp::event(KeyEvent* key) {
+  return false;
+}
+
 

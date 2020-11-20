@@ -118,7 +118,7 @@ class MacrosApp : public BritepadApp {
       for (int i = 0; i < (_totalMacros); i++) {
 
         do {
-          currApp = britepad.getNextApp(currApp);
+          currApp = currApp->getNextApp();
         } while (currApp && !currApp->isID(MacroApp::ID));
 
         if (currApp == nullptr) {

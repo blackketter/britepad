@@ -1,5 +1,6 @@
 #include "KeyMatrix.h"
 #include "KeyboardApp.h"
+#include "BritepadShared.h"
 
 /*
 typedef struct keysound_t {

@@ -6,6 +6,6 @@
 class BB100KeyMatrix : public KeyMatrix {
   public:
     const char* name() override { return "BB-100 Key Matrix"; }
-    void update() override { }
+    bool update() override { return false;}
 };
 #endif

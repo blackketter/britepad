@@ -1,4 +1,4 @@
-#include "BritepadApp.h"
+#include "BritepadShared.h"
 
 class AmbientWakeupApp : public BritepadApp {
 

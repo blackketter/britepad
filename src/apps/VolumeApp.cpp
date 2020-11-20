@@ -1,4 +1,5 @@
 #include "BritepadApp.h"
+#include "BritepadShared.h"
 #include "Sound.h"
 
 const float _volumeLevels[] = {1.0, 0.0, 0.25, 0.5, 0.75 };

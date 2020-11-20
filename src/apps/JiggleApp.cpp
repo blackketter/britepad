@@ -1,4 +1,5 @@
 #include "BritepadApp.h"
+#include "BritepadShared.h"
 
 class JiggleApp : public BritepadApp {
 

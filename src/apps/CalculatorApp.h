@@ -11,7 +11,7 @@ class CalculatorApp : public BritepadApp {
     void run();
 
     bool usesKeyboard() { return true; }
-    BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
+    App* exitsTo() override { return A_SCREENSAVER_APP; }
 
     const char* name() { return "Calculator"; }
     appid_t id() { return ID; };

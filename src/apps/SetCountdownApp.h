@@ -10,7 +10,7 @@ class SetCountdownApp : public SetClockApp {
     void end();
     void begin(AppMode asMode);
 
-    BritepadApp* exitsTo();
+    App* exitsTo() override;
     bool displaysClock() { return false; };
 
     const char* name() { return "Set Countdown"; };

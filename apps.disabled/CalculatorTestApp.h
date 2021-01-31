@@ -10,7 +10,7 @@ class CalculatorTestApp : public BritepadApp {
     void end();
     void run();
 
-    BritepadApp* exitsTo() { return A_MOUSE_APP; }
+    App* exitsTo() override { return A_MOUSE_APP; }
 
     const char* name() { return "CalculatorTest"; }
     appid_t id() { return ID; };

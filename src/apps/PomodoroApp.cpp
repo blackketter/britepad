@@ -13,7 +13,7 @@ class PomodoroApp : public BritepadApp {
     bool wantsToRun() { return isRunning(); }
     bool canBeScreensaver() { return isRunning(); }
     virtual bool canBeMouse() { return isRunning(); }
-    BritepadApp* exitsTo() { return isAppMode(INTERACTIVE_MODE) ? EXIT_APP : SWITCH_TO_INTERACTIVE_MODE; }
+    App* exitsTo() override { return isAppMode(INTERACTIVE_MODE) ? EXIT_APP : SWITCH_TO_INTERACTIVE_MODE; }
     void switchAppMode(AppMode asMode);
 
     AppType getAppType() { return TIMER_APP; }

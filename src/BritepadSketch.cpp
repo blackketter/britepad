@@ -15,7 +15,7 @@
 Screen screen = Screen();
 TouchPad pad = TouchPad();
 Sound sound = Sound();
-Britepad britepad = Britepad();
+BritepadLauncher launcher = BritepadLauncher();
 EEPROMDictionary prefs = EEPROMDictionary();
 
 MousePad mousePad = MousePad();
@@ -34,7 +34,6 @@ KeyboardViewerApp theKeyboardViewerApp(&keys);
 
 USBKeyMatrix usbKeys;
 KeyboardViewerApp theUSBKeyboardViewerApp(&usbKeys);
-
 
 Clock clock;
 
@@ -88,16 +87,16 @@ void setup() {
   clock.updateTime();
 
   console.debugln("starting keyboard matrix");
-  keys.begin(&keyEvents);
+  keys.begin(keyEvents);
 
   Wire.setClock(WIRE_SPEED);
 
   watchdogKick();
 
   console.debugln("starting app framework");
-  britepad.begin();
+  launcher.begin();
 }
 
 void loop() {
-  britepad.loop();
+  launcher.loop();
 }

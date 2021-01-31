@@ -8,6 +8,4 @@ class BritepadKeyEventQueue : public KeyEventQueue {
     void processEvent(KeyEvent* e) override;
 };
 
-extern BritepadKeyEventQueue keyEvents;
-
 #endif

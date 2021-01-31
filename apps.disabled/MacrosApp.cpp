@@ -14,7 +14,7 @@ class MacrosApp : public BritepadApp {
     bool disablesScreensavers() { return _recording || _namefield; };
     const char* infoBarText() { return _infobartext; }
     bool usesKeyboard() { return !_recording; }
-    BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
+    App* exitsTo() override { return A_SCREENSAVER_APP; }
 
 
     void init() {

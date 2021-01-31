@@ -50,8 +50,8 @@ class ExitCommand : public Command {
     const char* getName() { return "exit"; }
     const char* getHelp() { return "Exit current app"; }
     void execute(Console* c, uint8_t paramCount, char** params) {
-      britepad.currentApp()->exit();
-      britepad.resetScreensaver();
+      launcher.currentApp()->exit();
+      launcher.resetScreensaver();
     }
 };
 

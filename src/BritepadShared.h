@@ -16,7 +16,7 @@ extern Console console;
 extern Screen screen;
 
 #include "BritepadKeyEventQueue.h"
-extern BritepadKeyEventQueue keyEvents;
+extern KeyEventQueue* keyEvents;
 
 #include "TouchPad.h"
 extern TouchPad pad;
@@ -51,7 +51,7 @@ extern EEPROMDictionary prefs;
 
 #include "BritepadKeyEventQueue.h"
 
-#include "Britepad.h"
-extern Britepad britepad;
+#include "BritepadLauncher.h"
+extern BritepadLauncher launcher;
 
 #endif

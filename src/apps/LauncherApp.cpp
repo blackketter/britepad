@@ -67,7 +67,7 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
 
   // do all the specifically positioned apps, then the default (0) position apps
   for (int specific = 1; specific >= 0; specific--) {
-    BritepadApp* a = startingWith->getNextApp();
+    BritepadApp* a = (BritepadApp*)(startingWith ? startingWith->getNextApp() : BritepadApp::getFirstApp());
     while (a) {
       if (filter(a)) {
         int32_t pos = appPos(a);
@@ -104,7 +104,7 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
           }
         }
       }
-      a = a->getNextApp();
+      a = (BritepadApp*)(a->getNextApp());
     }
   }
 }
@@ -124,8 +124,8 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
         )
        ) {
       AppMode runMode = _launchOnRelease->canBeSetup() ? SETUP_MODE : mode();
-      britepad.launchApp(_launchOnRelease, runMode);
-      britepad.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
+      launcher.launchApp(_launchOnRelease, runMode);
+      launcher.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
       _launchOnRelease = nullptr;
       key = nullptr;
     }
@@ -146,7 +146,7 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
         (pad.getGesture() == GESTURE_SWIPE_UP)
      || (key && key->pressed(KEY_ESC))
       ) {
-    britepad.exit();
+    launcher.exit();
     key = nullptr;
   }
 
@@ -176,8 +176,8 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
       } else {
         AppMode whichMode = mode();
         if (whichMode == INTERACTIVE_MODE || whichMode == ANY_MODE) {
-          britepad.launchApp(launched);
-          britepad.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
+          launcher.launchApp(launched);
+          launcher.resetScreensaver(5*60*1000);  // stay running for up to 5 minutes
         } else {
           launched->setEnabled(!launched->getEnabled(whichMode), whichMode);
           b->draw();
@@ -254,7 +254,7 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
 
   if (key && key->released(KEY_EXIT)) {
     if (!_launchOnRelease) {
-      britepad.exit();
+      launcher.exit();
     }
     key = nullptr;
   }
@@ -388,10 +388,10 @@ void LauncherApp::begin(AppMode asMode) {
   // first, sort the list alphabetically
   BritepadApp::sortApps();
 
-  britepad.resetScreensaver();
+  launcher.resetScreensaver();
 
   // this should wake up the host, which is great for entering passwords
-  britepad.wakeHost();
+  launcher.wakeHost();
   makePages();
 
   if (clock.now() - lastBegin < 2) {
@@ -460,7 +460,7 @@ void LauncherApp::run() {
         setCurrentPageIndex();
       }
 
-      britepad.drawBars();
+      launcher.drawBars();
       clearScreen();
       getCurrentPage()->draw();
     }
@@ -474,7 +474,7 @@ void LauncherApp::run() {
 
   if (!consumed && key && key->code() && key->pressed()) {
     // if the key hasn't been processed, then bail
-    britepad.exit();
+    launcher.exit();
   }
 
   if (consumed) {
@@ -489,7 +489,7 @@ void LauncherApp::goToPage(pageindex_t s) {
     setCurrentPageIndex(s);
     sound.swipe(d);
     screen.pushFill(d, bgColor());
-    britepad.drawBars();
+    launcher.drawBars();
     getCurrentPage()->draw();
   }
 }
@@ -520,7 +520,7 @@ void LauncherApp::end() {
   }
   audibleExit = false;
 
-  screen.pushFill(DIRECTION_UP, britepad.getLaunchedApp()->bgColor());
+  screen.pushFill(DIRECTION_UP, ((BritepadApp*)(launcher.getLaunchedApp()))->bgColor());
   BritepadApp::end();
 
   freePages();
@@ -529,17 +529,17 @@ void LauncherApp::end() {
     setCurrentPageIndex();
     lastRun = 0; // reset launch screen to default
   }
-  britepad.resetScreensaver();
+  launcher.resetScreensaver();
 }
 
 bool LauncherApp::event(KeyEvent* key) {
   bool consume = false;
   if (key->code(KEY_EXIT)) {
     if (key->pressed()) {
-      if (keyEvents.keyIsDown(MODIFIERKEY_LEFT_SHIFT) && !britepad.currentApp()->isID(ConsoleApp::ID)) {
-        britepad.launchApp(ConsoleApp::ID);
+      if (keyEvents->keyIsDown(MODIFIERKEY_LEFT_SHIFT) && !launcher.currentApp()->isID(ConsoleApp::ID)) {
+        launcher.launchApp(ConsoleApp::ID);
       } else {
-        britepad.exit();
+        launcher.exit();
       }
       audibleExit = true;  // if we're exiting this app, then play exit sound.
 
@@ -552,7 +552,7 @@ bool LauncherApp::event(KeyEvent* key) {
       exit();
       consume = true;
     } else {
-//      if (keyEvents.keyTapped(KEY_LEFT_FN) || keyEvents.keyTapped(KEY_RIGHT_FN)) {
+//      if (keyEvents->keyTapped(KEY_LEFT_FN) || keyEvents->keyTapped(KEY_RIGHT_FN)) {
 //        launch();
 //      }
     }
@@ -563,7 +563,7 @@ bool LauncherApp::event(KeyEvent* key) {
 
 bool LauncherApp::disablesScreensavers() {
     return false;
-//  return keyEvents.keyIsDown(KEY_RIGHT_FN);
+//  return keyEvents->keyIsDown(KEY_RIGHT_FN);
 }
 
 LauncherApp theLauncherApp;

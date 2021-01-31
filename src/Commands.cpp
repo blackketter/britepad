@@ -1,5 +1,5 @@
 #include "BritepadShared.h"
-#include "Britepad.h"
+#include "BritepadLauncher.h"
 #include "apps/BritepadApp.h"
 
 class AppsCommand : public Command {
@@ -8,7 +8,7 @@ class AppsCommand : public Command {
     const char* getHelp() { return "Lists installed apps"; }
     void execute(Console* c, uint8_t paramCount, char** params) {
         // show the apps that have been loaded
-        BritepadApp* anApp = BritepadApp::getFirstApp();
+        App* anApp = App::getFirstApp();
         int count = 1;
         while (anApp != nullptr) {
           c->printf("  %d : %s - %s (%08x)\n", count, anApp->id(), anApp->name(), (uint32_t)anApp);
@@ -19,12 +19,12 @@ class AppsCommand : public Command {
 };
 AppsCommand theAppsCommand;
 
-BritepadApp* findApp(const char* s) {
-  BritepadApp* a = BritepadApp::getAppByID(s);
+App* findApp(const char* s) {
+  App* a = App::getAppByID(s);
   if (a == nullptr) {
     int n = atoi(s);
     if (n) {
-      a = BritepadApp::getFirstApp();
+      a = App::getFirstApp();
       while (n > 1) {
         a = a->getNextApp();
         n--;
@@ -40,12 +40,12 @@ class AppCommand : public Command {
     const char* getName() { return "app"; }
     const char* getHelp() { return "appid | index - Print app info, default current"; }
     void execute(Console* c, uint8_t paramCount, char** params) {
-      BritepadApp* anApp = nullptr;
+      App* anApp = nullptr;
       if (paramCount) {
         anApp = findApp(params[1]);
       }
       if (anApp == nullptr) {
-        anApp = britepad.currentApp();
+        anApp = launcher.currentApp();
         c->print("Current ");
       }
 
@@ -89,12 +89,12 @@ class LaunchCommand : public Command {
         pathindex++;
       }
 
-        BritepadApp* a = findApp(params[pathindex]);
+        App* a = findApp(params[pathindex]);
         c->printf("got back app %s - %x\n", params[pathindex],(uint32_t)a);
         if (a) {
           c->printf("Running app '%s' - %s...\n",a->id(), a->name());
-          britepad.launchApp((BritepadApp*)a, mode);
-          britepad.resetScreensaver(5*60*1000);  // run it for 5 minutes, then let the screensavers do their work
+          launcher.launchApp((BritepadApp*)a, mode);
+          launcher.resetScreensaver(5*60*1000);  // run it for 5 minutes, then let the screensavers do their work
         } else {
           c->println("Invalid app id");
           printError(c);

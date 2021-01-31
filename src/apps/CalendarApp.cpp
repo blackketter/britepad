@@ -10,7 +10,7 @@ void CalendarApp::run() {
       year--;
     }
     screen.pushFill(DIRECTION_LEFT, bgColor());
-    britepad.drawBars();
+    launcher.drawBars();
     draw();
   }
   if (pad.pressed(RIGHT_PAD) || (pad.getGesture() == GESTURE_SWIPE_RIGHT)) {
@@ -20,7 +20,7 @@ void CalendarApp::run() {
       year++;
     }
     screen.pushFill(DIRECTION_RIGHT, bgColor());
-    britepad.drawBars();
+    launcher.drawBars();
     draw();
   }
 };

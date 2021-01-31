@@ -27,7 +27,7 @@ void RasterApp::run() {
       row[x] = c++;
     }
     if (y%10 == 0) {
-      britepad.idle();
+      launcher.idle();
     }
     screen.drawFastHLine(l, y, w, row);
   }

@@ -11,7 +11,7 @@ class ConsoleApp : public BritepadApp {
 
     virtual bool disablesScreensavers() { return true; }
     virtual bool usesKeyboard() { return true;}
-    virtual BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
+    virtual App* exitsTo() override { return A_SCREENSAVER_APP; }
 
     const char* name() { return "Console"; };
     appid_t id() { return ID; };

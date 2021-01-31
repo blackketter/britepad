@@ -23,7 +23,7 @@ void Widget::draw() {
   while (w) {
     w->draw();
     w = w->getNext();
-    britepad.idle();
+    launcher.idle();
   }
 };
 

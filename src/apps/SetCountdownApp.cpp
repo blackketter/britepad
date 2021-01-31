@@ -2,7 +2,7 @@
 #include "CountdownApp.h"
 
 
-BritepadApp* SetCountdownApp::exitsTo() {
+App* SetCountdownApp::exitsTo() {
   return BritepadApp::getAppByID(CountdownApp::ID);
 }
 

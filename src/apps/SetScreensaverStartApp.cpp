@@ -11,7 +11,7 @@ class ScreensaverStartApp : public BritepadApp {
 
     void run() {
       time_t timeout;
-      timeout = britepad.getScreensaverStartInterval();
+      timeout = launcher.getScreensaverStartInterval();
       switch (timeout) {
         case 3:
           timeout = 5;
@@ -30,11 +30,11 @@ class ScreensaverStartApp : public BritepadApp {
           timeout = 3;
           break;
       }
-      britepad.setScreensaverStartInterval(timeout);
+      launcher.setScreensaverStartInterval(timeout);
     }
 
     const char* name() {
-      time_t startInterval = britepad.getScreensaverStartInterval();
+      time_t startInterval = launcher.getScreensaverStartInterval();
       if (startInterval == 0) {
         return "No screensaver";
       } else {

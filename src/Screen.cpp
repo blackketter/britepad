@@ -130,14 +130,14 @@ void Screen::pushFill(direction_t dir, color_t color) {
     case DIRECTION_UP:
       for (coord_t i = height() - stepSize; i >= 0; i -= stepSize) {
         fillRect(0, i, width(), stepSize, color);
-        britepad.idle();
+        launcher.idle();
 //delay(1);
       }
       break;
     case DIRECTION_DOWN:
       for (coord_t i = 0; i < height(); i += stepSize) {
         fillRect(0, i, width(), stepSize, color);
-        britepad.idle();
+        launcher.idle();
 //        delay(1);
       }
       break;
@@ -150,7 +150,7 @@ void Screen::pushFill(direction_t dir, color_t color) {
         } else {
           screen.setScroll(i+stepSize);
         }
-        britepad.idle();
+        launcher.idle();
 //        delay(1);
       }
       pushClipRect(&r);
@@ -164,7 +164,7 @@ void Screen::pushFill(direction_t dir, color_t color) {
         } else {
           screen.setScroll(width()-stepSize-i);
         }
-        britepad.idle();
+        launcher.idle();
 //        delay(1);
       }
       pushClipRect(&r);

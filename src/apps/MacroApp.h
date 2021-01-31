@@ -92,12 +92,12 @@ class MacroApp : public BritepadApp {
         prefs.get(prefID.c_str(), s, (uint8_t*)macro);
         millis_t keytime = Uptime::millis();
         for (int i = 0; i < events; i++) {
-          keyEvents.addEvent(nullptr, NO_KEY, macro[i].code, keytime, macro[i].pressed);
+          keyEvents->addEvent(nullptr, NO_KEY, macro[i].code, keytime, macro[i].pressed);
           keytime += 25;  // delay each key
         }
         // wait until all the events are sent
-        while (keyEvents.peekNextEvent()) {
-          britepad.idle();
+        while (keyEvents->peekNextEvent()) {
+          launcher.idle();
         }
       } else {
         console.debugln("No macro found");

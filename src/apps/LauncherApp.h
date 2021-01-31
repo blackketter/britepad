@@ -18,7 +18,7 @@ class LauncherApp : public BritepadApp {
     bool event(KeyEvent* key);
 
     bool usesKeyboard() { return true; }
-    BritepadApp* exitsTo() { return A_SCREENSAVER_APP; }
+    App* exitsTo() override { return A_SCREENSAVER_APP; }
     const char* name() { return "Launcher"; };
 
     AppType getAppType() { return NO_APP_TYPE; } // doesn't show a button for itself

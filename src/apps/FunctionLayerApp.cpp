@@ -20,7 +20,7 @@ class FunctionLayerApp : public KeyboardApp {
             console.debug("setting function layer\n");
             keys.setOverlay(functionOverlay);
 
-            britepad.wakeHost();
+            launcher.wakeHost();
           }
         } else if (
                    (key->released(KEY_LEFT_FN) || key->released(KEY_RIGHT_FN))  // released fn key
@@ -52,7 +52,7 @@ class MouseLayerApp : public KeyboardApp {
             console.debug("setting mouse layer\n");
             keys.setOverlay(mouseOverlay);
 
-            britepad.wakeHost();
+            launcher.wakeHost();
           }
         } else if (
                    (key->released(KEY_MOUSE))  // released fn key

@@ -99,7 +99,7 @@ void PlasmaApp::run() {
 
 
   for( coord_t x=0; x<w; x+=PLASMA_CLOUD_LINE_WIDTH ) {
-    britepad.idle();
+    launcher.idle();
     for( coord_t y=_ditherY; y<h; y+=PLASMA_CLOUD_STEP_Y ) {
       point_t d0, d1;
       d0.x = abs(p0.x - x);

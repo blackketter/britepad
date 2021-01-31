@@ -15,7 +15,7 @@ class LaunchBarApp : public KeyboardApp {
 
     EventPriority eventPriority() { return PRIORITY_LAST; }
     bool event(KeyEvent* key) {
-      if (getEnabled(KEYBOARD_MODE) && !britepad.currentApp()->usesKeyboard()) {
+      if (getEnabled(KEYBOARD_MODE) && !launcher.currentApp()->usesKeyboard()) {
 
           // a little logic here for Launchbar:
           // multiple taps selects running apps, tapping any other key switches apptoday

@@ -99,6 +99,6 @@ void Life1dApp::run() {
       _world[x] = newWorld[x];
     }
 
-    britepad.idle();
+    launcher.idle();
   }
 }

@@ -63,7 +63,7 @@ void TerminalWidget::draw() {
           _charSize);
       }
     }
-    britepad.idle();
+    launcher.idle();
   }
   // draw scrollbar
   if (_totalRows > _rows) {
@@ -87,7 +87,7 @@ void TerminalWidget::run() {
 bool TerminalWidget::key(KeyEvent* k) {
   if (k) {
       if (k->pressed()) {
-        char c = keyEvents.getKeyChar(k->code());
+        char c = keyEvents->getKeyChar(k->code());
         if (c) {
           _lastKey = c;
           if (_lastKey) {

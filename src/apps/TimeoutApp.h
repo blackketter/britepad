@@ -11,7 +11,7 @@ class TimeoutApp : public BritepadApp {
 
     void run() {
       time_t timeout;
-      timeout = britepad.getScreensaverSwitchInterval();
+      timeout = launcher.getScreensaverSwitchInterval();
       switch (timeout) {
         case 0:
           timeout = 5;
@@ -38,11 +38,11 @@ class TimeoutApp : public BritepadApp {
           timeout = 0;
           break;
       }
-      britepad.setScreensaverSwitchInterval(timeout);
+      launcher.setScreensaverSwitchInterval(timeout);
     }
 
     const char* name() {
-      time_t switchInterval = britepad.getScreensaverSwitchInterval();
+      time_t switchInterval = launcher.getScreensaverSwitchInterval();
       if (switchInterval == 0) {
         return "Don't Auto Switch";
       }

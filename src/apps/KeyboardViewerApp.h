@@ -12,7 +12,7 @@ class KeyboardViewerApp : public KeyboardApp {
     void run();
     bool event(KeyEvent* key);
     EventPriority eventPriority() { return PRIORITY_LAST; }
-    BritepadApp* exitsTo() { if (_tutorialMode) { return LAST_APP; } else { return EXIT_APP; } }
+    App* exitsTo() override { if (_tutorialMode) { return LAST_APP; } else { return EXIT_APP; } }
 
     const char* name() { _name = _keyMatrix->name(); _name.append(" Keys");  return _name.c_str(); };
     appid_t id() { return ID; };

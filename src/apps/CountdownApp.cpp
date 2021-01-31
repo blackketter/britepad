@@ -52,7 +52,7 @@ void CountdownApp::run() {
   if (isAppMode(INTERACTIVE_MODE)) {
     if (setButton.pressed()) {
       sound.click();
-      britepad.launchApp(&setApp);
+      launcher.launchApp(&setApp);
     }
   }
 

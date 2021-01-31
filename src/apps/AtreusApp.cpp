@@ -149,7 +149,7 @@ class AtreusApp : public KeyboardApp {
           if (keys.getOverlay() != atreusOverlay) {
             keys.setOverlay(atreusOverlay);
 
-            britepad.wakeHost();
+            launcher.wakeHost();
             // jiggle the mouse to make cursor show up
             Mouse.move(-1, 0);
             Mouse.move(1, 0);

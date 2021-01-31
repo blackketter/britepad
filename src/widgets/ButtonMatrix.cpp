@@ -57,7 +57,7 @@ void ButtonMatrix::draw() {
           buttons[i]->setVisible(visible);
           if (visible) {
             buttons[i]->draw();
-            britepad.idle();
+            launcher.idle();
           }
         }
       }

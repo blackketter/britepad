@@ -53,7 +53,7 @@ void TextField::draw(const char* t) {
 bool TextField::key(KeyEvent* k) {
   if (k && k->pressed()) {
     console.debugln("got key");
-    char c = keyEvents.getKeyChar(k->code());
+    char c = keyEvents->getKeyChar(k->code());
     if (isprint(c) && _text.length()<_maxLength) { // printable character
       console.debugf("adding char %c\n",c);
       _text.concat(c);

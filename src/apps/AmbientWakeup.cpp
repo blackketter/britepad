@@ -57,9 +57,9 @@ void AmbientWakeupApp::ambientWakeupCallback() {
   uint16_t ambient = pad.getAmbientLight();
   millis_t waitTime = _ambientWakeupInterval;
 
-  if (Uptime::millis() - britepad.lastEventTime() > _ambientWakeupLongInterval) {
+  if (Uptime::millis() - launcher.lastEventTime() > _ambientWakeupLongInterval) {
     if (ambient > _lastAmbient && (ambient - _lastAmbient) > _ambientChangeThreshold) {
-      britepad.wakeHost();
+      launcher.wakeHost();
       console.debugln("Ambient Wakeup!");
       waitTime =_ambientWakeupLongInterval;
     }

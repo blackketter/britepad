@@ -1,8 +1,5 @@
 #include "App.h"
 
-#include "Dictionary.h"
-extern EEPROMDictionary prefs;
-
 App* App::_appList = nullptr;
 
 App* App::getAppByID(appid_t appID) {

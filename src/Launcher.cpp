@@ -6,9 +6,6 @@ extern Console console;
 
 #include "TypeCommand.h"
 
-#include "Dictionary.h"
-extern EEPROMDictionary prefs;
-
 #include "Commands/FPSCommand.h"
 FPSCommand theFPSCommand;
 

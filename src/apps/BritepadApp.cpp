@@ -2,6 +2,9 @@
 #include "AlarmApp.h"
 #include "widgets/Icon.h"
 #include "widgets/AppButton.h"
+#include "Dictionary.h"
+extern EEPROMDictionary prefs;
+
 
 void BritepadApp::setPrefs() {
   if (hasPrefs()) {

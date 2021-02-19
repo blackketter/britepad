@@ -12,7 +12,7 @@ class FunctionLayerApp : public KeyboardApp {
     const char* name() { return "Function Layer"; };
 
     EventPriority eventPriority() { return PRIORITY_EARLY; }
-    bool event(KeyEvent* key) {
+    bool event(Event* key) {
       if (getEnabled(KEYBOARD_MODE)) {
         // switch to the function layer
         if (key->pressed(KEY_LEFT_FN) || key->pressed(KEY_RIGHT_FN)) {
@@ -44,7 +44,7 @@ class MouseLayerApp : public KeyboardApp {
     const char* name() { return "Mouse Layer"; };
 
     EventPriority eventPriority() { return PRIORITY_EARLY; }
-    bool event(KeyEvent* key) {
+    bool event(Event* key) {
       if (getEnabled(KEYBOARD_MODE)) {
         // switch to the function layer
         if (key->pressed(KEY_MOUSE)) {

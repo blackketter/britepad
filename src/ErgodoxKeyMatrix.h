@@ -7,7 +7,7 @@
 class ErgodoxKeyMatrix : public KeyMatrix {
   public:
     ErgodoxKeyMatrix();
-    void begin(KeyEventQueue* queue) override;
+    void begin(EventQueue* queue) override;
     bool update();
     const char* name() { return "ErgoDox"; }
 

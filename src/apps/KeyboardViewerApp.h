@@ -10,7 +10,7 @@ class KeyboardViewerApp : public KeyboardApp {
     void begin();
     void end();
     void run();
-    bool event(KeyEvent* key);
+    bool event(Event* key);
     EventPriority eventPriority() { return PRIORITY_LAST; }
     BritepadApp* exitsTo() override { if (_tutorialMode) { return LAST_APP; } else { return EXIT_APP; } }
 

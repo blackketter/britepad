@@ -20,7 +20,7 @@ void SeqApp::run() {
   const color_t noteOn = screen.blue;
   ScreensaverApp::run();
 
-  KeyEvent* key = getNextEvent();
+  Event* key = getNextEvent();
 
   if (pad.pressed(SCREEN_PAD)) {
     int x, y;

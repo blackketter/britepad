@@ -26,7 +26,7 @@ void ConsoleApp::end() {
 }
 
 void ConsoleApp::run() {
-  KeyEvent* key = getNextEvent();
+  Event* key = getNextEvent();
   if (key->code(KEY_ESC)){
     exit();
   } else {

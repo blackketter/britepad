@@ -15,7 +15,7 @@ class LauncherApp : public BritepadApp {
     void begin();
     void run();
     void end();
-    bool event(KeyEvent* key);
+    bool event(Event* key);
 
     bool usesKeyboard() { return true; }
     BritepadApp* exitsTo() override { return A_SCREENSAVER_APP; }

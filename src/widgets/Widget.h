@@ -13,7 +13,7 @@ class Widget {
     virtual void setBounds(coord_t x, coord_t y, coord_t w, coord_t h) { _xpos = x; _ypos = y; _width = w; _height = h; }
     virtual bool hit(coord_t x, coord_t y) { return _visible && (x >= _xpos) && (x <= _xpos+_width) && (y > _ypos) && (y <= _ypos + _height); }
     virtual void draw();
-    virtual bool key(KeyEvent* k) { return false; };
+    virtual bool key(Event* k) { return false; };
 
     coord_t getWidth() { return _width; }
     coord_t getHeight() { return _height; }

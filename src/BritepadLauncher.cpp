@@ -1,7 +1,6 @@
 #include "BritepadShared.h"
 
 #include "BritepadLauncher.h"
-#include "Types.h"
 #include "Timer.h"
 
 #include "apps/LauncherApp.h"
@@ -11,8 +10,8 @@
 
 #include "USB/USBHost.h"
 
-BritepadKeyEventQueue britepadKeyEvents;
-KeyEventQueue* keyEvents = &britepadKeyEvents;
+BritepadEventQueue britepadEvents;
+EventQueue* events = &britepadEvents;
 
 // for the bell icon
 #include "KeyIcons.h"
@@ -93,7 +92,7 @@ void BritepadLauncher::idle() {
     };
 
     if (currentBritepadApp() && !currentBritepadApp()->usesKeyboard()) {
-      keyEvents->sendKeys();
+      events->sendKeys();
     }
     // make sure the Timers get a chance to call their callbacks
     Timer::idle();
@@ -224,7 +223,7 @@ void BritepadLauncher::run() {
   if (currentBritepadApp()->usesKeyboard()) {
     keys.update();
     // when a keyboard app launches tell the host that all the keys have been released
-    keyEvents->releaseKeys();
+    events->releaseKeys();
   }
 
 }
@@ -298,7 +297,7 @@ void BritepadLauncher::setScreensaverStartInterval(time_t newInterval) {
 
 void BritepadLauncher::wakeHost() {
   // tap the shift key to wake the computer up
-  if (keyEvents->keyIsUp(MODIFIERKEY_LEFT_SHIFT)) {
+  if (events->keyIsUp(MODIFIERKEY_LEFT_SHIFT)) {
     Keyboard.press(KEY_RIGHT_ALT);
     Keyboard.release(KEY_RIGHT_ALT);
   }

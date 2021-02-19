@@ -53,8 +53,8 @@ class ReloadApp : public RebootApp {
     AppType getAppType() { return (AppType)(DEBUG_APP + KEY_APP); }
 
     EventPriority eventPriority() { return PRIORITY_LAST; }
-    bool event(KeyEvent* k) {
-      if (k->pressed(KEY_ENTER) && keyEvents->keyIsDown(KEY_P) && keyEvents->keyIsDown(KEY_U)) {
+    bool event(Event* k) {
+      if (k->pressed(KEY_ENTER) && events->keyIsDown(KEY_P) && events->keyIsDown(KEY_U)) {
         launch();
       }
       return false;

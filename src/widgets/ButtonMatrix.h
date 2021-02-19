@@ -42,7 +42,7 @@ class ButtonMatrix : public Widget {
     Button* releasedButton();
     Button* heldButton();
 
-    Button* keyButton(KeyEvent* event);
+    Button* keyButton(Event* event);
 
     void draw();
     void draw(buttonindex_t i, int map = 0) { Button* b = getButton(i,map); if (b) { b->draw(); }};

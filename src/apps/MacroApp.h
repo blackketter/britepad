@@ -86,18 +86,18 @@ class MacroApp : public BritepadApp {
       size_t s = prefs.size(prefID.c_str());
 
       if (s) {
-        int events = s/sizeof(macro_t);
-        console.debugf("Sending macro of length %d key events\n", events);
-        macro_t macro[events];
+        int macrolen = s/sizeof(macro_t);
+        console.debugf("Sending macro of length %d key events\n", macrolen);
+        macro_t macro[macrolen];
 
         prefs.get(prefID.c_str(), s, (uint8_t*)macro);
         millis_t keytime = Uptime::millis();
-        for (int i = 0; i < events; i++) {
-          keyEvents->addEvent(nullptr, NO_KEY, macro[i].code, keytime, macro[i].pressed);
+        for (int i = 0; i < macrolen; i++) {
+          events->addEvent(nullptr, NO_KEY, macro[i].code, keytime, macro[i].pressed);
           keytime += 25;  // delay each key
         }
         // wait until all the events are sent
-        while (keyEvents->peekNextEvent()) {
+        while (events->peekNextEvent()) {
           launcher.idle();
         }
       } else {
@@ -117,7 +117,7 @@ class MacroApp : public BritepadApp {
           _namefield->draw();
         }
       } else if (_namefield) {
-          KeyEvent* key = getNextEvent();
+          Event* key = getNextEvent();
           _namefield->key(key);
           if ((key && key->pressed(KEY_RETURN)) || pad.pressed()) {
              String name;
@@ -146,7 +146,7 @@ class MacroApp : public BritepadApp {
 
     EventPriority eventPriority() { return PRIORITY_NORMAL; }
 
-    bool event(KeyEvent* key) {
+    bool event(Event* key) {
       bool consume = false;
       if (isCurrentApp() && isRecording()) {
         recordEvent(key);
@@ -159,7 +159,7 @@ class MacroApp : public BritepadApp {
       return consume;
     }
 
-    bool recordEvent(KeyEvent* key) {
+    bool recordEvent(Event* key) {
       if (_recordingEvent < _maxEvents-1) {
         _recordingKeys[_recordingEvent].code = key->code();
         _recordingKeys[_recordingEvent].pressed = key->pressed();

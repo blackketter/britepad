@@ -141,7 +141,7 @@ Button* ButtonMatrix::getButton(widgetid_t id) {
   return nullptr;
 }
 
-Button* ButtonMatrix::keyButton(KeyEvent* event) {
+Button* ButtonMatrix::keyButton(Event* event) {
   if (event == nullptr) return nullptr;
 
   keycode_t code = event->code();

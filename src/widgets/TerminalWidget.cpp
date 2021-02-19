@@ -84,10 +84,10 @@ void TerminalWidget::run() {
   }
 }
 
-bool TerminalWidget::key(KeyEvent* k) {
+bool TerminalWidget::key(Event* k) {
   if (k) {
       if (k->pressed()) {
-        char c = keyEvents->getKeyChar(k->code());
+        char c = events->getKeyChar(k->code());
         if (c) {
           _lastKey = c;
           if (_lastKey) {

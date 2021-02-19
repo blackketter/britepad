@@ -1,7 +1,6 @@
 #ifndef _TouchPad_
 #define _TouchPad_
 
-#include "Types.h"
 #include "Clock.h"
 #include "Gesture.h"
 

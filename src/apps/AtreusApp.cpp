@@ -142,7 +142,7 @@ class AtreusApp : public KeyboardApp {
       updateMap();
     }
 
-    bool event(KeyEvent* key) {
+    bool event(Event* key) {
       if (getEnabled(KEYBOARD_MODE)) {
         // switch to the atreus overlay layer
         if (key->pressed(KEY_LEFT_FN) || key->pressed(KEY_RIGHT_FN)) {

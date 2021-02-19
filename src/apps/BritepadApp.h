@@ -54,8 +54,8 @@ class BritepadApp : public App {
     static BritepadApp* getFirstBritepadApp() { return (BritepadApp*)getFirstApp(); }
     BritepadApp* getNextBritepadApp() { return (BritepadApp*)(getNextApp()); }
 
-    KeyEvent* getNextEvent();
-    KeyEvent* peekNextEvent();
+    Event* getNextEvent();
+    Event* peekNextEvent();
 
     bool timeVisible() { return displaysClock() || displaysStatusBar(); }
 

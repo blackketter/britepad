@@ -17,7 +17,7 @@ class LauncherPage {
     color_t color() { return _color; }
     LauncherPage* next() { return _next; }
     void draw();
-    bool run(KeyEvent* key, LauncherApp* app);
+    bool run(Event* key, LauncherApp* app);
     void setSelected(buttonindex_t i) { _buttons->setSelected(i); }
 
   protected:
@@ -109,7 +109,7 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
   }
 }
 
-bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
+bool LauncherPage::run(Event* key, LauncherApp* app) {
 
   if (!_launchOnRelease && (key && (key->released(KEY_SPACE) || key->released(KEY_RETURN)))) {
     _buttons->setHighlighted(false);
@@ -426,7 +426,7 @@ void LauncherApp::begin() {
 }
 
 void LauncherApp::run() {
-  KeyEvent* key = peekNextEvent();
+  Event* key = peekNextEvent();
 
   if (pad.released(SCREEN_PAD)) { waitForRelease = false; }
 
@@ -533,11 +533,11 @@ void LauncherApp::end() {
   launcher.resetScreensaver();
 }
 
-bool LauncherApp::event(KeyEvent* key) {
+bool LauncherApp::event(Event* key) {
   bool consume = false;
   if (key->code(KEY_EXIT)) {
     if (key->pressed()) {
-      if (keyEvents->keyIsDown(MODIFIERKEY_LEFT_SHIFT) && !launcher.currentApp()->isID(ConsoleApp::ID)) {
+      if (events->keyIsDown(MODIFIERKEY_LEFT_SHIFT) && !launcher.currentApp()->isID(ConsoleApp::ID)) {
         launcher.launchApp(ConsoleApp::ID);
       } else {
         launcher.exit();
@@ -553,7 +553,7 @@ bool LauncherApp::event(KeyEvent* key) {
       exit();
       consume = true;
     } else {
-//      if (keyEvents->keyTapped(KEY_LEFT_FN) || keyEvents->keyTapped(KEY_RIGHT_FN)) {
+//      if (events->keyTapped(KEY_LEFT_FN) || events->keyTapped(KEY_RIGHT_FN)) {
 //        launch();
 //      }
     }
@@ -564,7 +564,7 @@ bool LauncherApp::event(KeyEvent* key) {
 
 bool LauncherApp::disablesScreensavers() {
     return false;
-//  return keyEvents->keyIsDown(KEY_RIGHT_FN);
+//  return events->keyIsDown(KEY_RIGHT_FN);
 }
 
 LauncherApp theLauncherApp;

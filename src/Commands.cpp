@@ -115,18 +115,18 @@ class TimersCommand : public Command {
 
 TimersCommand theTimersCommand;
 
-extern KeyEventQueue* keyEvents;
+extern EventQueue* events;
 
-class KeyEventsCommand : public Command {
+class EventsCommand : public Command {
   public:
     const char* getName() { return "events"; }
     const char* getHelp() { return "display keyboard events"; }
     void execute(Console* c, uint8_t paramCount, char** params) {
-      keyEvents->printStatus(c);
+      events->printStatus(c);
     }
 };
 
-KeyEventsCommand theKeyEventsCommand;
+EventsCommand theEventsCommand;
 
 class QuitCommand : public Command {
   const char* getName() { return "quit"; }

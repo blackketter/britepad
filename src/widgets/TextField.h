@@ -21,7 +21,7 @@ class TextField : public Widget
     void draw(const char* t);
     void draw(String& s) { draw(s.c_str());}
 
-    virtual bool key(KeyEvent* k);
+    virtual bool key(Event* k);
 
     void setText(String& s) { _text = s; }
     void getText(String& s) { s = _text; };

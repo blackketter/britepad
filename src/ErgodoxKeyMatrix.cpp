@@ -10,7 +10,7 @@ ErgodoxKeyMatrix::ErgodoxKeyMatrix() {
 }
 
 // Port A is columns, Port B is rows.  Diodes have cathodes (positive) on A
-void ErgodoxKeyMatrix::begin(KeyEventQueue* queue) {
+void ErgodoxKeyMatrix::begin(EventQueue* queue) {
   KeyMatrix::begin(queue);
 
   _leftMatrix.SetAddress(_leftAddr);

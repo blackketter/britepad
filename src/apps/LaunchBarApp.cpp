@@ -14,7 +14,7 @@ class LaunchBarApp : public KeyboardApp {
     const char* name() { return "Launch Bar Del"; };
 
     EventPriority eventPriority() { return PRIORITY_LAST; }
-    bool event(KeyEvent* key) {
+    bool event(Event* key) {
       if (getEnabled(KEYBOARD_MODE) && !launcher.currentBritepadApp()->usesKeyboard()) {
 
           // a little logic here for Launchbar:

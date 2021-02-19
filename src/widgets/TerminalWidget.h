@@ -11,7 +11,7 @@ class TerminalWidget : public Widget, public Stream {
 // Widget methods
     virtual void draw();
     virtual void run();
-    virtual bool key(KeyEvent* k);
+    virtual bool key(Event* k);
 
 // Stream methods
     virtual int available();

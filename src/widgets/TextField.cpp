@@ -50,10 +50,10 @@ void TextField::draw(const char* t) {
   screen.pushClipRect(&r);
 }
 
-bool TextField::key(KeyEvent* k) {
+bool TextField::key(Event* k) {
   if (k && k->pressed()) {
     console.debugln("got key");
-    char c = keyEvents->getKeyChar(k->code());
+    char c = events->getKeyChar(k->code());
     if (isprint(c) && _text.length()<_maxLength) { // printable character
       console.debugf("adding char %c\n",c);
       _text.concat(c);

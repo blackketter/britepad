@@ -101,16 +101,16 @@ void BritepadApp::setAppMode(AppMode asMode) {
   _currAppMode = asMode;
 }
 
-KeyEvent* BritepadApp::getNextEvent() {
-  KeyEvent* e = keyEvents->getNextEvent();
+Event* BritepadApp::getNextEvent() {
+  Event* e = events->getNextEvent();
   if (e) {
     launcher.resetScreensaver();
   };
   return e;
 }
 
-KeyEvent* BritepadApp::peekNextEvent() {
-  KeyEvent* e = keyEvents->peekNextEvent();
+Event* BritepadApp::peekNextEvent() {
+  Event* e = events->peekNextEvent();
   if (e) {
     launcher.resetScreensaver();
   };

@@ -259,7 +259,7 @@ void CalculatorApp::run() {
     handleKey(hit->getID());
   }
 
-  KeyEvent* key = getNextEvent();
+  Event* key = getNextEvent();
   if (key) {
     hit = buttons->keyButton(key);
     if (key->pressed()) {

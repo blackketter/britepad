@@ -29,13 +29,13 @@ class HoldTimer : public Timer {
 
   private:
     virtual void callback() {
-      bool taphold = keyEvents->keyTapped(_key);
+      bool taphold = events->keyTapped(_key);
       if (!taphold) {
-        keyEvents->addEvent(MODIFIERKEY_LEFT_SHIFT, true);
+        events->addEvent(MODIFIERKEY_LEFT_SHIFT, true);
       }
-      keyEvents->addEvent(_key, true);
+      events->addEvent(_key, true);
       if (!taphold) {
-        keyEvents->addEvent(MODIFIERKEY_LEFT_SHIFT, false);
+        events->addEvent(MODIFIERKEY_LEFT_SHIFT, false);
       }
     }
     keycode_t _key;
@@ -49,21 +49,21 @@ class ShiftHoldApp : public KeyboardApp {
     const char* name() { return "Hold Shift"; };
     EventPriority eventPriority() { return (EventPriority)(PRIORITY_FIRST+1); }
 
-    bool event(KeyEvent* key) {
+    bool event(Event* key) {
       bool consumed = false;
       // is this a shiftable key?
       if (getEnabled(KEYBOARD_MODE) && key->hard()) {  // app enabled & not a soft key
         if (key->shifted()) { // is this a key that should hold-shift
           if (key->hard() && // is this a hardware key event
-            !keyEvents->keyIsDown(MODIFIERKEY_LEFT_CTRL) &&
-            !keyEvents->keyIsDown(MODIFIERKEY_RIGHT_CTRL) &&
-            !keyEvents->keyIsDown(MODIFIERKEY_LEFT_SHIFT) &&
-            !keyEvents->keyIsDown(MODIFIERKEY_RIGHT_SHIFT)) {
+            !events->keyIsDown(MODIFIERKEY_LEFT_CTRL) &&
+            !events->keyIsDown(MODIFIERKEY_RIGHT_CTRL) &&
+            !events->keyIsDown(MODIFIERKEY_LEFT_SHIFT) &&
+            !events->keyIsDown(MODIFIERKEY_RIGHT_SHIFT)) {
 
             keycode_t code = key->code();
 
             if (key->pressed()) {
-//              if (!keyEvents->keyTapHeld(key->code())) {
+//              if (!events->keyTapHeld(key->code())) {
                 new HoldTimer(this, code, _holdTimeout);
                 consumed = true;
 //              } else {
@@ -76,8 +76,8 @@ class ShiftHoldApp : public KeyboardApp {
                 // cancel timer
                 delete t;
                 // send the deferred key
-                keyEvents->addEvent(key->code(), true);
-                keyEvents->addEvent(key->code(), false);
+                events->addEvent(key->code(), true);
+                events->addEvent(key->code(), false);
                 consumed = true;
               }
             }
@@ -89,7 +89,7 @@ class ShiftHoldApp : public KeyboardApp {
           while (t) {
             Timer* next = t->next();
             if (t->getData() == this) {
-              keyEvents->addEvent(((HoldTimer*)t)->getKey(), true);
+              events->addEvent(((HoldTimer*)t)->getKey(), true);
               delete t;
               deleted = true;
             }
@@ -97,7 +97,7 @@ class ShiftHoldApp : public KeyboardApp {
           }
           if (deleted) {
             // requeue this event after the ones we just added.
-            keyEvents->addEvent(nullptr, key->keyswitch(), key->code(), Uptime::millis(), key->pressed());
+            events->addEvent(nullptr, key->keyswitch(), key->code(), Uptime::millis(), key->pressed());
             consumed = true;
           }
         }

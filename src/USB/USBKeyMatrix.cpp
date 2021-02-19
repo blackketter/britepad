@@ -48,26 +48,26 @@ void RawKeyboardController::new_data(const Transfer_t *transfer)
       const uint8_t RIGHT_GUI = 0x80;
 
       // modifier changed
-      if ( (mods & LEFT_CTRL) != (oldMods & LEFT_CTRL) ) { usbKeys.usbKeyEvent(MODIFIERKEY_LEFT_CTRL, mods & LEFT_CTRL); }
-      if ( (mods & RIGHT_CTRL) != (oldMods & RIGHT_CTRL) ) { usbKeys.usbKeyEvent(MODIFIERKEY_RIGHT_CTRL, mods & RIGHT_CTRL); }
-      if ( (mods & LEFT_SHIFT) != (oldMods & LEFT_SHIFT) ) { usbKeys.usbKeyEvent(MODIFIERKEY_LEFT_SHIFT, mods & LEFT_SHIFT); }
-      if ( (mods & RIGHT_SHIFT) != (oldMods & RIGHT_SHIFT) ) { usbKeys.usbKeyEvent(MODIFIERKEY_RIGHT_SHIFT, mods & RIGHT_SHIFT); }
-      if ( (mods & LEFT_ALT) != (oldMods & LEFT_ALT) ) { usbKeys.usbKeyEvent(MODIFIERKEY_LEFT_ALT, mods & LEFT_ALT); }
-      if ( (mods & RIGHT_ALT) != (oldMods & RIGHT_ALT) ) { usbKeys.usbKeyEvent(MODIFIERKEY_RIGHT_ALT, mods & RIGHT_ALT); }
-      if ( (mods & LEFT_GUI) != (oldMods & LEFT_GUI) ) { usbKeys.usbKeyEvent(MODIFIERKEY_LEFT_GUI, mods & LEFT_GUI); }
-      if ( (mods & RIGHT_GUI) != (oldMods & RIGHT_GUI) ) { usbKeys.usbKeyEvent(MODIFIERKEY_RIGHT_GUI, mods & RIGHT_GUI); }
+      if ( (mods & LEFT_CTRL) != (oldMods & LEFT_CTRL) ) { usbKeys.usbEvent(MODIFIERKEY_LEFT_CTRL, mods & LEFT_CTRL); }
+      if ( (mods & RIGHT_CTRL) != (oldMods & RIGHT_CTRL) ) { usbKeys.usbEvent(MODIFIERKEY_RIGHT_CTRL, mods & RIGHT_CTRL); }
+      if ( (mods & LEFT_SHIFT) != (oldMods & LEFT_SHIFT) ) { usbKeys.usbEvent(MODIFIERKEY_LEFT_SHIFT, mods & LEFT_SHIFT); }
+      if ( (mods & RIGHT_SHIFT) != (oldMods & RIGHT_SHIFT) ) { usbKeys.usbEvent(MODIFIERKEY_RIGHT_SHIFT, mods & RIGHT_SHIFT); }
+      if ( (mods & LEFT_ALT) != (oldMods & LEFT_ALT) ) { usbKeys.usbEvent(MODIFIERKEY_LEFT_ALT, mods & LEFT_ALT); }
+      if ( (mods & RIGHT_ALT) != (oldMods & RIGHT_ALT) ) { usbKeys.usbEvent(MODIFIERKEY_RIGHT_ALT, mods & RIGHT_ALT); }
+      if ( (mods & LEFT_GUI) != (oldMods & LEFT_GUI) ) { usbKeys.usbEvent(MODIFIERKEY_LEFT_GUI, mods & LEFT_GUI); }
+      if ( (mods & RIGHT_GUI) != (oldMods & RIGHT_GUI) ) { usbKeys.usbEvent(MODIFIERKEY_RIGHT_GUI, mods & RIGHT_GUI); }
     }
 
     for (int i=2; i < 8; i++) {
       uint32_t key = lastBuf[i];
       if (key >= 4 && !contains(key, buf)) {
-        usbKeys.usbKeyEvent(keycode(key), false);
+        usbKeys.usbEvent(keycode(key), false);
       }
     }
     for (int i=2; i < 8; i++) {
       uint32_t key = buf[i];
       if (key >= 4 && !contains(key, lastBuf)) {
-        usbKeys.usbKeyEvent(keycode(key), true);
+        usbKeys.usbEvent(keycode(key), true);
       }
     }
 
@@ -86,7 +86,7 @@ USBKeyMatrix::USBKeyMatrix() {
    setLayout();
 }
 
-void USBKeyMatrix::begin(KeyEventQueue* queue) {
+void USBKeyMatrix::begin(EventQueue* queue) {
   KeyMatrix::begin(queue);
 }
 
@@ -99,7 +99,7 @@ bool USBKeyMatrix::update() {
   }
 }
 
-void USBKeyMatrix::usbKeyEvent(keyswitch_t k, bool down) {
+void USBKeyMatrix::usbEvent(keyswitch_t k, bool down) {
   _queue->addEvent(this, k, getCode(k), Uptime::millis(), down);
   _updated = true;
 }

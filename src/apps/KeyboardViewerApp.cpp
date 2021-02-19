@@ -28,7 +28,7 @@ void KeyboardViewerApp::draw() {
   buttons->draw();
 };
 
-bool KeyboardViewerApp::event(KeyEvent* key) {
+bool KeyboardViewerApp::event(Event* key) {
   if (getEnabled(KEYBOARD_MODE)) {
     if (!isCurrentApp() && _keyMatrix->getOverlay()) {
         _tutorialMode = true;

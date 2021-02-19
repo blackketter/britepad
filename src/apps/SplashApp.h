@@ -12,6 +12,7 @@ class SplashApp : public BritepadApp {
     bool getEnabled(AppMode asMode) { return false; }  // this only runs at boot time, explicitly
     appid_t id() { return ID; };
     static constexpr appid_t ID = "spla";
+    bool disablesScreensavers() override { return true; }
     BritepadApp* exitsTo() override { return A_SCREENSAVER_APP; }
 
   private:

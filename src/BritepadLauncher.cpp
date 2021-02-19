@@ -69,10 +69,12 @@ void BritepadLauncher::begin() {
   Launcher::begin();
 
   // assumes that the splashapp has been created and added to list
-  launchApp(SplashApp::ID, SCREENSAVER_MODE);
+  launchApp(SplashApp::ID);
 
   // call superclass run() to initialize the splash app
   Launcher::run();
+
+  currentBritepadApp()->setAppMode(INTERACTIVE_MODE);
 }
 
 void BritepadLauncher::idle() {
@@ -100,6 +102,32 @@ void BritepadLauncher::idle() {
 
     lastIdle = Uptime::millis();
 };
+
+void BritepadLauncher::exit() {
+  if (currentBritepadApp()) {
+    launchApp(currentBritepadApp()->exitsTo());
+  }
+}
+
+void BritepadLauncher::launchApp(App* app) {
+  launchApp((BritepadApp*)app, INTERACTIVE_MODE);
+};
+
+void BritepadLauncher::launchApp(appid_t app) {
+  launchApp(app, INTERACTIVE_MODE);
+};
+
+void BritepadLauncher::launchApp(BritepadApp* app, AppMode mode) {
+  _lastAppMode = currentBritepadApp()->getAppMode();
+  Launcher::launchApp(app);
+  _launchedAppMode = mode;
+}
+
+void BritepadLauncher::launchApp(appid_t id, AppMode mode) {
+  _lastAppMode = currentBritepadApp()->getAppMode();
+  Launcher::launchApp(id);
+  _launchedAppMode = mode;
+}
 
 void BritepadLauncher::run() {
   pad.update();
@@ -174,6 +202,7 @@ void BritepadLauncher::run() {
     newMode = getLaunchedAppMode();
   } else if (currentBritepadApp()->getAppMode() == INACTIVE_MODE) {
     // exiting!
+    console.debugln("inactive, exiting");
     newApp = currentBritepadApp()->exitsTo();
   }
 
@@ -206,7 +235,7 @@ void BritepadLauncher::run() {
 
   if (newApp != currentBritepadApp()) {
     if (BritepadApp::validApp(newApp)) {
-      //console.debugf("valid app: %s\n", newApp->name());
+//      console.debugf("valid app: %s, current: %s\n",newApp->name(), currentBritepadApp()->name());
       launchApp(newApp);
       newApp->setAppMode(newMode);
     } else {
@@ -400,29 +429,3 @@ void BritepadLauncher::drawInfoBar(bool update) {
    resetClipRect();
 }
 
-
-void BritepadLauncher::exit() {
-  if (currentBritepadApp()) {
-    launchApp(currentBritepadApp()->exitsTo());
-  }
-}
-
-void BritepadLauncher::launchApp(App* app) {
-  launchApp((BritepadApp*)app, INTERACTIVE_MODE);
-};
-
-void BritepadLauncher::launchApp(appid_t app) {
-  launchApp(app, INTERACTIVE_MODE);
-};
-
-void BritepadLauncher::launchApp(BritepadApp* app, AppMode mode) {
-  _lastAppMode = currentBritepadApp()->getAppMode();
-  Launcher::launchApp(app);
-  _launchedAppMode = mode;
-}
-
-void BritepadLauncher::launchApp(appid_t id, AppMode mode) {
-  _lastAppMode = currentBritepadApp()->getAppMode();
-  Launcher::launchApp(id);
-  _launchedAppMode = mode;
-}

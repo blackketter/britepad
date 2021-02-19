@@ -84,7 +84,6 @@ void BritepadApp::launch() {
   launcher.launchApp(this);
 }
 
-
 void BritepadApp::setAppMode(AppMode asMode) {
   if (_currAppMode != asMode) {
     if (_currAppMode == MOUSE_MODE) {

@@ -29,7 +29,7 @@ void SplashApp::begin() {
 void SplashApp::run() {
   if (Uptime::millis() - firstRun > splashDuration) {
     console.debugln("Splash screen finished");
-    launcher.launchApp(A_SCREENSAVER_APP, SCREENSAVER_MODE);
+    exit();
     return;
   }
 

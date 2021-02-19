@@ -5,7 +5,7 @@
 
 class ChromaClockApp : public AnalogClockApp {
   public:
-    void begin(AppMode asMode);
+    void begin();
     void update();
     void run();
 

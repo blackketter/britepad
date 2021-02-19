@@ -6,7 +6,7 @@
 class MandelApp : public ScreensaverApp {
   public:
     void run();
-    void begin(AppMode asMode);
+    void begin();
     void end();
     bool canBeMouse() { return false; }
     bool canBeInteractive() { return true; }

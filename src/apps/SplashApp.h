@@ -5,13 +5,14 @@
 
 class SplashApp : public BritepadApp {
   public:
-    void begin(AppMode asMode);
+    void begin();
     void run();
     const char* name() { return "Splash"; };
     bool displaysStatusBar() { return false; };
     bool getEnabled(AppMode asMode) { return false; }  // this only runs at boot time, explicitly
     appid_t id() { return ID; };
     static constexpr appid_t ID = "spla";
+    BritepadApp* exitsTo() override { return A_SCREENSAVER_APP; }
 
   private:
     int32_t drawindex = 0;
@@ -21,4 +22,3 @@ class SplashApp : public BritepadApp {
 };
 
 #endif
-

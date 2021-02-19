@@ -238,8 +238,8 @@ const ButtonConfig keyConfig[keyMaps][keyRows][keyColumns] = {
     };
 #endif
 
-void CalculatorApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void CalculatorApp::begin() {
+  BritepadApp::begin();
   drawDisplay();
   if (!buttons) {
     buttons = new ButtonMatrix(screen.clipLeft(),(coord_t)(screen.clipTop()+displayHeight),screen.clipWidth(),(coord_t)(screen.clipHeight()-displayHeight),keyRows,keyColumns,keyMaps,(ButtonConfig*)keyConfig);

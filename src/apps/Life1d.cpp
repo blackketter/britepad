@@ -3,7 +3,7 @@
 class Life1dApp : public ScreensaverApp {
   public:
     void run() override;
-    void begin(AppMode asMode) override;
+    void begin() override;
     void end() override { delete _world; }
     bool canBeMouse() override { return false; }
 
@@ -22,8 +22,8 @@ class Life1dApp : public ScreensaverApp {
 
 Life1dApp theLife1dApp;
 
-void Life1dApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
+void Life1dApp::begin() {
+  ScreensaverApp::begin();
   _width = screen.clipWidth();
   _world = new uint8_t[_width];
   seed();

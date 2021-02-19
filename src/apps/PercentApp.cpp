@@ -3,7 +3,7 @@
 
 PercentApp thePercentApp;
 
-void PercentApp::begin(AppMode asMode) {
+void PercentApp::begin() {
 
   if (!dots) {
     dots = new DotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), getDotsWide(), getDotsHigh());
@@ -18,7 +18,7 @@ void PercentApp::begin(AppMode asMode) {
       k++;
     }
   }
-  ClockApp::begin(asMode);
+  ClockApp::begin();
   dots->draw();
 };
 

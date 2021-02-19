@@ -2,11 +2,11 @@
 #include "CountdownApp.h"
 
 
-App* SetCountdownApp::exitsTo() {
-  return BritepadApp::getAppByID(CountdownApp::ID);
+BritepadApp* SetCountdownApp::exitsTo() {
+  return (BritepadApp*)BritepadApp::getAppByID(CountdownApp::ID);
 }
 
-void SetCountdownApp::begin(AppMode asMode) {
+void SetCountdownApp::begin() {
 
   CountdownApp* countdownApp = (CountdownApp*)BritepadApp::getAppByID(CountdownApp::ID);
   if (countdownApp) {
@@ -14,7 +14,7 @@ void SetCountdownApp::begin(AppMode asMode) {
   }
 
   setDate = true;
-  SetClockApp::begin(asMode);
+  SetClockApp::begin();
 }
 
 void SetCountdownApp::end() {

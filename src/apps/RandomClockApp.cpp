@@ -4,8 +4,8 @@
 
 RandomClockApp theRandomClockApp;
 
-void RandomClockApp::begin(AppMode asMode) {
-  ClockApp::begin(asMode);
+void RandomClockApp::begin() {
+  ClockApp::begin();
 }
 
 float distance(long x1, long y1, long x2, long y2) {

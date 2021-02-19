@@ -5,13 +5,13 @@
 
 class ConsoleApp : public BritepadApp {
   public:
-    void begin(AppMode asMode);
+    void begin();
     void end();
     void run();
 
     virtual bool disablesScreensavers() { return true; }
     virtual bool usesKeyboard() { return true;}
-    virtual App* exitsTo() override { return A_SCREENSAVER_APP; }
+    virtual BritepadApp* exitsTo() override { return A_SCREENSAVER_APP; }
 
     const char* name() { return "Console"; };
     appid_t id() { return ID; };

@@ -4,8 +4,8 @@
 
 NumericKeypadApp theNumericKeypadApp;
 
-void NumericKeypadApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void NumericKeypadApp::begin() {
+  BritepadApp::begin();
   if (!buttons) {
     buttons = new ButtonMatrix(screen.clipLeft(),(coord_t)(screen.clipTop()),screen.clipWidth(),(coord_t)(screen.clipHeight()),keyRows,keyColumns,keyMaps,(ButtonConfig*)keyConfig);
   }

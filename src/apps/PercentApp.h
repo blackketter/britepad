@@ -8,7 +8,7 @@
 
 class PercentApp : public ClockApp {
   public:
-    void begin(AppMode asMode);
+    void begin();
     void update();
     void end();
 

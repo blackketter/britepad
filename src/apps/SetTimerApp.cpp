@@ -19,7 +19,7 @@ void SetTimerApp::run() {
 
   if (button[4].pressed()) {
     theTimerApp.setTime(_customTimerDuration);
-    launchApp(&theTimerApp);
+    launcher.launchApp(&theTimerApp);
   }
 
   if (adj) {
@@ -55,8 +55,8 @@ void SetTimerApp::drawButtons() {
   }
 }
 
-void SetTimerApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void SetTimerApp::begin() {
+  BritepadApp::begin();
 
   clearScreen();
 

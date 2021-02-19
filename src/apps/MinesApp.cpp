@@ -121,8 +121,8 @@ void MineMatrix::updateDot(int x, int y) {
   }
 }
 
-void MinesApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void MinesApp::begin() {
+  BritepadApp::begin();
   if (!field) {
     field = new MineMatrix(screen.clipMidWidth()-screen.clipHeight()/2,(coord_t)(screen.clipTop()),screen.clipHeight(),screen.clipHeight(),minesHeight,minesWidth);
   }
@@ -155,7 +155,7 @@ void MinesApp::run() {
   if (gameOver) {
     if (pad.released()) {
       end();
-      begin(INTERACTIVE_MODE);
+      begin();
     } else {
       return;
     }

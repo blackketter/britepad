@@ -5,7 +5,7 @@
 
 class EyesApp : public BritepadApp {
   public:
-    void begin(AppMode asMode);
+    void begin();
     void run();
 
     bool canBeMouse() { return true; }
@@ -30,8 +30,8 @@ class EyesApp : public BritepadApp {
 
 EyesApp theEyesApp;
 
-void EyesApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void EyesApp::begin() {
+  BritepadApp::begin();
   coord_t x = screen.clipMidWidth();
   coord_t y = screen.clipMidHeight();
   coord_t r = min(x/2,y/2) - 5;

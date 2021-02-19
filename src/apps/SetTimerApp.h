@@ -13,7 +13,7 @@ class SetTimerApp : public BritepadApp {
     void init();
     void end();
 
-    void begin(AppMode asMode);
+    void begin();
     void run();
 
     color_t appButtonColor() { return screen.LightBlue; }

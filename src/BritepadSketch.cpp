@@ -98,5 +98,5 @@ void setup() {
 }
 
 void loop() {
-  launcher.loop();
+  launcher.run();
 }

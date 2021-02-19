@@ -8,9 +8,9 @@
 
 class CountdownApp : public ScreensaverApp {
   public:
-    void begin(AppMode asMode);
+    void begin();
     void run();
-    void switchAppMode(AppMode asMode);
+    void setAppMode(AppMode asMode);
 
     virtual bool canBeInteractive() { return true; }
     virtual bool displaysStatusBar() { return true; }
@@ -26,7 +26,7 @@ class CountdownApp : public ScreensaverApp {
   protected:
     void redraw();
     // todo: allocate this when needed, free it when it exits
-    SetCountdownApp setApp;
+    SetCountdownApp _setCountdownApp;
     RoundButton setButton;
     const char* countdownTimePrefStr = "cntt";
 

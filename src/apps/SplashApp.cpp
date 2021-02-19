@@ -16,8 +16,8 @@ void drawLogo(color_t c) {
   screen.fillRect(midwidth, midheight, weight, ascender, c);
 }
 
-void SplashApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void SplashApp::begin() {
+  BritepadApp::begin();
   drawindex = 0;
   clearScreen();
   currColor = screen.red;
@@ -28,7 +28,9 @@ void SplashApp::begin(AppMode asMode) {
 
 void SplashApp::run() {
   if (Uptime::millis() - firstRun > splashDuration) {
-    launchApp(A_SCREENSAVER_APP, SCREENSAVER_MODE);
+    console.debugln("Splash screen finished");
+    launcher.launchApp(A_SCREENSAVER_APP, SCREENSAVER_MODE);
+    return;
   }
 
   int weight = 18;

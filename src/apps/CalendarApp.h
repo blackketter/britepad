@@ -5,7 +5,7 @@
 
 class CalendarApp : public BritepadApp {
   public:
-    void begin(AppMode asMode) { BritepadApp::begin(asMode);  year = clock.year(); month = clock.month(); draw(); }
+    void begin() { BritepadApp::begin();  year = clock.year(); month = clock.month(); draw(); }
     void run();
 
     bool disablesScreensavers() { return true; }

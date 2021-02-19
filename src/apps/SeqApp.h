@@ -6,7 +6,7 @@
 class SeqApp : public DotsDisplayApp {
   public:
     void run();
-    void begin(AppMode isMode) { DotsDisplayApp::begin(isMode); }
+    void begin() { DotsDisplayApp::begin(); }
     void end() { DotsDisplayApp::end(); }
 
     const char* name() { return "Seq"; };

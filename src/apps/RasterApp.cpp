@@ -5,8 +5,8 @@
 
 RasterApp theRasterApp;
 
-void RasterApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
+void RasterApp::begin() {
+  ScreensaverApp::begin();
 }
 
 

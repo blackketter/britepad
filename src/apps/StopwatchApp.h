@@ -10,13 +10,13 @@ class StopwatchApp : public BritepadApp {
     StopwatchApp(int32_t pos);
 
     void run();
-    void begin(AppMode asMode);
-    void switchAppMode(AppMode asMode);
+    void begin();
+    void setAppMode(AppMode asMode);
 
     const char* name() { return "Stopwatch"; };
     bool displaysStatusBar() { return true; }
     bool wantsToRun() { return !isReset(); }
-    App* exitsTo() override { return isAppMode(INTERACTIVE_MODE) ? EXIT_APP : SWITCH_TO_INTERACTIVE_MODE; }
+    BritepadApp* exitsTo() override { return isAppMode(INTERACTIVE_MODE) ? EXIT_APP : SWITCH_TO_INTERACTIVE_MODE; }
 
     virtual bool canBeScreensaver() { return isRunning(); }
     virtual bool canBeMouse() { return isRunning(); }

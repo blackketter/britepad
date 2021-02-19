@@ -4,7 +4,7 @@
 class BellApp : public BritepadApp {
 
   public:
-    void begin(AppMode asMode);
+    void begin();
     void run();
     void init();
 
@@ -140,8 +140,8 @@ void BellApp::drawButtons() {
   }
 }
 
-void BellApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void BellApp::begin() {
+  BritepadApp::begin();
 
   clearScreen();
 

@@ -1,7 +1,7 @@
 #include "KeyboardViewerApp.h"
 
-void KeyboardViewerApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void KeyboardViewerApp::begin() {
+  BritepadApp::begin();
 
   buttons = new KeyboardWidget(_keyMatrix,screen.clipLeft(),screen.clipTop(),screen.clipWidth(),screen.clipHeight(),screen.red,screen.black);
 

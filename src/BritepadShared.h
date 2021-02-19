@@ -47,11 +47,11 @@ extern EEPROMDictionary prefs;
 
 #include "Pointer.h"
 
+#include "BritepadLauncher.h"
+extern BritepadLauncher launcher;
+
 #include "apps/BritepadApp.h"
 
 #include "BritepadKeyEventQueue.h"
-
-#include "BritepadLauncher.h"
-extern BritepadLauncher launcher;
 
 #endif

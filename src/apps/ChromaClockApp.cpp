@@ -2,8 +2,8 @@
 
 ChromaClockApp theChromaClockApp;
 
-void ChromaClockApp::begin(AppMode asMode) {
-  ClockApp::begin(asMode);
+void ChromaClockApp::begin() {
+  ClockApp::begin();
 
   update();
 }

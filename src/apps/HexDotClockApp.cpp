@@ -2,7 +2,7 @@
 
 HexDotClockApp theHexDotClockApp;
 
-void HexDotClockApp::begin(AppMode asMode) {
+void HexDotClockApp::begin() {
   if (dots == nullptr) {
     // approx 4:1 aspect ratio
     int w = 9 * 4 + 3;
@@ -16,7 +16,7 @@ void HexDotClockApp::begin(AppMode asMode) {
     dots = new HexDotMatrix(screen.clipLeft()+xorig, screen.clipTop()+yorig, wpixels, hpixels, w, h);
     dots->setStaggerV(true);  // stagger vertically
   }
-  ClockApp::begin(asMode);
+  ClockApp::begin();
 }
 
 void HexDotClockApp::end() {

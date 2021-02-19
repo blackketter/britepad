@@ -3,7 +3,7 @@
 
 DotCalApp theDotCalApp;
 
-void DotCalApp::begin(AppMode asMode) {
+void DotCalApp::begin() {
 
   if (!dots) {
     dots = new DotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), getDotsWide(), getDotsHigh());
@@ -17,7 +17,7 @@ void DotCalApp::begin(AppMode asMode) {
     t.adjustSeconds(Time::secsPerDay);
   }
 
-  ClockApp::begin(asMode);
+  ClockApp::begin();
   dots->draw();
 };
 

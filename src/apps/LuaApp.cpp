@@ -6,7 +6,7 @@
 
 class LuaApp : public ConsoleApp {
   public:
-    void begin(AppMode asMode);
+    void begin();
 
     void run();
 
@@ -25,10 +25,10 @@ class LuaApp : public ConsoleApp {
     void printPrompt() { if (_terminal) { _terminal->print("\n>> ");} }
 };
 
-void LuaApp::begin(AppMode asMode) {
+void LuaApp::begin() {
   bool newlua = false;
 
-  ConsoleApp::begin(asMode);
+  ConsoleApp::begin();
 
   if (_lua == nullptr) {
     _lua = new Lua();

@@ -3,8 +3,8 @@
 
 SpiroApp theSpiroApp;
 
-void SpiroApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
+void SpiroApp::begin() {
+  ScreensaverApp::begin();
   reset();
 }
 

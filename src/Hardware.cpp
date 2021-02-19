@@ -3,15 +3,20 @@
 #if defined(__MK66FX1M0__) && !defined(TEENSYDEBUG)
 extern volatile uint8_t usb_configuration;
 
+
 bool usbActive() {
   return usb_configuration;
 };
 
+#define WATCHDOG_ENABLED
+
 void watchdogKick() {
+#ifdef WATCHDOG_ENABLED
   noInterrupts();
   WDOG_REFRESH = 0xA602;
   WDOG_REFRESH = 0xB480;
   interrupts();
+#endif
 };
 
 const char* resetType() {
@@ -36,11 +41,13 @@ extern "C" {
 #endif //__cplusplus
 
   void startup_early_hook() {
+#ifdef WATCHDOG_ENABLED
     // clock source 0 LPO 1khz, 4 s timeout
     WDOG_TOVALL = WATCHDOG_TIME_MS; // The next 2 lines sets the time-out value. This is the value that the watchdog timer compare itself to.
     WDOG_TOVALH = 0;
     WDOG_STCTRLH = (WDOG_STCTRLH_ALLOWUPDATE | WDOG_STCTRLH_WDOGEN | WDOG_STCTRLH_WAITEN | WDOG_STCTRLH_STOPEN); // Enable WDG
     WDOG_PRESC = 0; // prescaler
+#endif
   }
 #ifdef __cplusplus
 }

@@ -6,7 +6,7 @@ class BreakoutApp : public BritepadApp {
     const char* name() { return "Breakout"; };
     bool disablesScreensavers() { return dx || dy || (pad.time() - pad.lastTouchedTime(ANY_PAD)) > timeoutMillis; }
     void run();
-    void begin(AppMode asMode);
+    void begin();
 
     AppType getAppType() { return INTERACTIVE_APP; }
 
@@ -52,8 +52,8 @@ BreakoutApp theBreakoutApp;
 // todo - speed up over time
 // todo - make it run as a self-playing screensaver
 
-void BreakoutApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void BreakoutApp::begin() {
+  BritepadApp::begin();
   newGame();
   dx = dy = 0;  // start off without the ball moving
 }

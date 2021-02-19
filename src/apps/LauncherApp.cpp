@@ -104,7 +104,7 @@ void LauncherPage::makeButtons(BritepadApp* startingWith) {
           }
         }
       }
-      a = (BritepadApp*)(a->getNextApp());
+      a = a->getNextBritepadApp();
     }
   }
 }
@@ -168,7 +168,8 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
           _held = false;
         } else {
           console.debugf("Running %s invisibly\n", launched->name());
-          launched->begin(INVISIBLE_MODE);
+          launched->setAppMode(INVISIBLE_MODE);
+          launched->begin();
           launched->run();
           launched->end();
         }
@@ -190,7 +191,8 @@ bool LauncherPage::run(KeyEvent* key, LauncherApp* app) {
       BritepadApp* launched = b->getApp();
       if (!launched->canBeSetup() && launched->canBeInvisible()) {
         console.debugf("Running %s invisibly on hold\n", launched->name());
-        launched->begin(INVISIBLE_MODE);
+        launched->setAppMode(INVISIBLE_MODE);
+        launched->begin();
         launched->run();
         launched->end();
        } else if (!_launchOnRelease){
@@ -382,8 +384,7 @@ LauncherPage* LauncherApp::getCurrentPage() {
 LauncherApp::LauncherApp() {
 }
 
-void LauncherApp::begin(AppMode asMode) {
-  console.debugln("start LauncherApp::begin");
+void LauncherApp::begin() {
 
   // first, sort the list alphabetically
   BritepadApp::sortApps();
@@ -412,7 +413,7 @@ void LauncherApp::begin(AppMode asMode) {
   }
 
   // adjust the current page before beginning
-  BritepadApp::begin(asMode);
+  BritepadApp::begin();
 
   sound.swipe(DIRECTION_DOWN);
 

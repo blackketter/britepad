@@ -6,7 +6,7 @@
 class SpiroApp : public ScreensaverApp {
   public:
     void run();
-    void begin(AppMode asMode);
+    void begin();
 
     bool canBeInteractive() { return true; };  // bottom bar displays info
 

@@ -6,7 +6,7 @@
 class RasterApp : public ScreensaverApp {
   public:
     void run();
-    void begin(AppMode asMode);
+    void begin();
     bool canBeMouse() { return false; }
     bool canBeInteractive() { return true; }
 

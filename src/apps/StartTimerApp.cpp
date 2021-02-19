@@ -21,7 +21,7 @@ void StartTimerApp::run() {
   if (theTimerApp.getTime() != getDuration() || theTimerApp.isReset()) {
     theTimerApp.setTime(getDuration());
   }
-  launchApp(&theTimerApp);
+  launcher.launchApp(&theTimerApp);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

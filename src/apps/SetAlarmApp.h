@@ -8,7 +8,7 @@ class SetAlarmApp : public SetClockApp {
   public:
     void init() { theTime = &alarmTime; };
     void end();
-    void begin(AppMode asMode);
+    void begin();
 
     bool displaysClock() { return false; };
 

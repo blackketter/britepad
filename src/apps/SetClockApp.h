@@ -10,7 +10,7 @@ class SetClockApp : public BritepadApp {
   public:
     void init() { theTime = &clock; };
 
-    void begin(AppMode asMode);
+    void begin();
     void end();
     void run();
 

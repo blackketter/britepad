@@ -7,12 +7,12 @@
 class KeyboardViewerApp : public KeyboardApp {
   public:
     KeyboardViewerApp(KeyMatrix* keyMatrix) { _keyMatrix = keyMatrix; };
-    void begin(AppMode asMode);
+    void begin();
     void end();
     void run();
     bool event(KeyEvent* key);
     EventPriority eventPriority() { return PRIORITY_LAST; }
-    App* exitsTo() override { if (_tutorialMode) { return LAST_APP; } else { return EXIT_APP; } }
+    BritepadApp* exitsTo() override { if (_tutorialMode) { return LAST_APP; } else { return EXIT_APP; } }
 
     const char* name() { _name = _keyMatrix->name(); _name.append(" Keys");  return _name.c_str(); };
     appid_t id() { return ID; };

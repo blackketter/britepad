@@ -6,12 +6,12 @@
 
 class CalculatorApp : public BritepadApp {
   public:
-    void begin(AppMode asMode);
+    void begin();
     void end();
     void run();
 
     bool usesKeyboard() { return true; }
-    App* exitsTo() override { return A_SCREENSAVER_APP; }
+    BritepadApp* exitsTo() override { return A_SCREENSAVER_APP; }
 
     const char* name() { return "Calculator"; }
     appid_t id() { return ID; };

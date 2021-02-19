@@ -46,9 +46,10 @@ class MacroApp : public BritepadApp {
       }
     }
 
-    void begin(AppMode asMode) {
-      BritepadApp::begin(asMode);
-      if (asMode == SETUP_MODE) {
+    void begin() {
+      BritepadApp::begin();
+
+      if (getAppMode() == SETUP_MODE) {
         _message = new TextField(screen.clipLeft(), screen.clipTop() + screen.clipHeight()/6, screen.clipWidth(), screen.clipHeight()/3,
               &Arial_16, screen.white, screen.black, (alignment_t)(ALIGN_CENTER+ALIGN_VCENTER));
         _message->draw("Type new macro now.\nTap screen to finish.");

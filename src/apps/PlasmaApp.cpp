@@ -4,7 +4,7 @@
 class PlasmaApp : public ScreensaverApp {
   public:
     void run();
-    void begin(AppMode asMode);
+    void begin();
 
     const char* name() { return "Plasma"; };
 
@@ -36,8 +36,8 @@ class PlasmaApp : public ScreensaverApp {
 
 PlasmaApp thePlasmaApp;
 
-void PlasmaApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
+void PlasmaApp::begin() {
+  ScreensaverApp::begin();
     _bgColor = screen.color565( 0x77, 0, 0xcc );
 
   float w = (float)screen.clipWidth();

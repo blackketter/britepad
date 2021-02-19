@@ -19,33 +19,19 @@ class AppsCommand : public Command {
 };
 AppsCommand theAppsCommand;
 
-App* findApp(const char* s) {
-  App* a = App::getAppByID(s);
-  if (a == nullptr) {
-    int n = atoi(s);
-    if (n) {
-      a = App::getFirstApp();
-      while (n > 1) {
-        a = a->getNextApp();
-        n--;
-      }
-    }
-  }
-  return a;
-}
-
-
+// TODO: Make this not BritepadApp specific
 class AppCommand : public Command {
   public:
     const char* getName() { return "app"; }
     const char* getHelp() { return "appid | index - Print app info, default current"; }
     void execute(Console* c, uint8_t paramCount, char** params) {
-      App* anApp = nullptr;
+      BritepadApp* anApp = nullptr;
       if (paramCount) {
-        anApp = findApp(params[1]);
+        anApp = (BritepadApp*)App::findApp(params[1]);
       }
+
       if (anApp == nullptr) {
-        anApp = launcher.currentApp();
+        anApp = (BritepadApp*)launcher.currentApp();
         c->print("Current ");
       }
 
@@ -74,6 +60,7 @@ class AppCommand : public Command {
 };
 AppCommand theAppCommand;
 
+// TODO: Make this not BritepadApp specific
 class LaunchCommand : public Command {
   public:
     const char* getName() { return "launch"; }
@@ -89,7 +76,7 @@ class LaunchCommand : public Command {
         pathindex++;
       }
 
-        App* a = findApp(params[pathindex]);
+        App* a = App::findApp(params[pathindex]);
         c->printf("got back app %s - %x\n", params[pathindex],(uint32_t)a);
         if (a) {
           c->printf("Running app '%s' - %s...\n",a->id(), a->name());
@@ -127,3 +114,25 @@ class TimersCommand : public Command {
 };
 
 TimersCommand theTimersCommand;
+
+extern KeyEventQueue* keyEvents;
+
+class KeyEventsCommand : public Command {
+  public:
+    const char* getName() { return "events"; }
+    const char* getHelp() { return "display keyboard events"; }
+    void execute(Console* c, uint8_t paramCount, char** params) {
+      keyEvents->printStatus(c);
+    }
+};
+
+KeyEventsCommand theKeyEventsCommand;
+
+class QuitCommand : public Command {
+  const char* getName() { return "quit"; }
+  const char* getHelp() { return "exit the current app"; }
+  void execute(Console* c, uint8_t paramCount, char** params) {
+    launcher.exit();
+  }
+};
+QuitCommand theQuitCommand;

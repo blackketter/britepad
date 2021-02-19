@@ -24,7 +24,7 @@ class QuotesApp : public ScreensaverApp {
       }
 
     }
-    void begin(AppMode asMode) override { lastDrawn = 0; }
+    void begin() override { lastDrawn = 0; }
 
   protected:
     millis_t lastDrawn = 0;

@@ -8,9 +8,9 @@ class SetCountdownApp : public SetClockApp {
   public:
     void init() { theTime = &countdownTime;};
     void end();
-    void begin(AppMode asMode);
+    void begin();
 
-    App* exitsTo() override;
+    BritepadApp* exitsTo() override;
     bool displaysClock() { return false; };
 
     const char* name() { return "Set Countdown"; };

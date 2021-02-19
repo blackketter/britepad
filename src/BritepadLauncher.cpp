@@ -19,31 +19,6 @@ KeyEventQueue* keyEvents = &britepadKeyEvents;
 
 #define PROXIMITY_DEAD_TIME (1000)
 
-bool BritepadLauncher::setApp(App* newApp, AppMode asMode) {
-
-  if (newApp == App::EXIT_APP) {
-    newApp = App::getAppByID(LauncherApp::ID);
-    asMode = INTERACTIVE_MODE;
-  }
-
-  if (asMode == SCREENSAVER_MODE) {
-    screensaverStartedTime = pad.time();
-  }
-
-  if (Launcher::setApp(newApp, asMode)) {
-    if (currentApp()->usesKeyboard()) {
-      keys.update();
-
-      // when a keyboard app launches tell the host that all the keys have been released
-      keyEvents->releaseKeys();
-    }
-    drawBars();
-    return true;
-  } else {
-    return false;
-  }
-}
-
 void backlightCallback(void* data) {
   uint8_t lastBacklight = screen.getBacklight();
 
@@ -85,55 +60,69 @@ void statusBarCallback(void* data) {
 
 void BritepadLauncher::begin() {
 
-  // assumes that the splashapp has been created and added to list
-  launchApp(SplashApp::ID, SCREENSAVER_MODE);
-  setApp(BritepadApp::getAppByID(SplashApp::ID), SCREENSAVER_MODE);
-
-  Launcher::begin();
   screen.setBacklight(screen.maxbrightness);
   backlightTimer.setMillis(ambientUpdateInterval, backlightCallback, (void*)this, true);
   statusBarUpdateTimer.setMillis(1000, statusBarCallback, (void*)this, true);
 
 	usbHost.begin();
 	usbMouse.begin();
+
+  Launcher::begin();
+
+  // assumes that the splashapp has been created and added to list
+  launchApp(SplashApp::ID, SCREENSAVER_MODE);
+
+  // call superclass run() to initialize the splash app
+  Launcher::run();
 }
 
 void BritepadLauncher::idle() {
+    millis_t now = Uptime::millis();
+    if (now - lastIdle < idleInterval) {
+      return;
+    }
 
+    Launcher::idle();
     watchdogKick();
     usbHost.Task();
     usbMouse.run();
     keys.update();
     sound.idle();
-    if (currentApp() && currentApp()->isAppMode(MOUSE_MODE)) {
+    if (currentBritepadApp() && currentBritepadApp()->isAppMode(MOUSE_MODE)) {
       mousePad.run();
     };
 
-    Launcher::idle();
+    if (currentBritepadApp() && !currentBritepadApp()->usesKeyboard()) {
+      keyEvents->sendKeys();
+    }
+    // make sure the Timers get a chance to call their callbacks
+    Timer::idle();
+    console.idle();
 
+    lastIdle = Uptime::millis();
 };
 
-void BritepadLauncher::loop() {
-
+void BritepadLauncher::run() {
   pad.update();
 
   if (pad.touched(ANY_PAD)) {
     resetScreensaver();
   }
 
-  if (!currentBritepadApp()) {
-      console.debugln("No currapp!");
+  if (!currentBritepadApp() && !getLaunchedApp() ) {
+      console.debugln("No curr app or launched app!");
       launchApp(LauncherApp::ID);
   }
 
   if (pad.pressed(TOP_PAD)) {
-    currentBritepadApp()->exit();
+     console.debugln("Menu touchpad (TOP_PAD) touched...");
+     launcher.exit();
   } else if (currentBritepadApp()->isAppMode(SCREENSAVER_MODE) && (pad.pressed(SCREEN_PAD) || ((pad.pressed(ANY_PAD) && !currentBritepadApp()->canBeInteractive())))) {
     console.debugln("waking screensaver");
     // waking goes back to the mouse in the case that the user touched the screen (or any touch pad if it's not interactive)
     if (currentBritepadApp()->canBeMouse() && currentBritepadApp()->getEnabled(MOUSE_MODE) && usbActive()) {
       console.debugln("switching current app to MOUSE_MODE");
-      currentBritepadApp()->switchAppMode(MOUSE_MODE);
+      currentBritepadApp()->setAppMode(MOUSE_MODE);
     } else if (usbActive()) {
       console.debugln("launching A_MOUSE_APP");
       launchApp(BritepadApp::A_MOUSE_APP, MOUSE_MODE);
@@ -147,7 +136,7 @@ void BritepadLauncher::loop() {
    if (currentBritepadApp()->isAppMode(SCREENSAVER_MODE) &&
        !currentBritepadApp()->wantsToRun() &&
        wantsToRun()) {
-
+      console.debugln("launching a screensaver that wants to run");
       launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
 
   // let's check to see if we should run a screensaver
@@ -158,25 +147,153 @@ void BritepadLauncher::loop() {
          !currentBritepadApp()->displaysClock() &&
          BritepadApp::getAppByID(ClockApp::ID))
     {
+      console.debugln("Proximity detected: showing clock");
       launchApp(ClockApp::ID, SCREENSAVER_MODE);
       resetScreensaver(showClockDur);  // disable screensavers for a little while
       sound.click();
-      console.debugln("Proximity detected: showing clock");
 
     } else if (currentBritepadApp()->isAppMode(SCREENSAVER_MODE)
             && getScreensaverSwitchInterval()
             && (pad.time() - screensaverStartedTime) > getScreensaverSwitchInterval()*1000) {
+        console.debugln("switching screensaver");
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
 
       // is it time for the screensaver to kick in?
       } else if (!currentBritepadApp()->isAppMode(SCREENSAVER_MODE) && (pad.time() > disableScreensaversUntil)
         && !(currentBritepadApp()->canBeScreensaver() && currentBritepadApp()->isAppMode(MOUSE_MODE))) {
+        console.debugln("Launching screensaver");
         launchApp(BritepadApp::A_SCREENSAVER_APP, SCREENSAVER_MODE);
       }
     }
   }
 
-  Launcher::loop();
+  BritepadApp* newApp = currentBritepadApp();
+  AppMode newMode = currentBritepadApp()->getAppMode();
+
+  if (getLaunchedApp()) {
+    newApp = (BritepadApp*)getLaunchedApp();
+    newMode = getLaunchedAppMode();
+  } else if (currentBritepadApp()->getAppMode() == INACTIVE_MODE) {
+    // exiting!
+    newApp = currentBritepadApp()->exitsTo();
+  }
+
+  if (newApp == BritepadApp::SWITCH_TO_INTERACTIVE_MODE) {
+    newApp = currentBritepadApp();
+    newMode= INTERACTIVE_MODE;
+  } else if (newApp == BritepadApp::A_MOUSE_APP) {
+    newApp = randomApp(MOUSE_MODE);
+    newMode = MOUSE_MODE;
+  } else if (newApp == BritepadApp::A_SCREENSAVER_APP) {
+    newApp = randomApp(SCREENSAVER_MODE);
+    newMode = SCREENSAVER_MODE;
+  } else if (newApp == BritepadApp::LAST_APP) {
+    newApp = (BritepadApp*)_lastApp;
+    newMode = _lastAppMode;
+  }
+
+  if (newMode == ANY_MODE) {
+    newMode = INTERACTIVE_MODE;
+  }
+
+  if (newApp == BritepadApp::EXIT_APP) {
+    newApp = (BritepadApp*)App::getAppByID(LauncherApp::ID);
+    newMode = INTERACTIVE_MODE;
+  }
+
+  if (newMode == SCREENSAVER_MODE) {
+    screensaverStartedTime = pad.time();
+  }
+
+  if (newApp != currentBritepadApp()) {
+    if (BritepadApp::validApp(newApp)) {
+      //console.debugf("valid app: %s\n", newApp->name());
+      launchApp(newApp);
+      newApp->setAppMode(newMode);
+    } else {
+      console.debugf("invalid app: %d\n", (int)newApp);
+    }
+  } else {
+    if (currentBritepadApp()->getAppMode() != newMode) {
+       currentBritepadApp()->setAppMode(newMode);
+    }
+  }
+
+  Launcher::run();
+
+  if (currentBritepadApp()->usesKeyboard()) {
+    keys.update();
+    // when a keyboard app launches tell the host that all the keys have been released
+    keyEvents->releaseKeys();
+  }
+
+}
+BritepadApp* BritepadLauncher::wantsToRun() {
+
+  BritepadApp* nextapp = BritepadApp::getFirstBritepadApp();
+  while (nextapp) {
+    if (nextapp->wantsToRun())
+      return nextapp;
+    nextapp = nextapp->getNextBritepadApp();
+  }
+  return nullptr;
+}
+
+BritepadApp* BritepadLauncher::randomApp(AppMode m) {
+
+  // if an app wants to be this mode, then give it a chance
+  BritepadApp* wants = wantsToRun();
+  if (wants && wants->canBeAppMode(m)) {
+    return wants;
+  }
+
+  // count the enabled apps
+  int count = 0;
+  BritepadApp* nextapp = BritepadApp::getFirstBritepadApp();
+  while (nextapp) {
+    if (nextapp->canBeAppMode(m) && ((nextapp)->getEnabled(m))) {
+      count++;
+    }
+    nextapp = nextapp->getNextBritepadApp();
+  }
+
+  // pick a random one
+  count = random(count);
+
+  nextapp = BritepadApp::getFirstBritepadApp();
+  while (nextapp) {
+    if (nextapp->canBeAppMode(m) && ((nextapp)->getEnabled(m))) {
+      if (count == 0) {
+        return nextapp;
+      } else {
+        count--;
+      }
+    }
+    nextapp = nextapp->getNextBritepadApp();
+  }
+  console.debugf("No random app avaialable for mode %d\n", m);
+  return nullptr;
+}
+
+time_t BritepadLauncher::getScreensaverSwitchInterval() {
+  time_t i = defaultScreensaverSwitchInterval;
+  prefs.get(screensaverSwitchIntervalPref, sizeof(i), (uint8_t*)&i);
+  return i;
+}
+
+void BritepadLauncher::setScreensaverSwitchInterval(time_t newInterval) {
+   prefs.set(screensaverSwitchIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
+}
+
+time_t BritepadLauncher::getScreensaverStartInterval() {
+  time_t i = defaultScreensaverStartInterval;
+  prefs.get(screensaverStartIntervalPref, sizeof(i), (uint8_t*)&i);
+  return i;
+}
+
+void BritepadLauncher::setScreensaverStartInterval(time_t newInterval) {
+   prefs.set(screensaverStartIntervalPref, sizeof(newInterval), (uint8_t*)&newInterval);
+   resetScreensaver();
 }
 
 void BritepadLauncher::wakeHost() {
@@ -203,8 +320,7 @@ void BritepadLauncher::updateStatusBar() {
 }
 
 void BritepadLauncher::resetClipRect() {
-//TODO - Remove need for this cast
-  BritepadApp* curr = (BritepadApp*)currentBritepadApp();
+  BritepadApp* curr = currentBritepadApp();
   if (curr) {
     coord_t top = curr->displaysStatusBar() ? _statusBarHeight : 0;
     coord_t bottom = curr->displaysInfoBar() ? screen.height()-_statusBarHeight : screen.height();
@@ -215,10 +331,6 @@ void BritepadLauncher::resetClipRect() {
 void BritepadLauncher::drawBars(bool update) {
   drawInfoBar(update);
   drawStatusBar(update);
-}
-
-BritepadApp* BritepadLauncher::currentBritepadApp() {
-  return (BritepadApp*)currentApp();
 }
 
 void BritepadLauncher::drawStatusBar(bool update) {
@@ -289,12 +401,29 @@ void BritepadLauncher::drawInfoBar(bool update) {
    resetClipRect();
 }
 
-class QuitCommand : public Command {
-  const char* getName() { return "quit"; }
-  const char* getHelp() { return "exit the current app"; }
-  void execute(Console* c, uint8_t paramCount, char** params) {
-    launcher.exit();
-  }
-};
-QuitCommand theQuitCommand;
 
+void BritepadLauncher::exit() {
+  if (currentBritepadApp()) {
+    launchApp(currentBritepadApp()->exitsTo());
+  }
+}
+
+void BritepadLauncher::launchApp(App* app) {
+  launchApp((BritepadApp*)app, INTERACTIVE_MODE);
+};
+
+void BritepadLauncher::launchApp(appid_t app) {
+  launchApp(app, INTERACTIVE_MODE);
+};
+
+void BritepadLauncher::launchApp(BritepadApp* app, AppMode mode) {
+  _lastAppMode = currentBritepadApp()->getAppMode();
+  Launcher::launchApp(app);
+  _launchedAppMode = mode;
+}
+
+void BritepadLauncher::launchApp(appid_t id, AppMode mode) {
+  _lastAppMode = currentBritepadApp()->getAppMode();
+  Launcher::launchApp(id);
+  _launchedAppMode = mode;
+}

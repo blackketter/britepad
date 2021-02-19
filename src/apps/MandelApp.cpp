@@ -6,8 +6,8 @@
 
 MandelApp theMandelApp;
 
-void MandelApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
+void MandelApp::begin() {
+  ScreensaverApp::begin();
   xPixel = screen.clipRight()+1; // force a restart
   _column = new color_t[screen.clipHeight()];
   restart();

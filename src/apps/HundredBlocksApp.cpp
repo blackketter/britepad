@@ -3,7 +3,7 @@
 
 HundredBlocksApp theHundredBlocksApp;
 
-void HundredBlocksApp::begin(AppMode asMode) {
+void HundredBlocksApp::begin() {
 
   if (!dots) {
     dots = new DotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), getDotsWide(), getDotsHigh());
@@ -17,7 +17,7 @@ void HundredBlocksApp::begin(AppMode asMode) {
     }
   }
 
-  ClockApp::begin(asMode);
+  ClockApp::begin();
   dots->draw();
 }
 

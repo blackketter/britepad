@@ -3,6 +3,42 @@
 #include "widgets/Icon.h"
 #include "widgets/AppButton.h"
 
+void BritepadApp::setPrefs() {
+  if (hasPrefs()) {
+    uint8_t pref = (uint8_t)_enabled;
+    prefs.set(id(), sizeof(pref), (uint8_t*)&pref);
+  }
+};
+
+void BritepadApp::getPrefs() {
+  if (hasPrefs()) {
+    uint8_t pref = (uint8_t)defaultEnabled();
+    prefs.get(id(),  sizeof(pref), (uint8_t*)&pref);
+    _enabled = (AppMode)pref;
+  }
+};
+
+bool BritepadApp::canBeAppMode(AppMode b) {
+  switch (b) {
+    case SCREENSAVER_MODE:
+      return canBeScreensaver();
+    case MOUSE_MODE:
+      return canBeMouse();
+    case INTERACTIVE_MODE:
+      return canBeInteractive();
+    case SETUP_MODE:
+      return canBeSetup();
+    case INACTIVE_MODE:
+      return true;
+    default:
+      return false;
+  }
+}
+
+void BritepadApp::end() {
+  _currAppMode = INACTIVE_MODE;
+}
+
 void BritepadApp::setClipRect(coord_t x, coord_t y, coord_t w, coord_t h) {
   screen.setClipRect(x,y,w,h);
 }
@@ -27,10 +63,9 @@ void BritepadApp::clearScreen() {
 }
 
 // initialize app state and clear screen
-void BritepadApp::begin(AppMode asMode) {
-  AppMode wasMode = _currAppMode;
-  App::begin(asMode);
-  if (asMode != INVISIBLE_MODE && wasMode != INVISIBLE_MODE) {
+void BritepadApp::begin() {
+  App::begin();
+  if (getAppMode() != INVISIBLE_MODE) {
     // redraw, but only if we are not going to or coming from an invisible mode
     launcher.drawBars();
     clearScreen();
@@ -38,8 +73,16 @@ void BritepadApp::begin(AppMode asMode) {
   usbMouse.setBounds(screen.clipLeft(),screen.clipTop(), screen.clipWidth(), screen.clipHeight());
 };
 
-void BritepadApp::switchAppMode(AppMode asMode) {
+bool BritepadApp::isCurrentApp() {
+  return launcher.isCurrentApp(this);
+}
 
+void BritepadApp::launch() {
+  launcher.launchApp(this);
+}
+
+
+void BritepadApp::setAppMode(AppMode asMode) {
   if (_currAppMode != asMode) {
     if (_currAppMode == MOUSE_MODE) {
       mousePad.end();
@@ -52,7 +95,7 @@ void BritepadApp::switchAppMode(AppMode asMode) {
       launcher.resetScreensaver();
     }
   }
-  App::switchAppMode(asMode);
+  _currAppMode = asMode;
 }
 
 KeyEvent* BritepadApp::getNextEvent() {

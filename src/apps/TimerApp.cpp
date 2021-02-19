@@ -4,8 +4,8 @@
 
 TimerApp theTimerApp;
 
-void TimerApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);    // StopwatchApp auto starts at launch
+void TimerApp::begin() {
+  BritepadApp::begin();    // StopwatchApp auto starts at launch
   redrawButtons();
   redrawTime();
 }

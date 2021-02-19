@@ -6,7 +6,7 @@
 
 class HexDotClockApp : public ClockApp {
   public:
-    void begin(AppMode asMode);
+    void begin();
     void end();
     void update();
     millis_t updateInterval() override { return 1000; }

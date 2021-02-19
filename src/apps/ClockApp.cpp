@@ -12,8 +12,8 @@ void ClockApp::run() {
   }
 }
 
-void ClockApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
+void ClockApp::begin() {
+  ScreensaverApp::begin();
   lastUpdate = 0;
 }
 

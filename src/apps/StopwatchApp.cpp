@@ -11,8 +11,8 @@ StopwatchApp::StopwatchApp(int32_t pos) : BritepadApp() {
   setLauncherPosition(pos);
 }
 
-void StopwatchApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void StopwatchApp::begin() {
+  BritepadApp::begin();
   if (isReset()) {
     resume();
   }
@@ -20,8 +20,8 @@ void StopwatchApp::begin(AppMode asMode) {
   redrawTime();
 }
 
-void StopwatchApp::switchAppMode(AppMode asMode) {
-  BritepadApp::switchAppMode(asMode);
+void StopwatchApp::setAppMode(AppMode asMode) {
+  BritepadApp::setAppMode(asMode);
   clearScreen();
   redrawButtons();
   redrawTime();

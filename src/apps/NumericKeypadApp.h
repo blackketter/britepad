@@ -8,7 +8,7 @@
 
 class NumericKeypadApp : public BritepadApp {
   public:
-    void begin(AppMode asMode);
+    void begin();
     void end();
     void run();
 

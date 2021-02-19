@@ -12,13 +12,13 @@ class LauncherApp : public BritepadApp {
   public:
     LauncherApp();
 //    void init();
-    void begin(AppMode asMode);
+    void begin();
     void run();
     void end();
     bool event(KeyEvent* key);
 
     bool usesKeyboard() { return true; }
-    App* exitsTo() override { return A_SCREENSAVER_APP; }
+    BritepadApp* exitsTo() override { return A_SCREENSAVER_APP; }
     const char* name() { return "Launcher"; };
 
     AppType getAppType() { return NO_APP_TYPE; } // doesn't show a button for itself

@@ -2,8 +2,8 @@
 
 CountdownApp theCountdownApp;
 
-void CountdownApp::switchAppMode(AppMode asMode) {
-  BritepadApp::switchAppMode(asMode);
+void CountdownApp::setAppMode(AppMode asMode) {
+  BritepadApp::setAppMode(asMode);
   clearScreen();
   redraw();
 }
@@ -17,8 +17,8 @@ void CountdownApp::redraw() {
   lastDrawMillis = 0;
 }
 
-void CountdownApp::begin(AppMode asMode) {
-  ScreensaverApp::begin(asMode);
+void CountdownApp::begin() {
+  ScreensaverApp::begin();
   time_t prefTime;
   if (prefs.get(countdownTimePrefStr, sizeof(prefTime), (uint8_t*)&prefTime)) {
     countdownTime.setSeconds(prefTime);
@@ -43,16 +43,16 @@ void CountdownApp::run() {
   if (pad.pressed(BOTTOM_PAD)) {
     sound.click();
     if (isAppMode(SCREENSAVER_MODE)) {
-      switchAppMode(INTERACTIVE_MODE);
+      setAppMode(INTERACTIVE_MODE);
     } else {
-      switchAppMode(SCREENSAVER_MODE);
+      setAppMode(SCREENSAVER_MODE);
     }
   }
 
   if (isAppMode(INTERACTIVE_MODE)) {
     if (setButton.pressed()) {
       sound.click();
-      launcher.launchApp(&setApp);
+      launcher.launchApp(&_setCountdownApp);
     }
   }
 

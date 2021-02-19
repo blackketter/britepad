@@ -3,13 +3,13 @@
 
 DotsDisplayApp theDotsDisplayApp;
 
-void DotsDisplayApp::begin(AppMode asMode) {
+void DotsDisplayApp::begin() {
 
   if (!dots) {
     dots = new DotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), getDotsWide(), getDotsHigh());
   }
 
-  ScreensaverApp::begin(asMode);
+  ScreensaverApp::begin();
 };
 
 void DotsDisplayApp::end() {

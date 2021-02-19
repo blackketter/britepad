@@ -5,8 +5,8 @@
 
 ConsoleApp theConsoleApp;
 
-void ConsoleApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
+void ConsoleApp::begin() {
+  BritepadApp::begin();
 
   if (!_terminal) {
     _terminal = new TerminalWidget(
@@ -50,7 +50,7 @@ class ExitCommand : public Command {
     const char* getName() { return "exit"; }
     const char* getHelp() { return "Exit current app"; }
     void execute(Console* c, uint8_t paramCount, char** params) {
-      launcher.currentApp()->exit();
+      launcher.exit();
       launcher.resetScreensaver();
     }
 };

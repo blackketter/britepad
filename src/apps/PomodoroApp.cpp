@@ -7,14 +7,14 @@
 class PomodoroApp : public BritepadApp {
   public:
     PomodoroApp(int pos) : BritepadApp() { setLauncherPosition(pos); }
-    virtual void begin(AppMode asMode);
+    virtual void begin();
     virtual void run();
 
     bool wantsToRun() { return isRunning(); }
     bool canBeScreensaver() { return isRunning(); }
     virtual bool canBeMouse() { return isRunning(); }
-    App* exitsTo() override { return isAppMode(INTERACTIVE_MODE) ? EXIT_APP : SWITCH_TO_INTERACTIVE_MODE; }
-    void switchAppMode(AppMode asMode);
+    BritepadApp* exitsTo() override { return isAppMode(INTERACTIVE_MODE) ? EXIT_APP : SWITCH_TO_INTERACTIVE_MODE; }
+    void setAppMode(AppMode asMode);
 
     AppType getAppType() { return TIMER_APP; }
 
@@ -48,17 +48,17 @@ class PomodoroApp : public BritepadApp {
 };
 PomodoroApp thePomodoroApp(10);
 
-void PomodoroApp::begin(AppMode asMode) {
-  BritepadApp::begin(asMode);
-  if (asMode == INTERACTIVE_MODE && !isRunning()) {
+void PomodoroApp::begin() {
+  BritepadApp::begin();
+  if (getAppMode() == INTERACTIVE_MODE && !isRunning()) {
     alarm();  // auto-start
   }
   drawButton();
   drawTime();
 }
 
-void PomodoroApp::switchAppMode(AppMode asMode) {
-  BritepadApp::switchAppMode(asMode);
+void PomodoroApp::setAppMode(AppMode asMode) {
+  BritepadApp::setAppMode(asMode);
   clearScreen();
   drawButton();
   drawTime();

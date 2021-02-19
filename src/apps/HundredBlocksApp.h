@@ -5,7 +5,7 @@
 
 class HundredBlocksApp : public DotCalApp {
   public:
-    void begin(AppMode asMode) override;
+    void begin() override;
     void update() override;
  
     const char* name() { return "100 Blocks"; };

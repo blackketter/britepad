@@ -3,11 +3,11 @@
 
 BriteLiteApp theBriteLiteApp;
 
-void BriteLiteApp::begin(AppMode asMode) {
+void BriteLiteApp::begin() {
   if (!dots) {
     dots = new HexDotMatrix(screen.clipLeft(), screen.clipTop(), screen.clipWidth(), screen.clipHeight(), getDotsWide(), getDotsHigh());
   }
-  DotsDisplayApp::begin(asMode);
+  DotsDisplayApp::begin();
 }
 
 void BriteLiteApp::run() {

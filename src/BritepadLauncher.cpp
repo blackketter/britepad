@@ -87,7 +87,7 @@ void BritepadLauncher::idle() {
     watchdogKick();
     usbHost.Task();
     usbMouse.run();
-    keys.update();
+    keys.idle();
     sound.idle();
     if (currentBritepadApp() && currentBritepadApp()->isAppMode(MOUSE_MODE)) {
       mousePad.run();
@@ -130,7 +130,7 @@ void BritepadLauncher::launchApp(appid_t id, AppMode mode) {
 }
 
 void BritepadLauncher::run() {
-  pad.update();
+  pad.idle();
 
   if (pad.touched(ANY_PAD)) {
     resetScreensaver();
@@ -250,7 +250,7 @@ void BritepadLauncher::run() {
   Launcher::run();
 
   if (currentBritepadApp()->usesKeyboard()) {
-    keys.update();
+    keys.idle();
     // when a keyboard app launches tell the host that all the keys have been released
     events->releaseKeys();
   }

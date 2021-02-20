@@ -27,13 +27,16 @@ extern Sound sound;
 #include "MousePad.h"
 extern MousePad mousePad;
 
-#include "BB1KeyMatrix.h"
 #include "ErgodoxKeyMatrix.h"
+
 #if defined(BB1)
+#include "BB1KeyMatrix.h"
 extern BB1KeyMatrix keys;
+
 #elif defined(BB100)
 #include "BB100KeyMatrix.h"
 extern BB100KeyMatrix keys;
+
 #endif
 
 #include "Dictionary.h"

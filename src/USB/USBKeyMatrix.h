@@ -8,7 +8,7 @@ class USBKeyMatrix : public KeyMatrix {
   public:
     USBKeyMatrix();
     void begin(EventQueue* queue) override;
-    bool update();
+    bool idle();
     const char* name() { return "USB"; }
     void usbEvent(keyswitch_t k, bool down);
   protected:

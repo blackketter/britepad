@@ -18,6 +18,9 @@ Sound sound = Sound();
 BritepadLauncher launcher = BritepadLauncher();
 EEPROMDictionary prefs = EEPROMDictionary();
 
+#include "Commands/FPSCommand.h"
+FPSCommand theFPSCommand;
+
 MousePad mousePad = MousePad();
 Console console = Console();
 
@@ -99,4 +102,5 @@ void setup() {
 
 void loop() {
   launcher.run();
+  theFPSCommand.newFrame();
 }

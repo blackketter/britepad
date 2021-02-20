@@ -90,7 +90,7 @@ void USBKeyMatrix::begin(EventQueue* queue) {
   KeyMatrix::begin(queue);
 }
 
-bool USBKeyMatrix::update() {
+bool USBKeyMatrix::idle() {
   if (_updated) {
     _updated = false;
     return true;

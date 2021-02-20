@@ -49,7 +49,7 @@ void TouchPad::begin(coord_t w, coord_t h) {
   }
 }
 
-void TouchPad::update() {
+void TouchPad::idle() {
   // save the last state for future reference
   copyTPState(&last, &curr);
 

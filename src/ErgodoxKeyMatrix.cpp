@@ -78,7 +78,7 @@ void ErgodoxKeyMatrix::scanMatrix() {
   }
 }
 
-bool ErgodoxKeyMatrix::update() {
+bool ErgodoxKeyMatrix::idle() {
 
   keyswitch_t count = 0;
 

@@ -3,7 +3,7 @@
 #include "BritepadShared.h"
 #include "BB1Layout.h"
 
-#include "KeyMatrix.h"
+#include "GPIOKeyMatrix.h"
 
     const  pinNumber columnPins[] = {
       5,

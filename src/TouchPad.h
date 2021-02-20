@@ -38,7 +38,7 @@ class TouchPad {
 
   public:
     void begin(coord_t w, coord_t h);
-    void update();
+    void idle();
     bool touched(int pad = SCREEN_PAD);  // is the pad being touched?
     bool changed(int pad = SCREEN_PAD);  // has the pad touch state changed since the last update?
     bool pressed(int pad = SCREEN_PAD);     // has the pad been touched since the last update?

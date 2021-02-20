@@ -57,7 +57,7 @@ void AmbientWakeupApp::ambientWakeupCallback() {
   uint16_t ambient = pad.getAmbientLight();
   millis_t waitTime = _ambientWakeupInterval;
 
-  if (Uptime::millis() - launcher.lastEventTime() > _ambientWakeupLongInterval) {
+  if (Uptime::millis() - events->lastEventTime() > _ambientWakeupLongInterval) {
     if (ambient > _lastAmbient && (ambient - _lastAmbient) > _ambientChangeThreshold) {
       launcher.wakeHost();
       console.debugln("Ambient Wakeup!");

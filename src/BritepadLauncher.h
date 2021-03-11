@@ -31,8 +31,9 @@ class BritepadLauncher : public Launcher {
     }
 
     void launchApp(App* app) override;
-    void launchApp(appid_t app) override;
     void launchApp(BritepadApp* app, AppMode mode);
+
+    void launchApp(appid_t app) override;
     void launchApp(appid_t id, AppMode mode);
 
     void exit(); // exits current app

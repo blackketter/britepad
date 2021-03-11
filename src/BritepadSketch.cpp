@@ -98,6 +98,8 @@ void setup() {
 
   console.debugln("starting app framework");
   launcher.begin();
+
+  console.debugln("finished setup()");
 }
 
 void loop() {

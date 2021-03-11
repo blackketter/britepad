@@ -38,7 +38,7 @@ class KeyApp : public BritepadApp {
 
   protected:
 
-    const char* nameStr = nullptr;
+    const char* nameStr = "";
     const char* keyStr = nullptr;
     mediakey_t  mediaKey = 0;
     color_t button_color = 0;;

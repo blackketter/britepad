@@ -54,6 +54,7 @@ extern "C" {
 #endif
 
 #else
+#warning No watchdog timer
 bool usbActive() { return false; }
 void watchdogKick() {};
 const char* resetType() { return"Reset cause unknown";};

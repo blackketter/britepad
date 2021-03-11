@@ -5,6 +5,9 @@
 KeyboardWidget::KeyboardWidget(KeyMatrix* keymatrix, coord_t x, coord_t y, coord_t w, coord_t h, color_t defaultColor, color_t defaultLabelColor) {
   _keymatrix = keymatrix;
   setBounds(x,y,w,h);
+  if (_keymatrix->getWidth() == 0 || _keymatrix->getHeight() == 0) {
+    return;
+  }
 
   coord_t oneKeyWidth = w/_keymatrix->getWidth();
   coord_t oneKeyHeight = h/_keymatrix->getHeight();

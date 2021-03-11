@@ -60,16 +60,23 @@ void statusBarCallback(void* data) {
 void BritepadLauncher::begin() {
 
   screen.setBacklight(screen.maxbrightness);
+  console.debugln("setBacklight begun");
   backlightTimer.setMillis(ambientUpdateInterval, backlightCallback, (void*)this, true);
+  console.debugln("backlightTimer begun");
   statusBarUpdateTimer.setMillis(1000, statusBarCallback, (void*)this, true);
+  console.debugln("statusBarUpdateTimer begun");
 
-	usbHost.begin();
-	usbMouse.begin();
+  usbHost.begin();
+  console.debugln("usbHost begun");
+  usbMouse.begin();
+  console.debugln("usbMouse begun");
 
   Launcher::begin();
+  console.debugln("superclass begun");
 
   // assumes that the splashapp has been created and added to list
   launchApp(SplashApp::ID);
+  console.debugln("launchApp begun");
 
   // call superclass run() to initialize the splash app
   Launcher::run();
@@ -110,21 +117,25 @@ void BritepadLauncher::exit() {
 }
 
 void BritepadLauncher::launchApp(App* app) {
-  launchApp((BritepadApp*)app, INTERACTIVE_MODE);
+  BritepadLauncher::launchApp((BritepadApp*)app, INTERACTIVE_MODE);
 };
 
 void BritepadLauncher::launchApp(appid_t app) {
-  launchApp(app, INTERACTIVE_MODE);
+  BritepadLauncher::launchApp(app, INTERACTIVE_MODE);
 };
 
 void BritepadLauncher::launchApp(BritepadApp* app, AppMode mode) {
-  _lastAppMode = currentBritepadApp()->getAppMode();
+  if (currentBritepadApp()) {
+    _lastAppMode = currentBritepadApp()->getAppMode();
+  }
   Launcher::launchApp(app);
   _launchedAppMode = mode;
 }
 
 void BritepadLauncher::launchApp(appid_t id, AppMode mode) {
-  _lastAppMode = currentBritepadApp()->getAppMode();
+  if (currentBritepadApp()) {
+    _lastAppMode = currentBritepadApp()->getAppMode();
+  }
   Launcher::launchApp(id);
   _launchedAppMode = mode;
 }

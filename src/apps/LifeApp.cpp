@@ -3,8 +3,6 @@
 #define MILLIS_PER_FRAME (100)
 #define MILLIS_DELAY (1000)
 
-#define SEEDS (100)
-
 #define MAX_SAME_POPULATION (5000/MILLIS_PER_FRAME)
 
 #define OFFCOLOR (0x0000)
@@ -28,12 +26,16 @@ void LifeApp::setAppMode(AppMode asMode) {
   }
 }
 
+void LifeApp::begin() {
+  _wide = screen.width()/10;
+  _high = screen.height()/10;
+  DotsDisplayApp::begin();
+}
+
 void LifeApp::run() {
   BritepadApp::run();
   bool mouseMoved = ((Uptime::millis() - usbMouse.lastMove()) < 500);
   AppMode mode = getAppMode();
-  _wide = screen.width()/10;
-  _high = screen.height()/10;
 
   if (mode == MOUSE_MODE || mode == INTERACTIVE_MODE || mouseMoved) {
     if ((pad.pressed(SCREEN_PAD) || mouseMoved) && generation) {
@@ -57,15 +59,16 @@ void LifeApp::run() {
         dots->setDot(x,y, MAXCOLOR);
         dots->updateDot(x,y);
       }
+      _nextIterate = Uptime::millis() + MILLIS_DELAY;
     }
-    nextRun = pad.time() + MILLIS_DELAY;
   }
   iterate();
 }
 
 void LifeApp::iterate() {
-  if (pad.time() > nextRun) {
-    nextRun = pad.time() + MILLIS_PER_FRAME;
+
+  if (Uptime::millis() > _nextIterate) {
+    _nextIterate = Uptime::millis() + MILLIS_PER_FRAME;
 
     if (reseed) {
       seed();
@@ -148,8 +151,10 @@ void LifeApp::wipe() {
 }
 
 void LifeApp::seed() {
+  console.debugln("LifeApp seeding");
   wipe();
-  for (int i = 0; i < SEEDS; i++) {
+  int seedCount = getDotsWide() * getDotsHigh() / 10;
+  for (int i = 0; i < seedCount; i++) {
     dots->setDot(random(getDotsWide()), random(getDotsHigh()), MINCOLOR);
   }
 }

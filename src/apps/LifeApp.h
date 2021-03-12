@@ -5,6 +5,7 @@
 
 class LifeApp : public DotsDisplayApp {
   public:
+    void begin() override;
     void run();
 
     void setAppMode(AppMode asMode);
@@ -28,7 +29,7 @@ class LifeApp : public DotsDisplayApp {
     int32_t generation;
     int32_t lastpopulation = 0;
     int32_t samelastpopulation = 0;
-    millis_t nextRun = 0;
+    millis_t _nextIterate = 0;
     bool reseed = true;
     int ruleset = 0;
     int _wide;

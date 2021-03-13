@@ -417,12 +417,12 @@ void LauncherApp::begin() {
 
   sound.swipe(DIRECTION_DOWN);
 
-  //console.debugln("start pushfill");
+  console.debugln("start pushfill");
   screen.pushFill(DIRECTION_DOWN, bgColor());
 
   getCurrentPage()->draw();
   lastBegin = clock.now();
-  //console.debugln("done LauncherApp::begin");
+  console.debugln("done LauncherApp::begin");
 }
 
 void LauncherApp::run() {

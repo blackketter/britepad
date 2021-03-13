@@ -99,7 +99,7 @@ void InfoApp::run() {
   if (raw > max) { max = raw; sound.beep();}
   screen.printf("Points captured: %3d\n", pad.getHistoryCount());
   screen.printf("Distance (%d):%d,raw:%d,max: %d\n", pad.touched(PROXIMITY_SENSOR), pad.getProximityDistance(), raw,max);
-  screen.printf("FPS: %5.2f\n", 1000.0/(pad.time()-lastUpdate));
-  lastUpdate = pad.time();
+  screen.printf("FPS: %5.2f\n", 1000.0/(Uptime::millis()-lastUpdate));
+  lastUpdate = Uptime::millis();
 
 };

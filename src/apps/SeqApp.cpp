@@ -48,12 +48,12 @@ void SeqApp::run() {
     }
   }
 
-  if (pad.time() - lastRun >= (60000/bpm)) {
+  if (Uptime::millis() - lastRun >= (60000/bpm)) {
     if (tick) {
       sound.click();
     }
 
-    lastRun = pad.time();
+    lastRun = Uptime::millis();
 
     int lastCol = currCol-1;
 

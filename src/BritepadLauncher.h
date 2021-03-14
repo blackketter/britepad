@@ -11,12 +11,20 @@ class BritepadLauncher : public Launcher {
 
     BritepadApp* currentBritepadApp() { return (BritepadApp*)currentApp(); }
 
+    void launchApp(App* app) override;
+    void launchApp(appid_t app) override;
+
+    void launchApp(BritepadApp* app, AppMode mode);
+    void launchApp(appid_t id, AppMode mode);
+
+    void exit(); // exits current app
+
+    AppMode getLaunchedAppMode() { return _launchedAppMode; }
+
     void drawBars(bool update = false); // draw the status and info bars
     void updateStatusBar();
 
-    static const int minBrightness = 20;
-    void wakeHost();
-
+// BritepadLauncher launches screensavers
     time_t getScreensaverSwitchInterval();
     void setScreensaverSwitchInterval(time_t newInterval);
 
@@ -30,15 +38,9 @@ class BritepadLauncher : public Launcher {
       disableScreensaversUntil = Uptime::millis() + dur;
     }
 
-    void launchApp(App* app) override;
-    void launchApp(BritepadApp* app, AppMode mode);
-
-    void launchApp(appid_t app) override;
-    void launchApp(appid_t id, AppMode mode);
-
-    void exit(); // exits current app
-
-    AppMode getLaunchedAppMode() { return _launchedAppMode; }
+// TODO: move these out
+    static const int minBrightness = 20;
+    void wakeHost();
 
   protected:
     millis_t disableScreensaversUntil = 0;

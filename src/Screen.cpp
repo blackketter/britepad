@@ -1,6 +1,7 @@
 #include "Screen.h"
 #include "Utilities.h"
 #include "BritepadShared.h"
+#include "GraphicsCommands.h"
 
 void Screen::setBacklight(uint8_t brightness) {
   backlightBrightness = brightness;

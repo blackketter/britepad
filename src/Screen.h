@@ -74,16 +74,16 @@ class Screen : public ER_TFT0784_t3
 {
   public:
      Screen(
-    		uint8_t _CS = TFT_CS_PIN,
-    		uint8_t _RESET = TFT_RESET_PIN,
-    		uint8_t _MOSI = TFT_MOSI_PIN,
-    		uint8_t _SCLK = TFT_SCLK_PIN,
-    		uint8_t _MISO = TFT_MISO_PIN,
-    		uint8_t _2828CS = TFT_2828CS_PIN,
-    		uint8_t _2828RESET = TFT_2828RESET_PIN,
-    		uint8_t _2828SDI = TFT_2828SDI_PIN,
-    		uint8_t _2828SCK = TFT_2828SCK_PIN
-    	) :
+        uint8_t _CS = TFT_CS_PIN,
+        uint8_t _RESET = TFT_RESET_PIN,
+        uint8_t _MOSI = TFT_MOSI_PIN,
+        uint8_t _SCLK = TFT_SCLK_PIN,
+        uint8_t _MISO = TFT_MISO_PIN,
+        uint8_t _2828CS = TFT_2828CS_PIN,
+        uint8_t _2828RESET = TFT_2828RESET_PIN,
+        uint8_t _2828SDI = TFT_2828SDI_PIN,
+        uint8_t _2828SCK = TFT_2828SCK_PIN
+      ) :
       ER_TFT0784_t3(_CS, _RESET, _MOSI, _SCLK, _MISO, _2828CS, _2828RESET, _2828SDI, _2828SCK)
 
 #else
@@ -115,7 +115,7 @@ class Screen : public Adafruit_ILI9341
 #if defined(LCD_ERTFTM0784)
     static const uint8_t maxbrightness = 255;
 #else
-		static const uint8_t maxbrightness = 255;
+    static const uint8_t maxbrightness = 255;
 #endif
     static const coord_t offscreen = -100;
     void setBacklight(uint8_t brightness);
@@ -128,9 +128,17 @@ class Screen : public Adafruit_ILI9341
     void drawTextF(const char* format, ...);
     void drawString( String& t) { if (t && t.c_str()) drawText(t.c_str()); }
     void softWrapText(String& out, const char* in);
-    font_t getFont() { return font; }
-    void setFont(font_t f) { font = f; }
-    	void drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color);
+
+    void setFont(font_t f) {
+#if defined(LCD_ILI9488)
+      ILI9488_t3::setFont(*f);
+#elif defined(LCD_ERTFTM0784)
+      RA8876_t3::setFont(*f);
+#else
+      Adafruit_ILI9341::setFont(*f);
+#endif
+    }
+    void drawWideLine(coord_t x0, coord_t y0, coord_t x1, coord_t y1, coord_t width, color_t color);
 
     void pushFill(direction_t dir, color_t color);
 
@@ -159,7 +167,7 @@ class Screen : public Adafruit_ILI9341
 
     inline void pushOrigin(point_t* o) { point_t t; getOrigin(&t); setOrigin(o); o->x = t.x; o->y = t.y; };
 
-//	  virtual void drawPixel(point_t& p, color_t color) { drawPixel((int16_t)p.x,(int16_t)p.y,(uint16_t)color); };
+//    virtual void drawPixel(point_t& p, color_t color) { drawPixel((int16_t)p.x,(int16_t)p.y,(uint16_t)color); };
 
 // Color definitions
     static const color_t black = 0x0000;

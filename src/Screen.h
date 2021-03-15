@@ -68,6 +68,7 @@ class Screen : public ILI9488_t3
   public:
     Screen(uint8_t _CS = TFT_CS_PIN, uint8_t _DC = TFT_DC_PIN, uint8_t _RST = 255, uint8_t _MOSI=11, uint8_t _SCLK=13, uint8_t _MISO=12) :
       ILI9488_t3(_CS, _DC, _RST, _MOSI, _SCLK, _MISO)
+
 #elif defined(LCD_ERTFTM0784)
 class Screen : public ER_TFT0784_t3
 {
@@ -86,6 +87,7 @@ class Screen : public ER_TFT0784_t3
       ER_TFT0784_t3(_CS, _RESET, _MOSI, _SCLK, _MISO, _2828CS, _2828RESET, _2828SDI, _2828SCK)
 
 #else
+
 class Screen : public ILI9341_t3
 {
   public:
@@ -94,6 +96,7 @@ class Screen : public ILI9341_t3
 #endif
 
 #else
+
 //this is for ESP8266 Wemos D1 Mini
 typedef GFXfont font_t;
 
@@ -102,6 +105,7 @@ class Screen : public Adafruit_ILI9341
   public:
     Screen(uint8_t _CS = TFT_CS_PIN, uint8_t _DC = TFT_DC_PIN, uint8_t _RST = 255) :
       Adafruit_ILI9341(_CS, _DC, _RST)
+
 #endif
 
     {
@@ -122,7 +126,7 @@ class Screen : public Adafruit_ILI9341
     void drawLinex(point_t& f, point_t& t, color_t c) { drawLine(f.x,f.y,t.x,t.y,c); }
 
     void drawTextF(const char* format, ...);
-    void drawString( String& t) { drawText(t.c_str()); }
+    void drawString( String& t) { if (t && t.c_str()) drawText(t.c_str()); }
     void softWrapText(String& out, const char* in);
     font_t getFont() { return font; }
     void setFont(font_t f) { font = f; }

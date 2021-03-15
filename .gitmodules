@@ -40,3 +40,6 @@
 [submodule "lib/KeyMatrix"]
 	path = lib/KeyMatrix
 	url = https://github.com/blackketter/KeyMatrix
+[submodule "lib/Ra8876LiteTeensy"]
+	path = lib/Ra8876LiteTeensy
+	url = https://github.com/blackketter/Ra8876LiteTeensy.git

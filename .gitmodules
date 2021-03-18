@@ -43,3 +43,6 @@
 [submodule "lib/Ra8876LiteTeensy"]
 	path = lib/Ra8876LiteTeensy
 	url = https://github.com/blackketter/Ra8876LiteTeensy.git
+[submodule "lib/GT911"]
+	path = lib/GT911
+	url = https://github.com/blackketter/GT911.git

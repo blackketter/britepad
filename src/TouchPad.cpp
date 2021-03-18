@@ -30,7 +30,7 @@ void TouchPad::begin(coord_t w, coord_t h) {
 
 #ifdef BB100
 #include <GT911.h>
-  if (!ctp.begin(CTP_INT_PIN, CTP_RESET_PIN)) {  // pass in 'sensitivity' coefficient
+  if (!ctp.begin(CTP_INT_PIN, CTP_RESET_PIN)) {  // pass in pins
 #else
   if (!ctp.begin(40)) {  // pass in 'sensitivity' coefficient
 #endif
@@ -70,7 +70,6 @@ void TouchPad::idle() {
     curr.x = p.y;
     curr.y = p.x;
 #endif
-
     // bogus coordinates at 0,0
     if (curr.x == 0 && curr.y == 0) {
       curr.touched[SCREEN_PAD] = 0;
@@ -101,7 +100,6 @@ void TouchPad::idle() {
     if (flipY) {
       curr.y = map(curr.y, 0, height, height, 0);
     }
-
   } else {
     curr.touched[SCREEN_PAD] = false;
   }

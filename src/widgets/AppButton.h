@@ -11,7 +11,7 @@ class AppButton : public RoundedButton {
     BritepadApp* getApp() { return (BritepadApp*)getID(); }
     void setApp(BritepadApp* a) { setID((widgetid_t)a); }
 
-    virtual const char* getTitle() { return getApp()->name(); }
+    virtual const char* getTitle() { return getApp()->label(); }
     virtual Icon        getIcon()  { return getApp()->getIcon(); }
 
     virtual color_t     getColor() {

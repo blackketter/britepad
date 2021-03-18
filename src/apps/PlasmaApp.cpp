@@ -44,15 +44,15 @@ void PlasmaApp::begin() {
   float h = (float)screen.clipHeight();
 
   float maxScreenDistance = (w*w) + (h*h);
-  uint8_t nextPow2 = ceil( log2f( maxScreenDistance ) );
-  float maxTableDistance = pow( 2.0f, nextPow2 );
+  uint8_t nextPow2 = ceilf( log2f( maxScreenDistance ) );
+  float maxTableDistance = powf( 2.0f, nextPow2 );
   sqrtBitShift = nextPow2 - 8;
 
-  float sqrtTableMult = (float)0xff / sqrt(maxScreenDistance);
+  float sqrtTableMult = (float)0xff / sqrtf(maxScreenDistance);
 
   for( uint8_t i=0; i<SQRT_TABLE_LENGTH; i++ ) {
     float useDistance = ((float)i / (float)SQRT_TABLE_LENGTH) * maxTableDistance;
-    float aSqrt = sqrt( useDistance );
+    float aSqrt = sqrtf( useDistance );
     sqrtTable[i] = (uint8_t)(aSqrt * sqrtTableMult);
     //sqrtTable[i] = random(0xff);
   }
@@ -72,12 +72,12 @@ void PlasmaApp::run() {
   //py._ditherY = (py._ditherY + 1) % PLASMA_YELLOW_DITHER;
 
   point_t p0 = (point_t){
-    (coord_t)(w/2 + (sin(_phase*0.32f)*(w/2-PLASMA_CLOUD_MARGIN) )),
-    (coord_t)(h/2 + (sin(_phase*0.23f)*(h/2-PLASMA_CLOUD_MARGIN) ))
+    (coord_t)(w/2 + (sinf(_phase*0.32f)*(w/2-PLASMA_CLOUD_MARGIN) )),
+    (coord_t)(h/2 + (sinf(_phase*0.23f)*(h/2-PLASMA_CLOUD_MARGIN) ))
   };
   point_t p1 = (point_t){
-    (coord_t)(w/2 + (cos(_phase*1.07f)*(w/2-PLASMA_CLOUD_MARGIN) )),
-    (coord_t)(h/2 + (cos(_phase*1.42f)*(h/2-PLASMA_CLOUD_MARGIN) ))
+    (coord_t)(w/2 + (cosf(_phase*1.07f)*(w/2-PLASMA_CLOUD_MARGIN) )),
+    (coord_t)(h/2 + (cosf(_phase*1.42f)*(h/2-PLASMA_CLOUD_MARGIN) ))
   };
 
   /*

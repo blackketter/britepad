@@ -9,7 +9,7 @@ class TrianglesApp : public BriteLiteApp {
     appid_t id() { return ID; };
     const char* name() { return "Triangles"; };
   protected:
-    int getDotsWide() { return 24; }
-    int getDotsHigh() { return 9; }
+    int getDotsWide() { return screen.width() / 14; }
+    int getDotsHigh() { return screen.height() / 24; }
 
 };

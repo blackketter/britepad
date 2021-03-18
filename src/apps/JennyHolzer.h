@@ -1,6 +1,6 @@
 #ifndef JENNYHOLZER
 #define JENNYHOLZER
-const char* const jennyHolzer[] = {
+const char* const jennyHolzerList[] = {
   "A LITTLE KNOWLEDGE CAN GO A LONG WAY",
   "A LOT OF PROFESSIONALS ARE CRACKPOTS",
   "A MAN CAN'T KNOW WHAT IT IS TO BE A MOTHER",
@@ -256,8 +256,5 @@ const char* const jennyHolzer[] = {
   "YOUR OLDEST FEARS ARE THE WORST ONES",
   nullptr
 };
-const char* randomJennyHolzer() {
-  return jennyHolzer[random(sizeof(jennyHolzer)/sizeof(char*))];
-}
 
 #endif

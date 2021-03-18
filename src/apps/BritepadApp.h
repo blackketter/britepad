@@ -115,6 +115,7 @@ class BritepadApp : public App {
     virtual color_t statusBarBGColor() { return screen.mix(bgColor(), screen.grey); }  // bgcolor of status bar
     virtual color_t statusBarFGColor() { return screen.luminance(statusBarBGColor()) > 127 ? screen.black : screen.white; } // color of text, graphics on status bar
     virtual const char* statusBarTitle() { return name(); }
+    virtual const char* label() { return name(); }
 
     virtual bool displaysInfoBar() { return infoBarText() != nullptr; };
     virtual color_t infoBarBGColor() { return bgColor(); }

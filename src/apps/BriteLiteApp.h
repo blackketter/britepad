@@ -14,8 +14,8 @@ class BriteLiteApp : public DotsDisplayApp {
     const char* name() { return "LiteBrite"; };
 
   protected:
-    int getDotsWide() { return 16; }
-    int getDotsHigh() { return 14; }
+    int getDotsWide() { return screen.width() / 20; }
+    int getDotsHigh() { return screen.height() / 16; }
 
   private:
     int cursor_x;

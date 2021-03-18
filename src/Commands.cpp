@@ -77,7 +77,7 @@ class LaunchCommand : public Command {
       }
 
         App* a = App::findApp(params[pathindex]);
-        c->printf("got back app %s - %x\n", params[pathindex],(uint32_t)a);
+//        c->printf("got back app %s - %x\n", params[pathindex],(uint32_t)a);
         if (a) {
           c->printf("Running app '%s' - %s...\n",a->id(), a->name());
           launcher.launchApp((BritepadApp*)a, mode);

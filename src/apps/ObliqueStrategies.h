@@ -1,6 +1,6 @@
 #ifndef OBLIQUESTRATEGIES
 #define OBLIQUESTRATEGIES
-const char* const obliqueStrategies[] = {
+const char* const obliqueStrategiesList[] = {
     "Abandon normal instruments",
     "Accept advice",
     "Accretion",
@@ -117,9 +117,5 @@ const char* const obliqueStrategies[] = {
     "You don't have to be ashamed of using your own ideas",
     nullptr
 };
-
-const char* randomObliqueStrategy() {
-  return obliqueStrategies[random(sizeof(obliqueStrategies)/sizeof(char*))];
-}
 
 #endif

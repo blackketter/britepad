@@ -6,6 +6,8 @@
 
 class QuotesApp : public ScreensaverApp {
   public:
+    void begin() override { lastDrawn = 0; }
+
     void run() override {
       if (lastDrawn == 0) {
         clearScreen();
@@ -14,22 +16,38 @@ class QuotesApp : public ScreensaverApp {
         screen.setCursor(screen.clipMidWidth(), screen.clipMidHeight());
         screen.setTextAlign((alignment_t)(ALIGN_VCENTER|ALIGN_HCENTER));
 
+        const char* quote = randomQuote();
+        if (quote == nullptr) {
+          console.debugln("NULL QUOTE!");
+        } else {
+          console.debugf("Quote: %s\n",quote);
+        }
+
         String wrapped;
-        const char* strat = randomQuote();
-        console.debugf("Quote: %s\n",strat);
-        screen.softWrapText(wrapped, strat);
+        screen.softWrapText(wrapped, quote);
         screen.drawString(wrapped);
         screen.setTextAlign();
 
         lastDrawn = Uptime::millis();
       }
-
     }
-    void begin() override { lastDrawn = 0; }
-    virtual const ILI9341_t3_font_t* font() { return &Arial_20_Bold; }
+    
   protected:
+    virtual const ILI9341_t3_font_t* font() { return &Arial_20_Bold; }
     millis_t lastDrawn = 0;
-    virtual const char* randomQuote() = 0;
+    virtual const char* const* quoteList() { return nullptr; }
+    virtual const char* randomQuote() {
+      const char* const* list = quoteList();
+      if (list == nullptr) return "";
+
+      const char* const* currQuote = list;
+      int count =0;
+      while (*currQuote) {
+        count++;
+        currQuote++;
+      }
+      return list[random(count)];
+    };
 
 };
 
@@ -40,7 +58,7 @@ class HolzerApp : public QuotesApp {
     static constexpr appid_t ID = "holz";
 
   protected:
-    const char* randomQuote() override { return randomJennyHolzer(); }
+    const char* const* quoteList() override { return jennyHolzerList; }
 };
 HolzerApp theHolzerApp;
 
@@ -51,7 +69,7 @@ class ObliqueApp : public QuotesApp {
     static constexpr appid_t ID = "obli";
 
   protected:
-    const char* randomQuote() override { return randomObliqueStrategy(); }
+    const char* const* quoteList() override { return obliqueStrategiesList; }
 };
 ObliqueApp theObliqueApp;
 
@@ -62,7 +80,7 @@ class CognitiveBiasesApp : public QuotesApp {
     static constexpr appid_t ID = "bias";
 
   protected:
-    const char* randomQuote() override { return randomCognitiveBias(); }
+    const char* const* quoteList() override { return cognitiveBiasesList; }
      const ILI9341_t3_font_t* font() override { return &Arial_12_Bold; }
 };
 CognitiveBiasesApp theCognitiveBiasesApp;

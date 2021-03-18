@@ -1,6 +1,6 @@
 #ifndef _CognitiveBiases_
 #define _CognitiveBiases_
-const char* const cognitiveBiases[] = {
+const char* const cognitiveBiasesList[] = {
   "Actor-observer bias\n\nThe tendency for explanations of other individuals' behaviors to overemphasize the influence of their personality and underemphasize the influence of their situation (see also Fundamental attribution error), and for explanations of one's own behaviors to do the opposite (that is, to overemphasize the influence of our situation and underemphasize the influence of our own personality).",
   "Agent detection\n\nThe inclination to presume the purposeful intervention of a sentient or intelligent agent.",
   "Ambiguity effect\n\nThe tendency to avoid options for which the probability of a favorable outcome is unknown.",
@@ -156,9 +156,5 @@ const char* const cognitiveBiases[] = {
   "Zero-sum bias\n\nA bias whereby a situation is incorrectly perceived to be like a zero-sum game (i.e., one person gains at the expense of another).",
   nullptr
 };
-
-const char* randomCognitiveBias() {
-  return cognitiveBiases[random(sizeof(cognitiveBiases)/sizeof(char*))];
-}
 
 #endif

@@ -32,8 +32,8 @@ class ScreensaverStartApp : public BritepadApp {
       }
       launcher.setScreensaverStartInterval(timeout);
     }
-
-    const char* name() {
+    const char* name() override { return "Screensaver Start Delay"; }
+    const char* label() override {
       time_t startInterval = launcher.getScreensaverStartInterval();
       if (startInterval == 0) {
         return "No screensaver";

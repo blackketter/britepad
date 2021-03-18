@@ -79,6 +79,9 @@ void Screen::drawTextF(const char* format, ...) {
 }
 
 void Screen::softWrapText(String& out, const char* in) {
+
+  if (in == nullptr) return;
+  
   const char* wrapChars = " -/";
 
   uint16_t curWidth = 0;

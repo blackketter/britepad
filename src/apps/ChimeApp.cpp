@@ -15,8 +15,8 @@ class ChimeApp : public BritepadApp {
       resetChime();
       prefs.set(id(), sizeof(_chimeEnabled), &_chimeEnabled);
    }
-
-    const char* name() { return _chimeEnabled ? "Chime On" : "Chime Off"; };
+    const char* name() override { return "Chime Setting"; }
+    const char* label() override { return _chimeEnabled ? "Chime On" : "Chime Off"; };
 
     virtual bool highlighted() { return !_chimeEnabled; }
     bool canBeInvisible() { return true; };

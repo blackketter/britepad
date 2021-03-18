@@ -34,7 +34,8 @@ void MandelApp::run() {
   int16_t h = screen.clipHeight();
   int16_t r = screen.clipRight();
   int16_t l = screen.clipLeft();
-
+  float aspect = (float)w / (float)h;
+  
   while (!timeToLeave()) {
     if (yPixel >= h) {
       screen.drawFastVLine(xPixel,0,h,_column);
@@ -53,9 +54,9 @@ void MandelApp::run() {
         pixelSum = 0;
       }
 
-      x1 = -2.0f * scale + xOrigin;
-      y1 = -1.5f * scale + yOrigin;
-      x2 = 2.0f * scale + xOrigin;
+      x1 = -aspect * 1.5f * scale + xOrigin;
+      y1 = -1 * 1.5f * scale + yOrigin;
+      x2 = aspect * 1.5f * scale + xOrigin;
       y2 = 1.5f * scale + yOrigin;
       sy = y2 - y1;
       sx = x2 - x1;

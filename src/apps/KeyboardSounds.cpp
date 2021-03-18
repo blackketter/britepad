@@ -26,7 +26,8 @@ class KeyboardSoundsApp : public BritepadApp {
   public:
     appid_t id() { return ID; };
     static constexpr appid_t ID = "ksnd";
-    const char* name() { return _soundsEnabled ? "Key Sounds On" : "Key Sounds Off"; };
+    const char* name() override { return "Key Sounds"; }
+    const char* label() override { return _soundsEnabled ? "Key Sounds On" : "Key Sounds Off"; };
     AppType getAppType() { return SETTINGS_APP; }
 //    virtual bool highlighted() { return !_soundsEnabled; }
     bool canBeInvisible() { return true; };

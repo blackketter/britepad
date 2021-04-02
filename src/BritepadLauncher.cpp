@@ -103,9 +103,6 @@ void BritepadLauncher::idle() {
     if (currentBritepadApp() && !currentBritepadApp()->usesKeyboard()) {
       events->sendKeys();
     }
-    // make sure the Timers get a chance to call their callbacks
-    Timer::idle();
-    console.idle();
 
     lastIdle = Uptime::millis();
 };

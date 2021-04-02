@@ -27,7 +27,7 @@ void SplashApp::begin() {
 
 
 void SplashApp::run() {
-  if (Uptime::millis() - firstRun > splashDuration) {
+  if (pad.touched(SCREEN_PAD) || Uptime::millis() - firstRun > splashDuration) {
     console.debugln("Splash screen finished");
     exit();
     return;

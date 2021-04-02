@@ -45,12 +45,18 @@ AudioConnection          patchCordC3(fades[3], 0, mixer1, 3);
 
 // final mixer/volume control
 AudioMixer4              finalMixer;
+AudioConnection          patchCord9(mixer1, 0, finalMixer, 0);
+
+
 
 // output dac
 AudioOutputAnalog        dac1;
-
-AudioConnection          patchCord9(mixer1, 0, finalMixer, 0);
 AudioConnection          patchCord10(finalMixer, dac1);
+
+//AudioOutputI2S           dac1;
+//AudioConnection          patchCord10(finalMixer, 0, dac1, 0);
+//AudioConnection          patchCord2(finalMixer, 0, dac1, 1);
+
 
 
 Sound::Sound() {
